@@ -61,3 +61,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
     - "eslint-plugin-react-hooks": "^4.6.0"
     - "prettier": "^2.8.8"
     - "sass": "^1.67.0"
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D%2014-brightgreen.svg)](https://nodejs.org/)
