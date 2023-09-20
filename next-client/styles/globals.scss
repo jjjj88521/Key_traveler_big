@@ -5,6 +5,7 @@ $primary: #DC9329; // 這裡改成 figma 金色
 $secondary: #9f9f9f;
 $success: #7eb4e6;
 $danger: #ff4136;
+$dark: #171717; // 這裡改成 figma 黑色
 
 // 按鈕圓角邊 button radius
 $border-radius: 0.2em;
@@ -32,7 +33,7 @@ $card-height: 100%;
 @import '~bootstrap-icons/font/bootstrap-icons';
 
 // google Noto Sans TC 字體 & Poppins 字體 (英文)
-@import 'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&&family=Poppins:wght@500;600;700;800;900&family=VT323display=swap';
+@import 'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&&family=Poppins:wght@500;600;700;800;900&family=VT323&display=swap';
 
 // @fortawesome/fontawesome-free 可以直接使用 fontawesome 的圖
 @import '~@fortawesome/fontawesome-free/scss/fontawesome';
