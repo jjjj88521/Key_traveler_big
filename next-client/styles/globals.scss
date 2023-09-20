@@ -31,8 +31,14 @@ $card-height: 100%;
 // 如果有使用其它圖示字體可以註解不使用
 @import '~bootstrap-icons/font/bootstrap-icons';
 
-// google Noto Sans TC 字體
-@import 'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&display=swap';
+// google Noto Sans TC 字體 & Poppins 字體 (英文)
+@import 'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&&family=Poppins:wght@500;600;700;800;900&family=VT323display=swap';
+
+// @fortawesome/fontawesome-free 可以直接使用 fontawesome 的圖
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/brands';
 
 // 引入 ant-design 
 // @import '~antd/dist/antd.less';
@@ -49,7 +55,7 @@ main > .container {
 }
 
 body {
-  font-family: 'Noto Sans TC Regular', Helvetica, Arial, 'PingFang TC',
+  font-family: 'Poppins','Noto Sans TC Regular', Helvetica, Arial, 'PingFang TC',
     '苹方-繁', 'Heiti TC', '黑體-繁', 'Microsoft JhengHei', '微軟正黑體',
     // Cross-platform generic font family (default user interface font)
     system-ui,

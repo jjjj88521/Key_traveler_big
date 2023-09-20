@@ -40,7 +40,7 @@ yarn.lock
 /.temp/
 
 # 圖片
-.png
-.jpg
-.jpeg
-.svg
+*.png
+*.jpg
+*.jpeg
+*.svg
