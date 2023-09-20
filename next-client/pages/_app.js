@@ -9,7 +9,10 @@ export default function MyApp({ Component, pageProps }) {
     import('bootstrap/dist/js/bootstrap')
   }, [])
   const getLayout =
-    Component.getLayout || ((page) => <DefaultLayout>{page}</DefaultLayout>)
+    Component.getLayout ||
+    ((page) => (
+      <DefaultLayout pageTitle={pageProps.pageTitle}>{page}</DefaultLayout>
+    ))
 
   return getLayout(<Component {...pageProps} />)
 }
