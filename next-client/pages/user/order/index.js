@@ -5,7 +5,7 @@ export default function order() {
     <>
     <div className='container'>       
      <table className="table">
-          <thead className="text-light">
+          <thead>
             <tr>
               <th className='bg-primary'></th>
               <th className='bg-primary text-white'>訂單編號</th>
