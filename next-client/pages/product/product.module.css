@@ -1,0 +1,11 @@
+.banner {
+  height: 250px;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+  background-color: #c36060;
+}
+.display1 {
+  text-align: center;
+  line-height: 250px;
+}
