@@ -1,25 +1,5 @@
-// 檔案位置: styles/global.scss
-// 變數覆蓋用 (Variable overrides)
-// 全站配色 colors
-$primary: #dc9329; // 這裡改成 figma 金色
-$secondary: #9f9f9f;
-$success: #7eb4e6;
-$danger: #ff4136;
-$dark: #171717; // 這裡改成 figma 黑色
-
-// 按鈕圓角邊 button radius
-$border-radius: 0.2em;
-$border-radius-sm: 0.2em;
-$border-radius-lg: 0.2em;
-
-// 更改 ant-design 樣式配色
-// $ant-primary-color: $primary;
-// $ant-success-color: $success;
-// $ant-danger-color: $danger;
-
-// 固定card高度
-// https://getbootstrap.com/docs/5.3/components/card/#grid-cards
-$card-height: 100%;
+// 變數 import 
+@import './_variables.scss';
 
 // ↑↑↑  變數覆蓋(Variable overrides) 要寫在這行"上面"  ↑↑↑
 // 這裡導入所有 bootstrap 樣式
@@ -41,7 +21,7 @@ $card-height: 100%;
 @import '~@fortawesome/fontawesome-free/scss/solid';
 @import '~@fortawesome/fontawesome-free/scss/brands';
 
-// 引入 ant-design
+// 引入 ant-design 
 // @import '~antd/dist/antd.less';
 
 // fixed for __next root div
@@ -56,9 +36,8 @@ main > .container {
 }
 
 body {
-  font-family: 'Poppins', 'Noto Sans TC Regular', Helvetica, Arial,
-    'PingFang TC', '苹方-繁', 'Heiti TC', '黑體-繁', 'Microsoft JhengHei',
-    '微軟正黑體',
+  font-family: 'Poppins','Noto Sans TC Regular', Helvetica, Arial, 'PingFang TC',
+    '苹方-繁', 'Heiti TC', '黑體-繁', 'Microsoft JhengHei', '微軟正黑體',
     // Cross-platform generic font family (default user interface font)
     system-ui,
     // Safari for macOS and iOS (San Francisco)
