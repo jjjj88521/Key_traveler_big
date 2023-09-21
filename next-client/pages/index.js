@@ -2,6 +2,7 @@ import Head from 'next/head'
 // import Image from 'next/image'
 // import { Inter } from 'next/font/google'
 // import styles from '@/styles/home.module.scss'
+import style from './_sec2.module.scss'
 
 // swiper
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -53,7 +54,7 @@ export default function Home() {
         </div>
       </section>
       <section
-        className="home-sec2 bg-primary"
+        className={`bg-primary ${style['home-sec2']}`}
         style={{ '--bs-bg-opacity': '0.2' }}
       >
         <div className="container py-5">
@@ -70,8 +71,7 @@ export default function Home() {
             modules={[Navigation, Pagination, Keyboard]}
             className="h-100"
             style={{
-              '--swiper-navigation-color': '#000',
-              '--swiper-pagination-color': '#DC9329',
+              '--swiper-navigation-color': '#fff',
             }}
             slidesPerView={1.5}
             breakpoints={{
@@ -81,14 +81,30 @@ export default function Home() {
               },
             }}
           >
-            <SwiperSlide>
-              <Card>
+            <SwiperSlide className="h-100">
+              {/* <Card>
                 <img
                   alt="example"
                   src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
                   className="img-fluid"
                 />
-              </Card>
+              </Card> */}
+              <div
+                className={`${style['cate-select']} overflow-hidden rounded-4`}
+              >
+                <div className="card rounded-4 overflow-hidden">
+                  <div className="card-img">
+                    <img
+                      alt="example"
+                      src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
+                      className="card-img-top"
+                    />
+                  </div>
+                </div>
+                <div className={`py-3 ${style['cate-text']}`}>
+                  <h4 className="text-center fw-bolder">鍵盤套件</h4>
+                </div>
+              </div>
             </SwiperSlide>
             <SwiperSlide>
               <Card
@@ -135,6 +151,11 @@ export default function Home() {
               ></Card>
             </SwiperSlide>
           </Swiper>
+        </div>
+      </section>
+      <section className={style['home-sec3']}>
+        <div className="container py-5">
+          <h2 className="h1 text-center fw-bolder">New Products</h2>
         </div>
       </section>
     </>
