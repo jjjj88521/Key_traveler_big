@@ -2,6 +2,20 @@ import React from 'react'
 import { Steps } from 'antd'
 import style from './profile.module.scss'
 
+const fakeUserData = [
+  {
+    name: 'AAA',
+    account: 'BBB',
+    gender: '男',
+    address: 'CCC',
+    phone: '0912345678',
+    birthday: '19930928',
+    Email: 'DDD@DD.D',
+    password: '12345',
+    confirmPassword: '12345',
+  },
+]
+
 const description = [
   '姓名',
   '帳號',
@@ -62,12 +76,15 @@ export default function Profile() {
             <label htmlFor="address" className="form-label">
               地址
             </label>
-            <input
+            <select
               type="text"
               id="address"
               name="address"
               className="form-control"
-            />
+            >
+              <option value="1">男</option>
+              <option value="0">女</option>
+            </select>
             <br />
             <label htmlFor="phone" className="form-label">
               手機
