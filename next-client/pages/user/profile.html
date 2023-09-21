@@ -1,36 +1,52 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <title>Title</title>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <!-- Bootstrap CSS v5.2.1 -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 
 <body>
-  <header>
-    <!-- place navbar here -->
-  </header>
-  <main>
+    <form action="">
+        <label for="name">姓名</label>
+        <input type="text" id="name" name="name">
+        <br>
+        <label for="acount">帳號</label>
+        <input type="text" id="acount" name="acount">
+        <br>
+        <label for="gender">性別</label>
+        <input type="text" id="gender" name="gender">
+        <br>
+        <label for="address">地址</label>
+        <input type="text" id="address" name="address">
+        <br>
+        <label for="phone">手機</label>
+        <input type="text" id="phone" name="phone">
+        <br>
+        <div class="birthday">
+            <label for="birthday">生日</label>
+            <select type="text" id="year" name="birthday" value="year">
+                <option value="1990">1990</option>
+            </select>
+            <select type="text" id="month" name="birthday" value="07">
+                <option value="07">07</option>
+            </select>
+            <select type="text" id="day" name="birthday" value="26">
+                <option value="26">26</option>
+            </select>
+        </div>
+        <br>
+        <label for="email">E-mail</label>
+        <input type="text" id="email" name="email">
+        <br>
+        <label for="password">設定密碼</label>
+        <input type="text" id="password" name="password">
+        <br>
+        <label for="confirmPassword">確認密碼</label>
+        <input type="text" id="confirmPassword" name="confirmPassword">
 
-  </main>
-  <footer>
-    <!-- place footer here -->
-  </footer>
-  <!-- Bootstrap JavaScript Libraries -->
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
-  </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
-    integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
-  </script>
+    </form>
 </body>
 
 </html>
