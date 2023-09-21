@@ -3,22 +3,20 @@ import styles from './product.module.css'
 
 // <div className="container">
 // <div className={styles['banner']}>
+// <h1 className={`bootstrap-類別 ${styles['display1']}`}>鍵盤套件</h1>
 
 export default function ProductIndex() {
   return (
     <>
+      <div className={styles['banner']}>
+        <img src="/images/testBanner.png" alt="預留位子先不放圖" />
+        <h1 className={`text-primary ${styles['display1']}`}>鍵盤套件</h1>
+      </div>
+
+      <div className={styles['spacePadding']}></div>
+
       <div className="container">
-        <div className={styles['banner']}>
-          <img
-            src="/images/testBanner.jpg"
-            alt="預留位子先不放圖"
-            className="img-fluid"
-          />
-          <h1 className={`z-3 position-absolute ${styles['display1']}`}>
-            鍵盤套件
-          </h1>
-        </div>
-        <div className="cate-Nav">
+        <div className="cateNav">
           <div className="accordion" id="accordionPanelsStayOpenExample">
             <div className="accordion-item">
               <h2 className="accordion-header">

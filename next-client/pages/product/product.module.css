@@ -4,8 +4,24 @@
   justify-content: center;
   align-items: center;
   background-color: #c36060;
+  position: relative;
+  overflow: hidden;
 }
+.banner img {
+  position: static;
+  width: 100%;
+  top: -50px;
+}
+
 .display1 {
-  text-align: center;
-  line-height: 250px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 48px;
+  font-weight: 600;
+}
+
+.spacePadding {
+  height: 50px;
 }
