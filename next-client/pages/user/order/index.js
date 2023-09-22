@@ -5,7 +5,8 @@ export default function Order() {
   return (
     <>
       <div className='container'>
-        <table className='table table-desktop'>
+      {/* {`${style['table-desktop']} table`} */}
+        <table className={`${style['table-desktop']} table`}>
           <thead className=''>
             <tr className=''>
               <th className='bg-primary'></th>
@@ -45,13 +46,17 @@ export default function Order() {
               </tr> */}
           </tbody>
         </table>
-        
-        <table className='table table-bordered table-mobile'>
-          <tbody className=''>
+        <div className=''>
+        <div className=''>
+        {/* {`${style['table-mobile']} table table-bordered`} */}
+        {/* {`table table-bordered d-block d-sm-none`} */}
+        <table className={`${style['table-mobile']} table table-bordered `}>
+          <tbody>
             <tr>
-              <th className=''>
+              <th>
                 1
               </th>
+              <td></td>
             </tr>
             <tr>
               <th>訂單編號</th>
@@ -66,13 +71,41 @@ export default function Order() {
               <td>1800</td>
             </tr>
             <tr>
-              <th></th>
-              <td>
+              <td className='text-center' colSpan={2}>
                 <button className='btn btn-primary text-light'>查看</button>
               </td>
             </tr>
           </tbody>
-        </table>      
+        </table> 
+        </div>
+        </div>
+        {/* <table className='table table-bordered table-mobile'>
+          <tbody className=''>
+            <tr>
+              <th >
+                2
+              </th>
+              <td></td>
+            </tr>
+            <tr>
+              <th>訂單編號</th>
+              <td>G00002</td>
+            </tr>
+            <tr>
+              <th>訂單日期</th>
+              <td>2023/08/16</td>
+            </tr>
+            <tr>
+              <th>訂單金額</th>
+              <td>800</td>
+            </tr>
+            <tr>
+              <td className='text-center' colSpan={2}>
+                <button className='btn btn-primary text-light'>查看</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>    */}
       </div>
     </>
   )

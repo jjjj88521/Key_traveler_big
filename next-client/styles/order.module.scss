@@ -1,9 +1,8 @@
-@media screen and (min-width: 393px) {
+@media screen and (max-width: 393px) {
   .table-desktop{
-    display: none !important; 
+    display: none; 
   }
-  .table-mobile{
-    display: block !important;
-  }
-  }
+   .table-mobile{
+    display: block;
+  } }
   
