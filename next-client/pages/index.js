@@ -26,8 +26,8 @@ export default function Home() {
       </Head>
       <AdCarousel />
       <CateSelect />
-      <NewPd/>
-      <RentAd/>
+      <NewPd />
+      <RentAd />
     </>
   )
 }

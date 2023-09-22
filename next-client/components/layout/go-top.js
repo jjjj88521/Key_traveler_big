@@ -6,12 +6,11 @@ export default function GoTop() {
     <>
       <FloatButton.BackTop
         shape="circle"
-        type="#dc9329"
+        type="primary"
         style={{ right: 50 }}
         tooltip="回到頂部"
         icon={<i className="fa-solid fa-chevron-up text-white"></i>}
         duration={0}
-        className="bg-primary"
       ></FloatButton.BackTop>
     </>
   )

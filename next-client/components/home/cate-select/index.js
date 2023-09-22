@@ -41,12 +41,12 @@ const CateSelect = () => {
           <SwiperPrevBtn
             className={`btn btn-lg bg-white rounded-circle position-absolute start-0 top-50 translate-middle-y z-1 d-none d-sm-block`}
           >
-            <i class="fa-solid fa-chevron-left text-primary"></i>
+            <i className="fa-solid fa-chevron-left text-primary"></i>
           </SwiperPrevBtn>
           <SwiperNextBtn
             className={`btn btn-lg bg-white rounded-circle position-absolute end-0 top-50 translate-middle-y z-1 d-none d-sm-block`}
           >
-            <i class="fa-solid fa-chevron-right text-primary"></i>
+            <i className="fa-solid fa-chevron-right text-primary"></i>
           </SwiperNextBtn>
           <SwiperSlide className="h-100">
             <CateCard name={'鍵盤套件'} />

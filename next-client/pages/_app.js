@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import DefaultLayout from '@/components/layout/default-layout'
 import '@/styles/globals.scss'
+import { ConfigProvider } from 'antd'
 
 export default function MyApp({ Component, pageProps }) {
   // Use the layout defined at the page level, if available
@@ -11,7 +12,15 @@ export default function MyApp({ Component, pageProps }) {
   const getLayout =
     Component.getLayout ||
     ((page) => (
-      <DefaultLayout pageTitle={pageProps.pageTitle}>{page}</DefaultLayout>
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: '#DC9329',
+          },
+        }}
+      >
+        <DefaultLayout pageTitle={pageProps.pageTitle}>{page}</DefaultLayout>
+      </ConfigProvider>
     ))
 
   return getLayout(<Component {...pageProps} />)
