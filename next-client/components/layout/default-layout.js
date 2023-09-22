@@ -12,7 +12,7 @@ export default function DefaultLayout({ pageTitle = '', children }) {
         <meta name="viewport" content="width=device-width" />
       </Head>
       <Header></Header>
-      <main style={{ marginTop: '100px' }}>
+      <main>
         {children}
         <GoTop />
       </main>

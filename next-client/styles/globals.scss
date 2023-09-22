@@ -35,6 +35,10 @@
 //   padding: 60px 15px 0;
 // }
 
+main {
+  margin-top: 100px;
+}
+
 body {
   font-family: 'Poppins','Noto Sans TC Regular', Helvetica, Arial, 'PingFang TC',
     '苹方-繁', 'Heiti TC', '黑體-繁', 'Microsoft JhengHei', '微軟正黑體',
@@ -62,6 +66,12 @@ body {
 .form-member {
   max-width: 330px;
   padding: 1rem;
+}
+
+@media screen and (max-width: 576px) {
+  main {
+    margin-top: 60px;
+  }  
 }
 
 // below is test only

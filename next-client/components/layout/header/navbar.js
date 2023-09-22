@@ -60,7 +60,7 @@ export default function Navbar() {
     })
   })
   return (
-    <nav class="navbar navbar-expand-lg h-100">
+    <nav className="navbar navbar-expand-lg h-100">
       <div className="container h-100 d-flex align-items-center">
         <div className="row w-100 mx-0">
           <div className="col">

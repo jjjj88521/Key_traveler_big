@@ -11,8 +11,6 @@ import { Navigation, Pagination, Mousewheel, Keyboard } from 'swiper/modules'
 
 import 'swiper/scss/pagination'
 import 'swiper/scss/navigation'
-import { Card } from 'antd'
-import Link from 'next/link'
 import CateSelect from '@/components/home/cate-select'
 import AdCarousel from '@/components/home/ad-carousel'
 import RentAd from '@/components/home/rent-ad'
