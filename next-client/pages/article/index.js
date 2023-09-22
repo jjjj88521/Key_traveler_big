@@ -84,9 +84,6 @@ export default function Article() {
   ]
   return (
     <>
-      {/* <div>Article</div>
-      <h1 style={fontColor}>kkkkk</h1>
-      <button className="btn text-danger">btn</button> */}
       <div className="container ">
         {/* 手機版搜尋欄 */}
         <nav className="navbar navbar-light bg-light d-sm-none mb-4">
