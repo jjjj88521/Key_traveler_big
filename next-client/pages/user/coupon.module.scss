@@ -1,0 +1,17 @@
+@media screen and (max-width: 393px) {
+    .new_text{
+        display : none ;
+    }
+
+}
+
+.pagenum{
+    border-radius: 6px;
+    background-color:  var(--bs-primary-bg-subtle);
+    
+}
+.pagenum_Active{
+    color:#fff !important;
+    background-color: rgba(var(--bs-primary-rgb), var(--bs-text-opacity)) !important;
+    border-radius: 6px;
+}
