@@ -2,6 +2,7 @@
 import Head from 'next/head'
 import Footer from './footer'
 import Header from './header'
+import GoTop from './go-top'
 
 export default function DefaultLayout({ pageTitle = '', children }) {
   return (
@@ -11,7 +12,10 @@ export default function DefaultLayout({ pageTitle = '', children }) {
         <meta name="viewport" content="width=device-width" />
       </Head>
       <Header></Header>
-      <main>{children}</main>
+      <main style={{ marginTop: '100px' }}>
+        {children}
+        <GoTop />
+      </main>
       <Footer />
     </>
   )
