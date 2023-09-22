@@ -8,7 +8,7 @@
 
 存放後端的資料夾
 
-## 大專用到的東西
+## 大專用到東西
 
 [路由規畫表](https://docs.google.com/spreadsheets/d/1ToiMmJx-ZmSnj73OWcbF4nLgNXNAt92rZ9A2c5FaVRM/edit#gid=0)
 
