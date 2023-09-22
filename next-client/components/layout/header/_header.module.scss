@@ -1,0 +1,29 @@
+// // hover 翻轉動畫
+// .nav-text {
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   transition: all 1s ease;
+//   .inner-content {
+//     transform: rotate(0deg);
+//     transition: all 1s ease;
+//   }
+// }
+
+.header {
+  height: 100px;
+  .header-logo {
+    width: 200px;
+    height: 40px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .header {
+    height: 60px;
+    .header-logo {
+      width: 150px;
+      height: 30px;
+    }
+  }
+}
