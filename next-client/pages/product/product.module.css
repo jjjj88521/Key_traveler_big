@@ -3,7 +3,6 @@
   margin: auto;
   justify-content: center;
   align-items: center;
-  background-color: #c36060;
   position: relative;
   overflow: hidden;
 }
@@ -22,6 +21,21 @@
   font-weight: 600;
 }
 
-.spacePadding {
-  height: 50px;
+.cateNav {
+  width: 285px;
+}
+
+.sortBtn {
+  display: flex;
+  flex-direction: row;
+  padding: 8px 15px;
+  align-items: center;
+}
+.sortBtn p {
+  margin: 0;
+  padding-right: 10px;
+}
+
+.produtListGroup {
+  margin-left: 60px;
 }
