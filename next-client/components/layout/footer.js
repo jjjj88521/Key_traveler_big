@@ -5,7 +5,7 @@ import React from 'react'
 export default function Footer() {
   return (
     <>
-      <footer style={{ backgroundColor: '#171717' }}>
+      <footer className="bg-dark">
         <div className="container">
           <div className="row py-5">
             <div className="col-12 col-sm px-5 text-center d-flex align-items-center">

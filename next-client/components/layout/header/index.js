@@ -1,6 +1,6 @@
 // import { useState } from 'react'
 //  引入 _header.module.scss
-import style from './_header.module.scss'
+import style from '@/styles/default-layout/_header.module.scss'
 import Navbar from './navbar'
 
 export default function Header() {

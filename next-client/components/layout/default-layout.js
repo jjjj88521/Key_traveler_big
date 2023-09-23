@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Footer from './footer'
 import Header from './header'
 import GoTop from './go-top'
+import MobileDock from './mobile-dock'
 
 export default function DefaultLayout({ pageTitle = '', children }) {
   return (
@@ -17,6 +18,7 @@ export default function DefaultLayout({ pageTitle = '', children }) {
         <GoTop />
       </main>
       <Footer />
+      <MobileDock />
     </>
   )
 }
