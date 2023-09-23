@@ -16,7 +16,7 @@ export default function ProductIndex() {
 
       <div className="container pt-5 pb-3">
         <div className="row">
-          <div className="col-3">
+          <div className="col-3 pe-5">
             <Accordion />
           </div>
 
@@ -76,7 +76,7 @@ export default function ProductIndex() {
                         <h5 className="card-title">Card title</h5>
                         <p className="card-text">
                           Some quick example text to build on the card title and
-                          make up the bulk of the card's content.
+                          make up the bulk of the cards content.
                         </p>
                       </div>
                     </div>
