@@ -76,6 +76,11 @@ body {
     'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
+ul, li{
+    list-style: none;
+    padding: 0;
+}
+
 .form-member {
   max-width: 330px;
   padding: 1rem;

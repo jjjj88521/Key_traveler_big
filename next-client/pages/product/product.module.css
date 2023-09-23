@@ -21,10 +21,6 @@
   font-weight: 600;
 }
 
-.cateNav {
-  width: 285px;
-}
-
 .sortBtn {
   display: flex;
   flex-direction: row;
@@ -36,6 +32,6 @@
   padding-right: 10px;
 }
 
-.produtListGroup {
-  margin-left: 60px;
+.card{
+    width: 285px;
 }
