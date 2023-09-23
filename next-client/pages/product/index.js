@@ -16,11 +16,14 @@ export default function ProductIndex() {
       <div className="container pt-5 pb-3">
         <div className="row">
           <div className="col-3">
-            <div className="accordion" id="accordionPanelsStayOpenExample">
+            <div
+              className={`accordion ${styles['accordionAside']}`}
+              id="accordionPanelsStayOpenExample"
+            >
               <div className="accordion-item">
                 <h2 className="accordion-header">
                   <button
-                    className="accordion-button"
+                    className="accordion-button bg-primary text-center text-light fw-bold fs-5 d-block text-center"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#panelsStayOpen-collapseOne"
