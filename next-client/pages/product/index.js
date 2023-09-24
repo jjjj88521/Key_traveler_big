@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './product.module.css'
-import Accordion from '@/components/accordion'
+import Accordion from '@/components/Accordion'
+import AsideFilter from '@/components/AsideFilter'
 
 // <div className="container">
 // <div className={styles['banner']}>
@@ -18,6 +19,7 @@ export default function ProductIndex() {
         <div className="row">
           <div className="col-3 pe-5">
             <Accordion />
+            <AsideFilter />
           </div>
 
           {/* sort btn & card group */}
