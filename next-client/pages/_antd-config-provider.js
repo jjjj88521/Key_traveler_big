@@ -21,6 +21,9 @@ export default function AntdConfigProvider({ children }) {
             separatorMargin: '10px 8px',
             fontWeight: 'Medium',
           },
+          Pagination: {
+            itemActiveBg: '#DC9329',
+          },
         },
       }}
     >
