@@ -5,11 +5,41 @@ export default function Profile() {
   return (
     <>
       <div className="container">
-        <h2>個人檔案</h2>
-        <div className="row my-5">
-          <div className="user-sidebar col-3">123</div>
-
-          <form action="" className="col-5">
+        <h2 className="fw-bolder">個人檔案</h2>
+        <div className="row my-sm-5 my-3">
+          {/* 手機板的avator */}
+          <div className="avatar col-12  d-sm-none d-block">
+            <p>
+              一般會員
+              <Image
+                src="/images/only-logo.svg"
+                alt="logo"
+                width={25}
+                height={12.5}
+              />
+            </p>
+            <div className="d-flex align-items-center justify-content-between mb-3">
+              <div className="avatar-img ">
+                <Image
+                  src="https://tamilnaducouncil.ac.in/wp-content/uploads/2020/04/dummy-avatar.jpg"
+                  alt=""
+                  width={75}
+                  height={75}
+                  className="rounded-circle border border-primary"
+                />
+              </div>
+              <button className="btn btn-primary text-white my-4">
+                選擇圖片
+              </button>
+              <div className="text-group">
+                <p className="fs-6 text-black-50 mb-0">檔案大小1MB</p>
+                <p className="fs-6 text-black-50 mb-0">檔案限制: JPEG, PNG</p>
+              </div>
+            </div>
+          </div>
+          <div className="user-sidebar col-3 d-none d-sm-block">下拉選單</div>
+          {/* form表單 */}
+          <form action="" className="col-12 col-sm-5">
             <label htmlFor="name" className="col-form-label ">
               姓名
             </label>
@@ -90,11 +120,12 @@ export default function Profile() {
                 </select>
               </div>
             </div>
-            <button className="btn btn-primary text-white col-5 offset-7 mt-5">
+            <button className="btn btn-primary text-white col-sm-5 col-12 offset-sm-7 mt-5">
               儲存
             </button>
           </form>
-          <div className="avatar col-3 offset-1">
+          {/* 電腦版的avator */}
+          <div className="avatar col-3 offset-1 d-sm-block d-none">
             <div className="d-flex flex-column align-items-center">
               {' '}
               <h4>會員等級</h4>

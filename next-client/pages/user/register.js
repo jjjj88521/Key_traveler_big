@@ -1,6 +1,6 @@
 import React from 'react'
 import { Steps } from 'antd'
-import style from "@/styles/user/profile.module.scss"
+import style from '@/styles/user/register.module.scss'
 
 const fakeUserData = [
   {
@@ -46,7 +46,7 @@ export default function Profile() {
     <>
       <div className="container">
         <div className="row justify-content-evenly">
-          <h1 className="mb-5 offset-1">填寫基本註冊資料</h1>
+          <h1 className="mb-5 offset-1 fw-bolder">填寫基本註冊資料</h1>
           <form action="" className="mb-5 col-md-8 col-10">
             <label htmlFor="name" className="form-label">
               姓名
@@ -162,10 +162,14 @@ export default function Profile() {
               className="form-control"
             />
             <div className="button-group row justify-content-evenly mt-5  ">
-              <button className={`${style['none-user']} btn btn-primary col-3`}>
+              <button
+                className={`${style['none-user']} btn btn-primary col-3 text-white`}
+              >
                 重填
               </button>
-              <button className="btn btn-primary col-sm-3 col-10 ">送出</button>
+              <button className="btn btn-primary col-sm-3 col-10 text-white ">
+                送出
+              </button>
             </div>
           </form>
 
