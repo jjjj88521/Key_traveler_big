@@ -25,21 +25,21 @@ export default function Coupon() {
   // const [currPage, setCurrPage] = useState(1)
 
   const [currentPage, setCurrentPage] = useState(1)
-  const pageSize = 10 // 每页显示的项目数量
-  // 处理页码变化事件
+  // 每頁顯示的項目數量
+  const pageSize = 10
+  // 處理頁碼變更事件
   const handlePageChange = (page) => {
     setCurrentPage(page)
-    // 在这里可以处理分页后的数据加载或其他操作
+    // 在這裡可以處理分頁後的資料載入或其他操作
   }
 
-  // 根据当前页和每页显示的数量计算要显示的数据
+  // 根據目前頁和每頁顯示的數量計算要顯示的數據
   const startIndex = (currentPage - 1) * pageSize
   const endIndex = startIndex + pageSize
   const displayedData = data.slice(startIndex, endIndex)
 
   return (
     <>
-      {/* <div>Coupon</div> */}
       <main>
         <div className="row">
           <div className="all_coupon container bg-secondary-subtle my-4 py-3 col-7">
@@ -47,15 +47,7 @@ export default function Coupon() {
               <h2 style={{ paddingLeft: '24px' }} className="m-0">
                 我的優惠券
               </h2>
-              <a
-                href="./coupon?page=history"
-                style={{ paddingRight: '24px' }}
-                onClick={() => {
-                  document.querySelector('.all_coupon').classList.add('d-none')
-                  document.querySelector('.history').classList.remove('d-none')
-                  document.querySelector('.history').classList.add('d-block')
-                }}
-              >
+              <a href="./coupon/history" style={{ paddingRight: '24px' }}>
                 <h6 className="m-0 text-primary">歷史紀錄</h6>
               </a>
             </div>
@@ -115,6 +107,7 @@ export default function Coupon() {
               }}
               size="large"
               dataSource={displayedData}
+              // 舊方法
               // pagination={{
               //   onChange: (page) => {
               //     setCurrPage(page)
@@ -139,24 +132,6 @@ export default function Coupon() {
               //         </>
               //       )
               //     }
-              //     // if (type === 'prev') {
-              //     //   return (
-              //     //     <>
-              //     //       <div className="bg-primary-subtle text-primary">
-              //     //         <i className="fa-solid fa-caret-left"></i>
-              //     //       </div>
-              //     //     </>
-              //     //   )
-              //     // }
-              //     // if (type === 'next') {
-              //     //   return (
-              //     //     <>
-              //     //       <div className="bg-primary-subtle text-primary">
-              //     //         <i className="fa-solid fa-caret-right"></i>
-              //     //       </div>
-              //     //     </>
-              //     //   )
-              //     // }
               //     return (
               //       <div
               //         className={
@@ -178,7 +153,8 @@ export default function Coupon() {
                         <img
                           width={100}
                           alt="logo"
-                          src="https://media.istockphoto.com/id/1261324062/zh/%E5%90%91%E9%87%8F/%E7%A5%A8.jpg?s=612x612&w=0&k=20&c=9JJQjtGTZZ2pSOhD0Hu6CM0tBQNEGdZ6TEbX1hfMHPU="
+                          // src="https://media.istockphoto.com/id/1261324062/zh/%E5%90%91%E9%87%8F/%E7%A5%A8.jpg?s=612x612&w=0&k=20&c=9JJQjtGTZZ2pSOhD0Hu6CM0tBQNEGdZ6TEbX1hfMHPU="
+                          src="/images/coupon_pic.jpg"
                         />
                       </div>
                       <div className="ms-2">
@@ -203,10 +179,10 @@ export default function Coupon() {
           </div>
         </div>
 
-        <div className="history container bg-secondary-subtle mb-4 pb-3 d-none">
+        {/* <div className="history container bg-secondary-subtle mb-4 pb-3 d-none">
           <h2>歷史紀錄</h2>
           <hr />
-        </div>
+        </div> */}
       </main>
     </>
   )
