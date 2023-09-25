@@ -1,11 +1,12 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import style from '@/styles/default-layout/_default-layout.module.scss'
 
 export default function Footer() {
   return (
     <>
-      <footer style={{ backgroundColor: '#171717' }}>
+      <footer className={`${style['footer']} bg-dark`}>
         <div className="container">
           <div className="row py-5">
             <div className="col-12 col-sm px-5 text-center d-flex align-items-center">
