@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 // 自定義 Hook，用於處理樣式選擇
-function useStyleSelection() {
+function useStyleSelect() {
   const [selectedStyles, setSelectedStyles] = useState([])
 
   // 處理樣式選擇的函式
@@ -23,4 +23,4 @@ function useStyleSelection() {
   return { selectedStyles, handleStyleSelect }
 }
 
-export default useStyleSelection
+export default useStyleSelect
