@@ -1,0 +1,99 @@
+.cart_subtitle{
+    height: 50px;
+    background-color:#DC9329;
+    color:#fff;
+    font-size: 16px;
+    line-height: 50px;
+    padding-left: 30px;
+}
+.info{
+    font-size: 14px;
+    height: 50px;
+    line-height: 50px;
+    .infoLeft{
+        color:#aaaaaa;
+        padding-left: 30px;
+    }
+    .infoRight{
+        color:#000000;
+        padding-left: 20px;
+
+    }
+}
+.inputMargin{
+    margin-right: 150px;
+}
+.dia {
+    width: 550px;
+    height: 300px;
+    border: 2px solid var(--bs-primary-bg-subtle);
+    background: #fff;
+    position: absolute;
+    left: 25px;
+    top: calc(50% + 20px);
+    // border-radius: 30px;
+    h3{
+        margin-left: 30px;
+        margin-top: 60px;
+    }
+    button{
+        width: 80px;
+        height: 45px;
+        margin-right: 10px;
+        margin-top: 20px;
+    }
+}
+.test_modal {
+    width: 100%;
+    height: 100%;
+    background-color: rgb(204, 204, 204, 0.8);
+}
+.newCardInfo{
+    margin-bottom: 20px;
+}
+.payCard{
+    font-size: 14px;
+}
+.cardNum, .cardDate{
+    span{
+        width: 100px;
+    }
+    input{
+        width: 80px;
+        margin-right: 5px;
+    }
+    p{
+        margin-right: 5px;
+    }
+}
+.cardCode{
+    input{
+        width: 80px;
+    }
+}
+
+.cardOwner{
+    span{
+        width: 100px;
+    }
+    input{
+        width: 200px;
+    }
+}
+.button_main{
+    background-color: #DC9329;
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 10px 20px;
+}
+.button_reverse{
+    color: #DC9329;
+    background-color: #ffffff;
+    border:1px solid #DC9329;
+    border-radius: 10px;
+    padding: 10px 20px;
+
+}
+.buyerInfo, .getProductInfo, .receiverInfo,.paymentInfo{
+    margin-bottom: 40px;
+}

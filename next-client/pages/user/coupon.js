@@ -184,7 +184,7 @@ function App() {
         {data.map((item, index) => {
           return (
             <>
-              <Card>
+              <Card className="card">
                 <div key={index}>
                   {/* 显示数据项的内容 */}
                   <h3>{item.title}</h3>
