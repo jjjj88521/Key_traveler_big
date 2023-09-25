@@ -7,6 +7,14 @@ import AsideFilter from '@/components/AsideFilter'
 // <div className={styles['banner']}>
 // <h1 className={`text-primary ${styles['display1']}`}>鍵盤套件</h1>
 
+// 將 title 傳給 app.js
+export async function getStaticProps() {
+  const pageTitle = '商品列表'
+  return {
+    props: { pageTitle },
+  }
+}
+
 export default function ProductIndex() {
   return (
     <>
