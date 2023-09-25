@@ -2,13 +2,17 @@ import Link from 'next/link'
 import React, { useState } from 'react'
 import { Avatar, List, Space } from 'antd'
 import { Input } from 'antd'
-import { UserOutlined } from '@ant-design/icons'
-const url =
-  'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg'
 
 const { TextArea } = Input
-
+const ButtonStyle = {
+  // 媒體查詢，當視窗寬度達到 576px 時，套用以下樣式
+  // '@media (min-width: 576px)': {
+  //   width: '200px', // 设置宽度为自动，保持原始宽度
+  // },
+  backgroundColor: '#198cf8',
+}
 export default function ArticleDetail() {
+  // 感興趣列表物件
   let data = [
     {
       title: 'interest title',
@@ -36,7 +40,7 @@ export default function ArticleDetail() {
       user: 'by.user_id',
     },
   ]
-
+  // 留言列表物件
   const artComment = [
     {
       title: 'Ant Design Title 1',
@@ -55,35 +59,57 @@ export default function ArticleDetail() {
   // const onChange = (e) => {
   //   console.log('Change:', e.target.value)
   // }
-  const App = () => (
-    <Space size={16} wrap>
-      <Avatar icon={<UserOutlined />} />
-      <Avatar>U</Avatar>
-      <Avatar size={40}>USER</Avatar>
-      <Avatar src={url} />
-      <Avatar src={<img src={url} alt="avatar" />} />
-      <Avatar
-        style={{
-          backgroundColor: '#fde3cf',
-          color: '#f56a00',
-        }}
-      >
-        U
-      </Avatar>
-      <Avatar
-        style={{
-          backgroundColor: '#87d068',
-        }}
-        icon={<UserOutlined />}
-      />
-    </Space>
-  )
+  // const App = () => (
+  //   <Space size={16} wrap>
+  //     <Avatar icon={<UserOutlined />} />
+  //     <Avatar>U</Avatar>
+  //     <Avatar size={40}>USER</Avatar>
+  //     <Avatar src={url} />
+  //     <Avatar src={<img src={url} alt="avatar" />} />
+  //     <Avatar
+  //       style={{
+  //         backgroundColor: '#fde3cf',
+  //         color: '#f56a00',
+  //       }}
+  //     >
+  //       U
+  //     </Avatar>
+  //     <Avatar
+  //       style={{
+  //         backgroundColor: '#87d068',
+  //       }}
+  //       icon={<UserOutlined />}
+  //     />
+  //   </Space>
+  // )
   return (
     <>
+      <div className="bg-primary d-flex justify-content-center d-sm-none">
+        <Link href="#" className="text-decoration-none">
+          <div className="px-3">
+            <p className="text-dark">公告</p>
+          </div>
+        </Link>
+        <Link href="#" className="text-decoration-none">
+          <div className="border-start border-dark border-2 px-3">
+            <p className="text-dark">開箱文</p>
+          </div>
+        </Link>
+        <Link href="#" className="text-decoration-none">
+          <div className="border-start border-dark border-2 px-3">
+            <p className="text-dark">組裝教學</p>
+          </div>
+        </Link>
+        <Link href="#" className="text-decoration-none">
+          <div className="border-start border-dark border-2 px-3">
+            <p className="text-dark">活動</p>
+          </div>
+        </Link>
+      </div>
       <div className="container mb-5">
         <div className="row">
           {/* 左側欄 */}
-          <div className="col-8">
+          <div className="col-sm-8">
             <div
               className=" border border-5 border-primary position-relative"
               style={{ padding: '35px 30px' }}
@@ -164,25 +190,27 @@ export default function ArticleDetail() {
                   />
                 }
               />
-              <TextArea
-                value={value}
-                showCount
-                maxLength={200}
-                onChange={(e) => setValue(e.target.value)}
-                placeholder="Controlled autosize"
-                autoSize={{
-                  minRows: 3,
-                  maxRows: 6,
-                }}
-                style={{ margin: '0px 0px 0px 20px' }}
-              />
+              <div className="w-100">
+                <TextArea
+                  value={value}
+                  showCount
+                  maxLength={200}
+                  onChange={(e) => setValue(e.target.value)}
+                  placeholder="Controlled autosize"
+                  autoSize={{
+                    minRows: 3,
+                    maxRows: 6,
+                  }}
+                  // style={{ margin: '0px 0px 0px 0px' }}
+                />
+                <button
+                  className="btn text-white my-4 w-100"
+                  style={ButtonStyle}
+                >
+                  Add comment
+                </button>
+              </div>
             </div>
-            <button
-              className="btn mb-4 text-white ms-5"
-              style={{ backgroundColor: '#198cf8' }}
-            >
-              Add comment
-            </button>
 
             {/* 發佈列表區 */}
             <List
@@ -204,7 +232,7 @@ export default function ArticleDetail() {
               )}
             />
             {/* show more */}
-            <div className="d-flex justify-content-center mt-4">
+            <div className="d-flex justify-content-center my-4">
               <button
                 className="btn border border-primary text-primary"
                 style={{ width: '250px' }}
@@ -215,12 +243,12 @@ export default function ArticleDetail() {
           </div>
 
           {/* 右側欄 */}
-          <div className="col-4 ps-5">
-            <div className="border-bottom border-2 border-dark mb-4">
+          <div className="col-sm-4 ps-sm-5">
+            <div className="border-bottom border-2 border-dark mb-4 d-none d-sm-block">
               <h4 className="">文章分類</h4>
             </div>
             {/* 分類表 */}
-            <div className="pb-5">
+            <div className="pb-5 d-none d-sm-block">
               <Link href="#" className="text-decoration-none">
                 <div className="bg-white position-relative p-2">
                   <p className="text-secondary m-0">公告</p>
@@ -271,7 +299,7 @@ export default function ArticleDetail() {
                       className="row pb-2  border-bottom border-2 border-dark"
                       key={index}
                     >
-                      <div className="col-md-4 px-0">
+                      <div className="col-4 px-0">
                         <div
                           style={{
                             width: '100%',
@@ -291,7 +319,7 @@ export default function ArticleDetail() {
                           />
                         </div>
                       </div>
-                      <div className="col-md-8">
+                      <div className="col-8">
                         <div className="card border-0">
                           <div className="card-body">
                             <h5 className="card-title">{item.title}</h5>
