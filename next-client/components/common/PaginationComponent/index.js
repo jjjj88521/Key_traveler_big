@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Pagination } from 'antd'
 
-// 创建 PaginationComponent 组件
+// 建立 PaginationComponent 组件
 export default function PaginationComponent({
   totalItems,
   pageSize,
@@ -9,10 +9,10 @@ export default function PaginationComponent({
 }) {
   const [currentPage, setCurrentPage] = useState(1)
 
-  // 处理页码变化
+  // 頁數變化
   const handlePageChange = (page) => {
     setCurrentPage(page)
-    onPageChange(page) // 调用传递进来的 onPageChange 回调
+    onPageChange(page) // 呼叫傳遞進來的 onPageChange
   }
 
   const itemRender = (page, type, originalElement) => {

@@ -22,6 +22,7 @@ export default function AntdConfigProvider({ children }) {
             fontWeight: 'Medium',
           },
           Pagination: {
+            // antd 分頁頁碼樣式
             itemActiveBg: '#DC9329',
           },
         },
