@@ -1,14 +1,15 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Dropdown, Space, Badge, Drawer, Menu } from 'antd'
-import style from '@/styles/default-layout/_header.module.scss'
+import style from '@/styles/default-layout/_default-layout.module.scss'
+import { set } from 'lodash'
 
 export default function Navbar() {
   // 導航欄位假資料
   const navItems = [
     {
-      name: 'Shop',
+      name: '商品',
       link: '/product',
       children: [
         {
@@ -17,33 +18,33 @@ export default function Navbar() {
         },
         {
           name: '鍵盤套件',
-          link: '/product/category/1',
+          link: '/product/鍵盤套件',
         },
         {
           name: '軸體',
-          link: '/product/category/2',
+          link: '/product/軸體',
         },
         {
           name: '鍵帽',
-          link: '/product/category/3',
+          link: '/product/鍵帽',
         },
         {
           name: '成品鍵盤',
-          link: '/product/category/4',
+          link: '/product/成品鍵盤',
         },
         {
           name: '鍵盤零件 & 工具',
-          link: '/product/category/5',
+          link: '/product/鍵盤零件&工具',
         },
       ],
     },
     {
-      name: 'Group buy',
+      name: '團購專區',
       link: '/groupbuy',
       children: [
         {
           name: '全部商品',
-          link: '/groupbuy/category/0',
+          link: '/groupbuy',
         },
         {
           name: '團購中',
@@ -60,11 +61,11 @@ export default function Navbar() {
       ],
     },
     {
-      name: 'Rent',
+      name: '租用鍵盤',
       link: '/rent',
     },
     {
-      name: 'Article',
+      name: '文章區',
       link: '/article',
       children: [
         {
@@ -91,13 +92,62 @@ export default function Navbar() {
     },
   ]
 
-  // 手機版滑入選單
+  // === 手機版滑入選單 ===
   const [open, setOpen] = useState(false)
   const showMobileMenu = () => {
     setOpen(true)
   }
   const hideMobileMenu = () => {
     setOpen(false)
+    setOpenKeys([])
+  }
+
+  // antd drawer items
+  const mobileItems = navItems.map((item) => {
+    return {
+      label: item.children ? (
+        <p className="mb-0 h6 text-primary">{item.name}</p>
+      ) : (
+        <Link
+          rel="noopener noreferrer"
+          href={item.link}
+          className="text-decoration-none h6 text-primary"
+          onClick={hideMobileMenu}
+        >
+          {item.name}
+        </Link>
+      ),
+      key: item.index,
+      children: item.children
+        ? item.children.map((child, index) => {
+            return {
+              label: (
+                <Link
+                  rel="noopener noreferrer"
+                  href={child.link}
+                  className="text-decoration-none"
+                  onClick={hideMobileMenu}
+                >
+                  {child.name}
+                </Link>
+              ),
+              key: item.name + index,
+            }
+          })
+        : null,
+    }
+  })
+
+  // 只展開點開的選單，其他關閉
+  const rootSubmenuKeys = ['tmp-0', 'tmp-1', 'tmp-2', 'tmp-3']
+  const [openKeys, setOpenKeys] = useState([])
+  const onOpenChange = (keys) => {
+    const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1)
+    if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+      setOpenKeys(keys)
+    } else {
+      setOpenKeys(latestOpenKey ? [latestOpenKey] : [])
+    }
   }
 
   return (
@@ -145,14 +195,17 @@ export default function Navbar() {
                       >
                         <Link
                           href={'#'}
-                          className="ant-dropdown-link text-decoration-none"
+                          className="ant-dropdown-link text-decoration-none text-primary"
                           onClick={(e) => e.preventDefault()}
                         >
                           <Space>{item.name}</Space>
                         </Link>
                       </Dropdown>
                     ) : (
-                      <Link href={item.link} className="text-decoration-none">
+                      <Link
+                        href={item.link}
+                        className="text-decoration-none text-primary"
+                      >
                         <Space>{item.name}</Space>
                       </Link>
                     )}
@@ -187,46 +240,16 @@ export default function Navbar() {
           </div>
         </div>
       </nav>
+
       <Drawer open={open} onClose={hideMobileMenu} width={300}>
         <Menu
           type="primary"
           className="px-0"
           mode="inline"
           style={{ height: '100%', borderRight: 0 }}
-          items={navItems.map((item, index) => {
-            return {
-              label: item.children ? (
-                <p className="mb-0 h6 text-primary">{item.name}</p>
-              ) : (
-                <Link
-                  rel="noopener noreferrer"
-                  href={item.link}
-                  className="text-decoration-none h6 text-primary"
-                  onClick={hideMobileMenu}
-                >
-                  {item.name}
-                </Link>
-              ),
-              key: item.index,
-              children: item.children
-                ? item.children.map((child, index) => {
-                    return {
-                      label: (
-                        <Link
-                          rel="noopener noreferrer"
-                          href={child.link}
-                          className="text-decoration-none"
-                          onClick={hideMobileMenu}
-                        >
-                          {child.name}
-                        </Link>
-                      ),
-                      key: item.name + index,
-                    }
-                  })
-                : null,
-            }
-          })}
+          openKeys={openKeys}
+          onOpenChange={onOpenChange}
+          items={mobileItems}
         />
       </Drawer>
     </>

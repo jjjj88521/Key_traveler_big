@@ -1,6 +1,6 @@
 // import { useState } from 'react'
 //  引入 _header.module.scss
-import style from '@/styles/default-layout/_header.module.scss'
+import style from '@/styles/default-layout/_default-layout.module.scss'
 import Navbar from './navbar'
 
 export default function Header() {
@@ -19,7 +19,7 @@ export default function Header() {
 
   return (
     <>
-      <header className={`bg-dark ${style['header']}`}>
+      <header className={`${style['header']}`}>
         <Navbar />
       </header>
     </>

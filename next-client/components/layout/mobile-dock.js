@@ -8,6 +8,7 @@ export default function MobileDock() {
         className="bg-dark position-fixed fixed-bottom d-block d-sm-none"
         style={{
           height: '60px',
+          zIndex: '99',
         }}
       >
         <div className="container h-100">

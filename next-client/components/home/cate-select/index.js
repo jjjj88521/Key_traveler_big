@@ -49,19 +49,22 @@ const CateSelect = () => {
             <i className="fa-solid fa-chevron-right text-primary"></i>
           </SwiperNextBtn>
           <SwiperSlide className="h-100">
-            <CateCard name={'鍵盤套件'} />
+            <CateCard name={'鍵盤套件'} img={'/images/home-cate/cate1.png'} />
           </SwiperSlide>
           <SwiperSlide>
-            <CateCard name={'軸體'} />
+            <CateCard name={'軸體'} img={'/images/home-cate/cate2.png'} />
           </SwiperSlide>
           <SwiperSlide>
-            <CateCard name={'鍵帽'} />
+            <CateCard name={'鍵帽'} img={'/images/home-cate/cate3.png'} />
           </SwiperSlide>
           <SwiperSlide>
-            <CateCard name={'成品鍵盤'} />
+            <CateCard name={'成品鍵盤'} img={'/images/home-cate/cate1.png'} />
           </SwiperSlide>
           <SwiperSlide>
-            <CateCard name={'鍵盤零件 & 工具'} />
+            <CateCard
+              name={'鍵盤零件 & 工具'}
+              img={'/images/home-cate/cate1.png'}
+            />
           </SwiperSlide>
         </Swiper>
       </div>
