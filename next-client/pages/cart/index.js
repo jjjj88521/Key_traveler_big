@@ -80,20 +80,6 @@ export default function Cart() {
   const recProductonChange = (e) => {
     console.log('receive product checked', e.target.value)
     setRecProductValue(e.target.value)
-    // if (e.target.value === 1) {
-    //   document.querySelector('.buyerSame').classList.remove('d-none')
-    //   document.querySelector('.buyerSame').classList.add('d-block')
-    //   document.querySelector('.buyerDiff').classList.remove('d-block')
-    //   document.querySelector('.buyerDiff').classList.add('d-none')
-    // } else if (e.target.value === 2) {
-    //   document.querySelector('.buyerDiff').classList.remove('d-none')
-    //   document.querySelector('.buyerDiff').classList.add('d-block')
-    //   document.querySelector('.buyerSame').classList.remove('d-block')
-    //   document.querySelector('.buyerSame').classList.add('d-none')
-    // } else {
-    //   alert('error')
-    //   return false
-    // }
   }
   // 宅配方式_E
 
@@ -149,9 +135,8 @@ export default function Cart() {
 
   return (
     <>
-      <div>Cart</div>
-      <div className="container">
-        <div className="d-flex justify-content-center">
+      <div className="container mt-5">
+        <div className="d-flex justify-content-center mb-3">
           <Steps
             current={1}
             labelPlacement="vertical"
