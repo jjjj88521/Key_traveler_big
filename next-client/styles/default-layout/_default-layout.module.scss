@@ -12,6 +12,11 @@
 
 .header {
   height: 100px;
+  position: fixed;
+  top: 0;
+  z-index: 99;
+  width: 100%;
+  background-color: #171717;
   .header-logo {
     width: 200px;
     height: 40px;
@@ -25,5 +30,9 @@
       width: 150px;
       height: 30px;
     }
+  }
+
+  .footer {
+    margin-bottom: 60px;
   }
 }
