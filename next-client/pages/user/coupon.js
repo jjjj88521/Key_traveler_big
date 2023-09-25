@@ -1,13 +1,13 @@
 import { React, useState } from 'react'
 import style from './coupon.module.scss'
 import { Card, List } from 'antd'
+import PaginationComponent from '@/components/common/PaginationComponent'
 
 const data = Array.from({
   length: 23,
 }).map((_, i) => ({
-  // href: `./coupon/${i + 1}`,
-  // title: `優惠券 ${i + 1}`,
-  title: `周年慶會員禮`,
+  key: i,
+  title: `周年慶會員禮${i + 1}`,
   description: '周年慶會員禮-當月全館消費滿1500元享85折優惠(限1筆訂單)',
   threshold: '1500',
   endTime: '2023-08-10',
@@ -22,38 +22,20 @@ const data = Array.from({
 // }))
 
 export default function Coupon() {
-  const pageSize = 10
-  const [currentPage, setCurrentPage] = useState(1)
+  // const [currPage, setCurrPage] = useState(1)
 
-  // 处理页码变化
+  const [currentPage, setCurrentPage] = useState(1)
+  const pageSize = 10 // 每页显示的项目数量
+  // 处理页码变化事件
   const handlePageChange = (page) => {
     setCurrentPage(page)
+    // 在这里可以处理分页后的数据加载或其他操作
   }
 
-  // 计算总页数
-  const totalPages = Math.ceil(23 / pageSize)
-
-  // 根据当前页码计算当前页要显示的数据范围
+  // 根据当前页和每页显示的数量计算要显示的数据
   const startIndex = (currentPage - 1) * pageSize
   const endIndex = startIndex + pageSize
   const displayedData = data.slice(startIndex, endIndex)
-
-  // 创建分页按钮
-  const renderPageButtons = () => {
-    const buttons = []
-    for (let i = 1; i <= totalPages; i++) {
-      buttons.push(
-        <button
-          key={i}
-          onClick={() => handlePageChange(i)}
-          className={i === currentPage ? 'active' : ''}
-        >
-          {i}
-        </button>
-      )
-    }
-    return buttons
-  }
 
   return (
     <>
@@ -74,7 +56,7 @@ export default function Coupon() {
                   document.querySelector('.history').classList.add('d-block')
                 }}
               >
-                <h6 className="m-0">歷史紀錄</h6>
+                <h6 className="m-0 text-primary">歷史紀錄</h6>
               </a>
             </div>
 
@@ -95,7 +77,7 @@ export default function Coupon() {
               </div>
             </div>
             <div>
-              {data.map((item, index) => {
+              {/* {data.map((item, index) => {
                 return (
                   <>
                     <Card>
@@ -119,9 +101,9 @@ export default function Coupon() {
                     </Card>
                   </>
                 )
-              })}
+              })} */}
             </div>
-            {/* <List
+            <List
               grid={{
                 gutter: 0,
                 xs: 1,
@@ -132,9 +114,64 @@ export default function Coupon() {
                 xxl: 2,
               }}
               size="large"
-              dataSource={data}
+              dataSource={displayedData}
+              // pagination={{
+              //   onChange: (page) => {
+              //     setCurrPage(page)
+              //   },
+              //   pageSize: 10,
+              //   position: 'bottom',
+              //   align: 'center',
+              //   current: currPage,
+              //   itemRender: (page, type, originalElement) => {
+              //     if (type === 'prev' || type === 'next') {
+              //       return (
+              //         <>
+              //           <div className="bg-primary-subtle text-primary">
+              //             <i
+              //               className={
+              //                 type === 'prev'
+              //                   ? 'fa-solid fa-caret-left'
+              //                   : 'fa-solid fa-caret-right'
+              //               }
+              //             ></i>
+              //           </div>
+              //         </>
+              //       )
+              //     }
+              //     // if (type === 'prev') {
+              //     //   return (
+              //     //     <>
+              //     //       <div className="bg-primary-subtle text-primary">
+              //     //         <i className="fa-solid fa-caret-left"></i>
+              //     //       </div>
+              //     //     </>
+              //     //   )
+              //     // }
+              //     // if (type === 'next') {
+              //     //   return (
+              //     //     <>
+              //     //       <div className="bg-primary-subtle text-primary">
+              //     //         <i className="fa-solid fa-caret-right"></i>
+              //     //       </div>
+              //     //     </>
+              //     //   )
+              //     // }
+              //     return (
+              //       <div
+              //         className={
+              //           currPage === page
+              //             ? 'text-light'
+              //             : 'text-primary bg-primary-subtle'
+              //         }
+              //       >
+              //         {originalElement}
+              //       </div>
+              //     )
+              //   },
+              // }}
               renderItem={(item) => (
-                <List.Item key={item.title}>
+                <List.Item key={item.key}>
                   <Card>
                     <div className="d-flex align-items-center">
                       <div>
@@ -156,11 +193,13 @@ export default function Coupon() {
                   </Card>
                 </List.Item>
               )}
-            /> */}
-            <div>
-              {/* 创建分页按钮 */}
-              <div className="pagination">{renderPageButtons()}</div>
-            </div>
+            />
+            <PaginationComponent
+              totalItems={data.length} // 总项目数量
+              pageSize={pageSize} // 每页显示的项目数量
+              currentPage={currentPage} // 当前页码
+              onPageChange={handlePageChange} // 处理页码变化事件的回调函数
+            />
           </div>
         </div>
 
@@ -170,32 +209,5 @@ export default function Coupon() {
         </div>
       </main>
     </>
-  )
-}
-
-// const pageSize = 10 // 每页显示的项目数量
-// const totalItems = 23 // 总项目数量
-
-function App() {
-  return (
-    <div>
-      {/* 显示当前页的数据列表 */}
-      <div>
-        {data.map((item, index) => {
-          return (
-            <>
-              <Card className="card">
-                <div key={index}>
-                  {/* 显示数据项的内容 */}
-                  <h3>{item.title}</h3>
-                  <p>{item.description}</p>
-                  {/* 其他内容 */}
-                </div>
-              </Card>
-            </>
-          )
-        })}
-      </div>
-    </div>
   )
 }
