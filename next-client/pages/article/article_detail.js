@@ -1,42 +1,93 @@
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
+import { Avatar, List, Space } from 'antd'
+import { Input } from 'antd'
+import { UserOutlined } from '@ant-design/icons'
+const url =
+  'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg'
+
+const { TextArea } = Input
 
 export default function ArticleDetail() {
   let data = [
     {
       title: 'interest title',
-      img: 'https://www.inad.com.tw/data/news/cover/1694604979854924778.jpg',
+      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
       user: 'by.user_id',
     },
     {
       title: 'interest title',
-      img: 'https://www.inad.com.tw/data/news/cover/1694604979854924778.jpg',
+      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
       user: 'by.user_id',
     },
     {
       title: 'interest title',
-      img: 'https://www.inad.com.tw/data/news/cover/1694604979854924778.jpg',
+      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
       user: 'by.user_id',
     },
     {
       title: 'interest title',
-      img: 'https://www.inad.com.tw/data/news/cover/1694604979854924778.jpg',
+      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
       user: 'by.user_id',
     },
     {
       title: 'interest title',
-      img: 'https://www.inad.com.tw/data/news/cover/1694604979854924778.jpg',
+      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
       user: 'by.user_id',
     },
   ]
 
+  const artComment = [
+    {
+      title: 'Ant Design Title 1',
+    },
+    {
+      title: 'Ant Design Title 2',
+    },
+    {
+      title: 'Ant Design Title 3',
+    },
+    {
+      title: 'Ant Design Title 4',
+    },
+  ]
+  const [value, setValue] = useState('')
+  // const onChange = (e) => {
+  //   console.log('Change:', e.target.value)
+  // }
+  const App = () => (
+    <Space size={16} wrap>
+      <Avatar icon={<UserOutlined />} />
+      <Avatar>U</Avatar>
+      <Avatar size={40}>USER</Avatar>
+      <Avatar src={url} />
+      <Avatar src={<img src={url} alt="avatar" />} />
+      <Avatar
+        style={{
+          backgroundColor: '#fde3cf',
+          color: '#f56a00',
+        }}
+      >
+        U
+      </Avatar>
+      <Avatar
+        style={{
+          backgroundColor: '#87d068',
+        }}
+        icon={<UserOutlined />}
+      />
+    </Space>
+  )
   return (
     <>
       <div className="container mb-5">
         <div className="row">
           {/* 左側欄 */}
           <div className="col-8">
-            <div className=" border border-5 border-primary position-relative">
+            <div
+              className=" border border-5 border-primary position-relative"
+              style={{ padding: '35px 30px' }}
+            >
               <i
                 class="fa-regular fa-heart fa-2xl position-absolute "
                 style={{ top: '20px', right: '10px' }}
@@ -85,10 +136,82 @@ export default function ArticleDetail() {
                   }
                   className="ArticleImg"
                   alt="..."
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  }}
                 />
               </p>
             </div>
-            <div>123</div>
+            {/* 左下側 文章留言區 */}
+            {/* 撰寫區 */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                marginTop: '50px',
+                marginBottom: '25px',
+              }}
+            >
+              <Avatar
+                src={
+                  <img
+                    src={
+                      'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
+                    }
+                    alt="avatar"
+                  />
+                }
+              />
+              <TextArea
+                value={value}
+                showCount
+                maxLength={200}
+                onChange={(e) => setValue(e.target.value)}
+                placeholder="Controlled autosize"
+                autoSize={{
+                  minRows: 3,
+                  maxRows: 6,
+                }}
+                style={{ margin: '0px 0px 0px 20px' }}
+              />
+            </div>
+            <button
+              className="btn mb-4 text-white ms-5"
+              style={{ backgroundColor: '#198cf8' }}
+            >
+              Add comment
+            </button>
+
+            {/* 發佈列表區 */}
+            <List
+              itemLayout="horizontal"
+              dataSource={artComment}
+              renderItem={(item, index) => (
+                <List.Item>
+                  <List.Item.Meta
+                    className="mt-3"
+                    avatar={
+                      <Avatar
+                        src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`}
+                      />
+                    }
+                    title={<a href="https://ant.design">{item.title}</a>}
+                    description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                  />
+                </List.Item>
+              )}
+            />
+            {/* show more */}
+            <div className="d-flex justify-content-center mt-4">
+              <button
+                className="btn border border-primary text-primary"
+                style={{ width: '250px' }}
+              >
+                show more
+              </button>
+            </div>
           </div>
 
           {/* 右側欄 */}
@@ -101,32 +224,36 @@ export default function ArticleDetail() {
               <Link href="#" className="text-decoration-none">
                 <div className="bg-white position-relative p-2">
                   <p className="text-secondary m-0">公告</p>
-                  <div className="position-absolute end-0 top-50 translate-middle me-4">
-                    <i className="fa-solid fa-circle-chevron-right fa-lg text-secondary"></i>
+                  <div className="position-absolute end-0 top-50 translate-middle me-4 text-secondary">
+                    0
+                    {/* <i className="fa-solid fa-circle-chevron-right fa-lg text-secondary"></i> */}
                   </div>
                 </div>
               </Link>
               <Link href="#" className="text-decoration-none">
                 <div className="bg-white position-relative p-2">
                   <p className="text-secondary m-0">開箱文</p>
-                  <div className="position-absolute end-0 top-50 translate-middle me-4">
-                    <i className="fa-solid fa-circle-chevron-right fa-lg text-secondary"></i>
+                  <div className="position-absolute end-0 top-50 translate-middle me-4 text-secondary">
+                    0
+                    {/* <i className="fa-solid fa-circle-chevron-right fa-lg text-secondary"></i> */}
                   </div>
                 </div>
               </Link>
               <Link href="#" className="text-decoration-none">
                 <div className="bg-white position-relative p-2">
                   <p className="text-secondary m-0">組裝教學</p>
-                  <div className="position-absolute end-0 top-50 translate-middle me-4">
-                    <i className="fa-solid fa-circle-chevron-right fa-lg text-secondary"></i>
+                  <div className="position-absolute end-0 top-50 translate-middle me-4 text-secondary">
+                    0
+                    {/* <i className="fa-solid fa-circle-chevron-right fa-lg text-secondary"></i> */}
                   </div>
                 </div>
               </Link>
               <Link href="#" className="text-decoration-none">
                 <div className="bg-white position-relative p-2">
                   <p className="text-secondary m-0">活動</p>
-                  <div className="position-absolute end-0 top-50 translate-middle me-4">
-                    <i className="fa-solid fa-circle-chevron-right fa-lg text-secondary"></i>
+                  <div className="position-absolute end-0 top-50 translate-middle me-4 text-secondary">
+                    0
+                    {/* <i className="fa-solid fa-circle-chevron-right fa-lg text-secondary"></i> */}
                   </div>
                 </div>
               </Link>
@@ -144,8 +271,25 @@ export default function ArticleDetail() {
                       className="row pb-2  border-bottom border-2 border-dark"
                       key={index}
                     >
-                      <div className="col-md-4">
-                        <img src={item.img} className="ArticleImg" alt="..." />
+                      <div className="col-md-4 px-0">
+                        <div
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                            overflow: 'hidden',
+                          }}
+                        >
+                          <img
+                            src={item.img}
+                            className="ArticleImg"
+                            alt="..."
+                            style={{
+                              width: '100%',
+                              height: '100%',
+                              objectFit: 'cover',
+                            }}
+                          />
+                        </div>
                       </div>
                       <div className="col-md-8">
                         <div className="card border-0">
