@@ -1,17 +1,21 @@
 import React from 'react'
 import Image from 'next/image'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircleChevronDown } from '@fortawesome/free-solid-svg-icons'
-import { faPencil } from '@fortawesome/free-solid-svg-icons'
+import { faCircleChevronDown, faPencil, faCaretDown } from '@fortawesome/free-solid-svg-icons'
 
 
 export default function Detail() {
   return (
     <>
       <div className="container">
-      {/* 一般商品 */}
+        {/* 一般商品 */}
         <div className="mb-3 text-primary d-none d-sm-block d-sm-flex">
-          <div><FontAwesomeIcon icon={faCircleChevronDown} className="text-primary" /></div>
+          <div className="pe-2">
+            <FontAwesomeIcon
+              icon={faCircleChevronDown}
+              className="text-primary"
+            />
+          </div>
           <div>一般商品</div>
           <div className="ps-1">(2)</div>
         </div>
@@ -46,7 +50,9 @@ export default function Detail() {
               <td className="align-middle">$3000</td>
               <td className="align-middle ps-3">1</td>
               <td className="align-middle">$3000</td>
-              <td className="align-middle ps-3"><FontAwesomeIcon icon={faPencil} className="text-primary" /></td>
+              <td className="align-middle ps-3">
+                <FontAwesomeIcon icon={faPencil} className="text-primary" />
+              </td>
             </tr>
             <tr>
               <td className="d-flex">
@@ -67,7 +73,9 @@ export default function Detail() {
               <td className="align-middle">$3000</td>
               <td className="align-middle ps-3">1</td>
               <td className="align-middle">$3000</td>
-              <td className="align-middle ps-3"><FontAwesomeIcon icon={faPencil} className="text-primary" /></td>
+              <td className="align-middle ps-3">
+                <FontAwesomeIcon icon={faPencil} className="text-primary" />
+              </td>
             </tr>
             <tr>
               <td className="text-end" colSpan={5}>
@@ -78,7 +86,12 @@ export default function Detail() {
         </table>
         {/* 租用商品 */}
         <div className="mb-3 text-primary d-none d-sm-block d-sm-flex">
-          <div><FontAwesomeIcon icon={faCircleChevronDown} className="text-primary" /></div>
+          <div className="pe-2">
+            <FontAwesomeIcon
+              icon={faCircleChevronDown}
+              className="text-primary"
+            />
+          </div>
           <div>租用商品</div>
           <div className="ps-1">(2)</div>
         </div>
@@ -86,10 +99,10 @@ export default function Detail() {
         <table className={`table d-none d-sm-table`}>
           <thead>
             <tr>
-              <th className="bg-primary text-white ps-3">商品明細</th>
-              <th className="bg-primary text-white">租用日期</th>
-              <th className="bg-primary text-white">數量</th>
-              <th className="bg-primary text-white">小計</th>
+              <th className="bg-primary text-white ps-3" style={{ width: '40%' }}>商品明細</th>
+              <th className="bg-primary text-white" style={{ width: '20%' }}>租用日期</th>
+              <th className="bg-primary text-white text-center" >數量</th>
+              <th className="bg-primary text-white text-center">小計</th>
             </tr>
           </thead>
           <tbody>
@@ -110,10 +123,17 @@ export default function Detail() {
                 </div>
               </td>
               <td className="align-middle">
-              8/15<br/>8/16
+                <input className="form-control" type="date" disabled/>
+                <div className="text-center">
+                  <FontAwesomeIcon
+                    icon={faCaretDown}
+                    className="text-secondary"
+                  />
+                </div>
+                <input className="form-control" type="date" disabled/>
               </td>
-              <td className="align-middle ps-3">1</td>
-              <td className="align-middle">$3000</td>
+              <td className="align-middle ps-3 text-center">1</td>
+              <td className="align-middle text-center">$3000</td>
             </tr>
             <tr>
               <td className="d-flex">
@@ -132,13 +152,20 @@ export default function Detail() {
                 </div>
               </td>
               <td className="align-middle">
-              8/15<br/>8/16
+              <input className="form-control" type="date" disabled/>
+                <div className="text-center">
+                  <FontAwesomeIcon
+                    icon={faCaretDown}
+                    className="text-secondary"
+                  />
+                </div>
+                <input className="form-control" type="date" disabled />
               </td>
-              <td className="align-middle ps-3">1</td>
-              <td className="align-middle">$3000</td>
+              <td className="align-middle ps-3 text-center">1</td>
+              <td className="align-middle text-center">$3000</td>
             </tr>
             <tr>
-              <td className="text-end" colSpan={5}>
+              <td className="text-end pe-5" colSpan={4}>
                 總計: $6000
               </td>
             </tr>
@@ -153,7 +180,9 @@ export default function Detail() {
                 <div className="d-flex px-1">
                   <div>一般商品</div>
                   <div className="ps-1">(2)</div>
-                  <div className="ms-auto"><FontAwesomeIcon icon={faCircleChevronDown} /></div>
+                  <div className="ms-auto">
+                    <FontAwesomeIcon icon={faCircleChevronDown} />
+                  </div>
                 </div>
               </th>
               {/* <th className="bg-primary text-white text-end" colSpan={2}>V</th> */}
@@ -192,7 +221,9 @@ export default function Detail() {
                   <button>1</button>
                 </div>
               </td> */}
-              <td className='align-middle'><FontAwesomeIcon icon={faPencil} className="text-primary" /></td>
+              <td className="align-middle">
+                <FontAwesomeIcon icon={faPencil} className="text-primary" />
+              </td>
             </tr>
             <tr>
               <td className="d-flex">
@@ -216,7 +247,9 @@ export default function Detail() {
                   </div>
                 </div>
               </td>
-              <td className='align-middle'><FontAwesomeIcon icon={faPencil} className="text-primary" /></td>
+              <td className="align-middle">
+                <FontAwesomeIcon icon={faPencil} className="text-primary" />
+              </td>
             </tr>
             <tr>
               <td className="text-end" colSpan={2}>
@@ -234,7 +267,9 @@ export default function Detail() {
                 <div className="d-flex px-1">
                   <div>租用商品</div>
                   <div className="ps-1">(2)</div>
-                  <div className="ms-auto"><FontAwesomeIcon icon={faCircleChevronDown} /></div>
+                  <div className="ms-auto">
+                    <FontAwesomeIcon icon={faCircleChevronDown} />
+                  </div>
                 </div>
               </th>
             </tr>

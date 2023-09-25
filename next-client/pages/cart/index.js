@@ -1,5 +1,6 @@
 import React from 'react'
-import { Steps } from 'antd'
+import { useState } from 'react'
+import { Steps, DatePicker } from 'antd'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faCircleChevronDown,
@@ -8,6 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 export default function Cart() {
+  const { RangePicker } = DatePicker
   const items = [
     {
       title: '確認商品',
@@ -267,29 +269,36 @@ export default function Cart() {
                       style={{ width: '50%' }}
                     >
                       <option>陽極紅</option>
-                    </select>  
-                      <select
-                        className="form-select form-select-sm"
-                        style={{ width: '50%' }}
-                      >
-                        <option>噴砂銀</option>
-                      </select>
-                    
+                    </select>
+                    <select
+                      className="form-select form-select-sm"
+                      style={{ width: '50%' }}
+                    >
+                      <option>噴砂銀</option>
+                    </select>
                   </div>
                   <div className="d-flex pt-1">
-                    <div className='pt-2'>$3000</div>
+                    <div className="pt-2">$3000</div>
                     <div className="input-group" style={{ width: '60%' }}>
                       {/* <span className="input-group-text p-0"></span> */}
-                        <button className="btn btn-outline-secondary rounded-start-4" type="button">
-                          -
-                        </button>
-                      
-                      <input type="number" className="form-control border-secondary border-start-0 border-end-0" />
+                      <button
+                        className="btn btn-outline-secondary rounded-start-4"
+                        type="button"
+                      >
+                        -
+                      </button>
+
+                      <input
+                        type="number"
+                        className="form-control border-secondary border-start-0 border-end-0"
+                      />
                       <span className="input-group-text p-0"></span>
-                        <button className="btn btn-outline-secondary rounded-end-4" type="button">
-                          +
-                        </button>
-                      
+                      <button
+                        className="btn btn-outline-secondary rounded-end-4"
+                        type="button"
+                      >
+                        +
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -347,21 +356,29 @@ export default function Cart() {
                 <div>
                   <div>Qwertykey</div>
                   <div>QK75鍵盤鍵盤鍵盤鍵盤</div>
-                  <div className="pt-1">
+                  <div className="p-1">
                     <select
                       className="form-select form-select-sm  mb-1"
-                      style={{ width: '50%' }}
+                      style={{ width: 100 }}
                     >
                       <option>陽極紅</option>
-                    </select>  
-                      <select
-                        className="form-select form-select-sm"
-                        style={{ width: '50%' }}
-                      >
-                        <option>噴砂銀</option>
-                      </select>                    
+                    </select>
+                    <select
+                      className="form-select form-select-sm"
+                      style={{ width: 100 }}
+                    >
+                      <option>噴砂銀</option>
+                    </select>
                   </div>
-                  <div>8/15 ~ 8/16</div>
+                  <RangePicker placeholder={""}/>
+                  {/* <input className="form-control" type="date" style={{ width: 100 }}/>
+                  <div className="text-center">
+                    <FontAwesomeIcon
+                      icon={faCaretDown}
+                      className="text-secondary"
+                    />
+                  </div>
+                  <input className="form-control" type="date" style={{ width: "30%" }}/> */}
                   <div className="d-flex">
                     <div>$300</div>
                     {/* <div className="input-group">
