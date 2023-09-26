@@ -1,52 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-
 <body>
-    <form action="">
-        <label for="name">姓名</label>
-        <input type="text" id="name" name="name">
-        <br>
-        <label for="acount">帳號</label>
-        <input type="text" id="acount" name="acount">
-        <br>
-        <label for="gender">性別</label>
-        <input type="text" id="gender" name="gender">
-        <br>
-        <label for="address">地址</label>
-        <input type="text" id="address" name="address">
-        <br>
-        <label for="phone">手機</label>
-        <input type="text" id="phone" name="phone">
-        <br>
-        <div class="birthday">
-            <label for="birthday">生日</label>
-            <select type="text" id="year" name="birthday" value="year">
-                <option value="1990">1990</option>
-            </select>
-            <select type="text" id="month" name="birthday" value="07">
-                <option value="07">07</option>
-            </select>
-            <select type="text" id="day" name="birthday" value="26">
-                <option value="26">26</option>
-            </select>
+    <div className="container">
+        <div class="row">
+        <h2>個人檔案</h2>
+        <div className="user-sidebar">123</div>
+        <form action="">
+            <label for="name" className="col-form-label">姓名</label>
+            <input type="text" id="name" name="name" clasName="form-control">
+            
+            <label for="email" className="col-form-label">Email</label>
+            <input type="text" id="email" name="email" clasName="form-control">
+           
+            <label for="gender" className="col-form-label">性別</label>
+            <input type="text" id="gender" name="gender" clasName="form-control">
+            
+            <label for="address" className="col-form-label">地址</label>
+            <input type="text" id="address" name="address" clasName="form-control">
+            
+            <label for="phone" className="col-form-label">手機</label>
+            <input type="text" id="phone" name="phone" clasName="form-control">
+            
+            <div class="birthday">
+                <label for="birthday className="col-form-label>生日</label>
+                <select type="text" id="year" name="birthday" value="year" className="form-select">
+                    <option value="1990">1990</option>
+                </select>
+                <select type="text" id="month" name="birthday" value="07" className="form-select" >
+                    <option value="07">07</option>
+                </select>
+                <select type="text" id="day" name="birthday" value="26" className="form-select">
+                    <option value="26">26</option>
+                </select>
+            </div>
+            <br>
+
+        </form>
+        <div className="avatar">
+              <h4>會員等級</h4>
+              <p>一般會員<img src="" alt=""></p>
+              <div className="avatar-img"><img src="" alt=""></div>
+              <button class>選擇圖片</button>
+              <p>檔案大小1MB</p>
+              <p>檔案限制:JPEG,PNG</p>   
         </div>
-        <br>
-        <label for="email">E-mail</label>
-        <input type="text" id="email" name="email">
-        <br>
-        <label for="password">設定密碼</label>
-        <input type="text" id="password" name="password">
-        <br>
-        <label for="confirmPassword">確認密碼</label>
-        <input type="text" id="confirmPassword" name="confirmPassword">
-
-    </form>
+    </div>
+    </div>
 </body>
-
 </html>
