@@ -1,8 +1,9 @@
 .card {
-  /* position: relative;
+  position: relative;
   display: flex;
-  align-items: flex-end;
-  transition: 0.4s ease-out; */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .card:hover:before {
@@ -10,7 +11,10 @@
 }
 .card:hover .info {
   opacity: 1;
-  transform: translateY(0px);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .card:before {
   content: '';
@@ -26,43 +30,43 @@
   transition: 0.5s;
   opacity: 0;
 }
-.card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
-  /* border-radius: 15px; */
-}
 .card .info {
-  position: relative;
+  position: absolute;
   z-index: 3;
   color: white;
   opacity: 0;
-  transform: translateY(30px);
-  transition: 0.5s;
-}
-.card .info h1 {
-  margin: 0px;
-}
-.card .info p {
-  letter-spacing: 1px;
-  font-size: 15px;
-  margin-top: 8px;
 }
 .card .info button {
-  padding: 0.6rem;
+  padding: 0.6rem 1.2rem;
   outline: none;
   border: none;
   border-radius: 3px;
-  background: white;
-  color: black;
   font-weight: bold;
   cursor: pointer;
   transition: 0.4s ease;
 }
-.card .info button:hover {
-  background: dodgerblue;
+
+.card .info .infoBtn1 {
+  background: white;
+  color: #dc9329;
+}
+.card .info .infoBtn1:hover {
+  background: #dc9329;
   color: white;
+}
+
+.card .info .infoBtn2 {
+  background: none;
+  color: white;
+}
+.card .info .infoBtn2:hover {
+  color: #ff4136;
+}
+
+.card .info .infoBtn3 {
+  background: none;
+  color: white;
+}
+.card .info .infoBtn3:hover {
+  color: #dc9329;
 }
