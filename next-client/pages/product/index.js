@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './product.module.css'
-import Accordion from '@/components/Accordion'
-import AsideFilter from '@/components/AsideFilter'
+import Accordion from '@/components/product/accordion'
+import AsideFilter from '@/components/product/AsideFilter'
 
 // <div className="container">
 // <div className={styles['banner']}>
