@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useState } from 'react'
-import TabContainer from '@/components/ProductTab'
+import TabContainer from '@/components/product/ProductTab'
 
 import { Rate } from 'antd'
 import {

@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from '@/components/accordion/index.module.css'
+import styles from './index.module.css'
 
 function Accordion() {
   return (
