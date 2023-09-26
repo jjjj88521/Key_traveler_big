@@ -84,13 +84,13 @@ export default function Article() {
   ]
   return (
     <>
-      <div className="container ">
+      <div className="container mt-sm-5 mt-3">
         {/* 手機版搜尋欄 */}
         <nav className="navbar navbar-light bg-light d-sm-none mb-4">
-          <div className="container-fluid">
-            <form className="d-flex">
+          <div className="w-100">
+            <form className="d-flex px-2">
               <input
-                className="form-control me-2"
+                className="form-control flex-grow-1 me-2"
                 type="search"
                 placeholder="Search"
                 aria-label="Search"

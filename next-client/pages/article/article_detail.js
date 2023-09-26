@@ -87,26 +87,26 @@ export default function ArticleDetail() {
       <div className="bg-primary d-flex justify-content-center d-sm-none">
         <Link href="#" className="text-decoration-none">
           <div className="px-3">
-            <p className="text-dark">公告</p>
+            <p className="text-dark my-2 ">公告</p>
           </div>
         </Link>
         <Link href="#" className="text-decoration-none">
           <div className="border-start border-dark border-2 px-3">
-            <p className="text-dark">開箱文</p>
+            <p className="text-dark my-2 ">開箱文</p>
           </div>
         </Link>
         <Link href="#" className="text-decoration-none">
           <div className="border-start border-dark border-2 px-3">
-            <p className="text-dark">組裝教學</p>
+            <p className="text-dark my-2 ">組裝教學</p>
           </div>
         </Link>
         <Link href="#" className="text-decoration-none">
           <div className="border-start border-dark border-2 px-3">
-            <p className="text-dark">活動</p>
+            <p className="text-dark my-2 ">活動</p>
           </div>
         </Link>
       </div>
-      <div className="container mb-5">
+      <div className="container mb-5  mt-sm-5 mt-3">
         <div className="row">
           {/* 左側欄 */}
           <div className="col-sm-8">
@@ -209,8 +209,8 @@ export default function ArticleDetail() {
                   // style={{ margin: '0px 0px 0px 0px' }}
                 />
                 <button
-                  className="btn text-white my-4 w-100"
-                  style={ButtonStyle}
+                  className="btn btn-primary text-white my-4 w-100"
+                  // style={ButtonStyle}
                 >
                   Add comment
                 </button>
