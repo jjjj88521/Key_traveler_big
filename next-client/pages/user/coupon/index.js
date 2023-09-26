@@ -30,6 +30,7 @@ export default function Coupon() {
   // 處理頁碼變更事件
   const handlePageChange = (page) => {
     setCurrentPage(page)
+    console.log('currentPage is' + currentPage)
     // 在這裡可以處理分頁後的資料載入或其他操作
   }
 
@@ -40,36 +41,72 @@ export default function Coupon() {
 
   return (
     <>
-      <main>
-        <div className="row">
-          <div className="all_coupon container bg-secondary-subtle my-4 py-3 col-7">
-            <div className="d-flex align-items-center justify-content-between mt-5">
-              <h2 style={{ paddingLeft: '24px' }} className="m-0">
-                我的優惠券
-              </h2>
-              <a href="./coupon/history" style={{ paddingRight: '24px' }}>
-                <h6 className="m-0 text-primary">歷史紀錄</h6>
-              </a>
+      <div>
+        <div className="all_coupon container bg-secondary-subtle my-4 py-3 col-11 col-lg-7 ">
+          <div
+            className={`d-flex align-items-center justify-content-between mt-5 `}
+          >
+            <div className={`m-0 ${style['pageTitle']}`}>
+              <span>我的優惠券</span>
             </div>
-
-            <div className="row mb-5 mt-3">
-              <div className="d-flex justify-content-center pt-4 align-items-center">
-                <p className={`${style['new_text']} mb-0 me-2`}>新增優惠券</p>
-                <input
-                  type="text"
-                  className="form-control me-2"
-                  style={{ width: '400px', height: '45px' }}
-                ></input>
+            <a href="./coupon/history" className={`${style['linkToHistory']}`}>
+              <p className="m-0 text-primary">歷史紀錄</p>
+            </a>
+          </div>
+          {/* <div className={`row mb-5 mt-3`}>
+            <div
+              className={`col-10 mx-auto d-flex justify-content-center pt-4 align-items-center ${style['new_form']}`}
+            >
+              <p className={`${style['new_text']} mb-0 me-2`}>新增優惠券</p>
+              <input type="text" className={`form-control me-2 col`}></input>
+              <button
+                className={`btn btn-primary text-center text-light`}
+                style={{ width: '120px', color: '#ffffff', height: '45px' }}
+              >
+                儲存
+              </button>
+            </div>
+          </div> */}
+          <div className={`${style['newCoupon']}`}>
+            <div className={`row mt-4 mb-5 align-items-center`}>
+              <div className="col-3 col-lg-3 text-end">
+                <p className={`m-0`}>新增優惠券</p>
+              </div>
+              <div className="col-6 col-lg-6">
+                <input type="text" className="form-control"></input>
+              </div>
+              <div className={`col-3 col-lg-3 `}>
                 <button
-                  className="btn btn-primary text-center"
-                  style={{ width: '120px', color: '#ffffff', height: '45px' }}
+                  className={`btn btn-primary text-center text-light ${style['newCouponBtn']}`}
                 >
                   儲存
                 </button>
               </div>
             </div>
-            <div>
-              {/* {data.map((item, index) => {
+          </div>
+
+          <div className={`${style['newCouponMobile']}`}>
+            <div className={`row row-cols-2  mt-4 mb-5 align-items-center`}>
+              <div className="col-4 text-end p-0">
+                <p className={`m-0`}>新增優惠券</p>
+              </div>
+              <div className="col-8">
+                <input type="text" className="form-control "></input>
+              </div>
+              <div className={`col `}></div>
+
+              <div className={`col text-end mt-2`}>
+                <button
+                  className={`btn btn-primary text-center text-light ${style['newCouponBtn']}`}
+                >
+                  儲存
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            {/* {data.map((item, index) => {
                 return (
                   <>
                     <Card>
@@ -94,96 +131,93 @@ export default function Coupon() {
                   </>
                 )
               })} */}
-            </div>
-            <List
-              grid={{
-                gutter: 0,
-                xs: 1,
-                sm: 1,
-                md: 2,
-                lg: 2,
-                xl: 2,
-                xxl: 2,
-              }}
-              size="large"
-              dataSource={displayedData}
-              // 舊方法
-              // pagination={{
-              //   onChange: (page) => {
-              //     setCurrPage(page)
-              //   },
-              //   pageSize: 10,
-              //   position: 'bottom',
-              //   align: 'center',
-              //   current: currPage,
-              //   itemRender: (page, type, originalElement) => {
-              //     if (type === 'prev' || type === 'next') {
-              //       return (
-              //         <>
-              //           <div className="bg-primary-subtle text-primary">
-              //             <i
-              //               className={
-              //                 type === 'prev'
-              //                   ? 'fa-solid fa-caret-left'
-              //                   : 'fa-solid fa-caret-right'
-              //               }
-              //             ></i>
-              //           </div>
-              //         </>
-              //       )
-              //     }
-              //     return (
-              //       <div
-              //         className={
-              //           currPage === page
-              //             ? 'text-light'
-              //             : 'text-primary bg-primary-subtle'
-              //         }
-              //       >
-              //         {originalElement}
-              //       </div>
-              //     )
-              //   },
-              // }}
-              renderItem={(item) => (
-                <List.Item key={item.key}>
-                  <Card>
-                    <div className="d-flex align-items-center">
-                      <div>
-                        <img
-                          width={100}
-                          alt="logo"
-                          // src="https://media.istockphoto.com/id/1261324062/zh/%E5%90%91%E9%87%8F/%E7%A5%A8.jpg?s=612x612&w=0&k=20&c=9JJQjtGTZZ2pSOhD0Hu6CM0tBQNEGdZ6TEbX1hfMHPU="
-                          src="/images/coupon_pic.jpg"
-                        />
-                      </div>
-                      <div className="ms-2">
-                        <h5 className="text-primary">{item.title}</h5>
-                        <h6 style={{ maxWidth: '300px' }}>
-                          {item.description}
-                        </h6>
-                        <p className="m-0">低消 ${item.threshold} 起</p>
-                        <p className="m-0">有效日期：{item.endTime}</p>
-                      </div>
-                    </div>
-                  </Card>
-                </List.Item>
-              )}
-            />
-            <PaginationComponent
-              totalItems={data.length} // 总项目数量
-              pageSize={pageSize} // 每页显示的项目数量
-              currentPage={currentPage} // 当前页码
-              onPageChange={handlePageChange} // 处理页码变化事件的回调函数
-            />
           </div>
+          <List
+            grid={{
+              gutter: 0,
+              xs: 1,
+              sm: 1,
+              md: 2,
+              lg: 2,
+              xl: 2,
+              xxl: 2,
+            }}
+            size="large"
+            dataSource={displayedData}
+            // 舊方法(pagination)
+            // pagination={{
+            //   onChange: (page) => {
+            //     setCurrPage(page)
+            //   },
+            //   pageSize: 10,
+            //   position: 'bottom',
+            //   align: 'center',
+            //   current: currPage,
+            //   itemRender: (page, type, originalElement) => {
+            //     if (type === 'prev' || type === 'next') {
+            //       return (
+            //         <>
+            //           <div className="bg-primary-subtle text-primary">
+            //             <i
+            //               className={
+            //                 type === 'prev'
+            //                   ? 'fa-solid fa-caret-left'
+            //                   : 'fa-solid fa-caret-right'
+            //               }
+            //             ></i>
+            //           </div>
+            //         </>
+            //       )
+            //     }
+            //     return (
+            //       <div
+            //         className={
+            //           currPage === page
+            //             ? 'text-light'
+            //             : 'text-primary bg-primary-subtle'
+            //         }
+            //       >
+            //         {originalElement}
+            //       </div>
+            //     )
+            //   },
+            // }}
+            renderItem={(item) => (
+              <List.Item key={item.key}>
+                <Card>
+                  <div className="d-flex align-items-center">
+                    <div>
+                      <img
+                        width={100}
+                        alt="logo"
+                        // src="https://media.istockphoto.com/id/1261324062/zh/%E5%90%91%E9%87%8F/%E7%A5%A8.jpg?s=612x612&w=0&k=20&c=9JJQjtGTZZ2pSOhD0Hu6CM0tBQNEGdZ6TEbX1hfMHPU="
+                        src="/images/coupon_pic.jpg"
+                      />
+                    </div>
+                    <div className="ms-2">
+                      <h5 className="text-primary">{item.title}</h5>
+                      <h6 style={{ maxWidth: '300px' }}>{item.description}</h6>
+                      <p className="m-0">低消 ${item.threshold} 起</p>
+                      <p className="m-0">有效日期：{item.endTime}</p>
+                    </div>
+                  </div>
+                </Card>
+              </List.Item>
+            )}
+          />
+          <PaginationComponent
+            totalItems={data.length} // 總項目數量
+            pageSize={pageSize} // 每頁顯示的項目數量
+            currentPage={currentPage} // 目前頁碼
+            onPageChange={handlePageChange} // 處理頁碼變化事件的callback funtion
+          />
         </div>
+      </div>
 
-        {/* <div className="history container bg-secondary-subtle mb-4 pb-3 d-none">
+      {/* <div className="history container bg-secondary-subtle mb-4 pb-3 d-none">
           <h2>歷史紀錄</h2>
           <hr />
         </div> */}
-      </main>
     </>
   )
 }
