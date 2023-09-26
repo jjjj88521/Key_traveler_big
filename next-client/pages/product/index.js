@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './product.module.css'
 import Accordion from '@/components/product/accordion'
 import AsideFilter from '@/components/product/AsideFilter'
+import CardHover from '@/components/CardHover'
 
 // <div className="container">
 // <div className={styles['banner']}>
@@ -71,28 +72,7 @@ export default function ProductIndex() {
             </div>
 
             {/* product list & card group  */}
-            <div className="d-flex justify-content-end row row-cols-2 row-cols-md-3 g-4">
-              {Array(12)
-                .fill()
-                .map((_, index) => (
-                  <div className="col " key={index}>
-                    <div className="card">
-                      <img
-                        src="/images/card.png"
-                        className="card-img-top"
-                        alt="..."
-                      />
-                      <div className="card-body">
-                        <h5 className="card-title">Card title</h5>
-                        <p className="card-text">
-                          Some quick example text to build on the card title and
-                          make up the bulk of the cards content.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-            </div>
+            <CardHover></CardHover>
           </div>
         </div>
       </div>

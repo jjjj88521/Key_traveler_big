@@ -1,16 +1,8 @@
-
-
 .card {
-  width: 280px;
-  height: 360px;
-  border-radius: 15px;
-  padding: 1.5rem;
-  background: white;
-  position: relative;
+  /* position: relative;
   display: flex;
   align-items: flex-end;
-  transition: 0.4s ease-out;
-  box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.5);
+  transition: 0.4s ease-out; */
 }
 
 .card:hover:before {
@@ -41,7 +33,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  border-radius: 15px;
+  /* border-radius: 15px; */
 }
 .card .info {
   position: relative;
