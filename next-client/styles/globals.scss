@@ -1,4 +1,4 @@
-// 變數 import 
+// 變數 import
 @import './_variables.scss';
 
 // ↑↑↑  變數覆蓋(Variable overrides) 要寫在這行"上面"  ↑↑↑
@@ -21,7 +21,7 @@
 @import '~@fortawesome/fontawesome-free/scss/solid';
 @import '~@fortawesome/fontawesome-free/scss/brands';
 
-// 引入 ant-design 
+// 引入 ant-design
 // @import '~antd/dist/antd.less';
 
 // fixed for __next root div
@@ -45,8 +45,9 @@ a {
 }
 
 body {
-  font-family: 'Poppins','Noto Sans TC Regular', Helvetica, Arial, 'PingFang TC',
-    '苹方-繁', 'Heiti TC', '黑體-繁', 'Microsoft JhengHei', '微軟正黑體',
+  font-family: 'Poppins', 'Noto Sans TC Regular', Helvetica, Arial,
+    'PingFang TC', '苹方-繁', 'Heiti TC', '黑體-繁', 'Microsoft JhengHei',
+    '微軟正黑體',
     // Cross-platform generic font family (default user interface font)
     system-ui,
     // Safari for macOS and iOS (San Francisco)
@@ -78,10 +79,20 @@ ul, li{
   padding: 1rem;
 }
 
+// 更改按鈕 hover 字體顏色
+.btn-outline-primary {
+  --bs-btn-hover-color: #fff;
+}
+
+.btn-primary {
+  --bs-btn-color: #fff;
+  --bs-btn-hover-color: #fff;
+}
+
 @media screen and (max-width: 576px) {
   main {
     margin-top: 60px;
-  }  
+  }
 }
 
 // below is test only

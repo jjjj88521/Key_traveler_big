@@ -1,0 +1,55 @@
+@import '@/styles/variables';
+
+.swiper-container {
+  height: 580px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+  .swiper-bg {
+    // height: 100%;
+    width: 100%;
+    border-radius: 10px;
+    .swiper-slide {
+      height: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+
+  .swiper-sm {
+    // height: 100%;
+    width: 100%;
+    .swiper-slide {
+      border-radius: 10px;
+      overflow: hidden;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &.active {
+        border: 4px solid $primary;
+
+      }
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .swiper-container {
+    height: 100%;
+  }
+}
