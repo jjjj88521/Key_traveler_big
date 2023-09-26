@@ -127,7 +127,8 @@ export default function Cart() {
           current={0}
           labelPlacement="vertical"
           items={items}
-          responsive="false"
+          responsive={false}
+          className='mt-5'
         />
         <h1 className="text-primary fs-3 pt-5 pb-3">購物車清單</h1>
         {/* 一般商品 */}
@@ -145,7 +146,7 @@ export default function Cart() {
         <table className={`table d-none d-sm-table`}>
           <thead>
             <tr>
-              <th className="bg-primary text-white text-center align-middle">
+              <th className="bg-primary text-white text-center align-middle" style={{ width: '5%' }}>
                 <input type="checkbox" />
               </th>
               <th
@@ -154,11 +155,11 @@ export default function Cart() {
               >
                 商品明細
               </th>
-              <th className="bg-primary text-white ">單價</th>
-              <th className="bg-primary text-white" style={{ width: '20%' }}>
+              <th className="bg-primary text-white" style={{ width: '10%' }}>單價</th>
+              <th className="bg-primary text-white text-center" style={{ width: '15%' }}>
                 數量
               </th>
-              <th className="bg-primary text-white ">小計</th>
+              <th className="bg-primary text-white text-center">小計</th>
               <th className="bg-primary text-white"></th>
             </tr>
           </thead>
@@ -195,8 +196,8 @@ export default function Cart() {
                 </div>
               </td>
               <td className="align-middle">$3000</td>
-              <td className="align-middle ps-3">
-                <div className="input-group w-75">
+              <td className="align-middle ps-4">
+                <div className="input-group">
                   <span className="input-group-text p-0">
                     <button className="btn" type="button">
                       -
@@ -210,13 +211,13 @@ export default function Cart() {
                   </span>
                 </div>
               </td>
-              <td className="align-middle">$3000</td>
+              <td className="align-middle text-center">$3000</td>
               <td className="align-middle">
                 <FontAwesomeIcon icon={faTrashCan} className="text-primary" />
               </td>
             </tr>
             <tr>
-              <td className="pe-3 text-end" colSpan={6}>
+              <td className="pe-5 text-end" colSpan={6}>
                 總計: $6000
               </td>
             </tr>
@@ -249,7 +250,7 @@ export default function Cart() {
               >
                 商品明細
               </th>
-              <th className="bg-primary text-white" style={{ width: '20%' }}>
+              <th className="bg-primary text-white" style={{ width: '25%' }}>
                 租用日期
               </th>
               {/* <th className="bg-primary text-white">數量</th> */}
@@ -290,14 +291,14 @@ export default function Cart() {
                 </div>
               </td>
               <td className="align-middle">
-                <input className="form-control" type="date" />
-                <div className="text-center">
+                <input className="form-control w-75" type="date" />
+                <div className="text-center pe-5 me-4">
                   <FontAwesomeIcon
                     icon={faCaretDown}
                     className="text-secondary"
                   />
                 </div>
-                <input className="form-control" type="date" />
+                <input className="form-control w-75" type="date" />
               </td>
               <td className="align-middle text-center">$3000</td>
               <td className="align-middle">
@@ -348,14 +349,14 @@ export default function Cart() {
                   <div>QK75鍵盤鍵盤鍵盤鍵盤</div>
                   <div className="pt-1">
                     <select
-                      className="form-select form-select-sm mb-1"
-                      style={{ width: '50%' }}
+                      className="form-select form-select-sm mb-1 py-0"
+                      style={{ width: '45%' }}
                     >
                       <option>陽極紅</option>
                     </select>
                     <select
-                      className="form-select form-select-sm"
-                      style={{ width: '50%' }}
+                      className="form-select form-select-sm py-0"
+                      style={{ width: '45%' }}
                     >
                       <option>噴砂銀</option>
                     </select>
@@ -364,16 +365,16 @@ export default function Cart() {
                     <div className="pt-2">$3000</div>
                     <div
                       className="input-group ms-auto "
-                      style={{ width: '60%' }}
+                      style={{ width: '50%' }}
                     >
                       <span className="input-group-text p-0 ">
-                        <button className="btn " type="button">
+                        <button className="btn btn-sm" type="button">
                           -
                         </button>
                       </span>
-                      <input type="number" className="form-control " />
+                      <input type="number" className="form-control py-0" />
                       <span className="input-group-text p-0">
-                        <button className="btn" type="button">
+                        <button className="btn btn-sm" type="button">
                           +
                         </button>
                       </span>
@@ -426,19 +427,19 @@ export default function Cart() {
                   <div>QK75鍵盤鍵盤鍵盤鍵盤</div>
                   <div className="p-1">
                     <select
-                      className="form-select form-select-sm  mb-1"
+                      className="form-select form-select-sm py-0 mb-1"
                       style={{ width: 100 }}
                     >
                       <option>陽極紅</option>
                     </select>
                     <select
-                      className="form-select form-select-sm"
+                      className="form-select form-select-sm py-0"
                       style={{ width: 100 }}
                     >
                       <option>噴砂銀</option>
                     </select>
                   </div>
-                  <RangePicker placeholder={''} className="px-1 ms-1 rounded" />
+                  <RangePicker placeholder={''} className="px-2 ms-1 rounded py-0" />
                   {/* <input className="form-control" type="date" style={{ width: 100 }}/>
                   <div className="text-center">
                     <FontAwesomeIcon
@@ -459,8 +460,8 @@ export default function Cart() {
           </tbody>
         </table>
         {/* 去結帳 */}
-        <div className="my-3">
-          <div className="pb-2 d-flex">
+        <div className="my-4">
+          <div className="pb-2">
             <span className="fs-6">
               使用優惠券(限一般商品): <span>全站85折</span>
             </span>

@@ -29,7 +29,12 @@ export default function Detail() {
         <table className={`table d-none d-sm-table`}>
           <thead>
             <tr>
-              <th className="bg-primary text-white ps-3">商品明細</th>
+              <th
+                className="bg-primary text-white ps-3"
+                style={{ width: '40%' }}
+              >
+                商品明細
+              </th>
               <th className="bg-primary text-white">單價</th>
               <th className="bg-primary text-white">數量</th>
               <th className="bg-primary text-white">小計</th>
@@ -111,15 +116,15 @@ export default function Detail() {
               >
                 商品明細
               </th>
-              <th className="bg-primary text-white" style={{ width: '20%' }}>
+              <th className="bg-primary text-white" >
                 租用日期
               </th>
-              <th className="bg-primary text-white text-center">數量</th>
+              {/* <th className="bg-primary text-white text-center">數量</th> */}
               <th className="bg-primary text-white text-center">小計</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
+            {/* <tr>
               <td className="d-flex">
                 <div className="p-2">
                   <Image
@@ -147,7 +152,7 @@ export default function Detail() {
               </td>
               <td className="align-middle ps-3 text-center">1</td>
               <td className="align-middle text-center">$3000</td>
-            </tr>
+            </tr> */}
             <tr>
               <td className="d-flex">
                 <div className="p-2">
@@ -165,16 +170,24 @@ export default function Detail() {
                 </div>
               </td>
               <td className="align-middle">
-                <input className="form-control" type="date" disabled />
+                <span>2023/08/15</span>
+                <span className="px-1">
+                  <FontAwesomeIcon
+                    icon={faCaretRight}
+                    className="text-secondary"
+                  />
+                </span>
+                <span>2023/08/16</span>
+                {/* <input className="form-control" type="date" disabled />
                 <div className="text-center">
                   <FontAwesomeIcon
                     icon={faCaretDown}
                     className="text-secondary"
                   />
                 </div>
-                <input className="form-control" type="date" disabled />
+                <input className="form-control" type="date" disabled /> */}
               </td>
-              <td className="align-middle ps-3 text-center">1</td>
+              {/* <td className="align-middle ps-3 text-center">1</td> */}
               <td className="align-middle text-center">$3000</td>
             </tr>
             <tr>
