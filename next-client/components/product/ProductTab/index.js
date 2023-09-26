@@ -8,8 +8,8 @@ export default function TabContainer() {
   const [tab, setTab] = useState('intro')
   return (
     <>
-      <div className="px-sm-4 px-0 border-top border-2">
-        <div className="row justify-content-center py-sm-5 py-4 gap-sm-5 gap-0">
+      <div className="px-sm-4 px-0 py-sm-5 py-2 border-top border-2">
+        <div className="row justify-content-center py-4 gap-sm-5 gap-0">
           <div className="col-4 col-sm-auto text-center">
             <TabButton
               isActive={tab === 'intro'}

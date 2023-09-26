@@ -10,6 +10,7 @@ import useStyleSelect from '@/hooks/useStyleSelect'
 import style from './_pd-number-input.module.scss'
 import { isNumber, isString } from 'lodash'
 import GallerySwiper from '@/components/common/gallery-swiper'
+import LikeButton from '@/components/product/like-button'
 
 // 樣式選擇假資料
 const StyleSelectItems = {
@@ -34,7 +35,11 @@ const images = [
 
 export default function ProductDetail() {
   // 使用樣式選擇 hook
-  const [selectedStyles, handleStyleSelect] = useStyleSelect([])
+  const initStyleSelect = Object.keys(StyleSelectItems).map((key) => ({
+    key,
+    value: StyleSelectItems[key][0], // 預設為第一個
+  }))
+  const [selectedStyles, handleStyleSelect] = useStyleSelect(initStyleSelect)
 
   // ===== 輸入數量狀態，按 +、- 按鈕，增減數量 =====
   const initialState = {
@@ -114,7 +119,7 @@ export default function ProductDetail() {
               </div>
               {
                 // 產品樣式選擇
-                Object.keys(StyleSelectItems).map((key) => (
+                Object.keys(StyleSelectItems).map((key, index) => (
                   <StyleSelect
                     key={key}
                     title={key}
@@ -165,10 +170,7 @@ export default function ProductDetail() {
               </div>
               {/* 喜歡按鈕 */}
               <div className="d-flex justify-content-center">
-                <div className="h4">
-                  <i className="fa-regular fa-heart pe-2"></i>
-                  Like
-                </div>
+                <LikeButton isLiked={true} />
               </div>
             </div>
           </div>

@@ -57,6 +57,7 @@ export default function PaginationComponent({
           onChange={handlePageChange}
           itemRender={itemRender}
           showSizeChanger={false}
+          responsive={true}
         />
       </div>
     </>

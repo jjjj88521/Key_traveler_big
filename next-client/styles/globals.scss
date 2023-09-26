@@ -24,6 +24,9 @@
 // 引入 ant-design
 // @import '~antd/dist/antd.less';
 
+// 引入 gallery-swiper
+@import './_gallery-swiper.scss';
+
 // fixed for __next root div
 #__next {
   flex-direction: column;

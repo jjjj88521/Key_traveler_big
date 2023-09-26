@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import style from './_style-select.module.scss'
 
 const StyleSelect = ({ title, children, onSelect, hasTitle = true }) => {
   // 製作點擊後變色的效果，並且儲存點擊的值，預設為第一個 style-select-item
   const [active, setActive] = useState(null)
-  const [selected, setSelected] = useState(null)
+  const [selected, setSelected] = useState(
+    children[0].props.value || children[0].props.children
+  )
+  // console.log(children)
 
   const handleClick = (key, value) => {
     setActive(key)
@@ -37,7 +40,6 @@ const StyleSelect = ({ title, children, onSelect, hasTitle = true }) => {
 
 const Item = ({
   children,
-  active,
   selected,
   key,
   value = children,
@@ -51,7 +53,7 @@ const Item = ({
       }}
       onClick={() => onClick(key, value)}
       className={`${style['style-select-item']} ${
-        active === key && selected === value ? style['active'] : ''
+        selected === value ? style['active'] : ''
       }`}
     >
       {children}
