@@ -4,21 +4,25 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
-  .style-select-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    .style-select-item {
-      cursor: pointer;
-      border-radius: 10px;
-      color: $primary;
-      background-color: #f9f1e7;
-      padding: 5px 10px;
-      transition: all 0.2s ease;
-      &:hover, &.active {
-        background-color: $primary;
-        color: white;
-      }
-    }
+}
+
+.style-select-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.style-select-item {
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 10px;
+  color: $primary;
+  background-color: #f9f1e7;
+  padding: 5px 10px;
+  transition: all 0.2s ease;
+  &:hover,
+  &.active {
+    background-color: $primary;
+    color: white;
   }
 }

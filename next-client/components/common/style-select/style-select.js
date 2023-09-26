@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import style from './_style-select.module.scss'
 
-const StyleSelect = ({ title, children, onSelect }) => {
+const StyleSelect = ({ title, children, onSelect, hasTitle = true }) => {
   // 製作點擊後變色的效果，並且儲存點擊的值，預設為第一個 style-select-item
   const [active, setActive] = useState(null)
   const [selected, setSelected] = useState(null)
@@ -16,7 +16,7 @@ const StyleSelect = ({ title, children, onSelect }) => {
 
   return (
     <div className={`${style['style-select']}`}>
-      <h5 className="text-secondary">{title}</h5>
+      {hasTitle && <h5 className="text-secondary">{title}</h5>}
       <div className={`${style['style-select-list']}`}>
         {React.Children.map(children, (child) => {
           if (React.isValidElement(child)) {
@@ -35,7 +35,15 @@ const StyleSelect = ({ title, children, onSelect }) => {
   )
 }
 
-const Item = ({ active, selected, key, value, onClick, onSelect }) => {
+const Item = ({
+  children,
+  active,
+  selected,
+  key,
+  value = children,
+  onClick,
+  onSelect,
+}) => {
   return (
     <div
       onSelect={() => {
@@ -46,7 +54,7 @@ const Item = ({ active, selected, key, value, onClick, onSelect }) => {
         active === key && selected === value ? style['active'] : ''
       }`}
     >
-      {value}
+      {children}
     </div>
   )
 }

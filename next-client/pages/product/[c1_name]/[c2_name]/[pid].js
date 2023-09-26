@@ -34,7 +34,7 @@ const images = [
 
 export default function ProductDetail() {
   // 使用樣式選擇 hook
-  const { selectedStyles, handleStyleSelect } = useStyleSelect()
+  const [selectedStyles, handleStyleSelect] = useStyleSelect([])
 
   // ===== 輸入數量狀態，按 +、- 按鈕，增減數量 =====
   const initialState = {
@@ -121,7 +121,7 @@ export default function ProductDetail() {
                     onSelect={handleStyleSelect}
                   >
                     {StyleSelectItems[key].map((value, index) => (
-                      <Item key={key + index} value={value} />
+                      <Item key={key + index}>{value}</Item>
                     ))}
                   </StyleSelect>
                 ))

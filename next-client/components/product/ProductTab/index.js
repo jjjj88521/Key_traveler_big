@@ -2,7 +2,7 @@ import { useState } from 'react'
 import TabButton from './TabButton.js'
 import IntroTab from './IntroTab.js'
 import SpecTab from './SpecTab.js'
-import ReviewTab from './ReviewTab.js'
+import ReviewTab from './review-tab/ReviewTab.js'
 
 export default function TabContainer() {
   const [tab, setTab] = useState('intro')

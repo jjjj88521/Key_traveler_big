@@ -20,7 +20,7 @@ function useStyleSelect() {
     }
   }
 
-  return { selectedStyles, handleStyleSelect }
+  return [selectedStyles, handleStyleSelect]
 }
 
 export default useStyleSelect
