@@ -1,12 +1,23 @@
 import React from 'react'
 import Image from 'next/image'
-
+import UserSideBar from './user-side-bar'
+import UserSideBarMobile from './user-side-bar-mobile'
 export default function Profile() {
   return (
     <>
       <div className="container">
         <h2 className="fw-bolder">個人檔案</h2>
         <div className="row my-sm-5 my-3">
+          {/* 下拉選單 */}
+          <div className="col-sm-3 col-12 px-0 mx-0">
+            <div className="d-sm-block d-none">
+              <UserSideBar />
+            </div>
+            <div className="d-sm-none d-block mb-4">
+              <UserSideBarMobile className="col-10 w-100" />
+            </div>
+          </div>
+
           {/* 手機板的avator */}
           <div className="avatar col-12  d-sm-none d-block">
             <p>
@@ -37,10 +48,8 @@ export default function Profile() {
               </div>
             </div>
           </div>
-          {/* 下拉選單記得要跟立軒要 */}
-          <div className="user-sidebar col-3 d-none d-sm-block">下拉選單</div>
           {/* form表單 */}
-          <form action="" className="col-12 col-sm-5">
+          <form action="" className="col-12 col-sm-4 offset-sm-1 ">
             <label htmlFor="name" className="col-form-label ">
               姓名
             </label>

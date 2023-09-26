@@ -7,17 +7,19 @@ export default function UserSideBarMobile() {
     <>
       <div className="dropdown">
         <button
-          className="btn btn-secondary bg-dark text-white dropdown-toggle col-10 offset-1 d-flex justify-content-between align-item-center "
+          className="btn btn-secondary bg-dark text-white dropdown-toggle mx-auto d-flex justify-content-between align-items-center "
           type="button"
           id="dropdownMenuButton1"
           data-bs-toggle="dropdown"
           aria-expanded="false"
+          style={{ width: '90%' }}
         >
           會員中心
         </button>
         <ul
-          className="dropdown-menu col-10 offset-1"
+          className="dropdown-menu"
           aria-labelledby="dropdownMenuButton1"
+          style={{ width: '90%' }}
         >
           <div className="accordion " id="accordionPanelsStayOpenExample">
             {/* 收這裡 */}

@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import Cards from 'react-credit-cards-2'
 import '@/node_modules/react-credit-cards-2/dist/es/styles.scss' // 引入样式
-
+import UserSideBar from './user-side-bar'
+import UserSideBarMobile from './user-side-bar-mobile'
 export default function CreditCardForm() {
   const [cardData, setCardData] = useState({
     cvc: '',
@@ -20,11 +21,18 @@ export default function CreditCardForm() {
   return (
     <>
       <div className="container">
-        <h1 className="fw-bolder mb-5">信用卡管理</h1>
+        <h1 className="fw-bolder mb-sm-5 mb-4 ms-2 ms-sm-0">信用卡管理</h1>
         <div className="row ">
-          <div className="user-sidebar col-3 d-none d-sm-block">下拉選單</div>
+          <div className="col-sm-3 col-12 px-0 mx-0">
+            <div className="d-sm-block d-none">
+              <UserSideBar />
+            </div>
+            <div className="d-sm-none d-block mb-4">
+              <UserSideBarMobile className="col-10 w-100" />
+            </div>
+          </div>
 
-          <form className="col-sm-4 col-12">
+          <form className="col-sm-4 col-12 offset-0 offset-sm-1">
             <section className="mb-3">
               <label htmlFor="number" className="mb-0 form-label">
                 卡號
@@ -75,7 +83,7 @@ export default function CreditCardForm() {
               儲存
             </button>
           </form>
-          <div className="col-sm-3 col-12 offset-sm-2 offset-0">
+          <div className="col-sm-3 col-12 offset-sm-1 offset-0">
             {' '}
             <Cards
               cvc={cardData.cvc}

@@ -11,7 +11,7 @@ function UserSideBar() {
           {/* 以下同一組 */}
           <h2 className="accordion-header">
             <button
-              className="accordion-button bg-primary text-center text-light fw-bold fs-4 d-block text-center"
+              className="accordion-button bg-primary text-center text-light fw-bold fs-5 d-block text-center"
               type="button"
               data-bs-toggle="collapse"
               // {/* 改這裡~~~ */}
@@ -40,7 +40,7 @@ function UserSideBar() {
           {/* 以下同一組 */}
           <h2 className="accordion-header">
             <button
-              className="accordion-button bg-primary text-center text-light fw-bold fs-4 d-block text-center"
+              className="accordion-button bg-primary text-center text-light fw-bold fs-5 d-block text-center"
               type="button"
               data-bs-toggle="collapse"
               // {/* 改這裡~~~ */}
@@ -69,7 +69,7 @@ function UserSideBar() {
           {/* 以下同一組 */}
           <h2 className="accordion-header">
             <button
-              className="accordion-button bg-primary text-center text-light fw-bold fs-4 d-block text-center"
+              className="accordion-button bg-primary text-center text-light fw-bold fs-5 d-block text-center"
               type="button"
               data-bs-toggle="collapse"
               // {/* 改這裡~~~ */}
@@ -96,7 +96,7 @@ function UserSideBar() {
           {/* 以下同一組 */}
           <h2 className="accordion-header">
             <button
-              className="accordion-button bg-primary text-center text-light fw-bold fs-4 d-block text-center"
+              className="accordion-button bg-primary text-center text-light fw-bold fs-5 d-block text-center"
               type="button"
               data-bs-toggle="collapse"
               // {/* 改這裡~~~ */}
@@ -125,7 +125,7 @@ function UserSideBar() {
           {/* 以下同一組 */}
           <h2 className="accordion-header">
             <button
-              className="accordion-button bg-primary text-center text-light fw-bold fs-4 d-block text-center"
+              className="accordion-button bg-primary text-center text-light fw-bold fs-5 d-block text-center"
               type="button"
               data-bs-toggle="collapse"
               // {/* 改這裡~~~ */}
@@ -155,7 +155,7 @@ function UserSideBar() {
           {/* 以下同一組 */}
           <h2 className="accordion-header">
             <button
-              className="accordion-button bg-primary text-center text-light fw-bold fs-4 d-block text-center"
+              className="accordion-button bg-primary text-center text-light fw-bold fs-5 d-block text-center"
               type="button"
               data-bs-toggle="collapse"
               // {/* 改這裡~~~ */}
@@ -184,7 +184,7 @@ function UserSideBar() {
           {/* 以下同一組 */}
           <h2 className="accordion-header">
             <button
-              className="accordion-button bg-primary text-center text-light fw-bold fs-4 d-block text-center"
+              className="accordion-button bg-primary text-center text-light fw-bold fs-5 d-block text-center"
               type="button"
               data-bs-toggle="collapse"
               // {/* 改這裡~~~ */}

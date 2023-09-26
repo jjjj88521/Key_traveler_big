@@ -81,7 +81,7 @@ export default function Article() {
   return (
     <>
       <div className="container">
-        <h2 className="mb-4 mb-sm-5 fw-bolder text-start offset-sm-0 offset-1  col-5 ">
+        <h2 className="mb-4 mb-sm-5 fw-bolder text-start ms-2 ms-sm-0  col-5 ">
           收藏文章
         </h2>
         <div className="row ">

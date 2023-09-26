@@ -1,13 +1,21 @@
 import styles from '@/styles/user/member.module.css'
 import Link from 'next/link'
-
+import UserSideBar from './user-side-bar'
+import UserSideBarMobile from './user-side-bar-mobile'
 export default function ForgetPasswordForm() {
   return (
     <main className={`container`}>
-      <h2 className="mb-5 fw-bolder">重設密碼</h2>
-      <div className="row my-5">
-        <div className="col-sm-3 col-12">下拉選單</div>
-        <div className="col-sm-5 col-12">
+      <h2 className="mb-sm-5 mb-4 fw-bolder">重設密碼</h2>
+      <div className="row mb-5">
+        <div className="col-sm-3 col-12 px-0 mx-0">
+          <div className="d-sm-block d-none">
+            <UserSideBar />
+          </div>
+          <div className="d-sm-none d-block mb-4">
+            <UserSideBarMobile className="col-10 w-100" />
+          </div>
+        </div>
+        <div className="col-sm-4 offset-sm-1 col-12">
           {' '}
           <p className={`text-center mb-3 ${styles['text-note']}`}>
             輸入你的會員電子郵件地址，按下&quot;取得驗証碼&ldquo;按鈕後，我們會將密碼重設指示寄送給你。
