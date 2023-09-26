@@ -1,0 +1,12 @@
+.accBody{
+    background-color: #f0f0f0;
+    color: #333333;
+    /* padding-top: 10px;
+    padding-bottom: 5px; */
+}
+.accBody ul{
+    margin: 0;
+}
+.accBody li{
+    line-height: 2;
+}

@@ -1,0 +1,9 @@
+.tabBtn {
+  border: none;
+  color: #9f9f9f;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  background: none;
+}
