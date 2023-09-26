@@ -7,7 +7,7 @@ export default function TabButton({ children, isActive, onClick }) {
     return (
       <button
         disabled
-        className={`fs-4 p-3 ${styles['tabBtn']}`}
+        className={`fs-4 ${styles['tabBtn']}`}
         style={{ color: 'black', fontWeight: 'bold' }}
       >
         {children}
@@ -21,7 +21,7 @@ export default function TabButton({ children, isActive, onClick }) {
           onClick()
         })
       }}
-      className={`fs-4 p-3 ${styles['tabBtn']}`}
+      className={`fs-4 ${styles['tabBtn']}`}
     >
       {children}
     </button>
