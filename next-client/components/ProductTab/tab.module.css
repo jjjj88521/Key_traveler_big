@@ -1,0 +1,15 @@
+.tabBtn {
+  border: none;
+  color: #9f9f9f;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  background: none;
+}
+
+@media screen and (max-width: 576px) {
+  .tabBtn {
+    font-size: 16px !important;
+  }
+}

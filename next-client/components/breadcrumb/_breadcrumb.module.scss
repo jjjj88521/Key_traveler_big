@@ -1,0 +1,59 @@
+@import '@/styles/variables';
+
+.breadcrumb-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0 30px;
+  .breadcrumb-item {
+    color: $secondary;
+    margin-right: 30px;
+    display: flex;
+    align-items: center;
+    .breadcrumb-text {
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 200px;
+    }
+    a {
+      &:hover {
+        color: $primary;
+      }
+    }
+
+    .breadcrumb-separator {
+      color: white;
+      padding-left: 14px;
+    }
+
+    &.active {
+      color: $primary;
+      border-left: 2px solid $primary;
+      padding-left: 34px;
+      .breadcrumb-separator {
+        display: none;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .breadcrumb-list {
+    font-size: 12px;
+    padding: 0;
+    .breadcrumb-item {
+      margin-right: 5px;
+      .breadcrumb-text {
+        max-width: 70px;
+      }
+      .breadcrumb-separator {
+        padding-left: 10px;
+      }
+      &.active {
+        padding-left: 8px;
+      }
+    }
+  }
+}

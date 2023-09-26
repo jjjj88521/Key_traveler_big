@@ -1,0 +1,33 @@
+.banner {
+  height: 250px;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.banner img {
+  position: static;
+  width: 100%;
+  top: -50px;
+}
+
+.display1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 48px;
+  font-weight: 600;
+}
+
+.sortBtn {
+  display: flex;
+  flex-direction: row;
+  padding: 8px 15px;
+  align-items: center;
+}
+.sortBtn p {
+  margin: 0;
+  padding-right: 10px;
+}
