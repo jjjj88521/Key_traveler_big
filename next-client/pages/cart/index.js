@@ -183,11 +183,6 @@ export default function Cart() {
                       <option>噴砂銀</option>
                     </select>
                   </div>
-                  {/* <div>
-                    <select className="form-select form-select-sm">
-                      <option>噴砂銀</option>
-                    </select>
-                  </div> */}
                 </div>
               </td>
               <td className="align-middle">
@@ -200,21 +195,6 @@ export default function Cart() {
                 </div>
                 <input className="form-control" type="date" />
               </td>
-              {/* <td className="align-middle ps-3">
-                <div className="input-group">
-                  <span className="">
-                    <button type="button" className="btn btn-outline-secondary">
-                      -
-                    </button>
-                  </span>
-                  <input type="number" className="form-control" />
-                  <span className="">
-                    <button type="button" className="btn btn-outline-secondary">
-                      +
-                    </button>
-                  </span>
-                </div>
-              </td> */}
               <td className="align-middle text-center">$3000</td>
               <td className="align-middle">
                 <FontAwesomeIcon icon={faTrashCan} className="text-primary" />
@@ -244,7 +224,6 @@ export default function Cart() {
                   </div>
                 </div>
               </th>
-              {/* <th className="bg-primary text-white text-end" colSpan={2}>V</th> */}
             </tr>
           </thead>
           <tbody>
@@ -265,7 +244,7 @@ export default function Cart() {
                   <div>QK75鍵盤鍵盤鍵盤鍵盤</div>
                   <div className="pt-1">
                     <select
-                      className="form-select form-select-sm  mb-1"
+                      className="form-select form-select-sm mb-1"
                       style={{ width: '50%' }}
                     >
                       <option>陽極紅</option>
@@ -279,40 +258,25 @@ export default function Cart() {
                   </div>
                   <div className="d-flex pt-1">
                     <div className="pt-2">$3000</div>
-                    <div className="input-group" style={{ width: '60%' }}>
-                      {/* <span className="input-group-text p-0"></span> */}
-                      <button
-                        className="btn btn-outline-secondary rounded-start-4"
-                        type="button"
-                      >
-                        -
-                      </button>
-
-                      <input
-                        type="number"
-                        className="form-control border-secondary border-start-0 border-end-0"
-                      />
-                      <span className="input-group-text p-0"></span>
-                      <button
-                        className="btn btn-outline-secondary rounded-end-4"
-                        type="button"
-                      >
-                        +
-                      </button>
+                    <div
+                      className="input-group ms-auto "
+                      style={{ width: '60%' }}
+                    >
+                      <span className="input-group-text p-0 ">
+                        <button className="btn " type="button">
+                          -
+                        </button>
+                      </span>
+                      <input type="number" className="form-control " />
+                      <span className="input-group-text p-0">
+                        <button className="btn" type="button">
+                          +
+                        </button>
+                      </span>
                     </div>
                   </div>
                 </div>
               </td>
-              {/* <td>
-                <div>Qwertykey</div>
-                <div>QK75鍵盤鍵盤鍵盤鍵盤</div>
-                <div>陽極紅</div>
-                <div>噴砂銀</div>
-                <div className="d-flex">
-                  <div>$300</div>
-                  <button>1</button>
-                </div>
-              </td> */}
             </tr>
             <tr>
               <td className="text-end" colSpan={2}>
@@ -370,7 +334,7 @@ export default function Cart() {
                       <option>噴砂銀</option>
                     </select>
                   </div>
-                  <RangePicker placeholder={""}/>
+                  <RangePicker placeholder={''} className="px-1 ms-1 rounded" />
                   {/* <input className="form-control" type="date" style={{ width: 100 }}/>
                   <div className="text-center">
                     <FontAwesomeIcon
@@ -379,28 +343,7 @@ export default function Cart() {
                     />
                   </div>
                   <input className="form-control" type="date" style={{ width: "30%" }}/> */}
-                  <div className="d-flex">
-                    <div>$300</div>
-                    {/* <div className="input-group">
-                      <span>
-                        <button
-                          type="button"
-                          className="btn btn-outline-secondary"
-                        >
-                          -
-                        </button>
-                      </span>
-                      <input type="number" className="form-control" />
-                      <span>
-                        <button
-                          type="button"
-                          className="btn btn-outline-secondary"
-                        >
-                          +
-                        </button>
-                      </span>
-                    </div> */}
-                  </div>
+                  <div className="pt-1 ps-1">$300</div>
                 </div>
               </td>
             </tr>
@@ -413,9 +356,32 @@ export default function Cart() {
         </table>
         {/* 去結帳 */}
         <div className="my-3">
-          <div>
-            使用優惠券(僅限一般商品):{' '}
-            <a className="text-primary text-decoration-none">更換優惠券</a>
+          <div className="pb-2">
+            <span className="">
+              使用優惠券(僅限一般商品): <span>全站9折</span>
+            </span>
+            <div class="btn-group ms-3">
+              <button
+                class="btn btn-sm border-primary text-primary dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                選擇優惠券
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="">
+                    優惠券
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="">
+                    優惠券
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
           <div className="text-danger">
             P.S.若商品種類(一般、團購、租用)相同，產品數量多且收件地址不同需分開結帳！！

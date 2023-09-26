@@ -1,10 +1,16 @@
 import React from 'react'
 import Image from 'next/image'
+// import { DatePicker } from 'antd'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircleChevronDown, faPencil, faCaretDown } from '@fortawesome/free-solid-svg-icons'
-
+import {
+  faCircleChevronDown,
+  faPencil,
+  faCaretDown,
+  faCaretRight,
+} from '@fortawesome/free-solid-svg-icons'
 
 export default function Detail() {
+  // const { RangePicker } = DatePicker
   return (
     <>
       <div className="container">
@@ -99,9 +105,16 @@ export default function Detail() {
         <table className={`table d-none d-sm-table`}>
           <thead>
             <tr>
-              <th className="bg-primary text-white ps-3" style={{ width: '40%' }}>商品明細</th>
-              <th className="bg-primary text-white" style={{ width: '20%' }}>租用日期</th>
-              <th className="bg-primary text-white text-center" >數量</th>
+              <th
+                className="bg-primary text-white ps-3"
+                style={{ width: '40%' }}
+              >
+                商品明細
+              </th>
+              <th className="bg-primary text-white" style={{ width: '20%' }}>
+                租用日期
+              </th>
+              <th className="bg-primary text-white text-center">數量</th>
               <th className="bg-primary text-white text-center">小計</th>
             </tr>
           </thead>
@@ -123,14 +136,14 @@ export default function Detail() {
                 </div>
               </td>
               <td className="align-middle">
-                <input className="form-control" type="date" disabled/>
+                <input className="form-control" type="date" disabled />
                 <div className="text-center">
                   <FontAwesomeIcon
                     icon={faCaretDown}
                     className="text-secondary"
                   />
                 </div>
-                <input className="form-control" type="date" disabled/>
+                <input className="form-control" type="date" disabled />
               </td>
               <td className="align-middle ps-3 text-center">1</td>
               <td className="align-middle text-center">$3000</td>
@@ -152,7 +165,7 @@ export default function Detail() {
                 </div>
               </td>
               <td className="align-middle">
-              <input className="form-control" type="date" disabled/>
+                <input className="form-control" type="date" disabled />
                 <div className="text-center">
                   <FontAwesomeIcon
                     icon={faCaretDown}
@@ -205,9 +218,12 @@ export default function Detail() {
                   <div>噴砂銀</div>
                   <div className="d-flex">
                     <div>$3000</div>
-                    <button className="border border-secondary bg-light ms-auto">
+                    <div
+                      className="border rounded-5 ms-auto text-center"
+                      style={{ width: 70 }}
+                    >
                       1
-                    </button>
+                    </div>
                   </div>
                 </div>
               </td>
@@ -241,9 +257,12 @@ export default function Detail() {
                   <div>噴砂銀</div>
                   <div className="d-flex">
                     <div>$3000</div>
-                    <button className="border border-secondary bg-light ms-auto">
+                    <div
+                      className="border rounded-5 ms-auto text-center"
+                      style={{ width: 70 }}
+                    >
                       1
-                    </button>
+                    </div>
                   </div>
                 </div>
               </td>
@@ -289,13 +308,25 @@ export default function Detail() {
                   <div>QK75鍵盤鍵盤鍵盤鍵盤</div>
                   <div>陽極紅</div>
                   <div>噴砂銀</div>
-                  <div>8/15 ~ 8/16</div>
-                  <div className="d-flex">
-                    <div>$300</div>
-                    <button className="border border-secondary bg-light ms-auto">
-                      1
-                    </button>
+                  <div>
+                    <span>2023/08/15</span>
+                    <span className="px-1">
+                      <FontAwesomeIcon
+                        icon={faCaretRight}
+                        className="text-secondary"
+                      />
+                    </span>
+                    <span>2023/08/16</span>
                   </div>
+                  <div>$300</div>
+                  {/* <div>
+                    <RangePicker
+                      placeholder={''}
+                      className="px-1 rounded border border-0"
+                      style={{ width: 210 }}
+                      disabled
+                    />
+                  </div> */}
                 </div>
               </td>
             </tr>
@@ -313,13 +344,17 @@ export default function Detail() {
                   <div>QK75鍵盤鍵盤鍵盤鍵盤</div>
                   <div>陽極紅</div>
                   <div>噴砂銀</div>
-                  <div>8/15 ~ 8/16</div>
-                  <div className="d-flex">
-                    <div>$300</div>
-                    <button className="border border-secondary bg-light ms-auto">
-                      1
-                    </button>
+                  <div>
+                    <span>2023/08/15</span>
+                    <span className="px-1">
+                      <FontAwesomeIcon
+                        icon={faCaretRight}
+                        className="text-secondary"
+                      />
+                    </span>
+                    <span>2023/08/16</span>
                   </div>
+                  <div>$300</div>
                 </div>
               </td>
             </tr>
