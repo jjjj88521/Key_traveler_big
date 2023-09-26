@@ -111,13 +111,18 @@ export default function ArticleDetail() {
           {/* 左側欄 */}
           <div className="col-sm-8">
             <div
-              className=" border border-5 border-primary position-relative"
-              style={{ padding: '35px 30px' }}
+              className=" border border-1 border-light position-relative"
+              style={{
+                padding: '35px 30px',
+                boxShadow:
+                  '0 0 0 5px #171717, 0 2px 8px 10px rgba(0, 0, 0, .6)',
+              }}
             >
               <i
-                class="fa-regular fa-heart fa-2xl position-absolute "
+                className="fa-regular fa-heart fa-2xl position-absolute btn"
                 style={{ top: '20px', right: '10px' }}
               ></i>
+
               <h2 className="fw-bolder mt-4">資料庫DB-article-title</h2>
               <h5 className="text-secondary mb-5">by.user_id + 發佈時間</h5>
               <p>
@@ -218,6 +223,8 @@ export default function ArticleDetail() {
               dataSource={artComment}
               renderItem={(item, index) => (
                 <List.Item>
+                  {/* <div>2023.09.26</div> */}
+
                   <List.Item.Meta
                     className="mt-3"
                     avatar={
@@ -225,7 +232,20 @@ export default function ArticleDetail() {
                         src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`}
                       />
                     }
-                    title={<a href="https://ant.design">{item.title}</a>}
+                    title={
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <span className="fs-6">{item.title}</span>
+                        <span className="text-secondary fw-light fst-italic">
+                          2023.09.26
+                        </span>
+                      </div>
+                    }
                     description="Ant Design, a design language for background applications, is refined by Ant UED Team"
                   />
                 </List.Item>
