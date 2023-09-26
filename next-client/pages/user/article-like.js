@@ -93,8 +93,8 @@ export default function Article() {
               <h3>組裝教學</h3>
               <h3>活動</h3>
             </nav>
-            <div className="col-sm-4 col-6 mb-4">
-              <div className="card">
+            <div className="col-sm-4 col-6 mb-4 ">
+              <div className="card ">
                 <Link href="#">
                   <img
                     src="https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg"
