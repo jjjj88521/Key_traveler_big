@@ -2,7 +2,7 @@ import Link from 'next/link'
 import React from 'react'
 import { Divider, Space, Tag } from 'antd'
 import UserSideBar from './user-side-bar'
-
+import UserSideBarMobile from './user-side-bar-mobile'
 export default function Article() {
   let data = [
     {
@@ -81,17 +81,25 @@ export default function Article() {
   return (
     <>
       <div className="container">
+        <h2 className="mb-4 mb-sm-5 fw-bolder text-start offset-sm-0 offset-1  col-5 ">
+          收藏文章
+        </h2>
         <div className="row ">
           <div className="col-sm-3 col-12 px-0 mx-0">
-            <UserSideBar />
+            <div className="d-sm-block d-none">
+              <UserSideBar />
+            </div>
+            <div className="d-sm-none d-block col-12">
+              <UserSideBarMobile className="col-12 w-100" />
+            </div>
           </div>
 
           <div className="col-sm-9 col-12 row  mx-0">
-            <nav className="col-12 d-flex justify-content-evenly my-3 mb-5">
-              <h3>公告</h3>
-              <h3>開箱文</h3>
-              <h3>組裝教學</h3>
-              <h3>活動</h3>
+            <nav className="col-12 d-flex justify-content-evenly my-sm-3 mb-sm-5 my-3 ">
+              <h3 className="pb-0 mb-0">公告</h3>
+              <h3 className="pb-0 mb-0">開箱文</h3>
+              <h3 className="pb-0 mb-0">組裝教學</h3>
+              <h3 className="pb-0 mb-0">活動</h3>
             </nav>
             <div className="col-sm-4 col-6 mb-4 ">
               <div className="card ">
