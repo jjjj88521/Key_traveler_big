@@ -1,7 +1,8 @@
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Avatar, List, Space } from 'antd'
 import { Input } from 'antd'
+import CKeditor from '@/components/CKeditor'
 
 const { TextArea } = Input
 const ButtonStyle = {
