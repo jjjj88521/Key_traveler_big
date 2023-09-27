@@ -1,0 +1,19 @@
+$main-color:#DC9329;
+
+.side_category {
+    background-color: white;
+    color: $main-color;
+
+    &:hover {
+        background-color:$main-color;
+        color: white;
+    }
+}
+.list_card {
+    background-color: #F8F9FA;
+
+    &:hover {
+        // background-color: rgba(128, 128, 128,.4);
+        box-shadow: 0 3px 5px rgb(220,147,41,.8);
+    }
+}
