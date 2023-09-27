@@ -2,6 +2,7 @@ import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
 import { Avatar, List, Space } from 'antd'
 import { Input } from 'antd'
+import art_detail_style from '@/styles/article/art_detail_style.module.scss'
 import CKeditor from '@/components/CKeditor'
 
 const { TextArea } = Input
@@ -17,27 +18,27 @@ export default function ArticleDetail() {
   let data = [
     {
       title: 'interest title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      img: 'https://keebsforall.com/cdn/shop/products/DSC00941.jpg?v=1689791499&width=1000',
       user: 'by.user_id',
     },
     {
       title: 'interest title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      img: 'https://keebsforall.com/cdn/shop/products/DSC00941.jpg?v=1689791499&width=1000',
       user: 'by.user_id',
     },
     {
       title: 'interest title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      img: 'https://keebsforall.com/cdn/shop/products/DSC00941.jpg?v=1689791499&width=1000',
       user: 'by.user_id',
     },
     {
       title: 'interest title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      img: 'https://keebsforall.com/cdn/shop/products/DSC00941.jpg?v=1689791499&width=1000',
       user: 'by.user_id',
     },
     {
       title: 'interest title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      img: 'https://keebsforall.com/cdn/shop/products/DSC00941.jpg?v=1689791499&width=1000',
       user: 'by.user_id',
     },
   ]
@@ -255,7 +256,8 @@ export default function ArticleDetail() {
             {/* show more */}
             <div className="d-flex justify-content-center my-4">
               <button
-                className="btn border border-primary text-primary"
+                className={`${art_detail_style['showMoreBTN']} btn border border-primary`}
+                // className="btn border border-primary text-primary"
                 style={{ width: '250px' }}
               >
                 show more
@@ -271,7 +273,9 @@ export default function ArticleDetail() {
             {/* 分類表 */}
             <div className="pb-5 d-none d-sm-block">
               <Link href="#" className="text-decoration-none">
-                <div className="bg-white position-relative p-2">
+                <div
+                  className={`${art_detail_style['category']} position-relative p-2`}
+                >
                   <p className="text-secondary m-0">公告</p>
                   <div className="position-absolute end-0 top-50 translate-middle me-4 text-secondary">
                     0
@@ -280,7 +284,9 @@ export default function ArticleDetail() {
                 </div>
               </Link>
               <Link href="#" className="text-decoration-none">
-                <div className="bg-white position-relative p-2">
+                <div
+                  className={`${art_detail_style['category']} position-relative p-2`}
+                >
                   <p className="text-secondary m-0">開箱文</p>
                   <div className="position-absolute end-0 top-50 translate-middle me-4 text-secondary">
                     0
@@ -289,7 +295,9 @@ export default function ArticleDetail() {
                 </div>
               </Link>
               <Link href="#" className="text-decoration-none">
-                <div className="bg-white position-relative p-2">
+                <div
+                  className={`${art_detail_style['category']} position-relative p-2`}
+                >
                   <p className="text-secondary m-0">組裝教學</p>
                   <div className="position-absolute end-0 top-50 translate-middle me-4 text-secondary">
                     0
@@ -298,7 +306,9 @@ export default function ArticleDetail() {
                 </div>
               </Link>
               <Link href="#" className="text-decoration-none">
-                <div className="bg-white position-relative p-2">
+                <div
+                  className={`${art_detail_style['category']} position-relative p-2`}
+                >
                   <p className="text-secondary m-0">活動</p>
                   <div className="position-absolute end-0 top-50 translate-middle me-4 text-secondary">
                     0
@@ -317,7 +327,7 @@ export default function ArticleDetail() {
                 <>
                   <Link href="#" className="text-decoration-none">
                     <div
-                      className="row pb-2  border-bottom border-2 border-dark"
+                      className={`${art_detail_style['interest_card']} row py-2 border-bottom border-2 border-dark`}
                       key={index}
                     >
                       <div className="col-4 px-0">
@@ -341,7 +351,10 @@ export default function ArticleDetail() {
                         </div>
                       </div>
                       <div className="col-8">
-                        <div className="card border-0">
+                        <div
+                          className="card border-0"
+                          style={{ backgroundColor: 'transparent' }}
+                        >
                           <div className="card-body">
                             <h5 className="card-title">{item.title}</h5>
                             <p className="card-text text-secondary">

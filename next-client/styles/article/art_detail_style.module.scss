@@ -1,1 +1,22 @@
 $main-color:#DC9329;
+
+.showMoreBTN {
+    color: $main-color;
+
+    &:hover {
+        background-color:$main-color;
+        color: white;
+    }
+}
+.category {
+    &:hover {
+        background-color:rgb(0, 0, 0,.1);
+        border-left: 2px solid #171717;
+    }
+}
+.interest_card {
+    background-color: transparent;
+    &:hover {
+        background-color:rgb(0, 0, 0,.1);
+    }
+}
