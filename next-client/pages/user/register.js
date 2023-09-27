@@ -2,7 +2,11 @@ import React from 'react'
 import { Steps } from 'antd'
 import style from '@/styles/user/register.module.scss'
 import { useState } from 'react'
+import { DatePicker, Space } from 'antd'
 
+const disabledDate = (current) => {
+  return current && current > new Date()
+}
 const fakeUserData = [
   {
     name: 'AAA',
@@ -211,7 +215,7 @@ export default function Profile() {
                 let phoneReg = /^09\d{8}$/
                 if (phoneReg.test(e.target.value)) {
                   let mes = ' '
-                  handleErrMessage(e, mes)
+
                   setStepHash(4)
                 } else {
                   let mes = '請輸入正確格式的手機號碼'
@@ -226,52 +230,31 @@ export default function Profile() {
             <label htmlFor="birthday" className="form-label">
               生日
             </label>
-            <div className="input-group">
-              {/*  */}
-              <select
-                type="text"
-                id="birthday-y"
-                name="birthday-y"
-                className="form-select"
-              ></select>{' '}
-              <label
-                htmlFor="birthday-y"
-                className="form-label my-0 align-middle ms-2 me-4 align-middle"
-              >
-                年
-              </label>{' '}
-              {/*               */}{' '}
-              <select
-                type="text"
-                id="birthday-m"
-                name="birthday-m"
-                className="form-select"
-              ></select>
-              <label
-                htmlFor="birthday-m"
-                className="form-label my-0 align-middle  ms-2 me-4 align-middle"
-              >
-                月
-              </label>
-              {/*  */}{' '}
-              <select
-                type="text"
-                id="birthday-d"
-                name="birthday-d"
-                className="form-select"
-              ></select>
-              <label
-                htmlFor="birthday-d"
-                className="form-label my-0 align-middle  ms-2 me-4 align-middle"
-              >
-                日
-              </label>
-              {/*  */}
-            </div>
+            <br />
+            <DatePicker
+              id="email"
+              name="email"
+              disabledDate={disabledDate}
+              onChange={(date, dateString) => {
+                if (dateString) {
+                  let mes = ' '
+                  setErrMesage({ ...errMesage, [e.target.name]: mes })
+                  setStepHash(4)
+                } else {
+                  let mes = '請填入日期'
+                  handleErrMessage(birthday, mes)
+                }
+                ;<p className={stepHash >= 4 ? 'text-danger' : 'text-danger'}>
+                  {errMesage.birthday}
+                </p>
+              }}
+              className="form-control"
+            />
 
             <br />
+
             <label htmlFor="email" className="form-label">
-              E-mail
+              電子信箱
             </label>
             <input
               type="text"
