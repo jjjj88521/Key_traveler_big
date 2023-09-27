@@ -5,24 +5,10 @@ import {
 } from '@/components/common/style-select/style-select'
 import useStyleSelect from '@/hooks/useStyleSelect'
 import { List, Rate } from 'antd'
-import { random } from 'lodash'
 import { useRef, useState } from 'react'
 import CommentItem from './comment-item'
 
-// 評論假資料
-const commentData = Array.from({
-  length: 23,
-}).map((_, i) => ({
-  key: i,
-  account: 'account' + i,
-  avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-  star: Math.ceil(Math.random() * 5),
-  comment: 'comment' + i,
-  // 隨機日期2023-01-01 ~ 2023-12-31
-  createTime: new Date(random(2023, 2023)).toLocaleDateString(),
-}))
-
-export default function ReviewTab() {
+export default function ReviewTab({ commentData }) {
   // 計算平均星數，四捨五入到小數點第一位
   const averageStar = (
     commentData.reduce((sum, item) => sum + item.star, 0) / commentData.length
@@ -60,10 +46,10 @@ export default function ReviewTab() {
   const displayedData = commentData.slice(startIndex, endIndex)
 
   return (
-    <div className="comment-list">
+    <div className="comment-list py-3">
       {/* 上方選單區 */}
       <div
-        className="row py-3 border-bottom border-2 border-primary"
+        className="row pb-3 border-bottom border-2 border-primary"
         ref={commentListRef}
       >
         {/* 平均星數 */}
@@ -124,7 +110,7 @@ export default function ReviewTab() {
       <div className="pt-3">
         <PaginationComponent
           totalItems={commentData.length}
-          pageSize={5}
+          pageSize={pageSize}
           onPageChange={handlePageChange}
         />
       </div>

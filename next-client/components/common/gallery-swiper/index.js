@@ -24,7 +24,7 @@ const GallerySwiper = ({ images = [], path = '' }) => {
   const swiper = useSwiper()
 
   return (
-    <div className={`${style['swiper-container']} gallery-swiper`}>
+    <div className={`${style['swiper-container']} gallery-swiper pb-4 pb-sm-0`}>
       {/* 上方大圖 */}
       <Image.PreviewGroup>
         <Swiper
@@ -54,9 +54,10 @@ const GallerySwiper = ({ images = [], path = '' }) => {
         spaceBetween={30}
         slidesPerView={5}
         watchSlidesProgress={true}
-        modules={[Navigation, Thumbs]}
+        modules={[FreeMode, Navigation, Thumbs]}
+        freeMode={true}
         className={`${style['swiper-sm']} d-none d-sm-flex swiper-sm`}
-        loop={true}
+        loop={false}
         // navigation={{ clickable: true }}
       >
         {images.map((item, index) => {

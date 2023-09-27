@@ -1,7 +1,6 @@
 @import '@/styles/variables';
 
 .swiper-container {
-  height: 580px;
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -9,7 +8,9 @@
   .swiper-bg {
     // height: 100%;
     width: 100%;
+    height: 465px;
     border-radius: 10px;
+    border: 1px solid #f9f1e7;
     .swiper-slide {
       height: 100%;
       border-radius: 10px;
@@ -27,7 +28,7 @@
   }
 
   .swiper-sm {
-    // height: 100%;
+    height: 75px;
     width: 100%;
     .swiper-slide {
       border-radius: 10px;
@@ -47,6 +48,8 @@
 
 @media screen and (max-width: 576px) {
   .swiper-container {
-    height: 100%;
+    .swiper-bg {
+      height: 265px;
+    }
   }
 }

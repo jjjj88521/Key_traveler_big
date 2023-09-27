@@ -1,7 +1,16 @@
-export default function IntroTab() {
+export default function IntroTab({ feature, featureImgs }) {
   return (
     <>
-      <p>商品說明說明說明說明說明說明</p>
+      {/* 文字 */}
+      {feature.split('\n').map((text, index) => (
+        <p key={index}>{text}</p>
+      ))}
+      {/* 圖片 */}
+      <div className="text-center w-100">
+        {featureImgs.map((img, index) => (
+          <img key={index} src={`/images/product/${img}`} className="w-100" />
+        ))}
+      </div>
     </>
   )
 }
