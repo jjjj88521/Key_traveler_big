@@ -16,7 +16,7 @@ export default function ProductHead({
   price,
   images,
   rating,
-  commentNum,
+  commentCount,
   isLiked = false,
   StyleSelectItems,
 }) {
@@ -95,10 +95,10 @@ export default function ProductHead({
                   <span> / 5</span>
                 </div>
                 <div className="col-6">
-                  <Rate disabled defaultValue={4.5} allowHalf />
+                  <Rate disabled defaultValue={rating} allowHalf />
                 </div>
                 <div className="col border-start border-2">
-                  <span className="text-secondary">{commentNum} 則評論</span>
+                  <span className="text-secondary">{commentCount} 則評論</span>
                 </div>
               </div>
             </div>

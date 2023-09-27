@@ -9,6 +9,7 @@ export default function TabContainer({
   featureImgs,
   specTable,
   commentData,
+  commentCount,
 }) {
   const [tab, setTab] = useState('intro')
   return (
@@ -37,7 +38,7 @@ export default function TabContainer({
                 isActive={tab === 'review'}
                 onClick={() => setTab('review')}
               >
-                商品評價[5]
+                商品評價[{commentCount}]
               </TabButton>
             </div>
           </div>

@@ -81,7 +81,7 @@ const product = {
 
 // 評論假資料
 const commentData = Array.from({
-  length: 23,
+  length: 36,
 }).map((_, i) => ({
   key: i,
   account: 'account' + i,
@@ -104,6 +104,10 @@ export default function ProductDetail() {
     feature,
     spec,
   } = product
+
+  const ratingSum = commentData.reduce((acc, cur) => acc + cur.star, 0)
+  const avgRating = (ratingSum / commentData.length).toFixed(1)
+
   return (
     <>
       <Head>
@@ -115,8 +119,8 @@ export default function ProductDetail() {
         brand={brand}
         price={price}
         images={images}
-        rating={'4.5'}
-        commentNum={'5'}
+        rating={avgRating}
+        commentCount={commentData.length}
         isLiked={false}
         StyleSelectItems={style_select}
       />
@@ -126,6 +130,7 @@ export default function ProductDetail() {
         featureImgs={feature_imgs}
         specTable={spec}
         commentData={commentData}
+        commentCount={commentData.length}
       ></TabContainer>
       {/* 喜歡商品 */}
       <section className="">
