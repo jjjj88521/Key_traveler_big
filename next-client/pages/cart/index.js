@@ -22,7 +22,14 @@ export default function Cart() {
       title: '完成訂單',
     },
   ]
-  // step 2
+
+  const [amount, setAmount] = useState(0)
+  
+  const handleIncrement = (id)=>{
+    // amount += 1
+    setAmount(amount)
+  }
+
   const cardListData = [
     {
       value: '1',
@@ -128,7 +135,7 @@ export default function Cart() {
           labelPlacement="vertical"
           items={items}
           responsive={false}
-          className='mt-5'
+          className="mt-5"
         />
         <h1 className="text-primary fs-3 pt-5 pb-3">購物車清單</h1>
         {/* 一般商品 */}
@@ -146,7 +153,10 @@ export default function Cart() {
         <table className={`table d-none d-sm-table`}>
           <thead>
             <tr>
-              <th className="bg-primary text-white text-center align-middle" style={{ width: '5%' }}>
+              <th
+                className="bg-primary text-white text-center align-middle"
+                style={{ width: '5%' }}
+              >
                 <input type="checkbox" />
               </th>
               <th
@@ -155,8 +165,13 @@ export default function Cart() {
               >
                 商品明細
               </th>
-              <th className="bg-primary text-white" style={{ width: '10%' }}>單價</th>
-              <th className="bg-primary text-white text-center" style={{ width: '15%' }}>
+              <th className="bg-primary text-white" style={{ width: '10%' }}>
+                單價
+              </th>
+              <th
+                className="bg-primary text-white text-center"
+                style={{ width: '15%' }}
+              >
                 數量
               </th>
               <th className="bg-primary text-white text-center">小計</th>
@@ -199,21 +214,25 @@ export default function Cart() {
               <td className="align-middle ps-4">
                 <div className="input-group">
                   <span className="input-group-text p-0">
-                    <button className="btn" type="button">
+                    <button className="btn" type="button" onClick={()=>{}}>
                       -
                     </button>
                   </span>
-                  <input type="number" className="form-control " />
+                  <input type="text" className="form-control " value={amount}/>
                   <span className="input-group-text p-0">
-                    <button className="btn" type="button">
+                    <button className="btn" type="button" onClick={()=>{
+                      handleIncrement(id)
+                    }}>
                       +
                     </button>
                   </span>
                 </div>
               </td>
               <td className="align-middle text-center">$3000</td>
-              <td className="align-middle">
-                <FontAwesomeIcon icon={faTrashCan} className="text-primary" />
+              <td className="align-middle text-center">
+                <button className="btn border-white">
+                  <FontAwesomeIcon icon={faTrashCan} className="text-primary" />
+                </button>
               </td>
             </tr>
             <tr>
@@ -301,8 +320,10 @@ export default function Cart() {
                 <input className="form-control w-75" type="date" />
               </td>
               <td className="align-middle text-center">$3000</td>
-              <td className="align-middle">
-                <FontAwesomeIcon icon={faTrashCan} className="text-primary" />
+              <td className="align-middle text-center">
+                <button className="btn border-white">
+                  <FontAwesomeIcon icon={faTrashCan} className="text-primary" />
+                </button>
               </td>
             </tr>
             <tr>
@@ -439,7 +460,10 @@ export default function Cart() {
                       <option>噴砂銀</option>
                     </select>
                   </div>
-                  <RangePicker placeholder={''} className="px-2 ms-1 rounded py-0" />
+                  <RangePicker
+                    placeholder={''}
+                    className="px-2 ms-1 rounded py-0"
+                  />
                   {/* <input className="form-control" type="date" style={{ width: 100 }}/>
                   <div className="text-center">
                     <FontAwesomeIcon

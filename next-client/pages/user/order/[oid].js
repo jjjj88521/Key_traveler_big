@@ -1,11 +1,10 @@
-import React from 'react'
+// import React from 'react'
 import Image from 'next/image'
 // import { DatePicker } from 'antd'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faCircleChevronDown,
   faPencil,
-  faCaretDown,
   faCaretRight,
 } from '@fortawesome/free-solid-svg-icons'
 
@@ -13,7 +12,7 @@ export default function Detail() {
   // const { RangePicker } = DatePicker
   return (
     <>
-      <div className="container">
+      <div className="container py-4">
         {/* 一般商品 */}
         <div className="mb-3 text-primary d-none d-sm-block d-sm-flex">
           <div className="pe-2">
@@ -35,10 +34,10 @@ export default function Detail() {
               >
                 商品明細
               </th>
-              <th className="bg-primary text-white">單價</th>
-              <th className="bg-primary text-white">數量</th>
-              <th className="bg-primary text-white">小計</th>
-              <th className="bg-primary text-white">評價</th>
+              <th className="bg-primary text-white text-center">單價</th>
+              <th className="bg-primary text-white text-center">數量</th>
+              <th className="bg-primary text-white text-center">小計</th>
+              <th className="bg-primary text-white text-center">評價</th>
             </tr>
           </thead>
           <tbody>
@@ -58,11 +57,13 @@ export default function Detail() {
                   <div>噴砂銀</div>
                 </div>
               </td>
-              <td className="align-middle">$3000</td>
-              <td className="align-middle ps-3">1</td>
-              <td className="align-middle">$3000</td>
-              <td className="align-middle ps-3">
-                <FontAwesomeIcon icon={faPencil} className="text-primary" />
+              <td className="align-middle text-center">$3000</td>
+              <td className="align-middle ps-3 text-center">1</td>
+              <td className="align-middle text-center">$3000</td>
+              <td className="align-middle ps-3 text-center">
+                <button className="btn">
+                  <FontAwesomeIcon icon={faPencil} className="text-primary" />
+                </button>
               </td>
             </tr>
             <tr>
@@ -81,16 +82,18 @@ export default function Detail() {
                   <div>噴砂銀</div>
                 </div>
               </td>
-              <td className="align-middle">$3000</td>
-              <td className="align-middle ps-3">1</td>
-              <td className="align-middle">$3000</td>
-              <td className="align-middle ps-3">
-                <FontAwesomeIcon icon={faPencil} className="text-primary" />
+              <td className="align-middle text-center">$3000</td>
+              <td className="align-middle ps-3 text-center">1</td>
+              <td className="align-middle text-center">$3000</td>
+              <td className="align-middle ps-3 text-center">
+                <button className="btn">
+                  <FontAwesomeIcon icon={faPencil} className="text-primary" />
+                </button>
               </td>
             </tr>
             <tr>
-              <td className="text-end" colSpan={5}>
-                總計: $6000
+              <td className="text-end pe-4" colSpan={5}>
+                <div className="pe-4">總計: $6000</div>
               </td>
             </tr>
           </tbody>
@@ -116,10 +119,10 @@ export default function Detail() {
               >
                 商品明細
               </th>
-              <th className="bg-primary text-white" >
+              <th className="bg-primary text-white" style={{ width: '25%' }}>
                 租用日期
               </th>
-              {/* <th className="bg-primary text-white text-center">數量</th> */}
+              <th className="bg-primary text-white text-center">數量</th>
               <th className="bg-primary text-white text-center">小計</th>
             </tr>
           </thead>
@@ -171,7 +174,7 @@ export default function Detail() {
               </td>
               <td className="align-middle">
                 <span>2023/08/15</span>
-                <span className="px-1">
+                <span className="px-2">
                   <FontAwesomeIcon
                     icon={faCaretRight}
                     className="text-secondary"
@@ -187,19 +190,19 @@ export default function Detail() {
                 </div>
                 <input className="form-control" type="date" disabled /> */}
               </td>
-              {/* <td className="align-middle ps-3 text-center">1</td> */}
+              <td className="align-middle ps-3 text-center">1</td>
               <td className="align-middle text-center">$3000</td>
             </tr>
             <tr>
-              <td className="text-end pe-5" colSpan={4}>
-                總計: $6000
+              <td className="text-end pe-5 " colSpan={4}>
+                <div className="pe-4 ">總計: $6000</div>
               </td>
             </tr>
           </tbody>
         </table>
         {/* 一般商品 */}
         {/* 歷史訂單明細頁 手機版 */}
-        <table className={`table d-table d-sm-none`}>
+        <table className="table d-table d-sm-none">
           <thead>
             <tr>
               <th className="bg-primary text-white" colSpan={3}>
@@ -251,7 +254,9 @@ export default function Detail() {
                 </div>
               </td> */}
               <td className="align-middle">
-                <FontAwesomeIcon icon={faPencil} className="text-primary" />
+                <button className="btn">
+                  <FontAwesomeIcon icon={faPencil} className="text-primary" />
+                </button>
               </td>
             </tr>
             <tr>
@@ -280,11 +285,13 @@ export default function Detail() {
                 </div>
               </td>
               <td className="align-middle">
-                <FontAwesomeIcon icon={faPencil} className="text-primary" />
+                <button className="btn">
+                  <FontAwesomeIcon icon={faPencil} className="text-primary" />
+                </button>
               </td>
             </tr>
             <tr>
-              <td className="text-end" colSpan={2}>
+              <td className="text-end pe-3" colSpan={2}>
                 總計: $6000
               </td>
             </tr>
@@ -323,7 +330,7 @@ export default function Detail() {
                   <div>噴砂銀</div>
                   <div>
                     <span>2023/08/15</span>
-                    <span className="px-1">
+                    <span className="px-2">
                       <FontAwesomeIcon
                         icon={faCaretRight}
                         className="text-secondary"
@@ -359,7 +366,7 @@ export default function Detail() {
                   <div>噴砂銀</div>
                   <div>
                     <span>2023/08/15</span>
-                    <span className="px-1">
+                    <span className="px-2">
                       <FontAwesomeIcon
                         icon={faCaretRight}
                         className="text-secondary"
@@ -372,7 +379,7 @@ export default function Detail() {
               </td>
             </tr>
             <tr>
-              <td className="text-end" colSpan={2}>
+              <td className="text-end pe-3" colSpan={2}>
                 總計: $6000
               </td>
             </tr>

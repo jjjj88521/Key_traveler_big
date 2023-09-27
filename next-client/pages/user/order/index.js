@@ -1,9 +1,24 @@
-import React from 'react'
+import { React, useState } from 'react'
 // import style from '@/styles/order.module.scss'
 import UserSideBar from '../user-side-bar'
 import UserSideBarMobile from '../user-side-bar-mobile'
+import PaginationComponent from '@/components/common/PaginationComponent'
 
 export default function Order() {
+  // const [currentPage, setCurrentPage] = useState(1)
+  // // 每頁顯示的項目數量
+  // const pageSize = 10
+  // // 處理頁碼變更事件
+  // const handlePageChange = (page) => {
+  //   setCurrentPage(page)
+  //   console.log('currentPage is' + currentPage)
+  //   // 在這裡可以處理分頁後的資料載入或其他操作
+  // }
+
+  // // 根據目前頁和每頁顯示的數量計算要顯示的數據
+  // const startIndex = (currentPage - 1) * pageSize
+  // const endIndex = startIndex + pageSize
+  // const displayedData = data.slice(startIndex, endIndex)
   return (
     <>
       <div className="container">
@@ -23,9 +38,7 @@ export default function Order() {
               <UserSideBarMobile className="col-12 w-100" />
             </div>
           </div>
-          <nav className=" d-flex justify-content-evenly col-sm-8  offset-sm-1 col-12 d-block d-sm-none  mt-4 mb-3">
-            
-          </nav>
+          <nav className=" d-flex justify-content-evenly col-sm-8  offset-sm-1 col-12 d-block d-sm-none  mt-4 mb-3"></nav>
           <div className="col-sm-8 offset-sm-1 col-12">
             {/* 歷史訂單列表頁 電腦版 */}
             {/* {`table d-none d-sm-table`} */}
@@ -89,6 +102,12 @@ export default function Order() {
                 </tr>
               </tbody>
             </table>
+            {/* <PaginationComponent
+              totalItems={data.length} // 總項目數量
+              pageSize={pageSize} // 每頁顯示的項目數量
+              currentPage={currentPage} // 目前頁碼
+              onPageChange={handlePageChange} // 處理頁碼變化事件的callback function
+            /> */}
           </div>
         </div>
       </div>
