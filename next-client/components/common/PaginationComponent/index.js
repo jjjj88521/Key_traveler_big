@@ -1,34 +1,25 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Pagination } from 'antd'
 
+// 建立 PaginationComponent 组件
 export default function PaginationComponent({
   totalItems,
   pageSize,
   onPageChange,
-  currentPage, // 傳遞當前頁碼
 }) {
-  const [internalCurrentPage, setInternalCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(1)
 
-  useEffect(() => {
-    // 當傳遞的 currentPage 改變時，更新內部的 currentPage
-    setInternalCurrentPage(currentPage)
-  }, [currentPage])
-
+  // 頁數變化
   const handlePageChange = (page) => {
-    setInternalCurrentPage(page)
-    onPageChange(page)
+    setCurrentPage(page)
+    onPageChange(page) // 呼叫傳遞進來的 onPageChange
   }
 
   const itemRender = (page, type, originalElement) => {
     if (type === 'prev' || type === 'next') {
       return (
         <>
-          <div
-            className={`bg-primary-subtle text-primary ${
-              page === internalCurrentPage ? 'currentPage' : 'otherPage'
-            }`}
-            style={{ borderRadius: '6px' }}
-          >
+          <div className="bg-primary-subtle text-primary" style={{ borderRadius: '6px' }}>
             <i
               className={
                 type === 'prev'
@@ -43,11 +34,9 @@ export default function PaginationComponent({
 
     return (
       <div
-        className={`${
-          page === internalCurrentPage
-            ? 'text-light'
-            : 'text-primary bg-primary-subtle'
-        } ${page === internalCurrentPage ? 'currentPage' : 'otherPage'}`}
+        className={
+          currentPage === page ? 'text-light' : 'text-primary bg-primary-subtle'
+        }
         style={{ borderRadius: '6px' }}
       >
         {originalElement}
@@ -56,15 +45,17 @@ export default function PaginationComponent({
   }
 
   return (
-    <div className="d-flex justify-content-center">
-      <Pagination
-        current={internalCurrentPage}
-        total={totalItems}
-        pageSize={pageSize}
-        onChange={handlePageChange}
-        itemRender={itemRender}
-        showSizeChanger={false}
-      />
-    </div>
+    <>
+      <div className="d-flex justify-content-center">
+        <Pagination
+          current={currentPage}
+          total={totalItems}
+          pageSize={pageSize}
+          onChange={handlePageChange}
+          itemRender={itemRender}
+          showSizeChanger={false}
+        />
+      </div>
+    </>
   )
 }
