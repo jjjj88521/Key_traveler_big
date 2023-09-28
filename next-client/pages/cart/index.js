@@ -9,6 +9,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 export default function Cart() {
+  
+
   // step 1
   const { RangePicker } = DatePicker
   const items = [
@@ -22,14 +24,36 @@ export default function Cart() {
       title: '完成訂單',
     },
   ]
-
-  const [amount, setAmount] = useState(0)
+const initialProducts = [
+  {
+    id:0,
+    img:"/images/1669370674683000804.jpg",
+    price:3000,
+    amount:1,
+    
+  },
+  {
+    id:1,
+    img:"/images/1669370674683000804.jpg",
+    price:1000,
+    amount:2
+  },
+]
+const [products, setProducts] = useState(initialProducts)
+  const upDateAmount = (products, id, value)=>{
+    return (products.map((product)=>{
+      if (product.id === id) return {...product, amount: product.amount + value}
+      else return {...product}
+    }))
+  }
   
   const handleIncrement = (id)=>{
-    // amount += 1
-    setAmount(amount)
+    setProducts(upDateAmount(products, id, 1))
+    
   }
-
+  const handleDecrement = (id)=>{
+    setProducts(upDateAmount(products, id, -1))
+  }
   const cardListData = [
     {
       value: '1',
@@ -108,7 +132,7 @@ export default function Cart() {
   const [paymentData, setPaymentData] = useState(cardListData)
   const [newBank, setNewBank] = useState('aa銀行')
   const [newLast4num, setNewLast4num] = useState('')
-
+let a=1
   const addPaymentOption = () => {
     console.log('newBank is:' + newBank + ',newLast4num is:' + newLast4num)
     if (newBank.trim() !== '' && newLast4num.trim() !== '') {
@@ -128,6 +152,7 @@ export default function Cart() {
 
   return (
     <>
+   
       {/* step 1 */}
       <div className="container">
         <Steps
@@ -179,7 +204,7 @@ export default function Cart() {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            {/* <tr>
               <td className="text-center align-middle">
                 <input type="checkbox" />
               </td>
@@ -218,7 +243,7 @@ export default function Cart() {
                       -
                     </button>
                   </span>
-                  <input type="text" className="form-control " value={amount}/>
+                  <input type="text" className="form-control text-center" value={amount}/>
                   <span className="input-group-text p-0">
                     <button className="btn" type="button" onClick={()=>{
                       handleIncrement(id)
@@ -234,10 +259,71 @@ export default function Cart() {
                   <FontAwesomeIcon icon={faTrashCan} className="text-primary" />
                 </button>
               </td>
+            </tr> */}
+            {products.map((product)=>(
+            <tr key={product.id}>
+              <td className="text-center align-middle">
+                <input type="checkbox" />
+              </td>
+              <td className="d-flex">
+                <div className="p-2">
+                  <img
+                    src={product.img}
+                    width={100}
+                    height={100}
+                  />
+                </div>
+                <div className="p-2">
+                  <div>Qwertykey</div>
+                  <div>QK75鍵盤鍵盤鍵盤鍵盤</div>
+                  <div className="pt-1">
+                    <select
+                      className="form-select form-select-sm mb-1"
+                      style={{ width: 140 }}
+                    >
+                      <option>陽極紅</option>
+                    </select>
+                    <select
+                      className="form-select form-select-sm"
+                      style={{ width: 140 }}
+                    >
+                      <option>噴砂銀</option>
+                    </select>
+                  </div>
+                </div>
+              </td>
+              <td className="align-middle">${product.price}</td>
+              <td className="align-middle ps-4">
+                <div className="input-group">
+                  <span className="input-group-text p-0">
+                    <button className="btn" type="button" onClick={()=>{
+                      handleDecrement(product.id)
+                    }}>
+                      -
+                    </button>
+                  </span>
+                  <input type="text" className="form-control text-center" value={product.amount}/>
+                  <span className="input-group-text p-0">
+                    <button className="btn" type="button" onClick={()=>{
+                      handleIncrement(product.id)
+                    }}>
+                      +
+                    </button>
+                  </span>
+                </div>
+              </td>
+              <td className="align-middle text-center">${product.price*product.amount}</td>
+              <td className="align-middle text-center">
+                <button className="btn border-white">
+                  <FontAwesomeIcon icon={faTrashCan} className="text-primary" />
+                </button>
+              </td>
             </tr>
+            ))}
             <tr>
+            
               <td className="pe-5 text-end" colSpan={6}>
-                總計: $6000
+                總計: {a}
               </td>
             </tr>
           </tbody>
