@@ -60,6 +60,19 @@ export default function Profile() {
   })
   //宣告步驟碼
   const [stepHash, setStepHash] = useState(-1)
+  //宣告完成狀態
+  const stepStateArray = ['wait', 'process', 'finish', 'error']
+  const [stepState, setStepState] = useState({
+    name: stepStateArray[0],
+    account: stepStateArray[0],
+    address: stepStateArray[0],
+    gender: stepStateArray[0],
+    phone: stepStateArray[0],
+    birthday: stepStateArray[0],
+    email: stepStateArray[0],
+    password: stepStateArray[0],
+    confirmPassword: stepStateArray[0],
+  })
 
   // ant design 套件用
   const [
@@ -76,6 +89,10 @@ export default function Profile() {
 
   function handleErrMessage(e, mes) {
     setErrMesage({ ...errMesage, [e.target.name]: mes })
+  }
+  //在這裡~~~
+  function handleSetStepState(e, i) {
+    setStepState({ ...stepState, [e.target.name]: stepStateArray[i] })
   }
   function handleSetformData(e, mes) {
     setformData({ ...formData, [e.target.name]: e.target.value })
@@ -421,30 +438,39 @@ export default function Profile() {
             items={[
               {
                 title: name,
+                status: stepState.name,
               },
               {
                 title: account,
+                status: stepState.account,
               },
               {
                 title: address,
+                status: stepState.address,
               },
               {
                 title: gender,
+                status: stepState.gender,
               },
               {
                 title: phone,
+                status: stepState.phone,
               },
               {
                 title: birthday,
+                status: stepState.birthday,
               },
               {
                 title: email,
+                status: stepState.email,
               },
               {
                 title: password,
+                status: stepState.password,
               },
               {
                 title: confirmPassword,
+                status: stepState.confirmPassword,
               },
             ]}
           />
