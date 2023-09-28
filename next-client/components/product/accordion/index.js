@@ -3,23 +3,24 @@ import styles from './index.module.css'
 
 function Accordion() {
   return (
-    <div className="accordion" id="accordionPanelsStayOpenExample">
+    <div className="accordion" id="accordionExample">
       <div className="accordion-item">
         <h2 className="accordion-header">
           <button
             className="accordion-button collapsed bg-primary text-center text-light fw-bold fs-5 d-block text-center"
             type="button"
             data-bs-toggle="collapse"
-            data-bs-target="#panelsStayOpen-collapseOne"
+            data-bs-target="#collapseOne"
             aria-expanded="false"
-            aria-controls="panelsStayOpen-collapseOne"
+            aria-controls="collapseOne"
           >
             套件
           </button>
         </h2>
         <div
-          id="panelsStayOpen-collapseOne"
+          id="collapseOne"
           className="accordion-collapse collapse"
+          data-bs-parent="#accordionExample"
         >
           <div className={`accordion-body ${styles['accBody']}`}>
             <ul>
@@ -40,16 +41,17 @@ function Accordion() {
             className="accordion-button collapsed bg-primary text-center text-light fw-bold fs-5 d-block text-center"
             type="button"
             data-bs-toggle="collapse"
-            data-bs-target="#panelsStayOpen-collapseTwo"
+            data-bs-target="#collapseTwo"
             aria-expanded="false"
-            aria-controls="panelsStayOpen-collapseTwo"
+            aria-controls="collapseTwo"
           >
             軸體
           </button>
         </h2>
         <div
-          id="panelsStayOpen-collapseTwo"
+          id="collapseTwo"
           className="accordion-collapse collapse"
+          data-bs-parent="#accordionExample"
         >
           <div className={`accordion-body ${styles['accBody']}`}>
             <ul>
@@ -65,16 +67,17 @@ function Accordion() {
             className="accordion-button collapsed bg-primary text-center text-light fw-bold fs-5 d-block text-center"
             type="button"
             data-bs-toggle="collapse"
-            data-bs-target="#panelsStayOpen-collapseThree"
+            data-bs-target="#collapseThree"
             aria-expanded="false"
-            aria-controls="panelsStayOpen-collapseThree"
+            aria-controls="collapseThree"
           >
             鍵帽
           </button>
         </h2>
         <div
-          id="panelsStayOpen-collapseThree"
+          id="collapseThree"
           className="accordion-collapse collapse"
+          data-bs-parent="#accordionExample"
         >
           <div className={`accordion-body ${styles['accBody']}`}>
             <ul>
