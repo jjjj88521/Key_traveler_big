@@ -2,6 +2,7 @@ import Link from 'next/link'
 import React from 'react'
 import { Divider, Space, Tag } from 'antd'
 import art_list_style from '@/styles/article/art_list_style.module.scss'
+import PaginationComponent from '@/components/common/PaginationComponent'
 
 export default function Article() {
   // const fontColor = {
@@ -219,7 +220,7 @@ export default function Article() {
               return (
                 <div className="col mb-4" key={index}>
                   <div className={`${art_list_style['list_card']} card`}>
-                    <Link href="#">
+                    <Link href="/article/article_detail">
                       <img src={item.img} className="card-img-top" alt="..." />
                     </Link>
 
@@ -241,6 +242,7 @@ export default function Article() {
                 </div>
               )
             })}
+            {/* 放分頁 */}
           </div>
         </div>
       </div>

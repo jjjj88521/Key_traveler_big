@@ -14,6 +14,8 @@ const ButtonStyle = {
   backgroundColor: '#198cf8',
 }
 export default function ArticleDetail() {
+  const [like, setLike] = useState(false)
+
   // 感興趣列表物件
   let data = [
     {
@@ -120,10 +122,25 @@ export default function ArticleDetail() {
                   '0 0 0 5px #171717, 0 2px 8px 10px rgba(0, 0, 0, .6)',
               }}
             >
-              <i
-                className="fa-regular fa-heart fa-2xl position-absolute btn"
-                style={{ top: '20px', right: '10px' }}
-              ></i>
+              {/* 收藏按鈕 */}
+              <a
+                type="button"
+                onClick={() => {
+                  like ? setLike(false) : setLike(true)
+                }}
+              >
+                {like ? (
+                  <i
+                    className="fa-solid fa-heart fa-2xl position-absolute"
+                    style={{ top: '20px', right: '10px', color: '#ff0000' }}
+                  ></i>
+                ) : (
+                  <i
+                    className="fa-regular fa-heart fa-2xl position-absolute"
+                    style={{ top: '20px', right: '10px' }}
+                  ></i>
+                )}
+              </a>
 
               <h2 className="fw-bolder mt-4">資料庫DB-article-title</h2>
               <h5 className="text-secondary mb-5">by.user_id + 發佈時間</h5>
@@ -276,10 +293,10 @@ export default function ArticleDetail() {
                 <div
                   className={`${art_detail_style['category']} position-relative p-2`}
                 >
-                  <p className="text-secondary m-0">公告</p>
-                  <div className="position-absolute end-0 top-50 translate-middle me-4 text-secondary">
+                  <p className=" m-0">公告</p>
+                  <div className="position-absolute end-0 top-50 translate-middle me-4 ">
                     0
-                    {/* <i className="fa-solid fa-circle-chevron-right fa-lg text-secondary"></i> */}
+                    {/* <i className="fa-solid fa-circle-chevron-right fa-lg "></i> */}
                   </div>
                 </div>
               </Link>
@@ -287,10 +304,10 @@ export default function ArticleDetail() {
                 <div
                   className={`${art_detail_style['category']} position-relative p-2`}
                 >
-                  <p className="text-secondary m-0">開箱文</p>
-                  <div className="position-absolute end-0 top-50 translate-middle me-4 text-secondary">
+                  <p className=" m-0">開箱文</p>
+                  <div className="position-absolute end-0 top-50 translate-middle me-4 ">
                     0
-                    {/* <i className="fa-solid fa-circle-chevron-right fa-lg text-secondary"></i> */}
+                    {/* <i className="fa-solid fa-circle-chevron-right fa-lg "></i> */}
                   </div>
                 </div>
               </Link>
@@ -298,10 +315,10 @@ export default function ArticleDetail() {
                 <div
                   className={`${art_detail_style['category']} position-relative p-2`}
                 >
-                  <p className="text-secondary m-0">組裝教學</p>
-                  <div className="position-absolute end-0 top-50 translate-middle me-4 text-secondary">
+                  <p className=" m-0">組裝教學</p>
+                  <div className="position-absolute end-0 top-50 translate-middle me-4 ">
                     0
-                    {/* <i className="fa-solid fa-circle-chevron-right fa-lg text-secondary"></i> */}
+                    {/* <i className="fa-solid fa-circle-chevron-right fa-lg "></i> */}
                   </div>
                 </div>
               </Link>
@@ -309,10 +326,10 @@ export default function ArticleDetail() {
                 <div
                   className={`${art_detail_style['category']} position-relative p-2`}
                 >
-                  <p className="text-secondary m-0">活動</p>
-                  <div className="position-absolute end-0 top-50 translate-middle me-4 text-secondary">
+                  <p className=" m-0">活動</p>
+                  <div className="position-absolute end-0 top-50 translate-middle me-4 ">
                     0
-                    {/* <i className="fa-solid fa-circle-chevron-right fa-lg text-secondary"></i> */}
+                    {/* <i className="fa-solid fa-circle-chevron-right fa-lg "></i> */}
                   </div>
                 </div>
               </Link>

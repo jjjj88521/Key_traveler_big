@@ -10,7 +10,10 @@ $main-color:#DC9329;
 }
 .category {
     &:hover {
-        background-color:rgb(0, 0, 0,.1);
+        // background-color:rgb(0, 0, 0,.1);
+        background-color:$main-color;
+        color: white;
+
         border-left: 2px solid #171717;
     }
 }
