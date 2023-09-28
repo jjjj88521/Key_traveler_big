@@ -20,7 +20,7 @@ export default function ProductIndex() {
   return (
     <>
       <div className={styles['banner']}>
-        <img src="/images/testBanner.png" alt="預留位子先不放圖" />
+        <img src="/images/testBanner.png" alt="banner" />
         <h1 className={`text-primary ${styles['display1']}`}>鍵盤套件</h1>
       </div>
 
