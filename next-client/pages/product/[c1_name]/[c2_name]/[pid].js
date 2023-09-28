@@ -1,16 +1,5 @@
-import { useEffect, useReducer, useState } from 'react'
+import React from 'react'
 import TabContainer from '@/components/product/ProductTab'
-
-import { Rate } from 'antd'
-import {
-  StyleSelect,
-  Item,
-} from '@/components/common/style-select/style-select'
-import useStyleSelect from '@/hooks/useStyleSelect'
-import style from './_pd-number-input.module.scss'
-import { isString } from 'lodash'
-import GallerySwiper from '@/components/common/gallery-swiper'
-import LikeButton from '@/components/product/like-button'
 import ProductHead from '@/components/product/product-head'
 import Head from 'next/head'
 
@@ -107,7 +96,6 @@ export default function ProductDetail() {
 
   const ratingSum = commentData.reduce((acc, cur) => acc + cur.star, 0)
   const avgRating = (ratingSum / commentData.length).toFixed(1)
-
   return (
     <>
       <Head>

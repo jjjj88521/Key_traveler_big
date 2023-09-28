@@ -16,6 +16,7 @@ import { FreeMode, Navigation, Thumbs } from 'swiper/modules'
 // modules styles
 import style from './_gallery_swiper.module.scss'
 import { Image } from 'antd'
+import NextImage from 'next/image'
 
 const GallerySwiper = ({ images = [], path = '' }) => {
   // 圖片 slider
@@ -42,7 +43,7 @@ const GallerySwiper = ({ images = [], path = '' }) => {
           {images.map((item, index) => {
             return (
               <SwiperSlide key={index} className={`${style['swiper-slide']}`}>
-                <Image src={`${path}${item}`} />
+                <Image src={`${path}${item}`} alt={item} />
               </SwiperSlide>
             )
           })}
@@ -63,7 +64,7 @@ const GallerySwiper = ({ images = [], path = '' }) => {
         {images.map((item, index) => {
           return (
             <SwiperSlide key={index} className={`${style['swiper-slide']}`}>
-              <img src={`${path}${item}`} />
+              <NextImage src={`${path}${item}`} width={75} height={75} />
             </SwiperSlide>
           )
         })}

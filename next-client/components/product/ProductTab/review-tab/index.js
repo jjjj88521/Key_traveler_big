@@ -43,7 +43,15 @@ export default function ReviewTab({ commentData }) {
   // 根據目前頁和每頁顯示的數量計算要顯示的數據
   const startIndex = (currentPage - 1) * pageSize
   const endIndex = startIndex + pageSize
-  const displayedData = commentData.slice(startIndex, endIndex)
+  // 根據選擇的星數篩選出評論
+  const handleDisplayedData = () => {
+    if (starSelected[0].value === 6) {
+      return commentData.slice(startIndex, endIndex)
+    } else {
+      return commentData.filter((item) => item.star === starSelected[0].value)
+    }
+  }
+  const displayedData = handleDisplayedData()
 
   return (
     <div className="comment-list py-3">
