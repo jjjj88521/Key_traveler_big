@@ -77,6 +77,9 @@ export default function Profile() {
   function handleErrMessage(e, mes) {
     setErrMesage({ ...errMesage, [e.target.name]: mes })
   }
+  function handleSetformData(e, mes) {
+    setformData({ ...formData, [e.target.name]: e.target.value })
+  }
   return (
     <>
       <div className="container">
@@ -92,6 +95,11 @@ export default function Profile() {
               id="name"
               name="name"
               className="form-control"
+              onBlur={() => {
+                if (errMesage.name === '') {
+                  setStepHash(1)
+                }
+              }}
               onChange={(e) => {
                 if (e.target.value.length === 0) {
                   let mes = '請填入姓名'
@@ -103,6 +111,7 @@ export default function Profile() {
                 ) {
                   let mes = ''
                   handleErrMessage(e, mes)
+                  handleSetformData(e, mes)
                   setStepHash(0)
                 } else if (e.target.value.length > 16) {
                   let mes = '請輸入16個字以內'
@@ -124,6 +133,11 @@ export default function Profile() {
               id="account"
               name="account"
               className="form-control"
+              onBlur={() => {
+                if (errMesage.account === '') {
+                  setStepHash(2)
+                }
+              }}
               onChange={(e) => {
                 if (e.target.value.length === 0) {
                   let mes = '請填入帳號'
@@ -139,7 +153,7 @@ export default function Profile() {
                 ) {
                   let mes = ''
                   handleErrMessage(e, mes)
-
+                  handleSetformData(e, mes)
                   setStepHash(1)
                 } else if (e.target.value.length > 16) {
                   let mes = '請輸入16個字元以內'
@@ -160,6 +174,11 @@ export default function Profile() {
               id="address"
               name="address"
               className="form-control"
+              onBlur={() => {
+                if (errMesage.address === '') {
+                  setStepHash(3)
+                }
+              }}
               onChange={(e) => {
                 if (e.target.value.length === 0) {
                   let mes = '請填入地址'
@@ -167,6 +186,7 @@ export default function Profile() {
                 } else {
                   let mes = ''
                   handleErrMessage(e, mes)
+                  handleSetformData(e, mes)
                   setStepHash(2)
                 }
               }}
@@ -183,6 +203,11 @@ export default function Profile() {
               id="gender"
               name="gender"
               className="form-select"
+              onBlur={() => {
+                if (errMesage.gender === '') {
+                  setStepHash(4)
+                }
+              }}
               onChange={(e) => {
                 console.log(e.target.value)
                 if (e.target.value !== '1' && e.target.value !== '0') {
@@ -191,11 +216,14 @@ export default function Profile() {
                 } else {
                   let mes = ' '
                   handleErrMessage(e, mes)
+                  handleSetformData(e, mes)
                   setStepHash(3)
                 }
               }}
             >
-              <option value="">請選擇</option>
+              <option value="" className="">
+                請選擇
+              </option>
               <option value="1">男</option>
               <option value="0">女</option>
             </select>
@@ -211,11 +239,17 @@ export default function Profile() {
               id="phone"
               name="phone"
               className="form-control"
+              onBlur={() => {
+                if (errMesage.phone === '') {
+                  setStepHash(5)
+                }
+              }}
               onChange={(e) => {
                 let phoneReg = /^09\d{8}$/
                 if (phoneReg.test(e.target.value)) {
                   let mes = ' '
-
+                  handleErrMessage(e, mes)
+                  handleSetformData(e, mes)
                   setStepHash(4)
                 } else {
                   let mes = '請輸入正確格式的手機號碼'
@@ -232,17 +266,24 @@ export default function Profile() {
             </label>
             <br />
             <DatePicker
-              id="email"
-              name="email"
+              id="birthday"
+              name="birthday"
               disabledDate={disabledDate}
+              placeholder="選擇日期"
+              onBlur={() => {
+                if (errMesage.birthday === '') {
+                  setStepHash(6)
+                }
+              }}
               onChange={(date, dateString) => {
                 if (dateString) {
-                  let mes = ' '
-                  setErrMesage({ ...errMesage, [e.target.name]: mes })
-                  setStepHash(4)
+                  let mes = ''
+                  setErrMesage({ ...errMesage, [birthday]: mes })
+                  handleSetformData({ ...errMesage, [birthday]: dateString })
+                  setStepHash(5)
                 } else {
                   let mes = '請填入日期'
-                  handleErrMessage(birthday, mes)
+                  setErrMesage(birthday, mes)
                 }
                 ;<p className={stepHash >= 4 ? 'text-danger' : 'text-danger'}>
                   {errMesage.birthday}
@@ -250,7 +291,7 @@ export default function Profile() {
               }}
               className="form-control"
             />
-
+            <p className={stepHash >= 3 ? 'text-danger' : 'text-danger'}>{}</p>
             <br />
 
             <label htmlFor="email" className="form-label">
@@ -261,7 +302,33 @@ export default function Profile() {
               id="email"
               name="email"
               className="form-control"
+              onBlur={() => {
+                if (errMesage.email === '') {
+                  setStepHash(7)
+                }
+              }}
+              onChange={(e) => {
+                const emailReg = /@.*\.com/
+                if (emailReg.test(e.target.value)) {
+                  console.log(emailReg.test(e.target.value))
+                  let mes = ' '
+                  handleErrMessage(e, mes)
+                  handleSetformData(e, mes)
+                  setStepHash(6)
+                } else if (e.target.value.length === 0) {
+                  let mes = '請輸入Email '
+                  handleErrMessage(e, mes)
+                  setStepHash(5)
+                } else {
+                  let mes = '請輸入正確格式的Email'
+                  handleErrMessage(e, mes)
+                  setStepHash(5)
+                }
+              }}
             />
+            <p className={stepHash >= 5 ? 'text-danger' : 'text-danger'}>
+              {errMesage.email}
+            </p>
             <br />
             <label htmlFor="password" className="form-label">
               設定密碼
@@ -271,7 +338,38 @@ export default function Profile() {
               id="password"
               name="password"
               className="form-control"
+              onBlur={() => {
+                if (errMesage.password === '') {
+                  setStepHash(8)
+                }
+              }}
+              onChange={(e) => {
+                if (e.target.value.length === 0) {
+                  let mes = '請填入密碼'
+                  handleErrMessage(e, mes)
+                  setStepHash(7)
+                } else if (e.target.value.length < 4) {
+                  let mes = '請填入4位以上字元'
+                  handleErrMessage(e, mes)
+                  setStepHash(7)
+                } else if (
+                  4 <= e.target.value.length &&
+                  e.target.value.length < 16
+                ) {
+                  let mes = ' '
+                  handleErrMessage(e, mes)
+                  handleSetformData(e, mes)
+                  setStepHash(8)
+                } else if (e.target.value.length > 16) {
+                  let mes = '請輸入16個字元以內'
+                  handleErrMessage(e, mes)
+                  setStepHash(8)
+                }
+              }}
             />
+            <p className={stepHash >= 8 ? 'text-danger' : 'text-danger'}>
+              {errMesage.password}
+            </p>
             <br />
             <label htmlFor="confirmPassword" className="form-label">
               確認密碼
@@ -281,7 +379,29 @@ export default function Profile() {
               id="confirmPassword"
               name="confirmPassword"
               className="form-control"
+              onBlur={() => {
+                if (errMesage.confirmPassword === '') {
+                  setStepHash(9)
+                }
+              }}
+              onChange={(e) => {
+                if (e.target.value === formData.password) {
+                  let mes = ''
+                  handleErrMessage(e, mes)
+                  handleSetformData(e, mes)
+
+                  setStepHash(8)
+                } else {
+                  let mes = '密碼不一致'
+                  handleErrMessage(e, mes)
+                  setStepHash(8)
+                }
+              }}
             />
+            <p className={stepHash >= 9 ? 'text-danger' : 'text-danger'}>
+              {errMesage.confirmPassword}
+            </p>
+
             <div className="button-group row justify-content-evenly mt-5  ">
               <button
                 className={`${style['none-user']} btn btn-primary col-3 text-white`}
