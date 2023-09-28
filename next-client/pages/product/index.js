@@ -19,11 +19,16 @@ export async function getStaticProps() {
 export default function ProductIndex() {
   return (
     <>
-      <div className={styles['banner']}>
-        <img src="/images/testBanner.png" alt="banner" />
+      <div className={styles.banner}>
+        <div className="w-100 h-100 p-4 p-sm-0">
+          <img
+            className={`w-100 h-100 object-fit-cover ${styles.rounded}`}
+            src="/images/testBanner.png"
+            alt="banner"
+          />
+        </div>
         <h1 className={`text-primary ${styles['display1']}`}>鍵盤套件</h1>
       </div>
-
       <div className="container pt-5 pb-3">
         <div className="row">
           <div className="col-3 pe-5">

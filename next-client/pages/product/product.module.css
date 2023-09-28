@@ -1,15 +1,12 @@
 .banner {
   height: 250px;
-  margin: auto;
-  justify-content: center;
-  align-items: center;
   position: relative;
-  overflow: hidden;
 }
-.banner img {
-  position: static;
-  width: 100%;
-  top: -50px;
+
+.rounded {
+    @media (max-width: 576px) {
+        border-radius: 10px;
+      }
 }
 
 .display1 {
