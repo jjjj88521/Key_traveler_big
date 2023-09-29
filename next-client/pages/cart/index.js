@@ -9,8 +9,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 export default function Cart() {
-  
-
   // step 1
   const { RangePicker } = DatePicker
   const items = [
@@ -24,36 +22,89 @@ export default function Cart() {
       title: '完成訂單',
     },
   ]
-const initialProducts = [
-  {
-    id:0,
-    img:"/images/1669370674683000804.jpg",
-    price:3000,
-    amount:1,
-    
-  },
-  {
-    id:1,
-    img:"/images/1669370674683000804.jpg",
-    price:1000,
-    amount:2
-  },
-]
-const [products, setProducts] = useState(initialProducts)
-  const upDateAmount = (products, id, value)=>{
-    return (products.map((product)=>{
-      if (product.id === id) return {...product, amount: product.amount + value}
-      else return {...product}
-    }))
+
+  const initialProducts = [
+    {
+      id: 0,
+      check: false,
+      img: '/images/1669370674683000804.jpg',
+      price: 3000,
+      amount: 1,
+    },
+    {
+      id: 1,
+      check: false,
+      img: '/images/1669370674683000804.jpg',
+      price: 1000,
+      amount: 2,
+    },
+  ]
+  const [products, setProducts] = useState(initialProducts)
+
+  // 全選
+  const toggleCheckAll = (products, isCheckedAll) => {
+    return products.map((product) => {
+      return { ...product, check: isCheckedAll }
+    })
   }
-  
-  const handleIncrement = (id)=>{
+
+  //單選
+  const toggleCheck = (products, id) => {
+    return products.map((product) => {
+      if(product.id === id) return { ...product, check: !product.check }
+      else return{...product}
+    })
+  }
+
+  // 增減數量
+  const upDateAmount = (products, id, value) => {
+    return products.map((product) => {
+      if (product.id === id)
+        return { ...product, amount: product.amount + value }
+      else return { ...product }
+    })
+  }
+
+  // 移除購物車商品
+  const removeProduct = (products, id) => {
+    return products.filter((product) => product.id !== id)
+  }
+
+  // 總計
+  const calculateTotalPrice = (products) => {
+    let totalPrice = 0
+    for (const product of products) {
+      totalPrice += product.price * product.amount
+    }
+    return totalPrice
+  }
+
+  // 全選
+  const handleToggleCheckAll = (isCheckedAll) => {
+    setProducts(toggleCheckAll(products, isCheckedAll))
+  }
+
+  // 單選
+  const handleToggleCheck = (id) => {
+    setProducts(toggleCheck(products, id))
+  }
+
+  // 增減數量
+  const handleIncrement = (id) => {
     setProducts(upDateAmount(products, id, 1))
-    
   }
-  const handleDecrement = (id)=>{
+  const handleDecrement = (id) => {
     setProducts(upDateAmount(products, id, -1))
   }
+
+  // 移除購物車商品
+  const handleRemove = (id) => {
+    setProducts(removeProduct(products, id))
+  }
+
+  // 總計
+  const totalPrice = calculateTotalPrice(products)
+
   const cardListData = [
     {
       value: '1',
@@ -132,7 +183,7 @@ const [products, setProducts] = useState(initialProducts)
   const [paymentData, setPaymentData] = useState(cardListData)
   const [newBank, setNewBank] = useState('aa銀行')
   const [newLast4num, setNewLast4num] = useState('')
-let a=1
+
   const addPaymentOption = () => {
     console.log('newBank is:' + newBank + ',newLast4num is:' + newLast4num)
     if (newBank.trim() !== '' && newLast4num.trim() !== '') {
@@ -152,7 +203,6 @@ let a=1
 
   return (
     <>
-   
       {/* step 1 */}
       <div className="container">
         <Steps
@@ -182,7 +232,12 @@ let a=1
                 className="bg-primary text-white text-center align-middle"
                 style={{ width: '5%' }}
               >
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  onChange={(e) => {
+                    handleToggleCheckAll(e.target.checked)
+                  }}
+                />
               </th>
               <th
                 className="bg-primary text-white ps-3"
@@ -260,70 +315,98 @@ let a=1
                 </button>
               </td>
             </tr> */}
-            {products.map((product)=>(
-            <tr key={product.id}>
-              <td className="text-center align-middle">
-                <input type="checkbox" />
-              </td>
-              <td className="d-flex">
-                <div className="p-2">
-                  <img
-                    src={product.img}
-                    width={100}
-                    height={100}
+            {products.map((product) => (
+              <tr key={product.id}>
+                <td className="text-center align-middle">
+                  <input
+                    type="checkbox"
+                    checked={product.check}
+                    onChange={() => {
+                      handleToggleCheck(product.id)
+                    }}
                   />
-                </div>
-                <div className="p-2">
-                  <div>Qwertykey</div>
-                  <div>QK75鍵盤鍵盤鍵盤鍵盤</div>
-                  <div className="pt-1">
-                    <select
-                      className="form-select form-select-sm mb-1"
-                      style={{ width: 140 }}
-                    >
-                      <option>陽極紅</option>
-                    </select>
-                    <select
-                      className="form-select form-select-sm"
-                      style={{ width: 140 }}
-                    >
-                      <option>噴砂銀</option>
-                    </select>
+                </td>
+                <td className="d-flex">
+                  <div className="p-2">
+                    <img src={product.img} width={100} height={100} />
                   </div>
-                </div>
-              </td>
-              <td className="align-middle">${product.price}</td>
-              <td className="align-middle ps-4">
-                <div className="input-group">
-                  <span className="input-group-text p-0">
-                    <button className="btn" type="button" onClick={()=>{
-                      handleDecrement(product.id)
-                    }}>
-                      -
-                    </button>
-                  </span>
-                  <input type="text" className="form-control text-center" value={product.amount}/>
-                  <span className="input-group-text p-0">
-                    <button className="btn" type="button" onClick={()=>{
-                      handleIncrement(product.id)
-                    }}>
-                      +
-                    </button>
-                  </span>
-                </div>
-              </td>
-              <td className="align-middle text-center">${product.price*product.amount}</td>
-              <td className="align-middle text-center">
-                <button className="btn border-white">
-                  <FontAwesomeIcon icon={faTrashCan} className="text-primary" />
-                </button>
-              </td>
-            </tr>
+                  <div className="p-2">
+                    <div>Qwertykey</div>
+                    <div>QK75鍵盤鍵盤鍵盤鍵盤</div>
+                    <div className="pt-1">
+                      <select
+                        className="form-select form-select-sm mb-1"
+                        style={{ width: 140 }}
+                      >
+                        <option>陽極紅</option>
+                      </select>
+                      <select
+                        className="form-select form-select-sm"
+                        style={{ width: 140 }}
+                      >
+                        <option>噴砂銀</option>
+                      </select>
+                    </div>
+                  </div>
+                </td>
+                <td className="align-middle">${product.price}</td>
+                <td className="align-middle ps-4">
+                  <div className="input-group">
+                    <span className="input-group-text p-0">
+                      <button
+                        className="btn"
+                        type="button"
+                        onClick={() => {
+                          if (product.amount === 1) {
+                            handleRemove(product.id)
+                          } else {
+                            handleDecrement(product.id)
+                          }
+                        }}
+                      >
+                        -
+                      </button>
+                    </span>
+                    <input
+                      type="text"
+                      className="form-control text-center"
+                      value={product.amount}
+                    />
+                    <span className="input-group-text p-0">
+                      <button
+                        className="btn"
+                        type="button"
+                        onClick={() => {
+                          handleIncrement(product.id)
+                        }}
+                      >
+                        +
+                      </button>
+                    </span>
+                  </div>
+                </td>
+                <td className="align-middle text-center">
+                  ${product.price * product.amount}
+                </td>
+                <td className="align-middle text-center">
+                  <button
+                    className="btn border-white"
+                    type="button"
+                    onClick={() => {
+                      handleRemove(product.id)
+                    }}
+                  >
+                    <FontAwesomeIcon
+                      icon={faTrashCan}
+                      className="text-primary"
+                    />
+                  </button>
+                </td>
+              </tr>
             ))}
             <tr>
-            
               <td className="pe-5 text-end" colSpan={6}>
-                總計: {a}
+                總計: ${totalPrice}
               </td>
             </tr>
           </tbody>
@@ -407,7 +490,13 @@ let a=1
               </td>
               <td className="align-middle text-center">$3000</td>
               <td className="align-middle text-center">
-                <button className="btn border-white">
+                <button
+                  className="btn border-white"
+                  type="button"
+                  onClick={() => {
+                    handleRemove(product.id)
+                  }}
+                >
                   <FontAwesomeIcon icon={faTrashCan} className="text-primary" />
                 </button>
               </td>
@@ -439,14 +528,14 @@ let a=1
             </tr>
           </thead>
           <tbody>
-            <tr>
+            {/* <tr>
               <td className="text-center align-middle">
                 <input type="checkbox" />
               </td>
               <td className="d-flex">
                 <div className="pe-2 pt-2">
                   <img
-                    src="/images/000408000035028.jpg"
+                    src="/images/1669370674683000804.jpg"
                     width={100}
                     height={100}
                   />
@@ -489,10 +578,81 @@ let a=1
                   </div>
                 </div>
               </td>
-            </tr>
+            </tr> */}
+            {products.map((product) => {
+              ;<tr key={product.id}>
+                <td className="text-center align-middle">
+                  <input type="checkbox" />
+                </td>
+                <td className="d-flex">
+                  <div className="pe-2 pt-2">
+                    <img src={product.img} width={100} height={100} />
+                  </div>
+                  <div>
+                    <div>Qwertykey</div>
+                    <div>QK75鍵盤鍵盤鍵盤鍵盤</div>
+                    <div className="pt-1">
+                      <select
+                        className="form-select form-select-sm mb-1 py-0"
+                        style={{ width: '45%' }}
+                      >
+                        <option>陽極紅</option>
+                      </select>
+                      <select
+                        className="form-select form-select-sm py-0"
+                        style={{ width: '45%' }}
+                      >
+                        <option>噴砂銀</option>
+                      </select>
+                    </div>
+                    <div className="d-flex pt-1">
+                      <div className="pt-2">
+                        ${product.price * product.amount}
+                      </div>
+                      <div
+                        className="input-group ms-auto "
+                        style={{ width: '50%' }}
+                      >
+                        <span className="input-group-text p-0 ">
+                          <button
+                            className="btn btn-sm"
+                            type="button"
+                            onClick={() => {
+                              if (product.amount === 1) {
+                                handleRemove(product.id)
+                              } else {
+                                handleDecrement(product.id)
+                              }
+                            }}
+                          >
+                            -
+                          </button>
+                        </span>
+                        <input
+                          type="number"
+                          className="form-control py-0"
+                          value={product.amount}
+                        />
+                        <span className="input-group-text p-0">
+                          <button
+                            className="btn btn-sm"
+                            type="button"
+                            onClick={() => {
+                              handleIncrement(product.id)
+                            }}
+                          >
+                            +
+                          </button>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            })}
             <tr>
               <td className="text-end" colSpan={2}>
-                總計: $6000
+                總計: ${totalPrice}
               </td>
             </tr>
           </tbody>
