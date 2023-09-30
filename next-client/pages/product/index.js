@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Drawer, Button } from 'antd'
 import styles from './product.module.css'
 import Accordion from '@/components/product/accordion'
 import AsideFilter from '@/components/product/AsideFilter'
@@ -17,6 +18,15 @@ export async function getStaticProps() {
 }
 
 export default function ProductIndex() {
+  const [open, setOpen] = useState(false)
+
+  const showDrawer = () => {
+    setOpen(true)
+  }
+
+  const onClose = () => {
+    setOpen(false)
+  }
   return (
     <>
       <div className={styles.banner}>
@@ -29,16 +39,16 @@ export default function ProductIndex() {
         </div>
         <h1 className={`text-primary ${styles['display1']}`}>鍵盤套件</h1>
       </div>
-      <div className="container pt-5 pb-3">
+      <div className="container pt-md-5 ps-4 pe-4 p-sm-0">
         <div className="row">
-          <div className="col-3 pe-5">
+          <div className="d-none d-sm-block col-12 col-sm-3 pe-md-5 pe-1">
             <Accordion />
             <AsideFilter />
           </div>
 
           {/* sort btn & card group */}
-          <div className="col-9">
-            <div className="d-flex justify-content-end align-items-center mb-3">
+          <div className="col-12 col-sm-9">
+            <div className="d-sm-flex d-none justify-content-end align-items-center mb-3">
               <div className={`bg-primary-subtle ${styles['sortBtn']}`}>
                 <p className="fs-6">排序</p>
                 <div className="dropdown">
@@ -75,6 +85,34 @@ export default function ProductIndex() {
                 </div>
               </div>
             </div>
+
+            {/* 手機版篩選、排序結合 */}
+            <div
+              className="d-block d-sm-none bg-primary-subtle mb-3 text-end"
+              style={{ fontSize: '16px', padding: '5px 20px' }}
+            >
+              <Button
+                type="primary"
+                onClick={showDrawer}
+                className="bg-transparent text-black p-0"
+                style={{ fontSize: '16px' }}
+              >
+                <i
+                  class="fa-solid fa-sliders"
+                  style={{ marginRight: '10px' }}
+                ></i>{' '}
+                篩選
+              </Button>
+            </div>
+            <Drawer
+              title="Basic Drawer"
+              placement="right"
+              onClose={onClose}
+              open={open}
+            >
+              <Accordion />
+              <AsideFilter />
+            </Drawer>
 
             {/* product list & card group  */}
             <CardHover></CardHover>
