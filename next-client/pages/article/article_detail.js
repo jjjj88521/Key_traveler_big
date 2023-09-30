@@ -123,8 +123,9 @@ export default function ArticleDetail() {
               }}
             >
               {/* 收藏按鈕 */}
-              <a
-                type="button"
+              <Link
+                href={''}
+                // type="button"
                 onClick={() => {
                   like ? setLike(false) : setLike(true)
                 }}
@@ -140,7 +141,7 @@ export default function ArticleDetail() {
                     style={{ top: '20px', right: '10px' }}
                   ></i>
                 )}
-              </a>
+              </Link>
 
               <h2 className="fw-bolder mt-4">資料庫DB-article-title</h2>
               <h5 className="text-secondary mb-5">by.user_id + 發佈時間</h5>

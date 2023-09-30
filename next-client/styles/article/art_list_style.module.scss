@@ -5,7 +5,7 @@ $main-color:#DC9329;
     color: $main-color;
 
     &:hover {
-        background-color:$main-color;
+        background-color:rgba(220, 147, 41,.8);
         color: white;
     }
 }

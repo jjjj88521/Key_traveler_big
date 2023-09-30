@@ -1,10 +1,12 @@
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
 import { Divider, Space, Tag } from 'antd'
 import art_list_style from '@/styles/article/art_list_style.module.scss'
-import PaginationComponent from '@/components/common/PaginationComponent'
+// import PaginationComponent from '@/components/common/PaginationComponent'
 
 export default function Article() {
+  const [selectedCategory, setSelectedCategory] = useState(null)
+
   // const fontColor = {
   //   color: 'red',
   //   fontSize: '100px',
@@ -44,43 +46,43 @@ export default function Article() {
     {
       title: 'Card Title',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
+      cate: '開箱文',
       date: '2023-09-21',
     },
     {
       title: 'Card Title',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
+      cate: '開箱文',
       date: '2023-09-21',
     },
     {
       title: 'Card Title',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
+      cate: '開箱文',
       date: '2023-09-21',
     },
     {
       title: 'Card Title',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
+      cate: '開箱文',
       date: '2023-09-21',
     },
     {
       title: 'Card Title',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
+      cate: '組裝教學',
       date: '2023-09-21',
     },
     {
       title: 'Card Title',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
+      cate: '活動',
       date: '2023-09-21',
     },
     {
       title: 'Card Title',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
+      cate: '活動',
       date: '2023-09-21',
     },
   ]
@@ -164,15 +166,31 @@ export default function Article() {
               </div>
             </nav>
             {/* 分類表 */}
-            <Link href="#" className="text-decoration-none">
+
+            {/* <Link href="#" className="text-decoration-none">
               <div className={`bg-primary position-relative p-2`}>
                 <h5 className="text-white fw-bolder m-0">所有文章</h5>
                 <div className="position-absolute end-0 top-50 translate-middle me-4">
                   <i className="text-white fa-solid fa-circle-chevron-right fa-lg "></i>
                 </div>
               </div>
+            </Link> */}
+            <Link href={''} onClick={() => setSelectedCategory(null)}>
+              <div
+                className={`${
+                  selectedCategory === null
+                    ? 'bg-primary text-white'
+                    : art_list_style['side_category']
+                } position-relative p-2`}
+              >
+                <h5 className=" fw-bolder m-0">所有文章</h5>
+                <div className="position-absolute end-0 top-50 translate-middle me-4">
+                  <i className=" fa-solid fa-circle-chevron-right fa-lg "></i>
+                </div>
+              </div>
             </Link>
-            <Link href="#" className="text-decoration-none">
+
+            {/* <Link href="#" className="text-decoration-none">
               <div
                 className={`${art_list_style['side_category']} position-relative p-2`}
               >
@@ -181,8 +199,23 @@ export default function Article() {
                   <i className="fa-solid fa-circle-chevron-right fa-lg "></i>
                 </div>
               </div>
+            </Link> */}
+            <Link href={''} onClick={() => setSelectedCategory('公告')}>
+              <div
+                className={`${
+                  selectedCategory === '公告'
+                    ? 'bg-primary text-white'
+                    : art_list_style['side_category']
+                } position-relative p-2`}
+              >
+                <h5 className=" fw-bolder m-0">公告</h5>
+                <div className="position-absolute end-0 top-50 translate-middle me-4">
+                  <i className=" fa-solid fa-circle-chevron-right fa-lg "></i>
+                </div>
+              </div>
             </Link>
-            <Link href="#" className="text-decoration-none">
+
+            {/* <Link href="#" className="text-decoration-none">
               <div
                 className={`${art_list_style['side_category']} position-relative p-2`}
               >
@@ -191,8 +224,23 @@ export default function Article() {
                   <i className="fa-solid fa-circle-chevron-right fa-lg "></i>
                 </div>
               </div>
+            </Link> */}
+            <Link href={''} onClick={() => setSelectedCategory('開箱文')}>
+              <div
+                className={`${
+                  selectedCategory === '開箱文'
+                    ? 'bg-primary text-white'
+                    : art_list_style['side_category']
+                } position-relative p-2`}
+              >
+                <h5 className=" fw-bolder m-0">開箱文</h5>
+                <div className="position-absolute end-0 top-50 translate-middle me-4">
+                  <i className=" fa-solid fa-circle-chevron-right fa-lg "></i>
+                </div>
+              </div>
             </Link>
-            <Link href="#" className="text-decoration-none">
+
+            {/* <Link href="#" className="text-decoration-none">
               <div
                 className={`${art_list_style['side_category']} position-relative p-2`}
               >
@@ -201,8 +249,23 @@ export default function Article() {
                   <i className="fa-solid fa-circle-chevron-right fa-lg "></i>
                 </div>
               </div>
+            </Link> */}
+            <Link href={''} onClick={() => setSelectedCategory('組裝教學')}>
+              <div
+                className={`${
+                  selectedCategory === '組裝教學'
+                    ? 'bg-primary text-white'
+                    : art_list_style['side_category']
+                } position-relative p-2`}
+              >
+                <h5 className=" fw-bolder m-0">組裝教學</h5>
+                <div className="position-absolute end-0 top-50 translate-middle me-4">
+                  <i className=" fa-solid fa-circle-chevron-right fa-lg "></i>
+                </div>
+              </div>
             </Link>
-            <Link href="#" className="text-decoration-none">
+
+            {/* <Link href="#" className="text-decoration-none">
               <div
                 className={`${art_list_style['side_category']} position-relative p-2`}
               >
@@ -211,38 +274,70 @@ export default function Article() {
                   <i className="fa-solid fa-circle-chevron-right fa-lg "></i>
                 </div>
               </div>
+            </Link> */}
+            <Link href={''} onClick={() => setSelectedCategory('活動')}>
+              <div
+                className={`${
+                  selectedCategory === '活動'
+                    ? 'bg-primary text-white'
+                    : art_list_style['side_category']
+                } position-relative p-2`}
+              >
+                <h5 className=" fw-bolder m-0">活動</h5>
+                <div className="position-absolute end-0 top-50 translate-middle me-4">
+                  <i className=" fa-solid fa-circle-chevron-right fa-lg "></i>
+                </div>
+              </div>
             </Link>
           </div>
           {/* 右側 */}
           <div className="col row row-cols-sm-3 row-cols-2 pe-0">
             {/* map用法類似foreach，將上面陣列中的每個物件(item)列出來 */}
-            {data.map((item, index) => {
-              return (
-                <div className="col mb-4" key={index}>
-                  <div className={`${art_list_style['list_card']} card`}>
-                    <Link href="/article/article_detail">
-                      <img src={item.img} className="card-img-top" alt="..." />
-                    </Link>
+            {data
+              .filter(
+                (item) =>
+                  selectedCategory === null || item.cate === selectedCategory
+              )
 
-                    <div className="card-body">
-                      <h3 className="card-title mb-3">{item.title + index}</h3>
-                      {/* <a
+              .map((item, index) => {
+                return (
+                  <div className="col mb-4" key={index}>
+                    <div className={`${art_list_style['list_card']} card`}>
+                      {/* 待確認路由名稱 */}
+                      <Link href={`/article/article_detail/${index}`}>
+                        <img
+                          src={item.img}
+                          className="card-img-top"
+                          alt="..."
+                        />
+                      </Link>
+
+                      <div className="card-body">
+                        <h3 className="card-title mb-3">
+                          {item.title + index}
+                        </h3>
+                        {/* <a
                       href="#"
                       className="btn btn-sm btn-primary rounded-pill mb-3 text-white fw-bold"
                     ></a> */}
-                      <Link href={'#'}>
-                        <Tag className="bg-primary text-white fw-bolder mb-3">
-                          {item.cate}
-                        </Tag>
-                      </Link>
+                        <Link href={'#'}>
+                          <Tag className="bg-primary text-white fw-bolder mb-3">
+                            {item.cate}
+                          </Tag>
+                        </Link>
 
-                      <p className="card-date">發布日期:{item.date}</p>
+                        <p className="card-date">發布日期:{item.date}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )
-            })}
+                )
+              })}
             {/* 放分頁 */}
+            {/* <PaginationComponent
+              totalItems={12}
+              pageSize={1}
+              //onPageChange={2}
+            ></PaginationComponent> */}
           </div>
         </div>
       </div>
