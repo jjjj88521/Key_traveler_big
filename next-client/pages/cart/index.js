@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import style from './cart.module.scss'
 import { Steps, DatePicker, Divider, Radio, List } from 'antd'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -6,6 +6,7 @@ import {
   faCircleChevronDown,
   faTrashCan,
   faCaretDown,
+  faCaretRight,
 } from '@fortawesome/free-solid-svg-icons'
 
 export default function Cart() {
@@ -25,34 +26,86 @@ export default function Cart() {
 
   const initialProducts = [
     {
-      id: 0,
+      id: 1,
       check: false,
       img: '/images/1669370674683000804.jpg',
       price: 3000,
       amount: 1,
     },
     {
-      id: 1,
+      id: 2,
       check: false,
       img: '/images/1669370674683000804.jpg',
       price: 1000,
       amount: 2,
     },
   ]
+  const initialRentProducts = [
+    {
+      id: 1,
+      check: false,
+      img: '/images/1669370674683000804.jpg',
+      price: 300,
+    },
+    {
+      id: 2,
+      check: false,
+      img: '/images/1669370674683000804.jpg',
+      price: 100,
+    },
+  ]
   const [products, setProducts] = useState(initialProducts)
+  const [rentProducts, setRentProducts] = useState(initialRentProducts)
 
-  // 全選
+  const [checkAll, setCheckAll] = useState(false)
+  const [checkAllRent, setCheckAllRent] = useState(false)
+
+  // 租用日期
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+  const [totalDays, setTotalDays] = useState(null)
+
+  useEffect(() => {
+    const startDateValue = new Date(startDate)
+    const endDateValue = new Date(endDate)
+    // 計算租用日數含首尾日
+    endDateValue.setDate(endDateValue.getDate() + 1)
+
+    if (!isNaN(startDateValue) && !isNaN(endDateValue)) {
+      const timeDifference = endDateValue - startDateValue
+      const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24))
+      setTotalDays(daysDifference)
+    } else {
+      setTotalDays(null)
+    }
+  }, [startDate, endDate])
+
+  // P全選
   const toggleCheckAll = (products, isCheckedAll) => {
     return products.map((product) => {
       return { ...product, check: isCheckedAll }
     })
   }
+  // R全選
+  const toggleCheckAllRent = (rentProducts, isCheckedAll) => {
+    return rentProducts.map((rentProduct) => {
+      return { ...rentProduct, check: isCheckedAll }
+    })
+  }
 
-  //單選
+  //P單選
   const toggleCheck = (products, id) => {
     return products.map((product) => {
-      if(product.id === id) return { ...product, check: !product.check }
-      else return{...product}
+      if (product.id === id) return { ...product, check: !product.check }
+      else return { ...product }
+    })
+  }
+  //R單選
+  const toggleCheckRent = (rentProducts, id) => {
+    return rentProducts.map((rentProduct) => {
+      if (rentProduct.id === id)
+        return { ...rentProduct, check: !rentProduct.check }
+      else return { ...rentProduct }
     })
   }
 
@@ -65,9 +118,13 @@ export default function Cart() {
     })
   }
 
-  // 移除購物車商品
+  // P移除購物車商品
   const removeProduct = (products, id) => {
     return products.filter((product) => product.id !== id)
+  }
+  // R移除購物車商品
+  const removeRent = (rentProducts, id) => {
+    return rentProducts.filter((rentProduct) => rentProduct.id !== id)
   }
 
   // 總計
@@ -79,14 +136,30 @@ export default function Cart() {
     return totalPrice
   }
 
-  // 全選
+  // P全選
   const handleToggleCheckAll = (isCheckedAll) => {
     setProducts(toggleCheckAll(products, isCheckedAll))
   }
+  // R全選
+  const handleToggleCheckAllRent = (isCheckedAll) => {
+    setRentProducts(toggleCheckAllRent(rentProducts, isCheckedAll))
+  }
 
-  // 單選
+  // P單選
   const handleToggleCheck = (id) => {
-    setProducts(toggleCheck(products, id))
+    const updateProducts = toggleCheck(products, id)
+    setProducts(updateProducts)
+    const updateCheckAllRent = updateProducts.every((product) => product.check)
+    setCheckAll(updateCheckAllRent)
+  }
+  // R單選
+  const handleToggleCheckRent = (id) => {
+    const updateRentProducts = toggleCheckRent(rentProducts, id)
+    setRentProducts(updateRentProducts)
+    const updateCheckAll = updateRentProducts.every(
+      (rentProduct) => rentProduct.check
+    )
+    setCheckAllRent(updateCheckAll)
   }
 
   // 增減數量
@@ -97,9 +170,13 @@ export default function Cart() {
     setProducts(upDateAmount(products, id, -1))
   }
 
-  // 移除購物車商品
+  // P移除購物車商品
   const handleRemove = (id) => {
     setProducts(removeProduct(products, id))
+  }
+  // R移除購物車商品
+  const handleRemoveRent = (id) => {
+    setRentProducts(removeRent(rentProducts, id))
   }
 
   // 總計
@@ -234,7 +311,9 @@ export default function Cart() {
               >
                 <input
                   type="checkbox"
+                  checked={checkAll}
                   onChange={(e) => {
+                    setCheckAll(e.target.checked)
                     handleToggleCheckAll(e.target.checked)
                   }}
                 />
@@ -430,7 +509,14 @@ export default function Cart() {
                 className="bg-primary text-white text-center align-middle"
                 style={{ width: '5%' }}
               >
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  checked={checkAllRent}
+                  onChange={(e) => {
+                    setCheckAllRent(e.target.checked)
+                    handleToggleCheckAllRent(e.target.checked)
+                  }}
+                />
               </th>
               <th
                 className="bg-primary text-white ps-3"
@@ -447,7 +533,7 @@ export default function Cart() {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            {/* <tr>
               <td className="text-center align-middle">
                 <input type="checkbox" />
               </td>
@@ -500,9 +586,83 @@ export default function Cart() {
                   <FontAwesomeIcon icon={faTrashCan} className="text-primary" />
                 </button>
               </td>
-            </tr>
+            </tr> */}
+            {rentProducts.map((rentProduct) => (
+              <tr key={rentProduct.id}>
+                <td className="text-center align-middle">
+                  <input
+                    type="checkbox"
+                    checked={rentProduct.check}
+                    onClick={() => {
+                      handleToggleCheckRent(rentProduct.id)
+                    }}
+                  />
+                </td>
+                <td className="d-flex">
+                  <div className="p-2">
+                    <img src={rentProduct.img} width={100} height={100} />
+                  </div>
+                  <div className="p-2">
+                    <div>Qwertykey</div>
+                    <div>QK75鍵盤鍵盤鍵盤鍵盤</div>
+                    <div className="pt-1">
+                      <select
+                        className="form-select form-select-sm mb-1"
+                        style={{ width: 140 }}
+                      >
+                        <option>陽極紅</option>
+                      </select>
+                      <select
+                        className="form-select form-select-sm"
+                        style={{ width: 140 }}
+                      >
+                        <option>噴砂銀</option>
+                      </select>
+                    </div>
+                  </div>
+                </td>
+                <td className="align-middle">
+                  <input
+                    className="form-control w-75"
+                    type="date"
+                    id="start_date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e.target.value)}
+                  />
+                  <div className="text-center pe-5 me-4">
+                    <FontAwesomeIcon
+                      icon={faCaretDown}
+                      className="text-secondary"
+                    />
+                  </div>
+                  <input
+                    className="form-control w-75"
+                    type="date"
+                    id="end_date"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                  />
+                </td>
+                <td className="align-middle text-center">$3000</td>
+                <td className="align-middle text-center">
+                  <button
+                    className="btn border-white"
+                    type="button"
+                    onClick={() => {
+                      handleRemoveRent(rentProduct.id)
+                    }}
+                  >
+                    <FontAwesomeIcon
+                      icon={faTrashCan}
+                      className="text-primary"
+                    />
+                  </button>
+                </td>
+              </tr>
+            ))}
             <tr>
               <td className="pe-5 text-end" colSpan={6}>
+                {/* 總日數: {totalDays} */}
                 總計: $6000
               </td>
             </tr>
@@ -513,14 +673,24 @@ export default function Cart() {
         <table className={`table d-table d-sm-none`}>
           <thead>
             <tr>
-              <th className="bg-primary text-white text-center align-middle">
-                <input type="checkbox" />
+              <th
+                className="bg-primary text-white text-center align-middle"
+                style={{ width: '5%' }}
+              >
+                <input
+                  type="checkbox"
+                  checked={checkAll}
+                  onChange={(e) => {
+                    setCheckAll(e.target.checked)
+                    handleToggleCheckAll(e.target.checked)
+                  }}
+                />
               </th>
               <th className="bg-primary text-white" colSpan={3}>
                 <div className="d-flex">
                   <div>一般商品</div>
                   <div className="ps-1">(2)</div>
-                  <div className="ms-auto">
+                  <div className="ms-auto pe-1">
                     <FontAwesomeIcon icon={faCircleChevronDown} />
                   </div>
                 </div>
@@ -579,12 +749,18 @@ export default function Cart() {
                 </div>
               </td>
             </tr> */}
-            {products.map((product) => {
-              ;<tr key={product.id}>
-                <td className="text-center align-middle">
-                  <input type="checkbox" />
+            {products.map((product) => (
+              <tr key={product.id}>
+                <td className="text-center align-middle px-1">
+                  <input
+                    type="checkbox"
+                    checked={product.check}
+                    onChange={() => {
+                      handleToggleCheck(product.id)
+                    }}
+                  />
                 </td>
-                <td className="d-flex">
+                <td className="d-flex px-1">
                   <div className="pe-2 pt-2">
                     <img src={product.img} width={100} height={100} />
                   </div>
@@ -594,13 +770,13 @@ export default function Cart() {
                     <div className="pt-1">
                       <select
                         className="form-select form-select-sm mb-1 py-0"
-                        style={{ width: '45%' }}
+                        style={{ width: 100 }}
                       >
                         <option>陽極紅</option>
                       </select>
                       <select
                         className="form-select form-select-sm py-0"
-                        style={{ width: '45%' }}
+                        style={{ width: 100 }}
                       >
                         <option>噴砂銀</option>
                       </select>
@@ -630,7 +806,7 @@ export default function Cart() {
                         </span>
                         <input
                           type="number"
-                          className="form-control py-0"
+                          className="form-control py-0 text-center"
                           value={product.amount}
                         />
                         <span className="input-group-text p-0">
@@ -647,9 +823,22 @@ export default function Cart() {
                       </div>
                     </div>
                   </div>
+                  <button
+                    className="btn border-white ps-1 pe-2"
+                    type="button"
+                    onClick={() => {
+                      handleRemove(product.id)
+                    }}
+                    style={{ height: 20 }}
+                  >
+                    <FontAwesomeIcon
+                      icon={faTrashCan}
+                      className="text-primary"
+                    />
+                  </button>
                 </td>
               </tr>
-            })}
+            ))}
             <tr>
               <td className="text-end" colSpan={2}>
                 總計: ${totalPrice}
@@ -662,14 +851,24 @@ export default function Cart() {
         <table className={`table d-table d-sm-none`}>
           <thead>
             <tr>
-              <th className="bg-primary text-white text-center align-middle">
-                <input type="checkbox" />
+              <th
+                className="bg-primary text-white text-center align-middle"
+                style={{ width: '5%' }}
+              >
+                <input
+                  type="checkbox"
+                  checked={checkAllRent}
+                  onChange={(e) => {
+                    setCheckAllRent(e.target.checked)
+                    handleToggleCheckAllRent(e.target.checked)
+                  }}
+                />
               </th>
               <th className="bg-primary text-white" colSpan={3}>
                 <div className="d-flex">
                   <div>租用商品</div>
                   <div className="ps-1">(2)</div>
-                  <div className="ms-auto">
+                  <div className="ms-auto pe-1">
                     <FontAwesomeIcon icon={faCircleChevronDown} />
                   </div>
                 </div>
@@ -677,53 +876,87 @@ export default function Cart() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="text-center align-middle">
-                <input type="checkbox" />
-              </td>
-              <td className="d-flex">
-                <div className="pe-2 pt-2">
-                  <img
-                    src="/images/000408000035028.jpg"
-                    width={100}
-                    height={100}
+            {rentProducts.map((rentProduct) => (
+              <tr key={rentProduct.id}>
+                <td className="text-center align-middle px-1">
+                  <input
+                    type="checkbox"
+                    checked={rentProduct.check}
+                    onClick={() => {
+                      handleToggleCheckRent(rentProduct.id)
+                    }}
                   />
-                </div>
-                <div>
-                  <div>Qwertykey</div>
-                  <div>QK75鍵盤鍵盤鍵盤鍵盤</div>
-                  <div className="p-1">
-                    <select
-                      className="form-select form-select-sm py-0 mb-1"
-                      style={{ width: 100 }}
-                    >
-                      <option>陽極紅</option>
-                    </select>
-                    <select
-                      className="form-select form-select-sm py-0"
-                      style={{ width: 100 }}
-                    >
-                      <option>噴砂銀</option>
-                    </select>
+                </td>
+                <td className="d-flex px-1">
+                  <div className="pe-2 pt-2">
+                    <img src={rentProduct.img} width={100} height={100} />
                   </div>
-                  <RangePicker
-                    placeholder={''}
-                    className="px-2 ms-1 rounded py-0"
-                  />
-                  {/* <input className="form-control" type="date" style={{ width: 100 }}/>
-                  <div className="text-center">
+                  <div>
+                    <div className="">Qwertykey</div>
+                    <div>QK75鍵盤鍵盤鍵盤鍵盤</div>
+                    <div className="p-1">
+                      <select
+                        className="form-select form-select-sm py-0 mb-1"
+                        style={{ width: 100 }}
+                      >
+                        <option>陽極紅</option>
+                      </select>
+                      <select
+                        className="form-select form-select-sm py-0"
+                        style={{ width: 100 }}
+                      >
+                        <option>噴砂銀</option>
+                      </select>
+                    </div>
+                    <div className="input-group ms-1 mt-1">
+                      {/* <RangePicker
+                      placeholder={''}
+                      className="px-2 ms-1 rounded py-0"
+                    /> */}
+                      <input
+                        className="form-control p-0"
+                        type="date"
+                        id="start_date"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                        style={{ width: 97 }}
+                      />
+                      <div className="px-1">
+                        <FontAwesomeIcon
+                          icon={faCaretRight}
+                          className="text-secondary"
+                        />
+                      </div>
+                      <input
+                        className="form-control p-0"
+                        type="date"
+                        id="end_date"
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                        style={{ width: 97 }}
+                      />
+                    </div>
+                    <div className="pt-1 ps-1">${rentProduct.price}</div>
+                  </div>
+                  <button
+                    className="btn border-white p-0"
+                    type="button"
+                    onClick={() => {
+                      handleRemoveRent(rentProduct.id)
+                    }}
+                    style={{ height: 20 }}
+                  >
                     <FontAwesomeIcon
-                      icon={faCaretDown}
-                      className="text-secondary"
+                      icon={faTrashCan}
+                      className="text-primary"
                     />
-                  </div>
-                  <input className="form-control" type="date" style={{ width: "30%" }}/> */}
-                  <div className="pt-1 ps-1">$300</div>
-                </div>
-              </td>
-            </tr>
+                  </button>
+                </td>
+              </tr>
+            ))}
             <tr>
               <td className="text-end" colSpan={2}>
+                {/* 總日數: {totalDays} */}
                 總計: $6000
               </td>
             </tr>
