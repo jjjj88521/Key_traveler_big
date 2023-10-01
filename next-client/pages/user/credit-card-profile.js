@@ -41,6 +41,7 @@ export default function CreditCardForm() {
                 className="col-8 col-sm-8 col-12 form-control"
                 type="tel"
                 name="number"
+                maxlength="4"
                 placeholder="Card Number"
                 onChange={handleInputChange}
                 onFocus={(e) =>

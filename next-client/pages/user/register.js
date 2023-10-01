@@ -130,6 +130,7 @@ export default function Profile() {
                   handleErrMessage(e, mes)
                   handleSetformData(e, mes)
                   setStepHash(0)
+                  handleSetStepState(e, 2)
                 } else if (e.target.value.length > 16) {
                   let mes = '請輸入16個字以內'
                   handleErrMessage(e, mes)
@@ -172,6 +173,7 @@ export default function Profile() {
                   handleErrMessage(e, mes)
                   handleSetformData(e, mes)
                   setStepHash(1)
+                  handleSetStepState(e, 2)
                 } else if (e.target.value.length > 16) {
                   let mes = '請輸入16個字元以內'
                   handleErrMessage(e, mes)
@@ -204,6 +206,7 @@ export default function Profile() {
                   let mes = ''
                   handleErrMessage(e, mes)
                   handleSetformData(e, mes)
+                  handleSetStepState(e, 2)
                   setStepHash(2)
                 }
               }}
@@ -234,6 +237,7 @@ export default function Profile() {
                   let mes = ' '
                   handleErrMessage(e, mes)
                   handleSetformData(e, mes)
+                  handleSetStepState(e, 2)
                   setStepHash(3)
                 }
               }}
@@ -267,6 +271,7 @@ export default function Profile() {
                   let mes = ' '
                   handleErrMessage(e, mes)
                   handleSetformData(e, mes)
+                  handleSetStepState(e, 2)
                   setStepHash(4)
                 } else {
                   let mes = '請輸入正確格式的手機號碼'
@@ -296,7 +301,8 @@ export default function Profile() {
                 if (dateString) {
                   let mes = ''
                   setErrMesage({ ...errMesage, [birthday]: mes })
-                  handleSetformData({ ...errMesage, [birthday]: dateString })
+                  setformData({ ...formData, [birthday]: dateString })
+                  setStepState({ ...stepState, birthday: stepStateArray[2] })
                   setStepHash(5)
                 } else {
                   let mes = '請填入日期'
@@ -332,6 +338,7 @@ export default function Profile() {
                   handleErrMessage(e, mes)
                   handleSetformData(e, mes)
                   setStepHash(6)
+                  handleSetStepState(e, 2)
                 } else if (e.target.value.length === 0) {
                   let mes = '請輸入Email '
                   handleErrMessage(e, mes)
@@ -377,6 +384,7 @@ export default function Profile() {
                   handleErrMessage(e, mes)
                   handleSetformData(e, mes)
                   setStepHash(8)
+                  handleSetStepState(e, 2)
                 } else if (e.target.value.length > 16) {
                   let mes = '請輸入16個字元以內'
                   handleErrMessage(e, mes)
@@ -406,7 +414,7 @@ export default function Profile() {
                   let mes = ''
                   handleErrMessage(e, mes)
                   handleSetformData(e, mes)
-
+                  handleSetStepState(e, 2)
                   setStepHash(8)
                 } else {
                   let mes = '密碼不一致'

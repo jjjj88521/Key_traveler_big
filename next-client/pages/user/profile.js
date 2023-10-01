@@ -2,7 +2,59 @@ import React from 'react'
 import Image from 'next/image'
 import UserSideBar from './user-side-bar'
 import UserSideBarMobile from './user-side-bar-mobile'
+import dayjs from 'dayjs'
+import { DatePicker, Space } from 'antd'
+import { useState, useRef } from 'react'
+
+const disabledDate = (current) => {
+  return current && current > new Date()
+}
+
 export default function Profile() {
+  const fakeUserData = [
+    {
+      name: 'AAA',
+      account: 'BBB',
+      gender: '0',
+      address: 'CCC',
+      phone: '0912345678',
+      birthday: '1993-09-28',
+      email: 'DDD@DD.D',
+      password: '12345',
+      confirmPassword: '12345',
+    },
+  ]
+  //宣告儲存會員資料
+  const [formData, setformData] = useState({
+    name: '',
+    account: '',
+    gender: '',
+    address: '',
+    phone: '',
+    birthday: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  })
+  //宣告會員填寫狀態
+  const [error, setError] = useState('')
+  const fileInputRef = useRef(null)
+  const [errMesage, setErrMesage] = useState({
+    name: '',
+    account: '',
+    address: '',
+    gender: '',
+    phone: '',
+    birthday: '',
+    email: '',
+  })
+
+  function handleErrMessage(e, mes) {
+    setErrMesage({ ...errMesage, [e.target.name]: mes })
+  }
+  function handleSetformData(e, mes) {
+    setformData({ ...formData, [e.target.name]: e.target.value })
+  }
   return (
     <>
       <div className="container">
@@ -53,27 +105,43 @@ export default function Profile() {
             <label htmlFor="name" className="col-form-label ">
               姓名
             </label>
-            <input type="text" id="name" name="name" className="form-control" />
-
-            <label htmlFor="email" className="col-form-label mt-3">
-              Email
-            </label>
             <input
               type="text"
-              id="email"
-              name="email"
+              id="name"
+              name="name"
               className="form-control"
+              defaultValue={fakeUserData[0].name}
+              onChange={(e) => {
+                if (e.target.value.length === 0) {
+                  let mes = '請填入姓名'
+                  handleErrMessage(e, mes)
+                } else if (
+                  0 < e.target.value.length &&
+                  e.target.value.length < 16
+                ) {
+                  let mes = ''
+                  handleErrMessage(e, mes)
+                  handleSetformData(e, mes)
+                } else if (e.target.value.length > 16) {
+                  let mes = '請輸入16個字以內'
+                  handleErrMessage(e, mes)
+                }
+              }}
             />
 
             <label htmlFor="gender" className="col-form-label mt-3">
               性別
             </label>
-            <input
+            <select
               type="text"
               id="gender"
               name="gender"
-              className="form-control"
-            />
+              className="form-select"
+              defaultValue={fakeUserData[0].gender}
+            >
+              <option value="1">男</option>
+              <option value="0">女</option>
+            </select>
 
             <label htmlFor="address" className="col-form-label mt-3">
               地址
@@ -83,6 +151,17 @@ export default function Profile() {
               id="address"
               name="address"
               className="form-control"
+              defaultValue={fakeUserData[0].address}
+              onChange={(e) => {
+                if (e.target.value.length === 0) {
+                  let mes = '請填入地址'
+                  handleErrMessage(e, mes)
+                } else {
+                  let mes = ''
+                  handleErrMessage(e, mes)
+                  handleSetformData(e, mes)
+                }
+              }}
             />
 
             <label htmlFor="phone" className="col-form-label mt-3">
@@ -93,46 +172,56 @@ export default function Profile() {
               id="phone"
               name="phone"
               className="form-control"
+              defaultValue={fakeUserData[0].phone}
+              onChange={(e) => {
+                let phoneReg = /^09\d{8}$/
+                if (phoneReg.test(e.target.value)) {
+                  let mes = ' '
+                  handleErrMessage(e, mes)
+                  handleSetformData(e, mes)
+                } else {
+                  let mes = '請輸入正確格式的手機號碼'
+                  handleErrMessage(e, mes)
+                }
+              }}
             />
 
             <div className="birthday mt-3">
               <label htmlFor="birthday" className="col-form-label">
                 生日
               </label>
-              <div className="input-group">
-                {' '}
-                <select
-                  type="text"
-                  id="year"
-                  name="birthday"
-                  value="year"
-                  className="form-select"
-                >
-                  <option value="1990">1990</option>
-                </select>
-                <select
-                  type="text"
-                  id="month"
-                  name="birthday"
-                  value="07"
-                  className="form-select"
-                >
-                  <option value="07">07</option>
-                </select>
-                <select
-                  type="text"
-                  id="day"
-                  name="birthday"
-                  value="26"
-                  className="form-select"
-                >
-                  <option value="26">26</option>
-                </select>
-              </div>
+              <br />
+              <DatePicker
+                id="birthday"
+                name="birthday"
+                disabledDate={disabledDate}
+                placeholder="選擇日期"
+                className="form-control"
+                defaultValue={dayjs(fakeUserData[0].birthday, 'YYYY-MM-DD')}
+              />
             </div>
-            <button className="btn btn-primary text-white col-sm-5 col-12 offset-sm-7 mt-5">
+
+            <button
+              type="button"
+              className="btn btn-primary text-white col-sm-5 col-12 offset-sm-7 mt-5"
+              onClick={() => {
+                if (errMesage.name !== '') {
+                  setError(errMesage.name)
+                } else if (errMesage.address !== '') {
+                  setError(errMesage.address)
+                  errMesage.address
+                } else if (errMesage.phone !== '') {
+                  setError(errMesage.phone)
+                  errMesage.phone
+                }
+
+                console.log(error)
+              }}
+            >
               儲存
             </button>
+
+            <p className="text-end mt-3">{error}</p>
           </form>
           {/* 電腦版的avator */}
           <div className="avatar col-3 offset-1 d-sm-block d-none">
@@ -157,8 +246,15 @@ export default function Profile() {
                   className="rounded-circle border border-primary"
                 />
               </div>
-              <button className="btn btn-primary text-white my-4">
-                選擇圖片
+              <button
+                type="button"
+                className="btn btn-primary text-white my-4"
+                onClick={() => {
+                  fileInputRef.current.click()
+                }}
+              >
+                選擇圖片{' '}
+                <input type="file" ref={fileInputRef} className="d-none" />
               </button>
               <p className="ps-3 mb-0 align-self-start text-black-50">
                 檔案大小1MB
