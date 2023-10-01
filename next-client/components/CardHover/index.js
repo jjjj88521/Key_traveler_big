@@ -4,7 +4,7 @@ import styles from './index.module.css'
 export default function CardHover() {
   return (
     <>
-      <div className="d-flex justify-content-end row row-cols-2 row-cols-md-3 g-4">
+      <div className="d-flex justify-content-end row row-cols-2 row-cols-md-3 g-4 mb-sm-0 mb-4">
         {Array(12)
           .fill()
           .map((_, index) => (

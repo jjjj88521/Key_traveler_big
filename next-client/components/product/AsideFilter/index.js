@@ -59,9 +59,9 @@ export default function AsideFilter() {
             <i class="fa-solid fa-dollar-sign"></i> 價錢篩選
           </div>
           <div className="mb-3 d-flex justify-content-center align-items-center">
-            <input type="number" className="col-5"></input>
+            <input type="number" className="col-5" min="0"></input>
             <div className="col-2 fs-4 d-flex justify-content-center">~</div>
-            <input type="number" className="col-5"></input>
+            <input type="number" className="col-5" min="0"></input>
           </div>
           <button type="button" className="btn btn-primary">
             套用
