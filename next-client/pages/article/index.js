@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Divider, Space, Tag } from 'antd'
 import art_list_style from '@/styles/article/art_list_style.module.scss'
 // import PaginationComponent from '@/components/common/PaginationComponent'
@@ -7,6 +7,11 @@ import art_list_style from '@/styles/article/art_list_style.module.scss'
 export default function Article() {
   const [selectedCategory, setSelectedCategory] = useState(null)
 
+  const [searchCard, setSearchCard] = useState('')
+  const handleSearch = (e) => {
+    // console.log('搜尋關鍵字：', e.target.value)
+    setSearchCard(e.target.value)
+  }
   // const fontColor = {
   //   color: 'red',
   //   fontSize: '100px',
@@ -14,7 +19,19 @@ export default function Article() {
   // 卡片物件
   let data = [
     {
-      title: 'Card Title',
+      title: 'Card Post',
+      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      cate: '公告',
+      date: '2023-09-21',
+    },
+    {
+      title: 'Card Post',
+      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      cate: '公告',
+      date: '2023-09-21',
+    },
+    {
+      title: 'Card Post',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
       cate: '公告',
       date: '2023-09-21',
@@ -32,19 +49,19 @@ export default function Article() {
       date: '2023-09-21',
     },
     {
-      title: 'Card Title',
+      title: 'Card Unboxing',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
+      cate: '開箱文',
       date: '2023-09-21',
     },
     {
-      title: 'Card Title',
+      title: 'Card Unboxing',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
+      cate: '開箱文',
       date: '2023-09-21',
     },
     {
-      title: 'Card Title',
+      title: 'Card Unboxing',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
       cate: '開箱文',
       date: '2023-09-21',
@@ -56,25 +73,13 @@ export default function Article() {
       date: '2023-09-21',
     },
     {
-      title: 'Card Title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '開箱文',
-      date: '2023-09-21',
-    },
-    {
-      title: 'Card Title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '開箱文',
-      date: '2023-09-21',
-    },
-    {
-      title: 'Card Title',
+      title: 'Card Teach',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
       cate: '組裝教學',
       date: '2023-09-21',
     },
     {
-      title: 'Card Title',
+      title: 'Card Act',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
       cate: '活動',
       date: '2023-09-21',
@@ -158,6 +163,8 @@ export default function Article() {
                     type="search"
                     placeholder="Search"
                     aria-label="Search"
+                    value={searchCard}
+                    onChange={handleSearch}
                   />
                   <button className="btn btn-outline-secondary" type="submit">
                     <i className="fa-solid fa-magnifying-glass"></i>
@@ -296,7 +303,9 @@ export default function Article() {
             {data
               .filter(
                 (item) =>
-                  selectedCategory === null || item.cate === selectedCategory
+                  selectedCategory === null ||
+                  (item.cate === selectedCategory &&
+                    (searchCard === '' || item.title.includes(searchCard)))
               )
 
               .map((item, index) => {
