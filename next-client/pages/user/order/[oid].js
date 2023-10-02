@@ -1,6 +1,4 @@
-// import React from 'react'
 import Image from 'next/image'
-// import { DatePicker } from 'antd'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faCircleChevronDown,
@@ -9,7 +7,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 export default function Detail() {
-  // const { RangePicker } = DatePicker
   return (
     <>
       <div className="container py-4">

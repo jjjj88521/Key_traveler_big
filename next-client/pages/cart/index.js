@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import style from './cart.module.scss'
-import { Steps, DatePicker, Divider, Radio, List } from 'antd'
+import { Steps, Divider, Radio, List } from 'antd'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faCircleChevronDown,
@@ -9,204 +9,208 @@ import {
   faCaretRight,
 } from '@fortawesome/free-solid-svg-icons'
 
+import CartStep1 from '@/components/cart/cart-step-1'
+import PCartList from '@/components/cart/p-cart-list'
+import RCartList from '@/components/cart/r-cart-list'
+import GCartList from '@/components/cart/g-cart-list'
+
 export default function Cart() {
   // step 1
-  // const { RangePicker } = DatePicker
-  const items = [
-    {
-      title: '確認商品',
-    },
-    {
-      title: '填寫訂單資訊',
-    },
-    {
-      title: '完成訂單',
-    },
-  ]
+  // const items = [
+  //   {
+  //     title: '確認商品',
+  //   },
+  //   {
+  //     title: '填寫訂單資訊',
+  //   },
+  //   {
+  //     title: '完成訂單',
+  //   },
+  // ]
 
-  const initialProducts = [
-    {
-      id: 1,
-      check: false,
-      img: '/images/1669370674683000804.jpg',
-      price: 3000,
-      amount: 1,
-    },
-    {
-      id: 2,
-      check: false,
-      img: '/images/1669370674683000804.jpg',
-      price: 1000,
-      amount: 2,
-    },
-  ]
-  const initialRentProducts = [
-    {
-      id: 1,
-      check: false,
-      img: '/images/1669370674683000804.jpg',
-      price: 300,
-      startDate: '2023-10-02',
-      endDate: '2023-10-03',
-    },
-    {
-      id: 2,
-      check: false,
-      img: '/images/1669370674683000804.jpg',
-      price: 100,
-      startDate: '2023-10-04',
-      endDate: '2023-10-05',
-    },
-  ]
-  //1.計算出各個input type=date的日數，並乘上商品的price後顯示在小計欄位 2.更改其中一個開始日期或結束日期時，另一個開始日期或結束日期不會自動跟著變 3.算出總金額並顯示在總計欄位
-  const [products, setProducts] = useState(initialProducts)
-  const [rentProducts, setRentProducts] = useState(initialRentProducts)
+  // const initialProducts = [
+  //   {
+  //     id: 1,
+  //     check: false,
+  //     img: '/images/1669370674683000804.jpg',
+  //     price: 3000,
+  //     amount: 1,
+  //   },
+  //   {
+  //     id: 2,
+  //     check: false,
+  //     img: '/images/1669370674683000804.jpg',
+  //     price: 1000,
+  //     amount: 2,
+  //   },
+  // ]
+  // const initialRentProducts = [
+  //   {
+  //     id: 1,
+  //     check: false,
+  //     img: '/images/1669370674683000804.jpg',
+  //     price: 300,
+  //     startDate: '2023-10-02',
+  //     endDate: '2023-10-03',
+  //   },
+  //   {
+  //     id: 2,
+  //     check: false,
+  //     img: '/images/1669370674683000804.jpg',
+  //     price: 100,
+  //     startDate: '2023-10-04',
+  //     endDate: '2023-10-05',
+  //   },
+  // ]
 
-  const [checkAll, setCheckAll] = useState(false)
-  const [checkAllRent, setCheckAllRent] = useState(false)
+  // const [products, setProducts] = useState(initialProducts)
+  // const [rentProducts, setRentProducts] = useState(initialRentProducts)
+
+  // const [checkAll, setCheckAll] = useState(false)
+  // const [checkAllRent, setCheckAllRent] = useState(false)
   /////
-  const [totalAmount, setTotalAmount] = useState(0) // 總金額的狀態變數
+  // const [totalAmount, setTotalAmount] = useState(0) // 總金額的狀態變數
 
-  const handleStartDateChange = (id, newStartDate) => {
-    setRentProducts((prevRentProducts) =>
-      prevRentProducts.map((product) =>
-        product.id === id ? { ...product, startDate: newStartDate } : product
-      )
-    )
-  }
+  // const handleStartDateChange = (id, newStartDate) => {
+  //   setRentProducts((prevRentProducts) =>
+  //     prevRentProducts.map((product) =>
+  //       product.id === id ? { ...product, startDate: newStartDate } : product
+  //     )
+  //   )
+  // }
 
-  const handleEndDateChange = (id, newEndDate) => {
-    setRentProducts((prevRentProducts) =>
-      prevRentProducts.map((product) =>
-        product.id === id ? { ...product, endDate: newEndDate } : product
-      )
-    )
-  }
+  // const handleEndDateChange = (id, newEndDate) => {
+  //   setRentProducts((prevRentProducts) =>
+  //     prevRentProducts.map((product) =>
+  //       product.id === id ? { ...product, endDate: newEndDate } : product
+  //     )
+  //   )
+  // }
 
-  useEffect(() => {
-    // 計算小計和總金額的邏輯
-    let total = 0
-    rentProducts.forEach((product) => {
-      const start = new Date(product.startDate)
-      const end = new Date(product.endDate)
-      const timeDifference = end.getTime() - start.getTime()
-      const productTotalDays = timeDifference / (1000 * 3600 * 24) + 1
-      const subtotal = productTotalDays * product.price
-      total += subtotal
-      product.subtotal = subtotal
-    })
-    setTotalAmount(total)
-    setRentProducts([...rentProducts]) // 更新狀態以重新渲染UI
-  }, [rentProducts])
+  // useEffect(() => {
+  //   // 計算小計和總金額的邏輯
+  //   let total = 0
+  //   rentProducts.forEach((product) => {
+  //     const start = new Date(product.startDate)
+  //     const end = new Date(product.endDate)
+  //     const timeDifference = end.getTime() - start.getTime()
+  //     const productTotalDays = timeDifference / (1000 * 3600 * 24) + 1
+  //     const subtotal = productTotalDays * product.price
+  //     total += subtotal
+  //     product.subtotal = subtotal
+  //   })
+  //   setTotalAmount(total)
+  //   setRentProducts([...rentProducts]) // 更新狀態以重新渲染UI
+  // }, [rentProducts])
 
-  // 獲取當前日期並格式化為 yyyy-MM-dd
-  const getCurrentDate = () => {
-    const today = new Date()
-    const year = today.getFullYear()
-    const month = String(today.getMonth() + 1).padStart(2, '0')
-    const day = String(today.getDate()).padStart(2, '0')
-    return `${year}-${month}-${day}`
-  }
+  // // 獲取當前日期並格式化為 yyyy-MM-dd
+  // const getCurrentDate = () => {
+  //   const today = new Date()
+  //   const year = today.getFullYear()
+  //   const month = String(today.getMonth() + 1).padStart(2, '0')
+  //   const day = String(today.getDate()).padStart(2, '0')
+  //   return `${year}-${month}-${day}`
+  // }
 
-  // P全選
-  const toggleCheckAll = (products, isCheckedAll) => {
-    return products.map((product) => {
-      return { ...product, check: isCheckedAll }
-    })
-  }
-  // R全選
-  const toggleCheckAllRent = (rentProducts, isCheckedAll) => {
-    return rentProducts.map((rentProduct) => {
-      return { ...rentProduct, check: isCheckedAll }
-    })
-  }
+  // // P全選
+  // const toggleCheckAll = (products, isCheckedAll) => {
+  //   return products.map((product) => {
+  //     return { ...product, check: isCheckedAll }
+  //   })
+  // }
+  // // R全選
+  // const toggleCheckAllRent = (rentProducts, isCheckedAll) => {
+  //   return rentProducts.map((rentProduct) => {
+  //     return { ...rentProduct, check: isCheckedAll }
+  //   })
+  // }
 
-  //P單選
-  const toggleCheck = (products, id) => {
-    return products.map((product) => {
-      if (product.id === id) return { ...product, check: !product.check }
-      else return { ...product }
-    })
-  }
-  //R單選
-  const toggleCheckRent = (rentProducts, id) => {
-    return rentProducts.map((rentProduct) => {
-      if (rentProduct.id === id)
-        return { ...rentProduct, check: !rentProduct.check }
-      else return { ...rentProduct }
-    })
-  }
+  // //P單選
+  // const toggleCheck = (products, id) => {
+  //   return products.map((product) => {
+  //     if (product.id === id) return { ...product, check: !product.check }
+  //     else return { ...product }
+  //   })
+  // }
+  // //R單選
+  // const toggleCheckRent = (rentProducts, id) => {
+  //   return rentProducts.map((rentProduct) => {
+  //     if (rentProduct.id === id)
+  //       return { ...rentProduct, check: !rentProduct.check }
+  //     else return { ...rentProduct }
+  //   })
+  // }
 
-  // 增減數量
-  const upDateAmount = (products, id, value) => {
-    return products.map((product) => {
-      if (product.id === id)
-        return { ...product, amount: product.amount + value }
-      else return { ...product }
-    })
-  }
+  // // 增減數量
+  // const upDateAmount = (products, id, value) => {
+  //   return products.map((product) => {
+  //     if (product.id === id)
+  //       return { ...product, amount: product.amount + value }
+  //     else return { ...product }
+  //   })
+  // }
 
-  // P移除購物車商品
-  const removeProduct = (products, id) => {
-    return products.filter((product) => product.id !== id)
-  }
-  // R移除購物車商品
-  const removeRent = (rentProducts, id) => {
-    return rentProducts.filter((rentProduct) => rentProduct.id !== id)
-  }
+  // // P移除購物車商品
+  // const removeProduct = (products, id) => {
+  //   return products.filter((product) => product.id !== id)
+  // }
+  // // R移除購物車商品
+  // const removeRent = (rentProducts, id) => {
+  //   return rentProducts.filter((rentProduct) => rentProduct.id !== id)
+  // }
 
-  // P總計
-  const calculateTotalPrice = (products) => {
-    let totalPrice = 0
-    for (const product of products) {
-      totalPrice += product.price * product.amount
-    }
-    return totalPrice
-  }
-  const totalPrice = calculateTotalPrice(products)
+  // // P總計
+  // const calculateTotalPrice = (products) => {
+  //   let totalPrice = 0
+  //   for (const product of products) {
+  //     totalPrice += product.price * product.amount
+  //   }
+  //   return totalPrice
+  // }
+  // const totalPrice = calculateTotalPrice(products)
 
-  // P全選
-  const handleToggleCheckAll = (isCheckedAll) => {
-    setProducts(toggleCheckAll(products, isCheckedAll))
-  }
-  // R全選
-  const handleToggleCheckAllRent = (isCheckedAll) => {
-    setRentProducts(toggleCheckAllRent(rentProducts, isCheckedAll))
-  }
+  // // P全選
+  // const handleToggleCheckAll = (isCheckedAll) => {
+  //   setProducts(toggleCheckAll(products, isCheckedAll))
+  // }
+  // // R全選
+  // const handleToggleCheckAllRent = (isCheckedAll) => {
+  //   setRentProducts(toggleCheckAllRent(rentProducts, isCheckedAll))
+  // }
 
-  // P單選
-  const handleToggleCheck = (id) => {
-    const updateProducts = toggleCheck(products, id)
-    setProducts(updateProducts)
-    const updateCheckAllRent = updateProducts.every((product) => product.check)
-    setCheckAll(updateCheckAllRent)
-  }
-  // R單選
-  const handleToggleCheckRent = (id) => {
-    const updateRentProducts = toggleCheckRent(rentProducts, id)
-    setRentProducts(updateRentProducts)
-    const updateCheckAll = updateRentProducts.every(
-      (rentProduct) => rentProduct.check
-    )
-    setCheckAllRent(updateCheckAll)
-  }
+  // // P單選
+  // const handleToggleCheck = (id) => {
+  //   const updateProducts = toggleCheck(products, id)
+  //   setProducts(updateProducts)
+  //   const updateCheckAllRent = updateProducts.every((product) => product.check)
+  //   setCheckAll(updateCheckAllRent)
+  // }
+  // // R單選
+  // const handleToggleCheckRent = (id) => {
+  //   const updateRentProducts = toggleCheckRent(rentProducts, id)
+  //   setRentProducts(updateRentProducts)
+  //   const updateCheckAll = updateRentProducts.every(
+  //     (rentProduct) => rentProduct.check
+  //   )
+  //   setCheckAllRent(updateCheckAll)
+  // }
 
-  // 增減數量
-  const handleIncrement = (id) => {
-    setProducts(upDateAmount(products, id, 1))
-  }
-  const handleDecrement = (id) => {
-    setProducts(upDateAmount(products, id, -1))
-  }
+  // // 增減數量
+  // const handleIncrement = (id) => {
+  //   setProducts(upDateAmount(products, id, 1))
+  // }
+  // const handleDecrement = (id) => {
+  //   setProducts(upDateAmount(products, id, -1))
+  // }
 
-  // P移除購物車商品
-  const handleRemove = (id) => {
-    setProducts(removeProduct(products, id))
-  }
-  // R移除購物車商品
-  const handleRemoveRent = (id) => {
-    setRentProducts(removeRent(rentProducts, id))
-  }
+  // // P移除購物車商品
+  // const handleRemove = (id) => {
+  //   setProducts(removeProduct(products, id))
+  // }
+  // // R移除購物車商品
+  // const handleRemoveRent = (id) => {
+  //   setRentProducts(removeRent(rentProducts, id))
+  // }
 
   const cardListData = [
     {
@@ -308,16 +312,20 @@ export default function Cart() {
     <>
       {/* step 1 */}
       <div className="container">
-        <Steps
+        {/* <Steps
           current={0}
           labelPlacement="vertical"
           items={items}
           responsive={false}
           className="mt-5"
-        />
+        /> */}
+        <CartStep1 />
         <h1 className="text-primary fs-3 pt-5 pb-3">購物車清單</h1>
+        <PCartList />
+        <GCartList />
+        <RCartList />
         {/* 一般商品 */}
-        <div className="mb-3 text-primary d-none d-sm-block d-sm-flex">
+        {/* <div className="mb-3 text-primary d-none d-sm-block d-sm-flex">
           <div className="pe-2">
             <FontAwesomeIcon
               icon={faCircleChevronDown}
@@ -326,9 +334,9 @@ export default function Cart() {
           </div>
           <div>一般商品</div>
           <div className="ps-1">(2)</div>
-        </div>
+        </div> */}
         {/* 購物車 step1 電腦版 */}
-        <table className={`table d-none d-sm-table`}>
+        {/* <table className={`table d-none d-sm-table`}>
           <thead>
             <tr>
               <th
@@ -459,9 +467,9 @@ export default function Cart() {
               </td>
             </tr>
           </tbody>
-        </table>
+        </table> */}
         {/* 租用商品 */}
-        <div className="mb-3 text-primary d-none d-sm-block d-sm-flex">
+        {/* <div className="mb-3 text-primary d-none d-sm-block d-sm-flex">
           <div className="pe-2">
             <FontAwesomeIcon
               icon={faCircleChevronDown}
@@ -470,9 +478,9 @@ export default function Cart() {
           </div>
           <div>租用商品</div>
           <div className="ps-1">(2)</div>
-        </div>
+        </div> */}
         {/* 購物車 step1 電腦版 */}
-        <table className={`table d-none d-sm-table`}>
+        {/* <table className={`table d-none d-sm-table`}>
           <thead>
             <tr>
               <th
@@ -497,7 +505,6 @@ export default function Cart() {
               <th className="bg-primary text-white" style={{ width: '25%' }}>
                 租用日期
               </th>
-              {/* <th className="bg-primary text-white">數量</th> */}
               <th className="bg-primary text-white text-center">小計</th>
               <th className="bg-primary text-white"></th>
             </tr>
@@ -584,15 +591,14 @@ export default function Cart() {
             ))}
             <tr>
               <td className="pe-5 text-end" colSpan={6}>
-                {/* 總日數: {totalDays} */}
                 總計: ${totalAmount}
               </td>
             </tr>
           </tbody>
-        </table>
+        </table> */}
         {/* 一般商品 */}
         {/* 購物車 step1 手機版 */}
-        <table className={`table d-table d-sm-none`}>
+        {/* <table className={`table d-table d-sm-none`}>
           <thead>
             <tr>
               <th
@@ -716,10 +722,10 @@ export default function Cart() {
               </td>
             </tr>
           </tbody>
-        </table>
+        </table> */}
         {/* 租用商品 */}
         {/* 購物車 step1 手機版 */}
-        <table className={`table d-table d-sm-none`}>
+        {/* <table className={`table d-table d-sm-none`}>
           <thead>
             <tr>
               <th
@@ -780,18 +786,14 @@ export default function Cart() {
                       </select>
                     </div>
                     <div className="input-group ms-1 mt-1">
-                      {/* <RangePicker
-                      placeholder={''}
-                      className="px-2 ms-1 rounded py-0"
-                    /> */}
                       <input
                         className="form-control p-0"
                         type="date"
                         id="start_date"
                         value={rentProduct.startDate}
-                        onChange={(e) => 
+                        onChange={(e) =>
                           handleStartDateChange(rentProduct.id, e.target.value)
-                          }
+                        }
                         min={getCurrentDate()} // 不能選過去的日期
                         style={{ width: 97 }}
                       />
@@ -841,7 +843,7 @@ export default function Cart() {
               </td>
             </tr>
           </tbody>
-        </table>
+        </table> */}
         {/* 去結帳 */}
         <div className="my-4">
           <div className="pb-2">
@@ -887,13 +889,13 @@ export default function Cart() {
       {/* 信用卡新增_E */}
       <div className="container mt-5">
         <div className="d-flex justify-content-center mb-3">
-          <Steps
+          {/* <Steps
             current={1}
             labelPlacement="vertical"
             items={items}
             className="d-flex align-self-center"
             style={{ width: '70%' }}
-          />
+          /> */}
         </div>
         <div className="orderInfo">
           <div className={`${style['buyerInfo']}`}>
