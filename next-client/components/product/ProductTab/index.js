@@ -32,7 +32,6 @@ export default function TabContainer({
                   {cloneElement(child, {
                     isActive: tab === child.props.tabName,
                     onClick: () => {
-                      handleScroll()
                       setTab(child.props.tabName)
                     },
                   })}

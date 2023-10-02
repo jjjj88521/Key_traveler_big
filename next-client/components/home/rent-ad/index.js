@@ -18,32 +18,34 @@ export default function RentAd() {
       style={{ '--bs-bg-opacity': '0.2' }}
     >
       <div className="container py-5">
-        <div className="row">
-          <div className="col-4 d-flex flex-column justify-content-center">
-            <h2 className="h1 fw-bold">
+        <div className="row gap-sm-0 gap-4">
+          <div className="col-sm-4 col-12 d-flex flex-column justify-content-center gap-3">
+            <h2 className="h1 fw-bold mb-0">
               不知道鍵盤手感嗎？
               <br />
               試試租用吧！
             </h2>
-            <p className="text-secondary">
+            <p className="text-secondary mb-0 fw-bold">
               在這裡，我們幫您搭配好的鍵盤，讓您可以盡情試用！
             </p>
-            <Link
-              href="/rent"
-              type="button"
-              className="btn btn-primary btn-lg text-white w-50 rounded-0"
-            >
-              Explore more
-            </Link>
+            <div className="d-sm-block d-none">
+              <Link
+                href="/rent"
+                type="button"
+                className="btn btn-primary btn-lg text-white w-50 rounded-0"
+              >
+                Explore more
+              </Link>
+            </div>
           </div>
-          <div className="col-8">
+          <div className="col-sm-8 col-12">
             <Swiper
               className="rent-ad-swiper"
               pagination={{
                 clickable: true,
               }}
               modules={[Pagination]}
-              slidesPerView={2}
+              slidesPerView={1}
               spaceBetween={24}
               loop={true}
               style={{
@@ -104,6 +106,15 @@ export default function RentAd() {
                 />
               </SwiperSlide>
             </Swiper>
+          </div>
+          <div className="col justify-content-center d-flex d-sm-none">
+            <Link
+              href="/rent"
+              type="button"
+              className="btn btn-primary btn-lg text-white w-50 rounded-0"
+            >
+              Explore more
+            </Link>
           </div>
         </div>
       </div>

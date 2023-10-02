@@ -58,3 +58,23 @@
     text-align: end;
   }
 }
+
+@media screen and (max-width: 576px) {
+  .rent-ad-swiper {
+    .swiper-slide {
+      .rent-ad-card {
+        .rent-ad-name-box {
+          .rent-ad-name {
+            width: 120px;
+            height: 75px;
+            padding: 15px;
+          }
+          .rent-ad-arrow{
+            width: 30px;
+            height: 30px;
+          }
+        }
+      }
+    }
+  }
+}

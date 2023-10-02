@@ -24,9 +24,7 @@ const StyleSelect = ({ title, children, onSelect, hasTitle = true }) => {
           {title}
         </h5>
       )}
-      <div
-        className={`${style['style-select-list']} d-flex justify-content-center d-sm-block`}
-      >
+      <div className={`${style['style-select-list']}`}>
         {React.Children.map(children, (child) => {
           if (React.isValidElement(child)) {
             // 將 handleClick 函數作為 onClick 屬性傳遞給每個子元件

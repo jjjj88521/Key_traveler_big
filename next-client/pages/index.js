@@ -15,6 +15,7 @@ import CateSelect from '@/components/home/cate-select'
 import AdCarousel from '@/components/home/ad-carousel'
 import RentAd from '@/components/home/rent-ad'
 import NewPd from '@/components/home/new-pd'
+import LastGallery from '@/components/home/last-gallery'
 
 export default function Home() {
   return (
@@ -28,7 +29,7 @@ export default function Home() {
       <CateSelect />
       <NewPd />
       <RentAd />
-      
+      <LastGallery />
     </>
   )
 }

@@ -11,7 +11,7 @@ export default function MyBreadcrumb() {
   const pathname = asPath.split('?')[0]
 
   // 要放到連結的 path 陣列
-  const paths = pathname.split('/')
+  // const paths = pathname.split('/')
 
   // 將路徑分割成陣列，並解碼中文字符
   const pathsDecoded = pathname
@@ -23,7 +23,8 @@ export default function MyBreadcrumb() {
       <div className="container h-100 d-flex align-items-center">
         <MyBreadcrumbList>
           {pathsDecoded.map((path, index) => {
-            if (index === 0) {
+            {
+              /* if (index === 0) {
               return (
                 <MyBreadcrumbItem
                   key={index}
@@ -43,7 +44,44 @@ export default function MyBreadcrumb() {
                   title={path}
                 />
               )
+            } */
             }
+            const currentPath = pathsDecoded.slice(0, index + 1).join('/')
+            console.log(currentPath)
+            const matchingPath = pathsLocaleMap.find(
+              (path) => path.path === currentPath
+            )
+            const isLastBreadcrumb = index === pathsDecoded.length - 1
+            // 有匹配的路徑
+            if (matchingPath) {
+              return (
+                <MyBreadcrumbItem
+                  key={index}
+                  path={matchingPath.path}
+                  title={matchingPath.name}
+                  lastItem={isLastBreadcrumb}
+                />
+              )
+            }
+            // 第一個顯示房子圖案
+            if (index === 0) {
+              return (
+                <MyBreadcrumbItem
+                  key={index}
+                  path={`/`}
+                  title={<HomeFilled />}
+                />
+              )
+            }
+            // 沒有匹配的路由就路由是甚麼就顯示甚麼
+            return (
+              <MyBreadcrumbItem
+                key={index}
+                path={pathsDecoded.slice(0, index + 1).join('/')}
+                title={path}
+                lastItem={isLastBreadcrumb}
+              />
+            )
           })}
         </MyBreadcrumbList>
       </div>

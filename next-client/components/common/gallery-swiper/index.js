@@ -15,11 +15,11 @@ import { FreeMode, Navigation, Thumbs } from 'swiper/modules'
 
 // modules styles
 import style from './_gallery_swiper.module.scss'
-import { Image } from 'antd'
+import { Image, Skeleton } from 'antd'
 import NextImage from 'next/image'
 import { SwiperNextBtn, SwiperPrevBtn } from '@/components/home/swiper-btns'
 
-const GallerySwiper = ({ images = [], path = '' }) => {
+const GallerySwiper = ({ images = [], path = '', isLoading }) => {
   // 圖片 slider
   const [thumbsSwiper, setThumbsSwiper] = useState(null)
 
@@ -34,22 +34,28 @@ const GallerySwiper = ({ images = [], path = '' }) => {
           modules={[FreeMode, Navigation, Thumbs]}
           className={`${style['swiper-bg']} swiper-bg`}
         >
-          {images.map((item, index) => {
-            return (
-              <SwiperSlide key={index} className={`${style['swiper-slide']}`}>
-                <Image src={`${path}${item}`} alt={item} />
-              </SwiperSlide>
-            )
-          })}
+          {isLoading ? (
+            <SwiperSlide>
+              <Skeleton.Image className="w-100 h-100" active />
+            </SwiperSlide>
+          ) : (
+            images.map((item, index) => {
+              return (
+                <SwiperSlide key={index} className={`${style['swiper-slide']}`}>
+                  <Image src={`${path}${item}`} alt={item} />
+                </SwiperSlide>
+              )
+            })
+          )}
           <SwiperPrevBtn
             className={`btn btn-lg bg-secondary bg-opacity-50 position-absolute start-0 top-50 translate-middle-y z-1 fs-1 text-white`}
           >
-            <i class="fa-solid fa-chevron-left"></i>
+            <i className="fa-solid fa-chevron-left"></i>
           </SwiperPrevBtn>
           <SwiperNextBtn
             className={`btn btn-lg bg-secondary bg-opacity-50 position-absolute end-0 top-50 translate-middle-y z-1 fs-1 text-white`}
           >
-            <i class="fa-solid fa-chevron-right"></i>
+            <i className="fa-solid fa-chevron-right"></i>
           </SwiperNextBtn>
         </Swiper>
       </Image.PreviewGroup>
@@ -65,13 +71,26 @@ const GallerySwiper = ({ images = [], path = '' }) => {
         loop={false}
         // navigation={{ clickable: true }}
       >
-        {images.map((item, index) => {
-          return (
-            <SwiperSlide key={index} className={`${style['swiper-slide']}`}>
-              <NextImage src={`${path}${item}`} width={75} height={75} />
-            </SwiperSlide>
-          )
-        })}
+        {isLoading
+          ? Array.from({ length: 5 }).map((_, index) => {
+              return (
+                <SwiperSlide key={index} className={`${style['swiper-slide']}`}>
+                  <Skeleton.Image active />
+                </SwiperSlide>
+              )
+            })
+          : images.map((item, index) => {
+              return (
+                <SwiperSlide key={index} className={`${style['swiper-slide']}`}>
+                  <NextImage
+                    src={`${path}${item}`}
+                    width={75}
+                    height={75}
+                    alt={item}
+                  />
+                </SwiperSlide>
+              )
+            })}
       </Swiper>
     </div>
   )

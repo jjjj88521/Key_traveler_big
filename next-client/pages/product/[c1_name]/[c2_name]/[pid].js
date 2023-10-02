@@ -4,6 +4,7 @@ import ProductHead from '@/components/product/product-head'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import TabButton from '@/components/product/ProductTab/TabButton'
+import PdLoading from '@/components/product/pd-loading'
 // 評論假資料
 const commentData = Array.from({
   length: 36,
@@ -20,46 +21,59 @@ const commentData = Array.from({
 export default function ProductDetail() {
   const router = useRouter()
   const { isReady } = router
-  const { pid } = router.query
   // 接一般商品 api，後端路由 http://localhost:3005/api/products/[pid]
   const [product, setProduct] = useState(null)
 
-  useEffect(() => {
-    async function fetchProduct(url) {
-      try {
-        const response = await fetch(url, {
+  // 存是否正在載入
+  const [isLoading, setIsLoading] = useState(true)
+
+  async function fetchProduct(pid) {
+    try {
+      const response = await fetch(
+        `http://localhost:3005/api/products/${pid}`,
+        {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json',
           },
           credentials: 'include',
-        })
-        if (response.ok) {
-          const data = await response.json()
-          // 在這裡處理回應的數據
-          setProduct(data)
-        } else {
-          // 處理錯誤情況，例如返回狀態碼不是 200
-          console.error('發生錯誤:', response.status)
         }
-      } catch (error) {
-        // 處理其他錯誤
-        console.error('發生錯誤:', error)
+      )
+      if (response.ok) {
+        const data = await response.json()
+        console.log(data)
+        // 在這裡處理回應的數據
+        setProduct(data)
+        setTimeout(() => {
+          setIsLoading(false)
+        }, 500)
+      } else {
+        // 處理錯誤情況，例如返回狀態碼不是 200
+        console.error('發生錯誤:', response.status)
       }
+    } catch (error) {
+      // 處理其他錯誤
+      console.error('發生錯誤:', error)
     }
+  }
+
+  useEffect(() => {
     if (isReady) {
-      const url = `http://localhost:3005/api/products/${pid}`
-      fetchProduct(url)
+      const { pid } = router.query
+      fetchProduct(pid)
     }
-  }, [pid, isReady])
+  }, [router.query, isReady])
 
-  console.log(product)
+  if (isLoading) {
+    return <PdLoading />
+  }
 
-  if (!product) {
-    return <div>...</div>
+  if (Object.keys(product).length === 0) {
+    return <div>找不到商品</div>
   }
   // 商品資料解構，以及將一些數據轉換成物件或陣列
+
   const { name, brand, price, feature } = product
   const style_select = JSON.parse(product.style_select)
   const feature_img = JSON.parse(product.feature_img)

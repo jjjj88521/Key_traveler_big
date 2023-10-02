@@ -17,22 +17,23 @@ export default function GbProgressBox({
   // 人數比例
   const peopleRatio = (current_people / target_people) * 100
   return (
-    <div className="hstack gap-3">
+    <div className="d-flex gap-3 flex-sm-row flex-column">
       <Progress
         type="circle"
         percent={peopleRatio}
         format={(percent) => {
           return percent === 100 ? '成團' : `${percent}%`
         }}
+        className="text-center"
       />
-      <div className="vstack gap-2">
+      <div className="vstack gap-2 text-sm-start text-center">
         <div className="text-secondary">
           <p className="mb-0 fs-5">目標人數：{target_people} 人</p>
           <p className="mb-0 fs-5">
             開團日期：{startDate} ~ {endDate}
           </p>
         </div>
-        <div className="d-flex gap-4">
+        <div className="d-flex gap-4 justify-content-center justify-content-sm-start">
           <div className="fs-4 d-flex gap-3 align-items-center">
             <span className="fs-2">
               <UserOutlined />
