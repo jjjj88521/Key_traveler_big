@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Avatar, List, Space } from 'antd'
 import { Input } from 'antd'
 import art_detail_style from '@/styles/article/art_detail_style.module.scss'
+import moment from 'moment'
 import CKeditor from '@/components/CKeditor'
 
 const { TextArea } = Input
@@ -14,10 +15,11 @@ const ButtonStyle = {
   backgroundColor: '#198cf8',
 }
 export default function ArticleDetail() {
+  // 收藏按鈕功能
   const [like, setLike] = useState(false)
 
   // 感興趣列表物件
-  let data = [
+  const interesrData = [
     {
       title: 'interest title',
       img: 'https://keebsforall.com/cdn/shop/products/DSC00941.jpg?v=1689791499&width=1000',
@@ -45,47 +47,65 @@ export default function ArticleDetail() {
     },
   ]
   // 留言列表物件
+  const formattedDateTime = moment().format('DD/MM/YYYY HH:mm:ss A')
+
   const artComment = [
     {
       title: 'Ant Design Title 1',
+      date: '2023',
+      description: '輸入內容',
     },
     {
       title: 'Ant Design Title 2',
+      date: '2023',
+      description: '輸入內容',
     },
     {
       title: 'Ant Design Title 3',
+      date: '2023',
+      description: '輸入內容',
     },
     {
       title: 'Ant Design Title 4',
+      date: '2023',
+      description: '輸入內容',
+    },
+    {
+      title: 'Ant Design Title 5',
+      date: '2023',
+      description: '輸入內容',
+    },
+    {
+      title: 'Ant Design Title 6',
+      date: '2023',
+      description: '輸入內容',
+    },
+    {
+      title: 'Ant Design Title 7',
+      date: '2023',
+      description: '輸入內容',
     },
   ]
-  const [value, setValue] = useState('')
-  // const onChange = (e) => {
-  //   console.log('Change:', e.target.value)
-  // }
-  // const App = () => (
-  //   <Space size={16} wrap>
-  //     <Avatar icon={<UserOutlined />} />
-  //     <Avatar>U</Avatar>
-  //     <Avatar size={40}>USER</Avatar>
-  //     <Avatar src={url} />
-  //     <Avatar src={<img src={url} alt="avatar" />} />
-  //     <Avatar
-  //       style={{
-  //         backgroundColor: '#fde3cf',
-  //         color: '#f56a00',
-  //       }}
-  //     >
-  //       U
-  //     </Avatar>
-  //     <Avatar
-  //       style={{
-  //         backgroundColor: '#87d068',
-  //       }}
-  //       icon={<UserOutlined />}
-  //     />
-  //   </Space>
-  // )
+  //留言顯示功能
+  const [displayItemCount, setDisplayItemCount] = useState(3)
+  const ShowMore = () => {
+    setDisplayItemCount((prevCount) => prevCount + 3)
+  }
+  // 留言撰寫功能
+  const [commentValue, setCommentValue] = useState('')
+  const [creat, setCreat] = useState(artComment)
+
+  const handleAddComment = () => {
+    const newComment = {
+      title: 'user_id',
+
+      description: commentValue,
+      date: formattedDateTime,
+    }
+    setCreat([newComment, ...creat])
+    setCommentValue('')
+  }
+
   return (
     <>
       <div className="bg-primary d-flex justify-content-center d-sm-none">
@@ -217,10 +237,10 @@ export default function ArticleDetail() {
               />
               <div className="w-100">
                 <TextArea
-                  value={value}
+                  value={commentValue}
                   showCount
                   maxLength={200}
-                  onChange={(e) => setValue(e.target.value)}
+                  onChange={(e) => setCommentValue(e.target.value)}
                   placeholder="Controlled autosize"
                   autoSize={{
                     minRows: 3,
@@ -231,6 +251,7 @@ export default function ArticleDetail() {
                 <button
                   className="btn btn-primary text-white my-4 w-100"
                   // style={ButtonStyle}
+                  onClick={handleAddComment}
                 >
                   Add comment
                 </button>
@@ -240,7 +261,7 @@ export default function ArticleDetail() {
             {/* 發佈列表區 */}
             <List
               itemLayout="horizontal"
-              dataSource={artComment}
+              dataSource={creat.slice(0, displayItemCount)}
               renderItem={(item, index) => (
                 <List.Item>
                   {/* <div>2023.09.26</div> */}
@@ -262,11 +283,11 @@ export default function ArticleDetail() {
                       >
                         <span className="fs-6">{item.title}</span>
                         <span className="text-secondary fw-light fst-italic">
-                          2023.09.26
+                          {item.date}
                         </span>
                       </div>
                     }
-                    description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                    description={item.description}
                   />
                 </List.Item>
               )}
@@ -277,6 +298,7 @@ export default function ArticleDetail() {
                 className={`${art_detail_style['showMoreBTN']} btn border border-primary`}
                 // className="btn border border-primary text-primary"
                 style={{ width: '250px' }}
+                onClick={ShowMore}
               >
                 show more
               </button>
@@ -340,7 +362,7 @@ export default function ArticleDetail() {
               <h4 className="fw-bold">你可能感興趣的文章</h4>
             </div>
             {/* 卡片與map函式 */}
-            {data.map((item, index) => {
+            {interesrData.map((item, index) => {
               return (
                 <>
                   <Link href="#" className="text-decoration-none">
