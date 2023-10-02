@@ -17,7 +17,7 @@ export default function Article() {
   //   fontSize: '100px',
   // }
   // 卡片物件
-  let data = [
+  const data = [
     {
       title: 'Card Post',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
@@ -303,9 +303,9 @@ export default function Article() {
             {data
               .filter(
                 (item) =>
-                  selectedCategory === null ||
-                  (item.cate === selectedCategory &&
-                    (searchCard === '' || item.title.includes(searchCard)))
+                  (selectedCategory === null ||
+                    item.cate === selectedCategory) &&
+                  (searchCard === '' || item.title.includes(searchCard))
               )
 
               .map((item, index) => {
