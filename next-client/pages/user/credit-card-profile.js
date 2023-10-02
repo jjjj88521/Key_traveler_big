@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Cards from 'react-credit-cards-2'
 import '@/node_modules/react-credit-cards-2/dist/es/styles.scss' // 引入样式
 import UserSideBar from './user-side-bar'
-import UserSideBarMobile from './user-side-bar-mobile'
+import UserSideBarMobile from '../../components/user/user-side-bar-mobile'
 export default function CreditCardForm() {
   const [cardData, setCardData] = useState({
     cvc: '',

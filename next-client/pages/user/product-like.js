@@ -9,7 +9,7 @@ import {
   faCaretRight,
 } from '@fortawesome/free-solid-svg-icons'
 import UserSideBar from './user-side-bar'
-import UserSideBarMobile from './user-side-bar-mobile'
+import UserSideBarMobile from '../../components/user/user-side-bar-mobile'
 export default function Detail() {
   // const { RangePicker } = DatePicker
   return (
