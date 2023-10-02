@@ -5,16 +5,34 @@ import UserSideBarMobile from './user-side-bar-mobile'
 import dayjs from 'dayjs'
 import { DatePicker, Space } from 'antd'
 import { useState, useRef } from 'react'
-
+import { useAuth } from '@/hooks/useAuth'
+import { useEffect } from 'react'
 const disabledDate = (current) => {
   return current && current > new Date()
 }
 
 export default function Profile() {
+  const [selectedFile, setSelectedFile] = useState(null)
+  const [previewUrl, setPreviewUrl] = useState('')
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0]
+    setSelectedFile(file)
+
+    // 預覽選定的圖片
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = () => {
+        setPreviewUrl(reader.result)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const { auth, setAuth } = useAuth()
   const fakeUserData = [
     {
       name: 'AAA',
-      account: 'BBB',
+      account: 'admin',
       gender: '0',
       address: 'CCC',
       phone: '0912345678',
@@ -25,17 +43,7 @@ export default function Profile() {
     },
   ]
   //宣告儲存會員資料
-  const [formData, setformData] = useState({
-    name: '',
-    account: '',
-    gender: '',
-    address: '',
-    phone: '',
-    birthday: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  })
+  const [formData, setformData] = useState({ ...auth })
   //宣告會員填寫狀態
   const [error, setError] = useState('')
   const fileInputRef = useRef(null)
@@ -224,6 +232,7 @@ export default function Profile() {
             <p className="text-end mt-3">{error}</p>
           </form>
           {/* 電腦版的avator */}
+
           <div className="avatar col-3 offset-1 d-sm-block d-none">
             <div className="d-flex flex-column align-items-center">
               {' '}
@@ -239,8 +248,11 @@ export default function Profile() {
               </p>
               <div className="avatar-img ">
                 <Image
-                  src="https://tamilnaducouncil.ac.in/wp-content/uploads/2020/04/dummy-avatar.jpg"
-                  alt=""
+                  src={
+                    previewUrl ||
+                    'https://tamilnaducouncil.ac.in/wp-content/uploads/2020/04/dummy-avatar.jpg'
+                  }
+                  alt="https://tamilnaducouncil.ac.in/wp-content/uploads/2020/04/dummy-avatar.jpg"
                   width={150}
                   height={150}
                   className="rounded-circle border border-primary"
@@ -254,7 +266,15 @@ export default function Profile() {
                 }}
               >
                 選擇圖片{' '}
-                <input type="file" ref={fileInputRef} className="d-none" />
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  className="d-none"
+                  onChange={(e) => {
+                    handleFileSelect(e)
+                    console.log(e.target.files[0])
+                  }}
+                />
               </button>
               <p className="ps-3 mb-0 align-self-start text-black-50">
                 檔案大小1MB

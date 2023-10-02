@@ -10,12 +10,12 @@ const disabledDate = (current) => {
 const fakeUserData = [
   {
     name: 'AAA',
-    account: 'BBB',
-    gender: '男',
+    account: 'admin',
+    gender: '0',
     address: 'CCC',
     phone: '0912345678',
-    birthday: '19930928',
-    Email: 'DDD@DD.D',
+    birthday: '1993-09-28',
+    email: 'DDD@DD.D',
     password: '12345',
     confirmPassword: '12345',
   },

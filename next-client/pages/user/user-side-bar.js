@@ -40,7 +40,7 @@ function UserSideBar() {
                 </Link>
               </h6>
               <h6>
-                <Link href="/user/forget-password" className="fw-bold">
+                <Link href="/user/reset-password" className="fw-bold">
                   修改密碼
                 </Link>
               </h6>
