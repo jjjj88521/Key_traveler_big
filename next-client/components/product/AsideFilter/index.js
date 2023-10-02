@@ -1,10 +1,9 @@
 import React from 'react'
-import styles from './index.module.css'
 
 export default function AsideFilter() {
   return (
     <>
-      <div className="mt-4 p-4 border-top border-primary border-2">
+      <div className="p-4 pt-0">
         <div className="mb-2 fs-5">
           <i className="fa-solid fa-filter"></i> 條件篩選
         </div>
@@ -56,7 +55,7 @@ export default function AsideFilter() {
           </div>
           <hr className="opacity-75"></hr>
           <div className="mb-2 fs-5">
-            <i class="fa-solid fa-dollar-sign"></i> 價錢篩選
+            <i className="fa-solid fa-dollar-sign"></i> 價錢篩選
           </div>
           <div className="mb-3 d-flex justify-content-center align-items-center">
             <input type="number" className="col-5" min="0"></input>

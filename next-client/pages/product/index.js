@@ -27,6 +27,16 @@ export default function ProductIndex() {
   const onClose = () => {
     setOpen(false)
   }
+
+  // 水合作用
+  const [hydrated, setHydrated] = React.useState(false)
+  React.useEffect(() => {
+    setHydrated(true)
+  }, [])
+  if (!hydrated) {
+    return null
+  }
+
   return (
     <>
       <div className={styles.banner}>
@@ -43,6 +53,7 @@ export default function ProductIndex() {
         <div className="row">
           <div className="d-none d-sm-block col-12 col-sm-3 pe-md-5 pe-1">
             <Accordion />
+            <hr className="text-primary opacity-100"></hr>
             <AsideFilter />
           </div>
 
@@ -111,6 +122,7 @@ export default function ProductIndex() {
               open={open}
             >
               <Accordion />
+              <hr className="text-primary opacity-100"></hr>
               <AsideFilter />
             </Drawer>
 
