@@ -13,6 +13,7 @@ import CartStep1 from '@/components/cart/cart-step-1'
 import PCartList from '@/components/cart/p-cart-list'
 import RCartList from '@/components/cart/r-cart-list'
 import GCartList from '@/components/cart/g-cart-list'
+import ProceedToCheckout from '@/components/cart/proceed-to-checkout'
 
 export default function Cart() {
   // step 1
@@ -845,11 +846,12 @@ export default function Cart() {
           </tbody>
         </table> */}
         {/* 去結帳 */}
-        <div className="my-4">
+        <ProceedToCheckout />
+        {/* <div className="my-4">
           <div className="pb-2">
             <span className="fs-6">
               使用優惠券(限一般商品): <span>全站85折</span>
-            </span>
+            </span> 
             <div class="btn-group ms-3 ">
               <button
                 class="btn btn-sm border-primary text-primary dropdown-toggle"
@@ -883,7 +885,7 @@ export default function Cart() {
             </span>
             <a className="btn btn-primary text-white ms-2">去結帳</a>
           </div>
-        </div>
+        </div> */}
       </div>
       {/* step 2 */}
       {/* 信用卡新增_E */}
