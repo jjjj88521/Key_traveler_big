@@ -11,7 +11,7 @@ import {
 
 export default function Cart() {
   // step 1
-  const { RangePicker } = DatePicker
+  // const { RangePicker } = DatePicker
   const items = [
     {
       title: '確認商品',
@@ -46,39 +46,67 @@ export default function Cart() {
       check: false,
       img: '/images/1669370674683000804.jpg',
       price: 300,
+      startDate: '2023-10-02',
+      endDate: '2023-10-03',
     },
     {
       id: 2,
       check: false,
       img: '/images/1669370674683000804.jpg',
       price: 100,
+      startDate: '2023-10-04',
+      endDate: '2023-10-05',
     },
   ]
+  //1.計算出各個input type=date的日數，並乘上商品的price後顯示在小計欄位 2.更改其中一個開始日期或結束日期時，另一個開始日期或結束日期不會自動跟著變 3.算出總金額並顯示在總計欄位
   const [products, setProducts] = useState(initialProducts)
   const [rentProducts, setRentProducts] = useState(initialRentProducts)
 
   const [checkAll, setCheckAll] = useState(false)
   const [checkAllRent, setCheckAllRent] = useState(false)
+  /////
+  const [totalAmount, setTotalAmount] = useState(0) // 總金額的狀態變數
 
-  // 租用日期
-  const [startDate, setStartDate] = useState('')
-  const [endDate, setEndDate] = useState('')
-  const [totalDays, setTotalDays] = useState(null)
+  const handleStartDateChange = (id, newStartDate) => {
+    setRentProducts((prevRentProducts) =>
+      prevRentProducts.map((product) =>
+        product.id === id ? { ...product, startDate: newStartDate } : product
+      )
+    )
+  }
+
+  const handleEndDateChange = (id, newEndDate) => {
+    setRentProducts((prevRentProducts) =>
+      prevRentProducts.map((product) =>
+        product.id === id ? { ...product, endDate: newEndDate } : product
+      )
+    )
+  }
 
   useEffect(() => {
-    const startDateValue = new Date(startDate)
-    const endDateValue = new Date(endDate)
-    // 計算租用日數含首尾日
-    endDateValue.setDate(endDateValue.getDate() + 1)
+    // 計算小計和總金額的邏輯
+    let total = 0
+    rentProducts.forEach((product) => {
+      const start = new Date(product.startDate)
+      const end = new Date(product.endDate)
+      const timeDifference = end.getTime() - start.getTime()
+      const productTotalDays = timeDifference / (1000 * 3600 * 24) + 1
+      const subtotal = productTotalDays * product.price
+      total += subtotal
+      product.subtotal = subtotal
+    })
+    setTotalAmount(total)
+    setRentProducts([...rentProducts]) // 更新狀態以重新渲染UI
+  }, [rentProducts])
 
-    if (!isNaN(startDateValue) && !isNaN(endDateValue)) {
-      const timeDifference = endDateValue - startDateValue
-      const daysDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24))
-      setTotalDays(daysDifference)
-    } else {
-      setTotalDays(null)
-    }
-  }, [startDate, endDate])
+  // 獲取當前日期並格式化為 yyyy-MM-dd
+  const getCurrentDate = () => {
+    const today = new Date()
+    const year = today.getFullYear()
+    const month = String(today.getMonth() + 1).padStart(2, '0')
+    const day = String(today.getDate()).padStart(2, '0')
+    return `${year}-${month}-${day}`
+  }
 
   // P全選
   const toggleCheckAll = (products, isCheckedAll) => {
@@ -127,7 +155,7 @@ export default function Cart() {
     return rentProducts.filter((rentProduct) => rentProduct.id !== id)
   }
 
-  // 總計
+  // P總計
   const calculateTotalPrice = (products) => {
     let totalPrice = 0
     for (const product of products) {
@@ -135,6 +163,7 @@ export default function Cart() {
     }
     return totalPrice
   }
+  const totalPrice = calculateTotalPrice(products)
 
   // P全選
   const handleToggleCheckAll = (isCheckedAll) => {
@@ -178,9 +207,6 @@ export default function Cart() {
   const handleRemoveRent = (id) => {
     setRentProducts(removeRent(rentProducts, id))
   }
-
-  // 總計
-  const totalPrice = calculateTotalPrice(products)
 
   const cardListData = [
     {
@@ -338,62 +364,6 @@ export default function Cart() {
             </tr>
           </thead>
           <tbody>
-            {/* <tr>
-              <td className="text-center align-middle">
-                <input type="checkbox" />
-              </td>
-              <td className="d-flex">
-                <div className="p-2">
-                  <img
-                    src="/images/1669370674683000804.jpg"
-                    width={100}
-                    height={100}
-                  />
-                </div>
-                <div className="p-2">
-                  <div>Qwertykey</div>
-                  <div>QK75鍵盤鍵盤鍵盤鍵盤</div>
-                  <div className="pt-1">
-                    <select
-                      className="form-select form-select-sm mb-1"
-                      style={{ width: 140 }}
-                    >
-                      <option>陽極紅</option>
-                    </select>
-                    <select
-                      className="form-select form-select-sm"
-                      style={{ width: 140 }}
-                    >
-                      <option>噴砂銀</option>
-                    </select>
-                  </div>
-                </div>
-              </td>
-              <td className="align-middle">$3000</td>
-              <td className="align-middle ps-4">
-                <div className="input-group">
-                  <span className="input-group-text p-0">
-                    <button className="btn" type="button" onClick={()=>{}}>
-                      -
-                    </button>
-                  </span>
-                  <input type="text" className="form-control text-center" value={amount}/>
-                  <span className="input-group-text p-0">
-                    <button className="btn" type="button" onClick={()=>{
-                      handleIncrement(id)
-                    }}>
-                      +
-                    </button>
-                  </span>
-                </div>
-              </td>
-              <td className="align-middle text-center">$3000</td>
-              <td className="align-middle text-center">
-                <button className="btn border-white">
-                  <FontAwesomeIcon icon={faTrashCan} className="text-primary" />
-                </button>
-              </td>
-            </tr> */}
             {products.map((product) => (
               <tr key={product.id}>
                 <td className="text-center align-middle">
@@ -533,60 +503,6 @@ export default function Cart() {
             </tr>
           </thead>
           <tbody>
-            {/* <tr>
-              <td className="text-center align-middle">
-                <input type="checkbox" />
-              </td>
-              <td className="d-flex">
-                <div className="p-2">
-                  <img
-                    src="/images/1669370674683000804.jpg"
-                    width={100}
-                    height={100}
-                  />
-                </div>
-                <div className="p-2">
-                  <div>Qwertykey</div>
-                  <div>QK75鍵盤鍵盤鍵盤鍵盤</div>
-                  <div className="pt-1">
-                    <select
-                      className="form-select form-select-sm mb-1"
-                      style={{ width: 140 }}
-                    >
-                      <option>陽極紅</option>
-                    </select>
-                    <select
-                      className="form-select form-select-sm"
-                      style={{ width: 140 }}
-                    >
-                      <option>噴砂銀</option>
-                    </select>
-                  </div>
-                </div>
-              </td>
-              <td className="align-middle">
-                <input className="form-control w-75" type="date" />
-                <div className="text-center pe-5 me-4">
-                  <FontAwesomeIcon
-                    icon={faCaretDown}
-                    className="text-secondary"
-                  />
-                </div>
-                <input className="form-control w-75" type="date" />
-              </td>
-              <td className="align-middle text-center">$3000</td>
-              <td className="align-middle text-center">
-                <button
-                  className="btn border-white"
-                  type="button"
-                  onClick={() => {
-                    handleRemove(product.id)
-                  }}
-                >
-                  <FontAwesomeIcon icon={faTrashCan} className="text-primary" />
-                </button>
-              </td>
-            </tr> */}
             {rentProducts.map((rentProduct) => (
               <tr key={rentProduct.id}>
                 <td className="text-center align-middle">
@@ -626,8 +542,10 @@ export default function Cart() {
                     className="form-control w-75"
                     type="date"
                     id="start_date"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
+                    value={rentProduct.startDate}
+                    onChange={(e) =>
+                      handleStartDateChange(rentProduct.id, e.target.value)
+                    }
                   />
                   <div className="text-center pe-5 me-4">
                     <FontAwesomeIcon
@@ -639,11 +557,15 @@ export default function Cart() {
                     className="form-control w-75"
                     type="date"
                     id="end_date"
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
+                    value={rentProduct.endDate}
+                    onChange={(e) =>
+                      handleEndDateChange(rentProduct.id, e.target.value)
+                    }
                   />
                 </td>
-                <td className="align-middle text-center">$3000</td>
+                <td className="align-middle text-center">
+                  ${rentProduct.subtotal}
+                </td>
                 <td className="align-middle text-center">
                   <button
                     className="btn border-white"
@@ -663,7 +585,7 @@ export default function Cart() {
             <tr>
               <td className="pe-5 text-end" colSpan={6}>
                 {/* 總日數: {totalDays} */}
-                總計: $6000
+                總計: ${totalAmount}
               </td>
             </tr>
           </tbody>
@@ -698,57 +620,6 @@ export default function Cart() {
             </tr>
           </thead>
           <tbody>
-            {/* <tr>
-              <td className="text-center align-middle">
-                <input type="checkbox" />
-              </td>
-              <td className="d-flex">
-                <div className="pe-2 pt-2">
-                  <img
-                    src="/images/1669370674683000804.jpg"
-                    width={100}
-                    height={100}
-                  />
-                </div>
-                <div>
-                  <div>Qwertykey</div>
-                  <div>QK75鍵盤鍵盤鍵盤鍵盤</div>
-                  <div className="pt-1">
-                    <select
-                      className="form-select form-select-sm mb-1 py-0"
-                      style={{ width: '45%' }}
-                    >
-                      <option>陽極紅</option>
-                    </select>
-                    <select
-                      className="form-select form-select-sm py-0"
-                      style={{ width: '45%' }}
-                    >
-                      <option>噴砂銀</option>
-                    </select>
-                  </div>
-                  <div className="d-flex pt-1">
-                    <div className="pt-2">$3000</div>
-                    <div
-                      className="input-group ms-auto "
-                      style={{ width: '50%' }}
-                    >
-                      <span className="input-group-text p-0 ">
-                        <button className="btn btn-sm" type="button">
-                          -
-                        </button>
-                      </span>
-                      <input type="number" className="form-control py-0" />
-                      <span className="input-group-text p-0">
-                        <button className="btn btn-sm" type="button">
-                          +
-                        </button>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </td>
-            </tr> */}
             {products.map((product) => (
               <tr key={product.id}>
                 <td className="text-center align-middle px-1">
@@ -917,8 +788,11 @@ export default function Cart() {
                         className="form-control p-0"
                         type="date"
                         id="start_date"
-                        value={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
+                        value={rentProduct.startDate}
+                        onChange={(e) => 
+                          handleStartDateChange(rentProduct.id, e.target.value)
+                          }
+                        min={getCurrentDate()} // 不能選過去的日期
                         style={{ width: 97 }}
                       />
                       <div className="px-1">
@@ -931,12 +805,19 @@ export default function Cart() {
                         className="form-control p-0"
                         type="date"
                         id="end_date"
-                        value={endDate}
-                        onChange={(e) => setEndDate(e.target.value)}
+                        value={rentProduct.endDate}
+                        onChange={(e) => {
+                          // 結束日期不小於開始日期
+                          const newEndDate = e.target.value
+                          if (newEndDate >= rentProduct.startDate) {
+                            handleEndDateChange(rentProduct.id, newEndDate)
+                          }
+                        }}
+                        min={getCurrentDate()}
                         style={{ width: 97 }}
                       />
                     </div>
-                    <div className="pt-1 ps-1">${rentProduct.price}</div>
+                    <div className="pt-1 ps-1">${rentProduct.subtotal}</div>
                   </div>
                   <button
                     className="btn border-white p-0"
@@ -956,8 +837,7 @@ export default function Cart() {
             ))}
             <tr>
               <td className="text-end" colSpan={2}>
-                {/* 總日數: {totalDays} */}
-                總計: $6000
+                總計: ${totalAmount}
               </td>
             </tr>
           </tbody>
