@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { Drawer, Button } from 'antd'
 import styles from './product.module.css'
-import Accordion from '@/components/product/accordion'
 import AsideFilter from '@/components/product/AsideFilter'
-import CardGroup from '@/components/CardGroup'
+import CardGroup from '@/components/product/CardGroup'
 
 // <div className="container">
 // <div className={styles['banner']}>
@@ -42,7 +41,9 @@ export default function ProductIndex() {
       <div className="container pt-md-5 ps-4 pe-4 p-sm-0">
         <div className="row">
           <div className="d-none d-sm-block col-12 col-sm-3 pe-md-5 pe-1">
-            <AsideFilter />
+            <div className="border border-1 border-primary pt-4">
+              <AsideFilter />
+            </div>
           </div>
 
           {/* sort btn & card group */}

@@ -28,15 +28,6 @@ export default function ProductIndex() {
     setOpen(false)
   }
 
-  // 水合作用
-  const [hydrated, setHydrated] = React.useState(false)
-  React.useEffect(() => {
-    setHydrated(true)
-  }, [])
-  if (!hydrated) {
-    return null
-  }
-
   return (
     <>
       <div className={styles.banner}>
@@ -47,7 +38,7 @@ export default function ProductIndex() {
             alt="banner"
           />
         </div>
-        <h1 className={`text-primary ${styles['display1']}`}>鍵盤套件</h1>
+        <h1 className={`text-primary ${styles['display1']}`}>全部商品</h1>
       </div>
       <div className="container pt-md-5 ps-4 pe-4 p-sm-0">
         <div className="row">
