@@ -2,7 +2,7 @@ import React from 'react'
 // swiper
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/scss'
-import { Navigation, Pagination, Mousewheel, Keyboard } from 'swiper/modules'
+import { Navigation, Pagination, Keyboard } from 'swiper/modules'
 
 import 'swiper/scss/pagination'
 import 'swiper/scss/navigation'
@@ -17,10 +17,9 @@ export default function AdCarousel() {
           pagination={{
             clickable: true,
           }}
-          mousewheel={true}
           keyboard={true}
           loop={true}
-          modules={[Navigation, Pagination, Mousewheel, Keyboard]}
+          modules={[Navigation, Pagination, Keyboard]}
           className="h-100"
           style={{
             '--swiper-navigation-color': '#000',

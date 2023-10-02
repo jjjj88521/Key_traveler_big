@@ -22,9 +22,10 @@ const SpecItem = ({ spec, value }) => {
       <td>{spec}</td>
       <td>
         {value.split('<br>').map((item, index) => (
-          <p className="mb-0" key={index}>
+          <React.Fragment key={index}>
             {item}
-          </p>
+            <br />
+          </React.Fragment>
         ))}
       </td>
     </tr>

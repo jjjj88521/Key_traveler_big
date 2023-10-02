@@ -28,6 +28,7 @@ export default function Home() {
       <CateSelect />
       <NewPd />
       <RentAd />
+      
     </>
   )
 }

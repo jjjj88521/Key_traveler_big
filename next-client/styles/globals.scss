@@ -27,6 +27,9 @@
 // 引入 gallery-swiper
 @import './_gallery-swiper.scss';
 
+// 主頁租用廣告
+@import './home/_rent-ad.scss';
+
 // fixed for __next root div
 #__next {
   flex-direction: column;
@@ -102,5 +105,12 @@ ul, li{
 @media screen and (max-width: 576px) {
   html {
     font-size: 14px;
+  }
+}
+
+// antd picker rwd
+@media (max-width: 576px) {
+  .ant-picker-panels {
+    flex-direction: column !important;
   }
 }

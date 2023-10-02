@@ -5,19 +5,31 @@ import {
   StyleSelect,
 } from '@/components/common/style-select/style-select'
 import useStyleSelect from '@/hooks/useStyleSelect'
-import PdNumInput from './pd-number-input'
-import { PdInfoBox, PdBrand, PdName, PdPrice, PdRating } from './pd-info-box'
-import { AddCartBtn, BuyBtn, LikeBtn } from './pd-btns'
+import PdNumInput from '@/components/product/product-head/pd-number-input'
+import {
+  PdInfoBox,
+  PdName,
+  PdBrand,
+  PdPrice,
+} from '@/components/product/product-head/pd-info-box'
+import {
+  AddCartBtn,
+  BuyBtn,
+  LikeBtn,
+} from '@/components/product/product-head/pd-btns'
+import GbProgressBox from './gb-progress'
 
-export default function ProductHead({
+export default function GbHead({
   name,
   brand,
   price,
   images,
-  rating,
-  commentCount,
   isLiked = false,
   StyleSelectItems,
+  start,
+  end,
+  current_people,
+  target_people,
 }) {
   // 使用樣式選擇 hook
   const initStyleSelect = StyleSelectItems
@@ -31,13 +43,14 @@ export default function ProductHead({
   useEffect(() => {
     console.log(selectedStyles)
   }, [selectedStyles])
+
   return (
     <section className="">
       <div className="container">
         <div className="row px-sm-5 px-0 py-sm-5 py-3">
           {/* 左邊圖片 */}
           <div className="col-sm-7 col-12 left-info px-sm-5">
-            <GallerySwiper images={images} path="/images/product/" />
+            <GallerySwiper images={images} path="/images/groupbuy/" />
           </div>
           {/* 右側商品文字內容 */}
           <div className="col-sm-5 col-12 right-info vstack gap-5">
@@ -46,8 +59,14 @@ export default function ProductHead({
               <PdBrand brand={brand} />
               <PdName name={name} />
               <PdPrice price={price} />
-              <PdRating rating={rating} commentCount={commentCount} />
             </PdInfoBox>
+            {/* 團購時間 */}
+            <GbProgressBox
+              current_people={current_people}
+              target_people={target_people}
+              start={start}
+              end={end}
+            />
             {/* 產品樣式選擇 */}
             {StyleSelectItems &&
               Object.keys(StyleSelectItems).map((key, index) => (

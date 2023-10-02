@@ -1,6 +1,7 @@
 import GbHead from '@/components/groupbuy/gb-head'
 import TabContainer from '@/components/product/ProductTab'
 import TabButton from '@/components/product/ProductTab/TabButton'
+import RentHead from '@/components/rent/rent-head'
 import Head from 'next/head'
 import React from 'react'
 
@@ -32,17 +33,13 @@ const GbDetail = {
   },
 }
 
-export default function GroupbuyDetail() {
+export default function RentDetail() {
   const {
     name,
     brand,
     price,
     images,
     style_select,
-    start,
-    end,
-    current_people,
-    target_people,
     feature,
     feature_img,
     spec_table,
@@ -54,17 +51,13 @@ export default function GroupbuyDetail() {
         <title>{name}</title>
       </Head>
       {/* 團購詳細 head */}
-      <GbHead
+      <RentHead
         name={name}
         brand={brand}
         price={price}
         images={images}
         isLiked={false}
         StyleSelectItems={style_select}
-        start={start}
-        end={end}
-        current_people={current_people}
-        target_people={target_people}
       />
       {/* 商品詳細 tab 切換資訊、規格表、團購說明 */}
       <TabContainer
@@ -74,7 +67,7 @@ export default function GroupbuyDetail() {
       >
         <TabButton tabName="intro">商品介紹</TabButton>
         <TabButton tabName="spec">商品規格</TabButton>
-        <TabButton tabName="gb-desc">團購說明</TabButton>
+        <TabButton tabName="gb-desc">租用說明</TabButton>
       </TabContainer>
     </>
   )

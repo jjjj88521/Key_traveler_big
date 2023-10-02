@@ -46,12 +46,13 @@ export default function ReviewTab({ commentData }) {
   // 根據選擇的星數篩選出評論
   const handleDisplayedData = () => {
     if (starSelected[0].value === 6) {
-      return commentData.slice(startIndex, endIndex)
+      return commentData
     } else {
       return commentData.filter((item) => item.star === starSelected[0].value)
     }
   }
-  const displayedData = handleDisplayedData()
+  const filteredData = handleDisplayedData()
+  const displayedData = filteredData.slice(startIndex, endIndex)
 
   return (
     <div className="comment-list py-3">
@@ -101,7 +102,7 @@ export default function ReviewTab({ commentData }) {
             </Item>
           </StyleSelect>
         </div>
-        {/* 排序 */}
+        {/* 時間排序 */}
         <div className="col"></div>
       </div>
       {/* 評論列表 */}
@@ -117,7 +118,7 @@ export default function ReviewTab({ commentData }) {
       <hr className="text-secondary" />
       <div className="pt-3">
         <PaginationComponent
-          totalItems={commentData.length}
+          totalItems={filteredData.length}
           pageSize={pageSize}
           onPageChange={handlePageChange}
         />

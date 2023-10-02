@@ -17,25 +17,19 @@ import { FreeMode, Navigation, Thumbs } from 'swiper/modules'
 import style from './_gallery_swiper.module.scss'
 import { Image } from 'antd'
 import NextImage from 'next/image'
+import { SwiperNextBtn, SwiperPrevBtn } from '@/components/home/swiper-btns'
 
 const GallerySwiper = ({ images = [], path = '' }) => {
   // 圖片 slider
   const [thumbsSwiper, setThumbsSwiper] = useState(null)
-
-  const swiper = useSwiper()
 
   return (
     <div className={`${style['swiper-container']} gallery-swiper pb-4 pb-sm-0`}>
       {/* 上方大圖 */}
       <Image.PreviewGroup>
         <Swiper
-          style={{
-            '--swiper-navigation-color': '#fff',
-            '--swiper-pagination-color': '#fff',
-          }}
           loop={true}
           spaceBetween={10}
-          navigation={true}
           thumbs={{ swiper: thumbsSwiper }}
           modules={[FreeMode, Navigation, Thumbs]}
           className={`${style['swiper-bg']} swiper-bg`}
@@ -47,6 +41,16 @@ const GallerySwiper = ({ images = [], path = '' }) => {
               </SwiperSlide>
             )
           })}
+          <SwiperPrevBtn
+            className={`btn btn-lg bg-secondary bg-opacity-50 position-absolute start-0 top-50 translate-middle-y z-1 fs-1 text-white`}
+          >
+            <i class="fa-solid fa-chevron-left"></i>
+          </SwiperPrevBtn>
+          <SwiperNextBtn
+            className={`btn btn-lg bg-secondary bg-opacity-50 position-absolute end-0 top-50 translate-middle-y z-1 fs-1 text-white`}
+          >
+            <i class="fa-solid fa-chevron-right"></i>
+          </SwiperNextBtn>
         </Swiper>
       </Image.PreviewGroup>
       {/* 下方小圖 */}

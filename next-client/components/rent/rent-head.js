@@ -1,21 +1,32 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import GallerySwiper from '@/components/common/gallery-swiper'
 import {
   Item,
   StyleSelect,
 } from '@/components/common/style-select/style-select'
 import useStyleSelect from '@/hooks/useStyleSelect'
-import PdNumInput from './pd-number-input'
-import { PdInfoBox, PdBrand, PdName, PdPrice, PdRating } from './pd-info-box'
-import { AddCartBtn, BuyBtn, LikeBtn } from './pd-btns'
+import PdNumInput from '@/components/product/product-head/pd-number-input'
+import {
+  PdInfoBox,
+  PdName,
+  PdBrand,
+  PdPrice,
+} from '@/components/product/product-head/pd-info-box'
+import {
+  AddCartBtn,
+  BuyBtn,
+  LikeBtn,
+} from '@/components/product/product-head/pd-btns'
 
-export default function ProductHead({
+import dayjs from 'dayjs'
+import { DatePicker } from 'antd'
+import { CaretRightOutlined } from '@ant-design/icons'
+
+export default function RentHead({
   name,
   brand,
   price,
   images,
-  rating,
-  commentCount,
   isLiked = false,
   StyleSelectItems,
 }) {
@@ -31,13 +42,34 @@ export default function ProductHead({
   useEffect(() => {
     console.log(selectedStyles)
   }, [selectedStyles])
+
+  // 選擇日期不能選擇今天以前的日期
+  const disabledDate = (current) => {
+    // Can not select days before today and today
+    return current && current < dayjs().endOf('day')
+  }
+
+  // 點選日期框時，視窗滾動
+  const rangePickerRef = useRef(null)
+  const handleDateFocus = () => {
+    if (rangePickerRef.current) {
+      window.scrollTo({
+        top:
+          rangePickerRef.current.getBoundingClientRect().top +
+          window.scrollY -
+          110,
+        behavior: 'smooth',
+      })
+    }
+  }
+
   return (
     <section className="">
       <div className="container">
         <div className="row px-sm-5 px-0 py-sm-5 py-3">
           {/* 左邊圖片 */}
           <div className="col-sm-7 col-12 left-info px-sm-5">
-            <GallerySwiper images={images} path="/images/product/" />
+            <GallerySwiper images={images} path="/images/groupbuy/" />
           </div>
           {/* 右側商品文字內容 */}
           <div className="col-sm-5 col-12 right-info vstack gap-5">
@@ -46,7 +78,6 @@ export default function ProductHead({
               <PdBrand brand={brand} />
               <PdName name={name} />
               <PdPrice price={price} />
-              <PdRating rating={rating} commentCount={commentCount} />
             </PdInfoBox>
             {/* 產品樣式選擇 */}
             {StyleSelectItems &&
@@ -59,6 +90,21 @@ export default function ProductHead({
               ))}
             {/* 數量選擇，輸入框，有加減數量按鈕 */}
             <PdNumInput />
+            <div
+              className="d-flex justify-content-center d-sm-block"
+              ref={rangePickerRef}
+            >
+              <DatePicker.RangePicker
+                disabledDate={disabledDate}
+                size="large"
+                placeholder={['開始日期', '結束日期']}
+                separator={<CaretRightOutlined className="text-secondary" />}
+                onFocus={handleDateFocus}
+                placement="bottomleft"
+                className="w-100"
+              />
+            </div>
+
             {/* 加入購物車按鈕、直接購買按鈕，各一半 */}
             <div className="hstack gap-3">
               <AddCartBtn />
