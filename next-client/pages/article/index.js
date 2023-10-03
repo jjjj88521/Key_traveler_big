@@ -12,10 +12,7 @@ export default function Article() {
     // console.log('搜尋關鍵字：', e.target.value)
     setSearchCard(e.target.value)
   }
-  // const fontColor = {
-  //   color: 'red',
-  //   fontSize: '100px',
-  // }
+
   // 卡片物件
   const data = [
     {
@@ -103,6 +100,8 @@ export default function Article() {
                 type="search"
                 placeholder="Search"
                 aria-label="Search"
+                value={searchCard}
+                onChange={handleSearch}
               />
               <button className="btn btn-outline-secondary" type="submit">
                 <i className="fa-solid fa-magnifying-glass"></i>
@@ -112,8 +111,14 @@ export default function Article() {
         </nav>
         {/* 手機版分類選單 */}
         <div class="dropdown d-sm-none mb-4">
-          <button
-            class="btn btn-secondary dropdown-toggle fw-bolder d-flex justify-content-between align-items-center"
+          <Link
+            href={'/article/cate/0'}
+            onClick={() => setSelectedCategory(null)}
+            className={`${
+              selectedCategory === null
+                ? 'bg-primary text-white'
+                : art_list_style['side_category']
+            } btn btn-secondary dropdown-toggle fw-bolder d-flex justify-content-between align-items-center`}
             type="button"
             id="dropdownMenuButton1"
             data-bs-toggle="dropdown"
@@ -121,7 +126,7 @@ export default function Article() {
             style={{ width: '100%', backgroundColor: '#F9F1E7' }}
           >
             所有文章
-          </button>
+          </Link>
           <ul
             class="dropdown-menu text-center "
             aria-labelledby="dropdownMenuButton1"
@@ -130,27 +135,66 @@ export default function Article() {
             }}
           >
             <li>
-              <a class="dropdown-item" href="#">
+              <Link
+                className={`${
+                  selectedCategory === '公告'
+                    ? 'bg-primary text-white'
+                    : art_list_style['side_category']
+                } dropdown-item`}
+                href={'/article/cate/1'}
+                onClick={() => {
+                  setSelectedCategory('公告')
+                  const dropdownToggle = document.getElementById(
+                    'dropdownMenuButton1'
+                  )
+                  dropdownToggle.click()
+                }}
+              >
                 公告
-              </a>
+              </Link>
             </li>
             <li>
-              <a class="dropdown-item" href="#">
+              <Link
+                className={`${
+                  selectedCategory === '開箱文'
+                    ? 'bg-primary text-white'
+                    : art_list_style['side_category']
+                } dropdown-item`}
+                href={'/article/cate/2'}
+                onClick={() => setSelectedCategory('開箱文')}
+              >
                 開箱文
-              </a>
+              </Link>
             </li>
             <li>
-              <a class="dropdown-item" href="#">
+              <Link
+                className={`${
+                  selectedCategory === '組裝教學'
+                    ? 'bg-primary text-white'
+                    : art_list_style['side_category']
+                } dropdown-item`}
+                href={'/article/cate/3'}
+                onClick={() => setSelectedCategory('組裝教學')}
+              >
                 組裝教學
-              </a>
+              </Link>
             </li>
             <li>
-              <a class="dropdown-item" href="#">
+              <Link
+                className={`${
+                  selectedCategory === '活動'
+                    ? 'bg-primary text-white'
+                    : art_list_style['side_category']
+                } dropdown-item`}
+                href={'/article/cate/4'}
+                onClick={() => setSelectedCategory('活動')}
+              >
                 活動
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
+
         <div className="row gx-sm-5">
           {/* 左側 */}
           <div className="col-3  text-center d-sm-block d-none">
@@ -182,7 +226,10 @@ export default function Article() {
                 </div>
               </div>
             </Link> */}
-            <Link href={''} onClick={() => setSelectedCategory(null)}>
+            <Link
+              href={'/article/cate/0'}
+              onClick={() => setSelectedCategory(null)}
+            >
               <div
                 className={`${
                   selectedCategory === null
@@ -207,7 +254,10 @@ export default function Article() {
                 </div>
               </div>
             </Link> */}
-            <Link href={''} onClick={() => setSelectedCategory('公告')}>
+            <Link
+              href={'/article/cate/1'}
+              onClick={() => setSelectedCategory('公告')}
+            >
               <div
                 className={`${
                   selectedCategory === '公告'
@@ -232,7 +282,10 @@ export default function Article() {
                 </div>
               </div>
             </Link> */}
-            <Link href={''} onClick={() => setSelectedCategory('開箱文')}>
+            <Link
+              href={'/article/cate/2'}
+              onClick={() => setSelectedCategory('開箱文')}
+            >
               <div
                 className={`${
                   selectedCategory === '開箱文'
@@ -257,7 +310,10 @@ export default function Article() {
                 </div>
               </div>
             </Link> */}
-            <Link href={''} onClick={() => setSelectedCategory('組裝教學')}>
+            <Link
+              href={'/article/cate/3'}
+              onClick={() => setSelectedCategory('組裝教學')}
+            >
               <div
                 className={`${
                   selectedCategory === '組裝教學'
@@ -282,7 +338,10 @@ export default function Article() {
                 </div>
               </div>
             </Link> */}
-            <Link href={''} onClick={() => setSelectedCategory('活動')}>
+            <Link
+              href={'/article/cate/4'}
+              onClick={() => setSelectedCategory('活動')}
+            >
               <div
                 className={`${
                   selectedCategory === '活動'
@@ -312,8 +371,8 @@ export default function Article() {
                 return (
                   <div className="col mb-4" key={index}>
                     <div className={`${art_list_style['list_card']} card`}>
-                      {/* 待確認路由名稱 */}
-                      <Link href={`/article/article_detail/${index}`}>
+                      {/* 路由名稱 */}
+                      <Link href={`/article/cate/${index}`}>
                         <img
                           src={item.img}
                           className="card-img-top"
