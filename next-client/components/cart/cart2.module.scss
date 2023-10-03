@@ -85,6 +85,10 @@
     color: #ffffff;
     border-radius: 10px;
     padding: 10px 20px;
+    &:hover{
+        background-color: #e1a349;
+        color: #fff;
+    }
 }
 .button_reverse{
     color: #DC9329;
@@ -92,6 +96,10 @@
     border:1px solid #DC9329;
     border-radius: 10px;
     padding: 10px 20px;
+    &:hover{
+        background-color: #e1a349;
+        color: #fff;
+    }
 
 }
 .buyerInfo, .getProductInfo, .receiverInfo,.paymentInfo{

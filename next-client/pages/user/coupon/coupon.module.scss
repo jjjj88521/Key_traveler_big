@@ -1,30 +1,19 @@
-// @media screen and (max-width: 393px) {
-//     .pageTitle{
-//         // div{
-//             font-size: 24px;
-//             padding-left: 24px;
+@import '@/styles/variables';
 
-//         // }
+// <classname>{
+
+       //mobile
+//     @media screen and (max-width: $maxWidth){
         
 //     }
-//     .linkToHistory{
-//         padding-right: 24px;
-//         p{
-//             font-size: 14px;
-//         }
-//     }
-//     .newCouponBtn{
-//         // button{
-//             width: 80px;
-//             height: 25px 
-//         // }
-//     }
-
 // }
+
+
 .pageTitle{
     font-size: 36px;
     padding-left: 24px;
-    @media screen and (max-width: 393px){
+    color: var(--bs-secondary-bg-subtle) !important;
+    @media screen and (max-width: $maxWidth){
         font-size: 24px;
     }
 }
@@ -33,7 +22,7 @@
     p{
         font-size: 18px;
     }
-    @media screen and (max-width: 393px){
+    @media screen and (max-width: $maxWidth){
         p{
             font-size: 14px;
         }
@@ -41,8 +30,8 @@
 }
 .newCouponMobile{
     display: none;
-    @media screen and (max-width: 393px){
-        display: block;
+    @media screen and (max-width: $maxWidth){
+        display:flex;
         padding: 0px 36px;
         align-items: center;
         font-size: 14px;
@@ -53,22 +42,40 @@
     padding: 0px 36px;
     align-items: center;
     display: block;
-    @media screen and (max-width: 393px){ 
+    @media screen and (max-width: $maxWidth){ 
         display: none;
     }
 
 }
 .newCouponBtn{
+    max-width: 130px;
+    width: 80%;
+    height: 40px;
+}
+.newCouponBtnMobile{
+    max-width: 100px;
     width: 100%;
     height: 40px;
-    @media screen and (max-width: 393px){
-        max-width: 100px;
-        width: 100%;
-        height: 40px;
+}
+.cardStyle{
+    max-height: '170px';
+    @media screen and (max-width: $maxWidth){
+        max-height: '200px';
     }
 }
-
-
+.couponDesription{
+    max-width: 300px;
+    div{
+        height: 40px;
+        overflow-y: auto;
+    }
+    @media screen and (max-width: $maxWidth){
+        div{
+            height: 50px;
+            overflow-y: auto;
+        }
+    }
+}
 
 
 
@@ -89,7 +96,22 @@
     background-repeat: no-repeat;
     background-position: 0% 50%;
     background-size:auto 55% ;
+    @media screen and (max-width: $maxWidth){
+        background-image: url('/images/coupon_stamp2-2.png'); // 替换成你的图片路径
+        background-position: 5% 50%;
+        background-size:45% 40%;
 
+    }
+
+  }
+  @media screen and (max-width: $maxWidth){
+    h6{
+        font-size: 0.95rem;
+
+    }
+    p{
+        font-size: 0.8rem;
+    }
   }
 
 }
@@ -108,7 +130,21 @@
     background-repeat: no-repeat;
     background-position: -1% 50%;
     background-size:auto 45% ;
+    @media screen and (max-width: $maxWidth){
+        background-image: url('/images/coupon_stamp2.png'); // 替换成你的图片路径
+        background-position: 5% 50%;
+        background-size:auto 40%;    
+    }
 
   }
+  @media screen and (max-width: $maxWidth){
+    h6{
+        font-size: 0.95rem;
 
+    }
+    p{
+        font-size: 0.8rem;
+    }
+  }
+  
 }
