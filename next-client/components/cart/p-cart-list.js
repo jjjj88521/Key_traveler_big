@@ -1,12 +1,8 @@
-import React, { useState, useEffect } from 'react'
-
-import { Steps, Divider, Radio, List } from 'antd'
+import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faCircleChevronDown,
   faTrashCan,
-  faCaretDown,
-  faCaretRight,
 } from '@fortawesome/free-solid-svg-icons'
 
 export default function PCartList() {
@@ -26,9 +22,14 @@ export default function PCartList() {
       amount: 2,
     },
   ]
+
+  // if(check){
+  //   sum=price*amount
+  //   total=sum+total
+  // }
   const [products, setProducts] = useState(initialProducts)
   const [checkAll, setCheckAll] = useState(false)
-
+  // const [test, setTest] = useState(0)
   // P全選
   const toggleCheckAll = (products, isCheckedAll) => {
     return products.map((product) => {
@@ -142,6 +143,10 @@ export default function PCartList() {
                   onChange={() => {
                     handleToggleCheck(product.id)
                   }}
+                  // onClick={(e)=>{
+                  //   setTest(product.price*product.amount)
+                  //   console.log(product.price*product.amount)
+                  // }}
                 />
               </td>
               <td className="d-flex">
@@ -188,7 +193,7 @@ export default function PCartList() {
                   <input
                     type="text"
                     className="form-control text-center"
-                    value={product.amount}
+                    defaultValue={product.amount}
                   />
                   <span className="input-group-text p-0">
                     <button
@@ -314,7 +319,7 @@ export default function PCartList() {
                       <input
                         type="number"
                         className="form-control py-0 text-center"
-                        value={product.amount}
+                        defaultValue={product.amount}
                       />
                       <span className="input-group-text p-0">
                         <button

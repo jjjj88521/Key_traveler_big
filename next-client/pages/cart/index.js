@@ -852,23 +852,23 @@ export default function Cart() {
             <span className="fs-6">
               使用優惠券(限一般商品): <span>全站85折</span>
             </span> 
-            <div class="btn-group ms-3 ">
+            <div className="btn-group ms-3 ">
               <button
-                class="btn btn-sm border-primary text-primary dropdown-toggle"
+                className="btn btn-sm border-primary text-primary dropdown-toggle"
                 type="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
                 選擇優惠券
               </button>
-              <ul class="dropdown-menu">
+              <ul className="dropdown-menu">
                 <li>
-                  <a class="dropdown-item" href="">
+                  <a className="dropdown-item" href="">
                     優惠券
                   </a>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="">
+                  <a className="dropdown-item" href="">
                     優惠券
                   </a>
                 </li>

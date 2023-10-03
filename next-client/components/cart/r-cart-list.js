@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { Steps, Divider, Radio, List } from 'antd'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faCircleChevronDown,
@@ -29,25 +28,28 @@ export default function RCartList() {
   ]
   const [rentProducts, setRentProducts] = useState(initialRentProducts)
   const [checkAllRent, setCheckAllRent] = useState(false)
-
   const [totalAmount, setTotalAmount] = useState(0) // 總金額的狀態變數
 
   const handleStartDateChange = (id, newStartDate) => {
-    setRentProducts((prevRentProducts) =>
-      prevRentProducts.map((product) =>
+    setRentProducts((rentProducts) =>
+      rentProducts.map((product) =>
         product.id === id ? { ...product, startDate: newStartDate } : product
       )
     )
   }
 
   const handleEndDateChange = (id, newEndDate) => {
-    setRentProducts((prevRentProducts) =>
-      prevRentProducts.map((product) =>
+    setRentProducts((rentProducts) =>
+      rentProducts.map((product) =>
         product.id === id ? { ...product, endDate: newEndDate } : product
       )
     )
   }
-
+  // setRentProducts((rentProducts) =>
+  //   rentProducts.map((product) =>
+  //     product.id === id ? { ...product, min: moment(newStartDate, 'YYYY-MM-DD').diff(moment(document.getElementById(`end_date ${product.id}`).value, 'YYYY-MM-DD'), 'days') } : product
+  //   )
+  // )
   useEffect(() => {
     // 計算小計和總金額的邏輯
     let total = 0
@@ -61,7 +63,7 @@ export default function RCartList() {
       product.subtotal = subtotal
     })
     setTotalAmount(total)
-    setRentProducts([...rentProducts]) // 更新狀態以重新渲染UI
+    // setRentProducts([...rentProducts]) // Maximum update depth exceeded. 
   }, [rentProducts])
 
   // 獲取當前日期並格式化為 yyyy-MM-dd
@@ -155,7 +157,7 @@ export default function RCartList() {
               <td className="text-center align-middle">
                 <input
                   type="checkbox"
-                  checked={rentProduct.check}
+                  defaultChecked={rentProduct.check}
                   onClick={() => {
                     handleToggleCheckRent(rentProduct.id)
                   }}
@@ -188,7 +190,7 @@ export default function RCartList() {
                 <input
                   className="form-control w-75"
                   type="date"
-                  id="start_date"
+                  id={`start_date${rentProduct.id}`}
                   value={rentProduct.startDate}
                   onChange={(e) =>
                     handleStartDateChange(rentProduct.id, e.target.value)
@@ -203,7 +205,7 @@ export default function RCartList() {
                 <input
                   className="form-control w-75"
                   type="date"
-                  id="end_date"
+                  id={`end_date${rentProduct.id}`}
                   value={rentProduct.endDate}
                   onChange={(e) =>
                     handleEndDateChange(rentProduct.id, e.target.value)
@@ -269,7 +271,7 @@ export default function RCartList() {
               <td className="text-center align-middle px-1">
                 <input
                   type="checkbox"
-                  checked={rentProduct.check}
+                  defaultChecked={rentProduct.check}
                   onClick={() => {
                     handleToggleCheckRent(rentProduct.id)
                   }}

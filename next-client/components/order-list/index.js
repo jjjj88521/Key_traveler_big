@@ -12,6 +12,7 @@ export default function OrderList() {
       number: 'P00001',
       date: '2023-08-15',
       totalPrice: 1800,
+    
     },
     {
       id: 2,
@@ -55,10 +56,11 @@ export default function OrderList() {
   const [currentPage, setCurrentPage] = useState(1)
   // 每頁顯示的項目數量
   const pageSize = 10
+
   // 處理頁碼變更事件
   const handlePageChange = (page) => {
     setCurrentPage(page)
-    // console.log('currentPage is' + currentPage)
+    console.log('currentPage is' + currentPage)
     // 在這裡可以處理分頁後的資料載入或其他操作
   }
 
@@ -163,14 +165,14 @@ export default function OrderList() {
               <tbody>
                 {currentOrders.map((order) => (
                   <tr className="" key={order.id}>
-                    <td className="text-center">{getOrderNumber()}</td>
+                    <td className="text-center">{order.id}</td>
                     <td className="ps-5">{order.number}</td>
                     <td className="ps-5">{order.date}</td>
                     <td className="ps-5">{order.totalPrice}</td>
                     <td className="ps-5">
-                      <button className="btn btn-primary text-light">
+                      <Link href={`http://localhost:3000/user/order/${order.number}`} className="btn btn-primary text-light">
                         查看
-                      </button>
+                      </Link>
                     </td>
                   </tr>
                 ))}
@@ -186,7 +188,7 @@ export default function OrderList() {
               >
                 <tbody>
                   <tr>
-                    <th className="ps-3">{getOrderNumber()}</th>
+                    <th className="ps-3">{order.id}</th>
                     <td></td>
                   </tr>
                   <tr>

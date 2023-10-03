@@ -1,34 +1,65 @@
-import React from 'react'
+import React, {useState} from 'react'
+import Link from 'next/link'
 
 export default function ProceedToCheckout() {
+  const initialCoupons =[
+    {
+      id: 1,
+      name:"全站9折",
+      percent:0.9
+    },
+    {
+      id: 2,
+      name:"全站85折",
+      percent:0.85
+    },
+    {
+      id: 3,
+      name:"全站8折",
+      percent:0.8
+    }
+  ]
+  const [coupons, setcoupons] = useState(initialCoupons)
+  const [selectedCoupon, setSelectedCoupon] = useState("")
+
+  const handleCouponDeselect = ()=>{
+    setSelectedCoupon("")
+  }
+  const handleCouponSelect = (couponName)=>{
+    setSelectedCoupon(couponName)
+  }
   return (
     <>
       {/* 去結帳 */}
       <div className="my-4">
         <div className="pb-2">
           <span className="fs-6">
-            使用優惠券(限一般商品): <span>全站85折</span>
+            使用優惠券(限一般商品): <span style={{width:"80px",display:"inline-block"}} id='coupon'>{selectedCoupon}</span>
           </span>
-          <div class="btn-group ms-3 ">
+          <div className="btn-group ms-3 ">
             <button
-              class="btn btn-sm border-primary text-primary dropdown-toggle"
+              className="btn btn-sm border-primary text-primary dropdown-toggle"
               type="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
               選擇優惠券
             </button>
-            <ul class="dropdown-menu">
-              <li>
-                <a class="dropdown-item" href="">
-                  優惠券
-                </a>
+            <ul className="dropdown-menu">
+            <li>
+              <button className="btn dropdown-item" onClick={()=>{
+                  handleCouponDeselect()
+                }}>不使用</button>
+            </li>
+            {coupons.map(((v)=>
+              <li key={v.id}>
+                <button className="btn dropdown-item" onClick={()=>{
+                  handleCouponSelect(v.name)
+                }}>
+                  {v.name}
+                </button>
               </li>
-              <li>
-                <a class="dropdown-item" href="">
-                  優惠券
-                </a>
-              </li>
+              ))}
             </ul>
           </div>
         </div>
@@ -40,7 +71,7 @@ export default function ProceedToCheckout() {
             共<span className="">6</span>件商品, 總金額: $
             <span className="">1800</span>
           </span>
-          <a className="btn btn-primary text-white ms-2">去結帳</a>
+          <a className="btn btn-primary text-white ms-2 px-3 py-2">去結帳</a>
         </div>
       </div>
     </>

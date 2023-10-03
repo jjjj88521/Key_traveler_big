@@ -1,12 +1,8 @@
-import React, { useState, useEffect } from 'react'
-
-import { Steps, Divider, Radio, List } from 'antd'
+import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faCircleChevronDown,
   faTrashCan,
-  faCaretDown,
-  faCaretRight,
 } from '@fortawesome/free-solid-svg-icons'
 
 export default function GCartList() {
@@ -188,7 +184,7 @@ export default function GCartList() {
                   <input
                     type="text"
                     className="form-control text-center"
-                    value={product.amount}
+                    defaultValue={product.amount}
                   />
                   <span className="input-group-text p-0">
                     <button
@@ -314,7 +310,7 @@ export default function GCartList() {
                       <input
                         type="number"
                         className="form-control py-0 text-center"
-                        value={product.amount}
+                        defaultValue={product.amount}
                       />
                       <span className="input-group-text p-0">
                         <button

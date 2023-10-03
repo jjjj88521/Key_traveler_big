@@ -45,6 +45,7 @@ export default function Detail() {
                     src="/images/1669370674683000804.jpg"
                     width={100}
                     height={100}
+                    alt=""
                   />
                 </div>
                 <div className="p-2">
@@ -70,6 +71,7 @@ export default function Detail() {
                     src="/images/1669370674683000804.jpg"
                     width={100}
                     height={100}
+                    alt=""
                   />
                 </div>
                 <div className="p-2">
@@ -131,6 +133,7 @@ export default function Detail() {
                     src="/images/1669370674683000804.jpg"
                     width={100}
                     height={100}
+                    alt=""
                   />
                 </div>
                 <div className="p-2">
@@ -160,6 +163,7 @@ export default function Detail() {
                     src="/images/1669370674683000804.jpg"
                     width={100}
                     height={100}
+                    alt=""
                   />
                 </div>
                 <div className="p-2">
@@ -222,6 +226,7 @@ export default function Detail() {
                     src="/images/000408000035028.jpg"
                     width={100}
                     height={100}
+                    alt=""
                   />
                 </div>
                 <div>
@@ -263,6 +268,7 @@ export default function Detail() {
                     src="/images/000408000035028.jpg"
                     width={100}
                     height={100}
+                    alt=""
                   />
                 </div>
                 <div>
@@ -318,6 +324,7 @@ export default function Detail() {
                     src="/images/000408000035028.jpg"
                     width={100}
                     height={100}
+                    alt=""
                   />
                 </div>
                 <div>
@@ -354,6 +361,7 @@ export default function Detail() {
                     src="/images/000408000035028.jpg"
                     width={100}
                     height={100}
+                    alt=""
                   />
                 </div>
                 <div>
