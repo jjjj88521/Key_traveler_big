@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
 // swiper
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/scss'
@@ -10,8 +10,16 @@ import 'swiper/scss/navigation'
 import Image from 'next/image'
 import { SwiperNextBtn, SwiperPrevBtn } from '../swiper-btns'
 import RentAdCard from './rent-ad-card'
+import AOS from 'aos'
+import 'aos/dist/aos.css'
 
 export default function RentAd() {
+  // AOS init
+  useEffect(() => {
+    AOS.init({
+      duration: 700,
+    })
+  }, [])
   return (
     <section
       className={`bg-primary bg-opacity-2`}
@@ -20,15 +28,28 @@ export default function RentAd() {
       <div className="container py-5">
         <div className="row gap-sm-0 gap-4">
           <div className="col-sm-4 col-12 d-flex flex-column justify-content-center gap-3">
-            <h2 className="h1 fw-bold mb-0">
+            <h2
+              className="h1 fw-bold mb-0"
+              data-aos="fade-right"
+              data-aos-delay="300"
+            >
               不知道鍵盤手感嗎？
               <br />
               試試租用吧！
             </h2>
-            <p className="text-secondary mb-0 fw-bold">
+
+            <p
+              className="text-secondary mb-0 fw-bold"
+              data-aos="fade-right"
+              data-aos-delay="500"
+            >
               在這裡，我們幫您搭配好的鍵盤，讓您可以盡情試用！
             </p>
-            <div className="d-sm-block d-none">
+            <div
+              className="d-sm-block d-none"
+              data-aos="fade-in"
+              data-aos-delay="400"
+            >
               <Link
                 href="/rent"
                 type="button"
@@ -62,6 +83,8 @@ export default function RentAd() {
             >
               <SwiperPrevBtn
                 className={`btn btn-lg bg-white rounded-circle position-absolute start-0 ms-2 top-50 translate-middle-y z-1 d-none d-sm-block`}
+                data-aos="fade-in"
+                data-aos-delay="400"
               >
                 <i className="fa-solid fa-chevron-left text-primary"></i>
               </SwiperPrevBtn>
@@ -71,11 +94,13 @@ export default function RentAd() {
                 <i className="fa-solid fa-chevron-right text-primary"></i>
               </SwiperNextBtn>
               <SwiperSlide>
-                <RentAdCard
-                  brand={'Metrix'}
-                  name={'Zoom75'}
-                  img={'/images/rent-ad/zoom75.png'}
-                />
+                <div data-aos="fade-left" data-aos-delay="300">
+                  <RentAdCard
+                    brand={'Metrix'}
+                    name={'Zoom75'}
+                    img={'/images/rent-ad/zoom75.png'}
+                  />
+                </div>
               </SwiperSlide>
               <SwiperSlide>
                 <RentAdCard

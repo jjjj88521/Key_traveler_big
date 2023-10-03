@@ -9,7 +9,7 @@ export default function RentAdCard({ brand, name, img }) {
           <h3 className="fw-bold mb-0">{name}</h3>
         </div>
         <div className="rent-ad-arrow">
-          <i class="fa-solid fa-arrow-right fs-4 text-white"></i>
+          <i className="fa-solid fa-arrow-right fs-4 text-white"></i>
         </div>
       </div>
       <div className="rent-ad-img">

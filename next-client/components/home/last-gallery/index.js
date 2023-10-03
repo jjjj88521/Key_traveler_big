@@ -1,5 +1,5 @@
 import React from 'react'
 
 export default function LastGallery() {
-  return <div>LastGallery</div>
+  return <section className="last-gallery"></section>
 }

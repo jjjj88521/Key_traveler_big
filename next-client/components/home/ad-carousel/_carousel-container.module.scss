@@ -1,0 +1,19 @@
+.carousel-container {
+  height: 600px;
+  position: relative;
+  .carousel-box {
+    background-color: #FFF3E3;
+    min-width: 300px;
+    height: 200px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

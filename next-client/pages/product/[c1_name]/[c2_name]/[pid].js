@@ -5,6 +5,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import TabButton from '@/components/product/ProductTab/TabButton'
 import PdLoading from '@/components/product/pd-loading'
+import axios from 'axios'
 // 評論假資料
 const commentData = Array.from({
   length: 36,
@@ -22,36 +23,24 @@ export default function ProductDetail() {
   const router = useRouter()
   const { isReady } = router
   // 接一般商品 api，後端路由 http://localhost:3005/api/products/[pid]
-  const [product, setProduct] = useState(null)
+  const [product, setProduct] = useState({})
 
   // 存是否正在載入
   const [isLoading, setIsLoading] = useState(true)
 
   async function fetchProduct(pid) {
     try {
-      const response = await fetch(
-        `http://localhost:3005/api/products/${pid}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-          credentials: 'include',
-        }
+      const response = await axios.get(
+        `http://localhost:3005/api/products/${pid}`
       )
-      if (response.ok) {
-        const data = await response.json()
-        console.log(data)
-        // 在這裡處理回應的數據
-        setProduct(data)
-        setTimeout(() => {
-          setIsLoading(false)
-        }, 500)
-      } else {
-        // 處理錯誤情況，例如返回狀態碼不是 200
-        console.error('發生錯誤:', response.status)
+      if (response.status !== 200) {
+        throw new Error('發生錯誤')
       }
+      const productData = response.data // 假設API返回商品信息的數據
+      setProduct(productData)
+      setTimeout(() => {
+        setIsLoading(false)
+      }, 500)
     } catch (error) {
       // 處理其他錯誤
       console.error('發生錯誤:', error)
@@ -64,6 +53,37 @@ export default function ProductDetail() {
       fetchProduct(pid)
     }
   }, [router.query, isReady])
+
+  // 最近瀏覽商品
+  const addToRecentlyViewed = (productData) => {
+    // 從 localStorage 取出最近瀏覽的商品
+    const recentlyViewedList =
+      JSON.parse(localStorage.getItem('recentlyViewed')) || []
+
+    // 檢查是否已經有該商品，如果有就將其換到最前
+    const index = recentlyViewedList.findIndex(
+      (item) => item.id === productData.id
+    )
+    if (index !== -1) {
+      recentlyViewedList.splice(index, 1)
+    }
+    // 添加商品
+    recentlyViewedList.unshift(productData)
+
+    // 最多只有四個瀏覽過的商品
+    const max = 4
+    if (recentlyViewedList.length > max) {
+      recentlyViewedList.splice(max)
+    }
+
+    // 更新 localStorage
+    localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewedList))
+  }
+  useEffect(() => {
+    if (Object.keys(product).length !== 0) {
+      addToRecentlyViewed(product)
+    }
+  }, [product])
 
   if (isLoading) {
     return <PdLoading />

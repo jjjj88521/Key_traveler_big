@@ -3,12 +3,37 @@ import { useRouter } from 'next/router'
 import { pathsLocaleMap } from '@/configs'
 import { MyBreadcrumbList, MyBreadcrumbItem } from './my-breadcrumb'
 import { HomeFilled } from '@ant-design/icons'
+import axios from 'axios'
 
 export default function MyBreadcrumb() {
   // 獲取目前路徑
   const router = useRouter()
   const { isReady, asPath } = router
   const pathname = asPath.split('?')[0]
+
+  // 如果有 pid，獲取商品資訊
+  const [productName, setProductName] = useState(null)
+  useEffect(() => {
+    if (isReady) {
+      const { pid } = router.query
+      if (pathname.includes('/product/')) {
+        fetchProductInfo(pid)
+      }
+    }
+    async function fetchProductInfo(pid) {
+      try {
+        const response = await axios.get(
+          `http://localhost:3005/api/products/${pid}`
+        )
+        const productData = response.data // 假設API返回商品信息的數據
+        setProductName(productData.name)
+      } catch (error) {
+        console.error('獲取商品信息時出錯:', error)
+      }
+    }
+
+    // 只有在pathname中包含'/product/'時才發送商品信息請求
+  }, [isReady, pathname, router.query])
 
   // 要放到連結的 path 陣列
   // const paths = pathname.split('/')
@@ -23,31 +48,10 @@ export default function MyBreadcrumb() {
       <div className="container h-100 d-flex align-items-center">
         <MyBreadcrumbList>
           {pathsDecoded.map((path, index) => {
-            {
-              /* if (index === 0) {
-              return (
-                <MyBreadcrumbItem
-                  key={index}
-                  path={`/`}
-                  title={<HomeFilled />}
-                />
-              )
-            } else if (index === pathsDecoded.length - 1) {
-              return (
-                <MyBreadcrumbItem key={index} title={path} lastItem={true} />
-              )
-            } else {
-              return (
-                <MyBreadcrumbItem
-                  key={index}
-                  path={paths.slice(0, index + 1).join('/')}
-                  title={path}
-                />
-              )
-            } */
-            }
             const currentPath = pathsDecoded.slice(0, index + 1).join('/')
-            console.log(currentPath)
+            {
+              /* console.log(currentPath) */
+            }
             const matchingPath = pathsLocaleMap.find(
               (path) => path.path === currentPath
             )
@@ -70,6 +74,17 @@ export default function MyBreadcrumb() {
                   key={index}
                   path={`/`}
                   title={<HomeFilled />}
+                />
+              )
+            }
+            // 將商品名稱加進麵包屑
+            if (productName && index === pathsDecoded.length - 1) {
+              return (
+                <MyBreadcrumbItem
+                  key={index}
+                  path={pathsDecoded.slice(0, index + 1).join('/')}
+                  title={productName}
+                  lastItem={isLastBreadcrumb}
                 />
               )
             }

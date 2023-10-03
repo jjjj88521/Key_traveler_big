@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { use, useEffect, useState } from 'react'
 
 // Import Swiper React components
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
@@ -11,7 +11,7 @@ import 'swiper/css/thumbs'
 // import style from 'components/thumbs/thumbs.scss'
 
 // import required modules
-import { FreeMode, Navigation, Thumbs } from 'swiper/modules'
+import { FreeMode, Navigation, Thumbs, Controller } from 'swiper/modules'
 
 // modules styles
 import style from './_gallery_swiper.module.scss'
@@ -31,7 +31,7 @@ const GallerySwiper = ({ images = [], path = '', isLoading }) => {
           loop={true}
           spaceBetween={10}
           thumbs={{ swiper: thumbsSwiper }}
-          modules={[FreeMode, Navigation, Thumbs]}
+          modules={[FreeMode, Navigation, Thumbs, Controller]}
           className={`${style['swiper-bg']} swiper-bg`}
         >
           {isLoading ? (
@@ -47,16 +47,16 @@ const GallerySwiper = ({ images = [], path = '', isLoading }) => {
               )
             })
           )}
-          <SwiperPrevBtn
-            className={`btn btn-lg bg-secondary bg-opacity-50 position-absolute start-0 top-50 translate-middle-y z-1 fs-1 text-white`}
-          >
-            <i className="fa-solid fa-chevron-left"></i>
-          </SwiperPrevBtn>
           <SwiperNextBtn
             className={`btn btn-lg bg-secondary bg-opacity-50 position-absolute end-0 top-50 translate-middle-y z-1 fs-1 text-white`}
           >
             <i className="fa-solid fa-chevron-right"></i>
           </SwiperNextBtn>
+          <SwiperPrevBtn
+            className={`btn btn-lg bg-secondary bg-opacity-50 position-absolute start-0 top-50 translate-middle-y z-1 fs-1 text-white`}
+          >
+            <i className="fa-solid fa-chevron-left"></i>
+          </SwiperPrevBtn>
         </Swiper>
       </Image.PreviewGroup>
       {/* 下方小圖 */}
@@ -65,10 +65,9 @@ const GallerySwiper = ({ images = [], path = '', isLoading }) => {
         spaceBetween={30}
         slidesPerView={5}
         watchSlidesProgress={true}
-        modules={[FreeMode, Navigation, Thumbs]}
-        freeMode={true}
+        modules={[Controller, Navigation, Thumbs]}
         className={`${style['swiper-sm']} d-none d-sm-flex swiper-sm`}
-        loop={false}
+        // loop={true}
         // navigation={{ clickable: true }}
       >
         {isLoading
