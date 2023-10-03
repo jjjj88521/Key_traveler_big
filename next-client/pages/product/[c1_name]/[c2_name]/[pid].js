@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import TabButton from '@/components/product/ProductTab/TabButton'
 import PdLoading from '@/components/product/pd-loading'
 import axios from 'axios'
+import useRecentlyViewed from '@/hooks/useRecentlyViewed'
 // 評論假資料
 const commentData = Array.from({
   length: 36,
@@ -54,46 +55,21 @@ export default function ProductDetail() {
     }
   }, [router.query, isReady])
 
-  // 最近瀏覽商品
-  const addToRecentlyViewed = (productData) => {
-    // 從 localStorage 取出最近瀏覽的商品
-    const recentlyViewedList =
-      JSON.parse(localStorage.getItem('recentlyViewed')) || []
-
-    // 檢查是否已經有該商品，如果有就將其換到最前
-    const index = recentlyViewedList.findIndex(
-      (item) => item.id === productData.id
-    )
-    if (index !== -1) {
-      recentlyViewedList.splice(index, 1)
-    }
-    // 添加商品
-    recentlyViewedList.unshift(productData)
-
-    // 最多只有四個瀏覽過的商品
-    const max = 4
-    if (recentlyViewedList.length > max) {
-      recentlyViewedList.splice(max)
-    }
-
-    // 更新 localStorage
-    localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewedList))
-  }
+  // 最近瀏覽商品 hooks，傳入 type: 'product'，代表是一般商品
+  const [recentlyViewed, addToRecentlyViewed] = useRecentlyViewed({
+    type: 'product',
+  })
   useEffect(() => {
-    if (Object.keys(product).length !== 0) {
+    if (Object.keys(product).length > 0) {
       addToRecentlyViewed(product)
     }
   }, [product])
-
-  if (isLoading) {
+  // 假如沒有商品，或是載入中，就顯示 Loading
+  if (Object.keys(product).length === 0 || isLoading) {
     return <PdLoading />
   }
 
-  if (Object.keys(product).length === 0) {
-    return <div>找不到商品</div>
-  }
   // 商品資料解構，以及將一些數據轉換成物件或陣列
-
   const { name, brand, price, feature } = product
   const style_select = JSON.parse(product.style_select)
   const feature_img = JSON.parse(product.feature_img)
