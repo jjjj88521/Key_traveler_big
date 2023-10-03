@@ -1,8 +1,8 @@
 import React from 'react'
 import styles from './card.module.css'
 
-export default function Card({ title, description, price, imagePath }) {
-  // 截斷過長的商品介紹
+export default function Card({ title, brand, price, imagePath }) {
+  // 截斷過長的文字
   function truncateText(text, maxLength) {
     if (text.length <= maxLength) {
       return text
@@ -15,12 +15,12 @@ export default function Card({ title, description, price, imagePath }) {
     <div className={`card h-auto ${styles['card']}`}>
       <img
         src={imagePath}
-        className={`card-img-top h-50 ${styles.cardImg}`}
+        className={`card-img-top ${styles.cardImg}`}
         alt="Product"
       />
-      <div className="card-body">
-        <h5 className="card-title">{title}</h5>
-        <p className="card-text">{truncateText(description, 50)}</p>
+      <div className="card-body w-100">
+        <h4 className="card-title">{title}</h4>
+        <h6 className="card-title text-black-50">{brand}</h6>
         <h5 className="card-title">$ {price}</h5>
       </div>
       <div className={`d-flex flex-column gap-3 ${styles['info']}`}>
