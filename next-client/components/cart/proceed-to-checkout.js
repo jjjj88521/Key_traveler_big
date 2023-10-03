@@ -49,7 +49,7 @@ export default function ProceedToCheckout() {
             <li>
               <button className="btn dropdown-item" onClick={()=>{
                   handleCouponDeselect()
-                }}>不使用</button>
+                }}>無</button>
             </li>
             {coupons.map(((v)=>
               <li key={v.id}>

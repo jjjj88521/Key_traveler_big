@@ -30,26 +30,13 @@ export default function RCartList() {
   const [checkAllRent, setCheckAllRent] = useState(false)
   const [totalAmount, setTotalAmount] = useState(0) // 總金額的狀態變數
 
-  const handleStartDateChange = (id, newStartDate) => {
-    setRentProducts((rentProducts) =>
-      rentProducts.map((product) =>
-        product.id === id ? { ...product, startDate: newStartDate } : product
-      )
-    )
-  }
-
-  const handleEndDateChange = (id, newEndDate) => {
-    setRentProducts((rentProducts) =>
-      rentProducts.map((product) =>
-        product.id === id ? { ...product, endDate: newEndDate } : product
-      )
-    )
-  }
   // setRentProducts((rentProducts) =>
   //   rentProducts.map((product) =>
   //     product.id === id ? { ...product, min: moment(newStartDate, 'YYYY-MM-DD').diff(moment(document.getElementById(`end_date ${product.id}`).value, 'YYYY-MM-DD'), 'days') } : product
   //   )
   // )
+
+  //R總計
   useEffect(() => {
     // 計算小計和總金額的邏輯
     let total = 0
@@ -63,9 +50,10 @@ export default function RCartList() {
       product.subtotal = subtotal
     })
     setTotalAmount(total)
-    // setRentProducts([...rentProducts]) // Maximum update depth exceeded. 
+    // setRentProducts([...rentProducts]) // Maximum update depth exceeded.
   }, [rentProducts])
 
+  //租用日期不可選已過去日期
   // 獲取當前日期並格式化為 yyyy-MM-dd
   const getCurrentDate = () => {
     const today = new Date()
@@ -109,6 +97,23 @@ export default function RCartList() {
   // R移除購物車商品
   const handleRemoveRent = (id) => {
     setRentProducts(removeRent(rentProducts, id))
+  }
+
+  //租用始日
+  const handleStartDateChange = (id, newStartDate) => {
+    setRentProducts((rentProducts) =>
+      rentProducts.map((product) =>
+        product.id === id ? { ...product, startDate: newStartDate } : product
+      )
+    )
+  }
+  //租用迄日
+  const handleEndDateChange = (id, newEndDate) => {
+    setRentProducts((rentProducts) =>
+      rentProducts.map((product) =>
+        product.id === id ? { ...product, endDate: newEndDate } : product
+      )
+    )
   }
   return (
     <>
@@ -195,6 +200,7 @@ export default function RCartList() {
                   onChange={(e) =>
                     handleStartDateChange(rentProduct.id, e.target.value)
                   }
+                  min={getCurrentDate()}
                 />
                 <div className="text-center pe-5 me-4">
                   <FontAwesomeIcon
@@ -207,9 +213,14 @@ export default function RCartList() {
                   type="date"
                   id={`end_date${rentProduct.id}`}
                   value={rentProduct.endDate}
-                  onChange={(e) =>
-                    handleEndDateChange(rentProduct.id, e.target.value)
-                  }
+                  onChange={(e) => {
+                        // 結束日期不小於開始日期
+                        const newEndDate = e.target.value
+                        if (newEndDate >= rentProduct.startDate) {
+                          handleEndDateChange(rentProduct.id, newEndDate)
+                        }
+                      }}
+                      min={getCurrentDate()}
                 />
               </td>
               <td className="align-middle text-center">

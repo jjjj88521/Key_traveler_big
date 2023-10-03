@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faCircleChevronDown,
@@ -22,13 +22,25 @@ export default function PCartList() {
       amount: 2,
     },
   ]
-
+ 
+  const [products, setProducts] = useState(initialProducts)
+  const [checkAll, setCheckAll] = useState(false)
   // if(check){
   //   sum=price*amount
   //   total=sum+total
   // }
-  const [products, setProducts] = useState(initialProducts)
-  const [checkAll, setCheckAll] = useState(false)
+   useEffect(() => {
+    let total = 0
+    products.map((v) => {
+      if (v.check) {
+        const sum = v.price * v.amount
+        total += sum
+      }
+      console.log(total)
+      return total
+    })
+  }, [products])
+  
   // const [test, setTest] = useState(0)
   // P全選
   const toggleCheckAll = (products, isCheckedAll) => {
