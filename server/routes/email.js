@@ -8,8 +8,8 @@ const router = express.Router()
 router.get('/send', function (req, res, next) {
   // email內容
   const mailOptions = {
-    from: `"eddy"<${process.env.SMTP_TO_EMAIL}>`,
-    to: `hello@eddychang.me`,
+    from: `"鍵之旅人"<${process.env.SMTP_TO_EMAIL}>`,
+    to: `sjps946403@gmail.com`,
     subject: '這是一封測試電子郵件',
     text: `你好， \r\n通知你有關第一封郵件的事。\r\n\r\n敬上\r\n開發團隊`,
   }
