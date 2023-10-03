@@ -1,7 +1,9 @@
 import styles from '@/styles/user/member.module.css'
 import Link from 'next/link'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function ResetPassword() {
+  const { auth, setAuth } = useAuth()
   return (
     <>
       <p className={`text-center mb-3 ${styles['text-note']}`}>
@@ -12,8 +14,9 @@ export default function ResetPassword() {
           <div className="col-sm-12">
             <input
               type="email"
-              className={`form-control w-100 ${styles['form-control']} ${styles['invalid']} `}
+              className={`form-control`}
               placeholder="電子郵件地址"
+              defaultValue={auth.email}
             />
           </div>
           <div className={`${styles['error']} my-2 text-start`}>
@@ -25,7 +28,7 @@ export default function ResetPassword() {
             <div className="input-group">
               <input
                 type="text"
-                className={`form-control ${styles['form-control']} ${styles['invalid']} `}
+                className={`form-control `}
                 placeholder="電子郵件驗證碼"
               />
               <button
@@ -46,7 +49,7 @@ export default function ResetPassword() {
           <div className="col-sm-12">
             <input
               type="password"
-              className={`form-control w-100 ${styles['form-control']} ${styles['invalid']} `}
+              className={`form-control w-100 ${styles['form-control']} `}
               placeholder="密碼"
             />
           </div>
@@ -58,7 +61,7 @@ export default function ResetPassword() {
           <div className="col-sm-12">
             <input
               type="password"
-              className={`form-control w-100 ${styles['form-control']} ${styles['invalid']} `}
+              className={`form-control w-100 ${styles['form-control']}  `}
               placeholder="確認密碼"
             />
           </div>

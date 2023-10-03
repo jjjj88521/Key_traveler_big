@@ -13,7 +13,9 @@ export default function Profile() {
           {/* 下拉選單 */}
           <UserDropdown />
           {/* 手機板的avator */}
+
           <UserAvatarMobile />
+
           {/* form表單 */}
           <ProfileForm />
           {/* 電腦版的avator */}

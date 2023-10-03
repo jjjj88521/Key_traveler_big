@@ -5,21 +5,22 @@ import Link from 'next/link'
 export default function UserSideBarMobile() {
   return (
     <>
-      <div className="dropdown">
+      <div className="btn-group " style={{ width: '90%' }}>
         <button
-          className="btn btn-secondary bg-dark text-white dropdown-toggle mx-auto d-flex justify-content-between align-items-center "
-          type="button"
-          id="dropdownMenuButton1"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
           style={{ width: '90%' }}
+          className="btn btn-secondary bg-dark text-white dropdown-toggle mx-auto d-flex justify-content-between align-items-center"
+          type="button"
+          id="dropdownMenuClickableInside"
+          data-bs-toggle="dropdown"
+          data-bs-auto-close="outside"
+          aria-expanded="false"
         >
           會員中心
         </button>
         <ul
+          style={{ width: '100%' }}
           className="dropdown-menu"
-          aria-labelledby="dropdownMenuButton1"
-          style={{ width: '90%' }}
+          aria-labelledby="dropdownMenuClickableInside"
         >
           <div className="accordion " id="accordionPanelsStayOpenExample">
             {/* 收這裡 */}

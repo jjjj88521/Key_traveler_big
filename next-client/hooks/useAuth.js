@@ -14,6 +14,9 @@ export function AuthProvider({ children }) {
     email: '',
     password: '',
     confirmPassword: '',
+    cardNumber: '',
+    cardName: '',
+    expiry: '',
   })
   return (
     <>

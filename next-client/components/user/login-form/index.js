@@ -15,6 +15,9 @@ const fakeUserData = [
     email: 'DDD@DD.D',
     password: '12345',
     confirmPassword: '12345',
+    cardNumber: '1234567891011121',
+    cardName: 'AAA',
+    expiry: '0426',
   },
 ]
 export default function LoginForm() {

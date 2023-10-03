@@ -8,7 +8,7 @@ export default function UserDropdown() {
         <div className="d-sm-block d-none">
           <UserSideBar />
         </div>
-        <div className="d-sm-none d-block mb-4">
+        <div className="d-sm-none d-flex mb-4 justify-content-center">
           <UserSideBarMobile className="col-10 w-100" />
         </div>
       </div>
