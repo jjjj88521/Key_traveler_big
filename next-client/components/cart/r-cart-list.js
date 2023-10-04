@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faCircleChevronDown,
@@ -7,53 +8,62 @@ import {
   faCaretRight,
 } from '@fortawesome/free-solid-svg-icons'
 
-export default function RCartList() {
+export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
   const initialRentProducts = [
     {
       id: 1,
       check: false,
       img: '/images/1669370674683000804.jpg',
       price: 300,
-      startDate: '2023-10-02',
-      endDate: '2023-10-03',
+      startDate: '2023-10-15',
+      endDate: '2023-10-16',
     },
     {
       id: 2,
       check: false,
       img: '/images/1669370674683000804.jpg',
       price: 100,
-      startDate: '2023-10-04',
-      endDate: '2023-10-05',
+      startDate: '2023-10-17',
+      endDate: '2023-10-18',
     },
   ]
   const [rentProducts, setRentProducts] = useState(initialRentProducts)
   const [checkAllRent, setCheckAllRent] = useState(false)
-  const [totalAmount, setTotalAmount] = useState(0) // 總金額的狀態變數
-
-  // setRentProducts((rentProducts) =>
-  //   rentProducts.map((product) =>
-  //     product.id === id ? { ...product, min: moment(newStartDate, 'YYYY-MM-DD').diff(moment(document.getElementById(`end_date ${product.id}`).value, 'YYYY-MM-DD'), 'days') } : product
-  //   )
-  // )
+  const [totalAmount, setTotalAmount] = useState(0) // 總計的狀態變數
+  const [orderTotal, setOrderTotal] = useState(0) // 總金額的狀態變數
+  const [orderAmount, setOrderAmount] = useState(0) //總件數的狀態變數
 
   //R總計
   useEffect(() => {
-    // 計算小計和總金額的邏輯
+    // 計算小計和總計及總金額
     let total = 0
-    rentProducts.forEach((product) => {
-      const start = new Date(product.startDate)
-      const end = new Date(product.endDate)
+    let orderTotal = 0
+    let orderAmount = 0
+    rentProducts.forEach((v) => {
+      const start = new Date(v.startDate)
+      const end = new Date(v.endDate)
       const timeDifference = end.getTime() - start.getTime()
       const productTotalDays = timeDifference / (1000 * 3600 * 24) + 1
-      const subtotal = productTotalDays * product.price
+      const subtotal = productTotalDays * v.price
       total += subtotal
-      product.subtotal = subtotal
+      v.subtotal = subtotal
+      if (v.check) {
+        const sum = subtotal
+        orderTotal += sum
+        orderAmount++
+      }
     })
     setTotalAmount(total)
+    setOrderTotal(orderTotal)
+    setOrderAmount(orderAmount)
+    setOrderTotalR(orderTotal)
+    setOrderAmountR(orderAmount)
+    // console.log(orderTotal)
+    // console.log(orderAmount)
     // setRentProducts([...rentProducts]) // Maximum update depth exceeded.
   }, [rentProducts])
 
-  //租用日期不可選已過去日期
+  // 租用日期不可選已過去日期
   // 獲取當前日期並格式化為 yyyy-MM-dd
   const getCurrentDate = () => {
     const today = new Date()
@@ -65,21 +75,20 @@ export default function RCartList() {
 
   // R全選
   const toggleCheckAllRent = (rentProducts, isCheckedAll) => {
-    return rentProducts.map((rentProduct) => {
-      return { ...rentProduct, check: isCheckedAll }
+    return rentProducts.map((v) => {
+      return { ...v, check: isCheckedAll }
     })
   }
   //R單選
   const toggleCheckRent = (rentProducts, id) => {
-    return rentProducts.map((rentProduct) => {
-      if (rentProduct.id === id)
-        return { ...rentProduct, check: !rentProduct.check }
-      else return { ...rentProduct }
+    return rentProducts.map((v) => {
+      if (v.id === id) return { ...v, check: !v.check }
+      else return { ...v }
     })
   }
   // R移除購物車商品
   const removeRent = (rentProducts, id) => {
-    return rentProducts.filter((rentProduct) => rentProduct.id !== id)
+    return rentProducts.filter((v) => v.id !== id)
   }
   // R全選
   const handleToggleCheckAllRent = (isCheckedAll) => {
@@ -89,9 +98,7 @@ export default function RCartList() {
   const handleToggleCheckRent = (id) => {
     const updateRentProducts = toggleCheckRent(rentProducts, id)
     setRentProducts(updateRentProducts)
-    const updateCheckAll = updateRentProducts.every(
-      (rentProduct) => rentProduct.check
-    )
+    const updateCheckAll = updateRentProducts.every((v) => v.check)
     setCheckAllRent(updateCheckAll)
   }
   // R移除購物車商品
@@ -99,20 +106,18 @@ export default function RCartList() {
     setRentProducts(removeRent(rentProducts, id))
   }
 
-  //租用始日
+  //租用起日
   const handleStartDateChange = (id, newStartDate) => {
     setRentProducts((rentProducts) =>
-      rentProducts.map((product) =>
-        product.id === id ? { ...product, startDate: newStartDate } : product
+      rentProducts.map((v) =>
+        v.id === id ? { ...v, startDate: newStartDate } : v
       )
     )
   }
   //租用迄日
   const handleEndDateChange = (id, newEndDate) => {
     setRentProducts((rentProducts) =>
-      rentProducts.map((product) =>
-        product.id === id ? { ...product, endDate: newEndDate } : product
-      )
+      rentProducts.map((v) => (v.id === id ? { ...v, endDate: newEndDate } : v))
     )
   }
   return (
@@ -157,20 +162,20 @@ export default function RCartList() {
           </tr>
         </thead>
         <tbody>
-          {rentProducts.map((rentProduct) => (
-            <tr key={rentProduct.id}>
+          {rentProducts.map((v) => (
+            <tr key={v.id}>
               <td className="text-center align-middle">
                 <input
                   type="checkbox"
-                  defaultChecked={rentProduct.check}
+                  checked={v.check}
                   onClick={() => {
-                    handleToggleCheckRent(rentProduct.id)
+                    handleToggleCheckRent(v.id)
                   }}
                 />
               </td>
               <td className="d-flex">
                 <div className="p-2">
-                  <img src={rentProduct.img} width={100} height={100} />
+                  <Image src={v.img} width={100} height={100} alt="" />
                 </div>
                 <div className="p-2">
                   <div>Qwertykey</div>
@@ -195,11 +200,9 @@ export default function RCartList() {
                 <input
                   className="form-control w-75"
                   type="date"
-                  id={`start_date${rentProduct.id}`}
-                  value={rentProduct.startDate}
-                  onChange={(e) =>
-                    handleStartDateChange(rentProduct.id, e.target.value)
-                  }
+                  id={`start_date${v.id}`}
+                  value={v.startDate}
+                  onChange={(e) => handleStartDateChange(v.id, e.target.value)}
                   min={getCurrentDate()}
                 />
                 <div className="text-center pe-5 me-4">
@@ -211,27 +214,25 @@ export default function RCartList() {
                 <input
                   className="form-control w-75"
                   type="date"
-                  id={`end_date${rentProduct.id}`}
-                  value={rentProduct.endDate}
+                  id={`end_date${v.id}`}
+                  value={v.endDate}
                   onChange={(e) => {
-                        // 結束日期不小於開始日期
-                        const newEndDate = e.target.value
-                        if (newEndDate >= rentProduct.startDate) {
-                          handleEndDateChange(rentProduct.id, newEndDate)
-                        }
-                      }}
-                      min={getCurrentDate()}
+                    // 結束日期不小於開始日期
+                    const newEndDate = e.target.value
+                    if (newEndDate >= v.startDate) {
+                      handleEndDateChange(v.id, newEndDate)
+                    }
+                  }}
+                  min={getCurrentDate()}
                 />
               </td>
-              <td className="align-middle text-center">
-                ${rentProduct.subtotal}
-              </td>
+              <td className="align-middle text-center">${v.subtotal}</td>
               <td className="align-middle text-center">
                 <button
                   className="btn border-white"
                   type="button"
                   onClick={() => {
-                    handleRemoveRent(rentProduct.id)
+                    handleRemoveRent(v.id)
                   }}
                 >
                   <FontAwesomeIcon icon={faTrashCan} className="text-primary" />
@@ -277,20 +278,20 @@ export default function RCartList() {
           </tr>
         </thead>
         <tbody>
-          {rentProducts.map((rentProduct) => (
-            <tr key={rentProduct.id}>
+          {rentProducts.map((v) => (
+            <tr key={v.id}>
               <td className="text-center align-middle px-1">
                 <input
                   type="checkbox"
-                  defaultChecked={rentProduct.check}
+                  checked={v.check}
                   onClick={() => {
-                    handleToggleCheckRent(rentProduct.id)
+                    handleToggleCheckRent(v.id)
                   }}
                 />
               </td>
               <td className="d-flex px-1">
                 <div className="pe-2 pt-2">
-                  <img src={rentProduct.img} width={100} height={100} />
+                  <Image src={v.img} width={100} height={100} alt="" />
                 </div>
                 <div>
                   <div className="">Qwertykey</div>
@@ -318,9 +319,9 @@ export default function RCartList() {
                       className="form-control p-0"
                       type="date"
                       id="start_date"
-                      value={rentProduct.startDate}
+                      value={v.startDate}
                       onChange={(e) =>
-                        handleStartDateChange(rentProduct.id, e.target.value)
+                        handleStartDateChange(v.id, e.target.value)
                       }
                       min={getCurrentDate()} // 不能選過去的日期
                       style={{ width: 97 }}
@@ -335,25 +336,25 @@ export default function RCartList() {
                       className="form-control p-0"
                       type="date"
                       id="end_date"
-                      value={rentProduct.endDate}
+                      value={v.endDate}
                       onChange={(e) => {
                         // 結束日期不小於開始日期
                         const newEndDate = e.target.value
-                        if (newEndDate >= rentProduct.startDate) {
-                          handleEndDateChange(rentProduct.id, newEndDate)
+                        if (newEndDate >= v.startDate) {
+                          handleEndDateChange(v.id, newEndDate)
                         }
                       }}
                       min={getCurrentDate()}
                       style={{ width: 97 }}
                     />
                   </div>
-                  <div className="pt-1 ps-1">${rentProduct.subtotal}</div>
+                  <div className="pt-1 ps-1">${v.subtotal}</div>
                 </div>
                 <button
                   className="btn border-white p-0"
                   type="button"
                   onClick={() => {
-                    handleRemoveRent(rentProduct.id)
+                    handleRemoveRent(v.id)
                   }}
                   style={{ height: 20 }}
                 >

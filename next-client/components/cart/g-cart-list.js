@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faCircleChevronDown,
   faTrashCan,
 } from '@fortawesome/free-solid-svg-icons'
 
-export default function GCartList() {
+export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
   const initialProducts = [
     {
       id: 1,
@@ -24,37 +25,57 @@ export default function GCartList() {
   ]
   const [products, setProducts] = useState(initialProducts)
   const [checkAll, setCheckAll] = useState(false)
+  const [orderTotal, setOrderTotal] = useState(0) // 總金額的狀態變數
+  const [orderAmount, setOrderAmount] = useState(0) //總件數的狀態變數
+
+  //G總金額
+  useEffect(() => {
+    let orderTotal = 0
+    let orderAmount = 0
+    products.map((v) => {
+      if (v.check) {
+        const sum = v.price * v.amount
+        orderTotal += sum
+        orderAmount++
+      }
+    })
+    setOrderTotal(orderTotal)
+    setOrderAmount(orderAmount)
+    setOrderTotalG(orderTotal)
+    setOrderAmountG(orderAmount)
+    // console.log(orderTotal)
+    // console.log(orderAmount)
+  }, [products])
 
   // G全選
   const toggleCheckAll = (products, isCheckedAll) => {
-    return products.map((product) => {
-      return { ...product, check: isCheckedAll }
+    return products.map((v) => {
+      return { ...v, check: isCheckedAll }
     })
   }
   //G單選
   const toggleCheck = (products, id) => {
-    return products.map((product) => {
-      if (product.id === id) return { ...product, check: !product.check }
-      else return { ...product }
+    return products.map((v) => {
+      if (v.id === id) return { ...v, check: !v.check }
+      else return { ...v }
     })
   }
   // 增減數量
   const upDateAmount = (products, id, value) => {
-    return products.map((product) => {
-      if (product.id === id)
-        return { ...product, amount: product.amount + value }
-      else return { ...product }
+    return products.map((v) => {
+      if (v.id === id) return { ...v, amount: v.amount + value }
+      else return { ...v }
     })
   }
   // G移除購物車商品
   const removeProduct = (products, id) => {
-    return products.filter((product) => product.id !== id)
+    return products.filter((v) => v.id !== id)
   }
   // G總計
   const calculateTotalPrice = (products) => {
     let totalPrice = 0
-    for (const product of products) {
-      totalPrice += product.price * product.amount
+    for (const v of products) {
+      totalPrice += v.price * v.amount
     }
     return totalPrice
   }
@@ -67,7 +88,7 @@ export default function GCartList() {
   const handleToggleCheck = (id) => {
     const updateProducts = toggleCheck(products, id)
     setProducts(updateProducts)
-    const updateCheckAllRent = updateProducts.every((product) => product.check)
+    const updateCheckAllRent = updateProducts.every((v) => v.check)
     setCheckAll(updateCheckAllRent)
   }
   // 增減數量
@@ -129,20 +150,20 @@ export default function GCartList() {
           </tr>
         </thead>
         <tbody>
-          {products.map((product) => (
-            <tr key={product.id}>
+          {products.map((v) => (
+            <tr key={v.id}>
               <td className="text-center align-middle">
                 <input
                   type="checkbox"
-                  checked={product.check}
+                  checked={v.check}
                   onChange={() => {
-                    handleToggleCheck(product.id)
+                    handleToggleCheck(v.id)
                   }}
                 />
               </td>
               <td className="d-flex">
                 <div className="p-2">
-                  <img src={product.img} width={100} height={100} />
+                  <Image src={v.img} width={100} height={100} alt="" />
                 </div>
                 <div className="p-2">
                   <div>Qwertykey</div>
@@ -163,7 +184,7 @@ export default function GCartList() {
                   </div>
                 </div>
               </td>
-              <td className="align-middle">${product.price}</td>
+              <td className="align-middle">${v.price}</td>
               <td className="align-middle ps-4">
                 <div className="input-group">
                   <span className="input-group-text p-0">
@@ -171,10 +192,10 @@ export default function GCartList() {
                       className="btn"
                       type="button"
                       onClick={() => {
-                        if (product.amount === 1) {
-                          handleRemove(product.id)
+                        if (v.amount === 1) {
+                          handleRemove(v.id)
                         } else {
-                          handleDecrement(product.id)
+                          handleDecrement(v.id)
                         }
                       }}
                     >
@@ -184,14 +205,14 @@ export default function GCartList() {
                   <input
                     type="text"
                     className="form-control text-center"
-                    defaultValue={product.amount}
+                    defaultValue={v.amount}
                   />
                   <span className="input-group-text p-0">
                     <button
                       className="btn"
                       type="button"
                       onClick={() => {
-                        handleIncrement(product.id)
+                        handleIncrement(v.id)
                       }}
                     >
                       +
@@ -200,14 +221,14 @@ export default function GCartList() {
                 </div>
               </td>
               <td className="align-middle text-center">
-                ${product.price * product.amount}
+                ${v.price * v.amount}
               </td>
               <td className="align-middle text-center">
                 <button
                   className="btn border-white"
                   type="button"
                   onClick={() => {
-                    handleRemove(product.id)
+                    handleRemove(v.id)
                   }}
                 >
                   <FontAwesomeIcon icon={faTrashCan} className="text-primary" />
@@ -252,20 +273,20 @@ export default function GCartList() {
           </tr>
         </thead>
         <tbody>
-          {products.map((product) => (
-            <tr key={product.id}>
+          {products.map((v) => (
+            <tr key={v.id}>
               <td className="text-center align-middle px-1">
                 <input
                   type="checkbox"
-                  checked={product.check}
+                  checked={v.check}
                   onChange={() => {
-                    handleToggleCheck(product.id)
+                    handleToggleCheck(v.id)
                   }}
                 />
               </td>
               <td className="d-flex px-1">
                 <div className="pe-2 pt-2">
-                  <img src={product.img} width={100} height={100} />
+                  <Image src={v.img} width={100} height={100} alt="" />
                 </div>
                 <div>
                   <div>Qwertykey</div>
@@ -285,9 +306,7 @@ export default function GCartList() {
                     </select>
                   </div>
                   <div className="d-flex pt-1">
-                    <div className="pt-2">
-                      ${product.price * product.amount}
-                    </div>
+                    <div className="pt-2">${v.price * v.amount}</div>
                     <div
                       className="input-group ms-auto "
                       style={{ width: '50%' }}
@@ -297,10 +316,10 @@ export default function GCartList() {
                           className="btn btn-sm"
                           type="button"
                           onClick={() => {
-                            if (product.amount === 1) {
-                              handleRemove(product.id)
+                            if (v.amount === 1) {
+                              handleRemove(v.id)
                             } else {
-                              handleDecrement(product.id)
+                              handleDecrement(v.id)
                             }
                           }}
                         >
@@ -310,14 +329,14 @@ export default function GCartList() {
                       <input
                         type="number"
                         className="form-control py-0 text-center"
-                        defaultValue={product.amount}
+                        defaultValue={v.amount}
                       />
                       <span className="input-group-text p-0">
                         <button
                           className="btn btn-sm"
                           type="button"
                           onClick={() => {
-                            handleIncrement(product.id)
+                            handleIncrement(v.id)
                           }}
                         >
                           +
@@ -330,7 +349,7 @@ export default function GCartList() {
                   className="btn border-white ps-1 pe-2"
                   type="button"
                   onClick={() => {
-                    handleRemove(product.id)
+                    handleRemove(v.id)
                   }}
                   style={{ height: 20 }}
                 >

@@ -12,7 +12,6 @@ export default function OrderList() {
       number: 'P00001',
       date: '2023-08-15',
       totalPrice: 1800,
-    
     },
     {
       id: 2,
@@ -170,7 +169,10 @@ export default function OrderList() {
                     <td className="ps-5">{order.date}</td>
                     <td className="ps-5">{order.totalPrice}</td>
                     <td className="ps-5">
-                      <Link href={`http://localhost:3000/user/order/${order.number}`} className="btn btn-primary text-light">
+                      <Link
+                        href={`http://localhost:3000/user/order/${order.number}`}
+                        className="btn btn-primary text-light"
+                      >
                         查看
                       </Link>
                     </td>

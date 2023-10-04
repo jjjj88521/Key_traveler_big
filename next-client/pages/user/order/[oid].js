@@ -1,62 +1,62 @@
-import React, { useState } from 'react'
-import Image from 'next/image'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faCircleChevronDown,
-  faPencil,
-  faCaretRight,
-} from '@fortawesome/free-solid-svg-icons'
+import { useRouter } from 'next/router'
+
+import POrderList from '@/components/order-list/p-order-list'
+import GOrderList from '@/components/order-list/g-order-list'
+import ROrderList from '@/components/order-list/r-order-list'
 
 export default function Detail() {
-  const initialOrderLists = [
-    {
-      id: 1,
-      img: '/images/1669370674683000804.jpg',
-      price: 3000,
-      amount: 1,
-    },
-    {
-      id: 2,
-      img: '/images/1669370674683000804.jpg',
-      price: 1000,
-      amount: 2,
-    },
-  ]
-  const initialRentOrderLists = [
-    {
-      id: 1,
-      img: '/images/1669370674683000804.jpg',
-      startDate: '2023-10-02',
-      endDate: '2023-10-03',
-      price: 300,
-      amount: 1,
-    },
-    {
-      id: 2,
-      img: '/images/1669370674683000804.jpg',
-      startDate: '2023-10-04',
-      endDate: '2023-10-05',
-      price: 100,
-      amount: 1,
-    },
-  ]
-  const [orderLists, setOrderLists] = useState(initialOrderLists)
-  const [rentOrderLists, setRentOrderLists] = useState(initialRentOrderLists)
+  // const router = useRouter()
+  // const { orderNumber } = router.query
+  // const initialOrderLists = [
+  //   {
+  //     id: 1,
+  //     img: '/images/1669370674683000804.jpg',
+  //     price: 3000,
+  //     amount: 1,
+  //   },
+  //   {
+  //     id: 2,
+  //     img: '/images/1669370674683000804.jpg',
+  //     price: 1000,
+  //     amount: 2,
+  //   },
+  // ]
+  // const initialRentOrderLists = [
+  //   {
+  //     id: 1,
+  //     img: '/images/1669370674683000804.jpg',
+  //     startDate: '2023-10-02',
+  //     endDate: '2023-10-03',
+  //     price: 300,
+  //   },
+  //   {
+  //     id: 2,
+  //     img: '/images/1669370674683000804.jpg',
+  //     startDate: '2023-10-04',
+  //     endDate: '2023-10-05',
+  //     price: 100,
+  //   },
+  // ]
+  // const [orderLists, setOrderLists] = useState(initialOrderLists)
+  // const [rentOrderLists, setRentOrderLists] = useState(initialRentOrderLists)
   // P總計
-  const calculateTotalPrice = (orderLists) => {
-    let totalPrice = 0
-    for (const orderList of orderLists) {
-      totalPrice += orderList.price * orderList.amount
-    }
-    return totalPrice
-  }
-  const totalPrice = calculateTotalPrice(orderLists)
+  // const calculateTotalPrice = (orderLists) => {
+  //   let totalPrice = 0
+  //   for (const orderList of orderLists) {
+  //     totalPrice += orderList.price * orderList.amount
+  //   }
+  //   return totalPrice
+  // }
+  // const totalPrice = calculateTotalPrice(orderLists)
 
   return (
     <>
       <div className="container py-4">
+        <POrderList />
+        <GOrderList />
+        <ROrderList />
         {/* 一般商品 */}
-        <div className="mb-3 text-primary d-none d-sm-block d-sm-flex">
+        {/* <div className="mb-3 text-primary d-none d-sm-block d-sm-flex">
           <div className="pe-2">
             <FontAwesomeIcon
               icon={faCircleChevronDown}
@@ -65,9 +65,9 @@ export default function Detail() {
           </div>
           <div>一般商品</div>
           <div className="ps-1">(2)</div>
-        </div>
+        </div> */}
         {/* 歷史訂單明細頁 電腦版 */}
-        <table className={`table d-none d-sm-table`}>
+        {/* <table className={`table d-none d-sm-table`}>
           <thead>
             <tr>
               <th
@@ -114,9 +114,9 @@ export default function Detail() {
               </td>
             </tr>
           </tbody>
-        </table>
+        </table> */}
         {/* 租用商品 */}
-        <div className="mb-3 text-primary d-none d-sm-block d-sm-flex">
+        {/* <div className="mb-3 text-primary d-none d-sm-block d-sm-flex">
           <div className="pe-2">
             <FontAwesomeIcon
               icon={faCircleChevronDown}
@@ -125,9 +125,9 @@ export default function Detail() {
           </div>
           <div>租用商品</div>
           <div className="ps-1">(2)</div>
-        </div>
+        </div> */}
         {/* 歷史訂單明細頁 電腦版 */}
-        <table className={`table d-none d-sm-table`}>
+        {/* <table className={`table d-none d-sm-table`}>
           <thead>
             <tr>
               <th
@@ -167,7 +167,7 @@ export default function Detail() {
                   </span>
                   <span>{v.endDate}</span>
                 </td>
-                <td className="align-middle ps-3 text-center">{v.amount}</td>
+                <td className="align-middle ps-3 text-center">1</td>
                 <td className="align-middle text-center">${3000}</td>
               </tr>
             ))}
@@ -177,10 +177,10 @@ export default function Detail() {
               </td>
             </tr>
           </tbody>
-        </table>
+        </table> */}
         {/* 一般商品 */}
         {/* 歷史訂單明細頁 手機版 */}
-        <table className="table d-table d-sm-none">
+        {/* <table className="table d-table d-sm-none">
           <thead>
             <tr>
               <th className="bg-primary text-white" colSpan={3}>
@@ -230,10 +230,10 @@ export default function Detail() {
               </td>
             </tr>
           </tbody>
-        </table>
+        </table> */}
         {/* 租用商品 */}
         {/* 歷史訂單明細頁 手機版 */}
-        <table className={`table d-table d-sm-none`}>
+        {/* <table className={`table d-table d-sm-none`}>
           <thead>
             <tr>
               <th className="bg-primary text-white" colSpan={3}>
@@ -280,7 +280,7 @@ export default function Detail() {
               </td>
             </tr>
           </tbody>
-        </table>
+        </table> */}
       </div>
     </>
   )
