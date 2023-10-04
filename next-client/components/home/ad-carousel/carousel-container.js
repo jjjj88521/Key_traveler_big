@@ -1,22 +1,30 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import style from './_carousel-container.module.scss'
 import Link from 'next/link'
-import anime from 'animejs'
-import AOS from 'aos'
-import 'aos/dist/aos.css'
+import Image from 'next/image'
 
-export default function CarouselContainer() {
-  useEffect(() => {
-    AOS.init({
-      duration: 700,
-    })
-  }, [])
+export default function CarouselContainer({ hideMouseBall }) {
+  const handleMouseEnterLink = () => {
+    hideMouseBall()
+  }
   return (
-    <div className={`${style['carousel-container']}`}>
-      <img src="" />
-      <div className={`${style['carousel-box']} text-primary`}>
+    <div className={`${style['carousel-container']} carousel-container`}>
+      <Image
+        src="/images/product/000-1.jpg"
+        alt="example"
+        width={600}
+        height={400}
+      />
+      <div className={`${style['carousel-box']} text-primary carousel-box`}>
         <h2 className="fs-1">Title</h2>
-        <Link href="#" className="btn btn-primary rounded-0 py-2 px-4">
+        <Link
+          href="#"
+          className="btn btn-primary rounded-0 py-2 px-4"
+          onMouseEnter={() => {
+            handleMouseEnterLink()
+            console.log('mouse enter')
+          }}
+        >
           buy now
         </Link>
       </div>

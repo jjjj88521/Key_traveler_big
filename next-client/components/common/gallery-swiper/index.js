@@ -1,20 +1,19 @@
-import { use, useEffect, useState } from 'react'
+import { useState } from 'react'
 
 // Import Swiper React components
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
 // Import Swiper styles
 import 'swiper/css'
-import 'swiper/css/free-mode'
 import 'swiper/css/navigation'
 import 'swiper/css/thumbs'
 // import style from 'components/thumbs/thumbs.scss'
 
 // import required modules
-import { FreeMode, Navigation, Thumbs, Controller } from 'swiper/modules'
+import { Thumbs } from 'swiper/modules'
 
 // modules styles
-import style from './_gallery_swiper.module.scss'
+// import style from './_gallery_swiper.module.scss'
 import { Image, Skeleton } from 'antd'
 import NextImage from 'next/image'
 import { SwiperNextBtn, SwiperPrevBtn } from '@/components/home/swiper-btns'
@@ -24,15 +23,15 @@ const GallerySwiper = ({ images = [], path = '', isLoading }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null)
 
   return (
-    <div className={`${style['swiper-container']} gallery-swiper pb-4 pb-sm-0`}>
+    <div className={`gallery-swiper pb-4 pb-sm-0`}>
       {/* 上方大圖 */}
       <Image.PreviewGroup>
         <Swiper
           loop={true}
-          spaceBetween={10}
+          spaceBetween={30}
           thumbs={{ swiper: thumbsSwiper }}
-          modules={[FreeMode, Navigation, Thumbs, Controller]}
-          className={`${style['swiper-bg']} swiper-bg`}
+          modules={[Thumbs]}
+          className={` swiper-bg`}
         >
           {isLoading ? (
             <SwiperSlide>
@@ -41,7 +40,7 @@ const GallerySwiper = ({ images = [], path = '', isLoading }) => {
           ) : (
             images.map((item, index) => {
               return (
-                <SwiperSlide key={index} className={`${style['swiper-slide']}`}>
+                <SwiperSlide key={index}>
                   <Image src={`${path}${item}`} alt={item} />
                 </SwiperSlide>
               )
@@ -64,23 +63,20 @@ const GallerySwiper = ({ images = [], path = '', isLoading }) => {
         onSwiper={setThumbsSwiper}
         spaceBetween={30}
         slidesPerView={5}
-        watchSlidesProgress={true}
-        modules={[Controller, Navigation, Thumbs]}
-        className={`${style['swiper-sm']} d-none d-sm-flex swiper-sm`}
-        // loop={true}
-        // navigation={{ clickable: true }}
+        modules={[Thumbs]}
+        className={`d-none d-sm-flex swiper-sm`}
       >
         {isLoading
           ? Array.from({ length: 5 }).map((_, index) => {
               return (
-                <SwiperSlide key={index} className={`${style['swiper-slide']}`}>
-                  <Skeleton.Image active />
+                <SwiperSlide key={index}>
+                  <Skeleton.Image active className="w-100 h-100" />
                 </SwiperSlide>
               )
             })
           : images.map((item, index) => {
               return (
-                <SwiperSlide key={index} className={`${style['swiper-slide']}`}>
+                <SwiperSlide key={index}>
                   <NextImage
                     src={`${path}${item}`}
                     width={75}

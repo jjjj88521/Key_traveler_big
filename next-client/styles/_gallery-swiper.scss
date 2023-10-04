@@ -1,13 +1,50 @@
 // 修改 swiper 的 scss
 .gallery-swiper {
-  .swiper-sm {
+  .swiper-bg {
+    height: 465px;
+    border-radius: 10px;
+    border: 1px solid #f9f1e7;
+    margin-bottom: 40px;
     .swiper-slide {
+      height: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        display: block;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+  .swiper-sm {
+    height: 75px;
+    .swiper-slide {
+      border-radius: 10px;
+      overflow: hidden;
       opacity: 0.5;
       transition: all 0.1s ease;
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
     }
     .swiper-slide-thumb-active {
       opacity: 1;
       border: 3px solid $primary;
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .gallery-swiper {
+    .swiper-bg {
+      height: 265px;
+      margin-bottom: 0;
     }
   }
 }

@@ -36,7 +36,7 @@ export default function ProductHead({
       <div className="container">
         <div className="row px-sm-5 px-0 py-sm-5 py-3">
           {/* 左邊圖片 */}
-          <div className="col-sm-7 col-12 left-info px-sm-5">
+          <div className="col-sm-7 col-12 left-info pe-sm-5">
             <GallerySwiper images={images} path="/images/product/" />
           </div>
           {/* 右側商品文字內容 */}
