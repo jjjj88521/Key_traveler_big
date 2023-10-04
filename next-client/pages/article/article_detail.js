@@ -6,14 +6,6 @@ import art_detail_style from '@/styles/article/art_detail_style.module.scss'
 import moment from 'moment'
 import CKeditor from '@/components/CKeditor'
 
-const { TextArea } = Input
-const ButtonStyle = {
-  // 媒體查詢，當視窗寬度達到 576px 時，套用以下樣式
-  // '@media (min-width: 576px)': {
-  //   width: '200px', // 设置宽度为自动，保持原始宽度
-  // },
-  backgroundColor: '#198cf8',
-}
 export default function ArticleDetail() {
   // 收藏按鈕功能
   const [like, setLike] = useState(false)
@@ -94,6 +86,7 @@ export default function ArticleDetail() {
   // 留言撰寫功能
   const [commentValue, setCommentValue] = useState('')
   const [creat, setCreat] = useState(artComment)
+  const { TextArea } = Input
 
   const handleAddComment = () => {
     const newComment = {

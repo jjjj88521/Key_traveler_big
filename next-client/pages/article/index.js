@@ -2,6 +2,8 @@ import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
 import { Divider, Space, Tag } from 'antd'
 import art_list_style from '@/styles/article/art_list_style.module.scss'
+import { useRouter } from 'next/router'
+
 // import PaginationComponent from '@/components/common/PaginationComponent'
 
 export default function Article() {
@@ -16,72 +18,84 @@ export default function Article() {
   // 卡片物件
   const data = [
     {
+      id: '1',
       title: 'Card Post',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
       cate: '公告',
       date: '2023-09-21',
     },
     {
+      id: '2',
       title: 'Card Post',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
       cate: '公告',
       date: '2023-09-21',
     },
     {
+      id: '3',
       title: 'Card Post',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
       cate: '公告',
       date: '2023-09-21',
     },
     {
+      id: '4',
       title: 'Card Title',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
       cate: '公告',
       date: '2023-09-21',
     },
     {
+      id: '5',
       title: 'Card Title',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
       cate: '公告',
       date: '2023-09-21',
     },
     {
+      id: '6',
       title: 'Card Unboxing',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
       cate: '開箱文',
       date: '2023-09-21',
     },
     {
+      id: '7',
       title: 'Card Unboxing',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
       cate: '開箱文',
       date: '2023-09-21',
     },
     {
+      id: '8',
       title: 'Card Unboxing',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
       cate: '開箱文',
       date: '2023-09-21',
     },
     {
+      id: '9',
       title: 'Card Title',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
       cate: '開箱文',
       date: '2023-09-21',
     },
     {
+      id: '10',
       title: 'Card Teach',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
       cate: '組裝教學',
       date: '2023-09-21',
     },
     {
+      id: '11',
       title: 'Card Act',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
       cate: '活動',
       date: '2023-09-21',
     },
     {
+      id: '12',
       title: 'Card Title',
       img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
       cate: '活動',
@@ -369,10 +383,10 @@ export default function Article() {
 
               .map((item, index) => {
                 return (
-                  <div className="col mb-4" key={index}>
+                  <div className="col mb-4" key={item.id}>
                     <div className={`${art_list_style['list_card']} card`}>
                       {/* 路由名稱 */}
-                      <Link href={`/article/cate/${index}`}>
+                      <Link href={`/article/${item.id}`}>
                         <img
                           src={item.img}
                           className="card-img-top"
@@ -382,7 +396,7 @@ export default function Article() {
 
                       <div className="card-body">
                         <h3 className="card-title mb-3">
-                          {item.title + index}
+                          {item.title + item.id}
                         </h3>
                         {/* <a
                       href="#"
