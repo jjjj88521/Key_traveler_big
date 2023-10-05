@@ -6,14 +6,16 @@ import { useState, useRef, useEffect } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import jwtDecode from 'jwt-decode'
 import Router from 'next/router'
-
+import axios from 'axios'
 const disabledDate = (current) => {
   return current && current > new Date()
 }
 
 export default function ProfileForm() {
   const { auth, setAuth } = useAuth()
-  //重新整理後驗證登入狀態
+  //登出
+
+  // 重新整理後驗證登入狀態
   useEffect(() => {
     if (localStorage.getItem('loginToken')) {
       console.log(jwtDecode(localStorage.getItem('loginToken')))
@@ -132,8 +134,8 @@ export default function ProfileForm() {
             }
           }}
         />
-
-        <div className="birthday mt-3">
+{/* 生日理論上不能改 */}
+        {/* <div className="birthday mt-3">
           <label htmlFor="birthday" className="col-form-label">
             生日
           </label>
@@ -146,12 +148,41 @@ export default function ProfileForm() {
             className="form-control"
             defaultValue={dayjs(formData.birthday, 'YYYY-MM-DD')}
           />
-        </div>
+        </div> */}
         <button
           type="button"
           className="btn btn-primary text-white col-sm-5 col-12 offset-sm-7 mt-5"
           onClick={() => {
+            
+            function logout() {
+              axios
+                .post('http://localhost:3005/api/auth-jwt/logout')
+                .then((res) => {
+                  console.log(res)
+                })
+                .catch((err) => {
+                  console.log(err)
+                })
+            }
+            logout()
+
+            setAuth({
+              isAuth: false,
+              name: '',
+              account: '',
+              gender: '',
+              address: '',
+              phone: '',
+              birthday: '',
+              email: '',
+              password: '',
+              confirmPassword: '',
+              cardNumber: '',
+              cardName: '',
+              expiry: '',
+            })
             localStorage.removeItem('loginToken')
+            // Router.push('/user/login')
           }}
         >
           登出
