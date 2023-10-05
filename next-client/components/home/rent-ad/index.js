@@ -32,6 +32,7 @@ export default function RentAd() {
               className="h1 fw-bold mb-0"
               data-aos="fade-right"
               data-aos-delay="300"
+              data-aos-once="true"
             >
               不知道鍵盤手感嗎？
               <br />
@@ -42,6 +43,7 @@ export default function RentAd() {
               className="text-secondary mb-0 fw-bold"
               data-aos="fade-right"
               data-aos-delay="500"
+              data-aos-once="true"
             >
               在這裡，我們幫您搭配好的鍵盤，讓您可以盡情試用！
             </p>
@@ -49,6 +51,7 @@ export default function RentAd() {
               className="d-sm-block d-none"
               data-aos="fade-in"
               data-aos-delay="400"
+              data-aos-once="true"
             >
               <Link
                 href="/rent"
@@ -85,6 +88,7 @@ export default function RentAd() {
                 className={`btn btn-lg bg-white rounded-circle position-absolute start-0 ms-2 top-50 translate-middle-y z-1 d-none d-sm-block`}
                 data-aos="fade-in"
                 data-aos-delay="400"
+                data-aos-once="true"
               >
                 <i className="fa-solid fa-chevron-left text-primary"></i>
               </SwiperPrevBtn>

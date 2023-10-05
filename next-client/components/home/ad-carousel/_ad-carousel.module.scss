@@ -1,17 +1,22 @@
 .mouse-trigger {
+//   cursor: none;
+  position: relative;
+//   pointer-events: none;
+  .mouse-ball {
     cursor: none;
-    position: relative;
-    pointer-events: none;
-    .mouse-ball {
-        width: 70px;
-        height: 70px;
-        background-color: #fff;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 1;
-        transform: translate(-50%, -50%);
-        border-radius: 50%;
-        transition: opacity 0.1s ease;
-    }
+    pointer-events: auto;
+    width: 70px;
+    height: 70px;
+    background-color: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    transition: opacity 0.1s ease, visibility 0.05s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
