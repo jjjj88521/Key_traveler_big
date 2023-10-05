@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState } from 'react'
 // 创建一个新的 Context
 const cartContext = createContext()
 
-export function useMyContext(children) {
+export function CartPriceContext({ children }) {
   const [priceData, setPrice] = useState(null)
 
   return (
@@ -12,7 +12,7 @@ export function useMyContext(children) {
     </cartContext.Provider>
   )
 }
-
+// ==============================
 export function useCartContext() {
   return useContext(cartContext)
 }

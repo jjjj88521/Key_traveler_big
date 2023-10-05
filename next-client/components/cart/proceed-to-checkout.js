@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
+// import { useCartContext } from '@/context/cart'
 
 export default function ProceedToCheckout({ orderTotalAll, orderAmountAll }) {
+  // const { priceData, setPrice } = useCartContext()
+
   const initialCoupons = [
     {
       id: 1,
@@ -83,7 +86,11 @@ export default function ProceedToCheckout({ orderTotalAll, orderAmountAll }) {
         <div className="text-end">
           <span className="align-middle">
             共<span className="orderAmount">{orderAmountAll}</span>
-            件商品, 總金額: $<span className="orderTotal">{orderTotalAll}</span>
+            件商品, 總金額: $
+            <span className="orderTotal">
+              {orderTotalAll}
+              {/* {priceData} */}
+            </span>
           </span>
           <a className="btn btn-primary text-white ms-2 px-3 py-2">去結帳</a>
         </div>

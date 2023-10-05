@@ -7,8 +7,11 @@ import {
   faCaretDown,
   faCaretRight,
 } from '@fortawesome/free-solid-svg-icons'
+// import { useCartContext } from '@/context/cart'
 
 export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
+  // const { priceData, setPrice } = useCartContext()
+
   const initialRentProducts = [
     {
       id: 1,
@@ -53,6 +56,7 @@ export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
         orderAmount++
       }
     })
+    // setPrice(priceData + orderTotal)
     setTotalAmount(total)
     setOrderTotal(orderTotal)
     setOrderAmount(orderAmount)

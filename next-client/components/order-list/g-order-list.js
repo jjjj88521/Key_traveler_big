@@ -35,7 +35,13 @@ export default function GOrderList() {
     <>
       {/* 團購商品 */}
       <div className="mb-3 text-primary d-none d-sm-block d-sm-flex">
-        <div className="pe-2">
+        <div
+          className="pe-2"
+          data-bs-target="#collapseTwo"
+          data-bs-toggle="collapse"
+          aria-expanded="true"
+          aria-controls="collapseTwo"
+        >
           <FontAwesomeIcon
             icon={faCircleChevronDown}
             className="text-primary"
@@ -56,7 +62,7 @@ export default function GOrderList() {
             <th className="bg-primary text-white text-center">小計</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="accordion-collapse collapse show" id="collapseTwo">
           {orderLists.map((v) => (
             <tr key={v.id}>
               <td className="d-flex ps-3">
@@ -93,14 +99,20 @@ export default function GOrderList() {
               <div className="d-flex px-1">
                 <div>團購商品</div>
                 <div className="ps-1">(2)</div>
-                <div className="ms-auto">
+                <div
+                  className="ms-auto"
+                  data-bs-target="#collapseTwo"
+                  data-bs-toggle="collapse"
+                  aria-expanded="true"
+                  aria-controls="collapseTwo"
+                >
                   <FontAwesomeIcon icon={faCircleChevronDown} />
                 </div>
               </div>
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="accordion-collapse collapse show" id="collapseTwo">
           {orderLists.map((v) => (
             <tr key={v.id}>
               <td className="d-flex">

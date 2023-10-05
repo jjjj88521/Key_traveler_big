@@ -29,7 +29,13 @@ export default function ROrderList() {
     <>
       {/* 租用商品 */}
       <div className="mb-3 text-primary d-none d-sm-block d-sm-flex">
-        <div className="pe-2">
+        <div
+          className="pe-2"
+          data-bs-target="#collapseThree"
+          data-bs-toggle="collapse"
+          aria-expanded="true"
+          aria-controls="collapseThree"
+        >
           <FontAwesomeIcon
             icon={faCircleChevronDown}
             className="text-primary"
@@ -52,7 +58,7 @@ export default function ROrderList() {
             <th className="bg-primary text-white text-center">小計</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="accordion-collapse collapse show" id="collapseThree">
           {rentOrderLists.map((v) => (
             <tr key={v.id}>
               <td className="d-flex ps-3">
@@ -96,14 +102,20 @@ export default function ROrderList() {
               <div className="d-flex px-1">
                 <div>租用商品</div>
                 <div className="ps-1">(2)</div>
-                <div className="ms-auto">
+                <div
+                  className="ms-auto"
+                  data-bs-target="#collapseThree"
+                  data-bs-toggle="collapse"
+                  aria-expanded="true"
+                  aria-controls="collapseThree"
+                >
                   <FontAwesomeIcon icon={faCircleChevronDown} />
                 </div>
               </div>
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="accordion-collapse collapse show" id="collapseThree">
           {rentOrderLists.map((v) => (
             <tr key={v.id}>
               <td className="d-flex">

@@ -5,22 +5,25 @@ import {
   faCircleChevronDown,
   faTrashCan,
 } from '@fortawesome/free-solid-svg-icons'
+// import { useCartContext } from '@/context/cart'
 
 export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
+  // const { priceData, setPrice } = useCartContext()
+
   const initialProducts = [
     {
       id: 1,
       check: false,
       img: '/images/1669370674683000804.jpg',
       price: 3000,
-      amount: 1,
+      quantity: 1,
     },
     {
       id: 2,
       check: false,
       img: '/images/1669370674683000804.jpg',
       price: 1000,
-      amount: 2,
+      quantity: 2,
     },
   ]
   const [products, setProducts] = useState(initialProducts)
@@ -28,17 +31,19 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
   const [orderTotal, setOrderTotal] = useState(0) // 總金額的狀態變數
   const [orderAmount, setOrderAmount] = useState(0) //總件數的狀態變數
 
+  // console.log('g-cart : ' + priceData)
   //G總金額
   useEffect(() => {
     let orderTotal = 0
     let orderAmount = 0
     products.map((v) => {
       if (v.check) {
-        const sum = v.price * v.amount
+        const sum = v.price * v.quantity
         orderTotal += sum
         orderAmount++
       }
     })
+    // setPrice(priceData + orderTotal)
     setOrderTotal(orderTotal)
     setOrderAmount(orderAmount)
     setOrderTotalG(orderTotal)
@@ -61,9 +66,9 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
     })
   }
   // 增減數量
-  const upDateAmount = (products, id, value) => {
+  const upDateQuantity = (products, id, value) => {
     return products.map((v) => {
-      if (v.id === id) return { ...v, amount: v.amount + value }
+      if (v.id === id) return { ...v, quantity: v.quantity + value }
       else return { ...v }
     })
   }
@@ -75,7 +80,7 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
   const calculateTotalPrice = (products) => {
     let totalPrice = 0
     for (const v of products) {
-      totalPrice += v.price * v.amount
+      totalPrice += v.price * v.quantity
     }
     return totalPrice
   }
@@ -93,10 +98,10 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
   }
   // 增減數量
   const handleIncrement = (id) => {
-    setProducts(upDateAmount(products, id, 1))
+    setProducts(upDateQuantity(products, id, 1))
   }
   const handleDecrement = (id) => {
-    setProducts(upDateAmount(products, id, -1))
+    setProducts(upDateQuantity(products, id, -1))
   }
 
   // G移除購物車商品
@@ -200,7 +205,7 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
                       className="btn"
                       type="button"
                       onClick={() => {
-                        if (v.amount === 1) {
+                        if (v.quantity === 1) {
                           handleRemove(v.id)
                         } else {
                           handleDecrement(v.id)
@@ -213,7 +218,7 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
                   <input
                     type="text"
                     className="form-control text-center"
-                    defaultValue={v.amount}
+                    defaultValue={v.quantity}
                   />
                   <span className="input-group-text p-0">
                     <button
@@ -229,7 +234,7 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
                 </div>
               </td>
               <td className="align-middle text-center">
-                ${v.price * v.amount}
+                ${v.price * v.quantity}
               </td>
               <td className="align-middle text-center">
                 <button
@@ -322,7 +327,7 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
                     </select>
                   </div>
                   <div className="d-flex pt-1">
-                    <div className="pt-2">${v.price * v.amount}</div>
+                    <div className="pt-2">${v.price * v.quantity}</div>
                     <div
                       className="input-group ms-auto "
                       style={{ width: '50%' }}
@@ -332,7 +337,7 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
                           className="btn btn-sm"
                           type="button"
                           onClick={() => {
-                            if (v.amount === 1) {
+                            if (v.quantity === 1) {
                               handleRemove(v.id)
                             } else {
                               handleDecrement(v.id)
@@ -345,7 +350,7 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
                       <input
                         type="number"
                         className="form-control py-0 text-center"
-                        defaultValue={v.amount}
+                        defaultValue={v.quantity}
                       />
                       <span className="input-group-text p-0">
                         <button

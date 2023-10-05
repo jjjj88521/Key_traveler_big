@@ -4,9 +4,31 @@ import POrderList from '@/components/order-list/p-order-list'
 import GOrderList from '@/components/order-list/g-order-list'
 import ROrderList from '@/components/order-list/r-order-list'
 
-export default function Detail() {
-  // const router = useRouter()
-  // const { orderNumber } = router.query
+export default function OrderDetail() {
+  const router = useRouter()
+  const { oid } = router.query
+
+  let orderListComponent = null
+
+  if (typeof oid === 'string') {
+    const prefix = oid.charAt(0)
+
+    switch (prefix) {
+      case 'P':
+        orderListComponent = <POrderList />
+        break
+      case 'G':
+        orderListComponent = <GOrderList />
+        break
+      case 'R':
+        orderListComponent = <ROrderList />
+        break
+      default:
+        orderListComponent = <div>查無訂單</div>
+        break
+    }
+  }
+
   // const initialOrderLists = [
   //   {
   //     id: 1,
@@ -52,9 +74,10 @@ export default function Detail() {
   return (
     <>
       <div className="container py-4">
-        <POrderList />
+        {orderListComponent}
+        {/* <POrderList />
         <GOrderList />
-        <ROrderList />
+        <ROrderList /> */}
         {/* 一般商品 */}
         {/* <div className="mb-3 text-primary d-none d-sm-block d-sm-flex">
           <div className="pe-2">
