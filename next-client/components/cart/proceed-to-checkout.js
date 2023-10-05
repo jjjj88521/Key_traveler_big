@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import Link from 'next/link'
-import cartContext from '@/context/cart'
 
 export default function ProceedToCheckout({ orderTotalAll, orderAmountAll }) {
   const initialCoupons = [
@@ -53,7 +51,7 @@ export default function ProceedToCheckout({ orderTotalAll, orderAmountAll }) {
             >
               選擇優惠券
             </button>
-            <ul className="dropdown-menu">
+            <ul className="dropdown-menu dropdown-menu-end">
               <li>
                 <button
                   className="btn dropdown-item"

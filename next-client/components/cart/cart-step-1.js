@@ -23,7 +23,7 @@ export default function CartStep1() {
         items={items}
         responsive={false}
         className="mt-5 mx-auto"
-        style={{ width: '80%' }}
+        style={{ width: '90%' }}
       />
     </>
   )

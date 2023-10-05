@@ -124,14 +124,20 @@ export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
     <>
       {/* 租用商品 */}
       <div className="mb-3 text-primary d-none d-sm-block d-sm-flex">
-        <div className="pe-2">
+        <div
+          className="pe-2"
+          data-bs-target="#collapseThree"
+          data-bs-toggle="collapse"
+          aria-expanded="true"
+          aria-controls="collapseThree"
+        >
           <FontAwesomeIcon
             icon={faCircleChevronDown}
             className="text-primary"
           />
         </div>
         <div>租用商品</div>
-        <div className="ps-1">(2)</div>
+        <div className="ps-1">({rentProducts.length})</div>
       </div>
       {/* 購物車 step1 電腦版 */}
       <table className={`table d-none d-sm-table`}>
@@ -161,7 +167,7 @@ export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
             <th className="bg-primary text-white"></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="accordion-collapse collapse show" id="collapseThree">
           {rentProducts.map((v) => (
             <tr key={v.id}>
               <td className="text-center align-middle">
@@ -184,12 +190,14 @@ export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
                     <select
                       className="form-select form-select-sm mb-1"
                       style={{ width: 140 }}
+                      disabled
                     >
                       <option>陽極紅</option>
                     </select>
                     <select
                       className="form-select form-select-sm"
                       style={{ width: 140 }}
+                      disabled
                     >
                       <option>噴砂銀</option>
                     </select>
@@ -269,15 +277,21 @@ export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
             <th className="bg-primary text-white" colSpan={3}>
               <div className="d-flex">
                 <div>租用商品</div>
-                <div className="ps-1">(2)</div>
-                <div className="ms-auto pe-1">
+                <div className="ps-1">({rentProducts.length})</div>
+                <div
+                  className="ms-auto pe-1"
+                  data-bs-target="#collapseThree"
+                  data-bs-toggle="collapse"
+                  aria-expanded="true"
+                  aria-controls="collapseThree"
+                >
                   <FontAwesomeIcon icon={faCircleChevronDown} />
                 </div>
               </div>
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="accordion-collapse collapse show" id="collapseThree">
           {rentProducts.map((v) => (
             <tr key={v.id}>
               <td className="text-center align-middle px-1">
@@ -300,12 +314,14 @@ export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
                     <select
                       className="form-select form-select-sm py-0 mb-1"
                       style={{ width: 100 }}
+                      disabled
                     >
                       <option>陽極紅</option>
                     </select>
                     <select
                       className="form-select form-select-sm py-0"
                       style={{ width: 100 }}
+                      disabled
                     >
                       <option>噴砂銀</option>
                     </select>
