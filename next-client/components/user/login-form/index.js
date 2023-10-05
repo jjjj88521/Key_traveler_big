@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import jwtDecode from 'jwt-decode'
 import Image from 'next/image'
 import { useAuth } from '@/hooks/useAuth'
 import Link from 'next/link'
@@ -21,12 +23,55 @@ const fakeUserData = [
   },
 ]
 export default function LoginForm() {
+  //存login 資料
   const [inputAuth, setInputAuth] = useState({
     account: '',
     password: '',
   })
+
+  //存Token
+  const [loginToken, setLoginToken] = useState('')
+  //解析完存資料
+  const [profileData, setProfileData] = useState({})
+  // 戳登入的API讀取資料、存入local Storage
+  function handleLoginApi(account, password) {
+    return new Promise((resolve, reject) => {
+      axios
+        .post('http://localhost:3005/api/auth-jwt/login', {
+          account: account,
+          password: password,
+        })
+        .then((res) => {
+          localStorage.setItem('loginToken', res.data.accessToken)
+          console.log('loginToken已經成功存在localstorage1')
+          setLoginToken(res.data.accessToken)
+          console.log(loginToken)
+          resolve()
+        })
+        .catch((err) => {
+          console.log(err)
+          reject(err)
+        })
+    })
+  }
+
+  //取得localStorege，並解析Token，存到profileData
+  function loginProfile() {
+    return new Promise((resolve) => {
+      const localData = localStorage.getItem('loginToken')
+      // 檢查是否有資料
+      if (localData) {
+        setAuth(jwtDecode(localData))
+        console.log('成功讀取LocalStorage資料2')
+        resolve()
+      }
+    })
+  }
+
   //解構
   const { auth, setAuth } = useAuth()
+  //監聽LoginToken
+
   return (
     <>
       <div className="container " style={{ width: '50%' }}>
@@ -70,19 +115,18 @@ export default function LoginForm() {
             />
           </div>
           <Link
+            // href=""
             href="/user/profile"
             type="button"
             class="btn btn-primary my-3 w-100"
             onClick={() => {
-              if (
-                inputAuth.account === fakeUserData[0].account &&
-                inputAuth.password === fakeUserData[0].password
-              ) {
-                console.log(fakeUserData)
-                setAuth({ ...fakeUserData[0] })
-
-                console.log(auth)
+              const fetchData = async () => {
+                await handleLoginApi(inputAuth.account, inputAuth.password)
+                await loginProfile()
               }
+              fetchData()
+
+              console.log(auth)
             }}
           >
             登入
@@ -90,9 +134,14 @@ export default function LoginForm() {
         </form>
         <div className=" text-center my-3">
           <p className=" ">
-            還不是會員嗎?<a href=""> 立刻註冊</a>
+            還不是會員嗎?
+            <Link href="/user/register" className="text-primary ">
+              立刻註冊
+            </Link>
           </p>
-          <a className="  ">回上一頁</a>
+          <Link href="/forget-password" className=" text-primary  ">
+            忘記密碼
+          </Link>
         </div>
       </div>
     </>

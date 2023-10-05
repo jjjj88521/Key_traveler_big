@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Cards from 'react-credit-cards-2'
 import '@/node_modules/react-credit-cards-2/dist/es/styles.scss' // 引入css
 import style from '@/styles/user/register.module.scss'
 import { useAuth } from '@/hooks/useAuth'
+import jwtDecode from 'jwt-decode'
+import Router from 'next/router'
+
 export default function CreditCardForm() {
   const [cardData, setCardData] = useState({
     cvc: '',
@@ -19,6 +22,18 @@ export default function CreditCardForm() {
     })
   }
   const { auth, setAuth } = useAuth()
+  // 重新整理後驗證登入狀態
+  useEffect(() => {
+    if (localStorage.getItem('loginToken')) {
+      console.log(jwtDecode(localStorage.getItem('loginToken')))
+      const data = jwtDecode(localStorage.getItem('loginToken'))
+      setAuth({ ...data })
+      // setCardData({ ...data })
+      console.log(auth)
+    } else {
+      Router.push('/user/login')
+    }
+  }, [])
   return (
     <>
       <form className="col-sm-4 col-12 offset-0 offset-sm-1">
@@ -31,7 +46,7 @@ export default function CreditCardForm() {
             name="cardNumber"
             pattern="^[0-9]*$"
             maxLength="16"
-            defaultValue={auth.cardNumber}
+            defaultValue={auth.card_number}
             className={`${style['hide-arrow']} col-8 col-sm-8 col-12 form-control`}
             placeholder="Card Number"
             onChange={handleInputChange}
@@ -46,13 +61,13 @@ export default function CreditCardForm() {
             className="col-sm-8 col-12 form-control"
             type="text"
             name="cardName"
-            defaultValue={auth.cardName}
+            defaultValue={auth.card_name}
             placeholder="Card Holder Name"
             onChange={handleInputChange}
             onFocus={(e) => setCardData({ ...cardData, focus: e.target.name })}
           />
         </section>
-        <section className="mb-3">
+        {/* <section className="mb-3">
           <label htmlFor="expiry" className="mb-0 form-label">
             信用卡期限
           </label>{' '}
@@ -66,7 +81,7 @@ export default function CreditCardForm() {
             onChange={handleInputChange}
             onFocus={(e) => setCardData({ ...cardData, focus: e.target.name })}
           />
-        </section>
+        </section> */}
         {/* 桌機板的按鈕 */}
         <button
           type="button"

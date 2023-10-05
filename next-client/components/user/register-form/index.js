@@ -18,7 +18,7 @@ export default function RegisterForm({
 }) {
   return (
     <>
-      <form action="" className="mb-5 col-md-7 col-10">
+      <form action="" className="mb-5 col-md-7 col-sm-12">
         <label htmlFor="name" className="form-label">
           姓名
         </label>

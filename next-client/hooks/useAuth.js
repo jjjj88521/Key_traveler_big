@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react'
 
 const AuthContext = createContext(null)
 
@@ -18,6 +18,7 @@ export function AuthProvider({ children }) {
     cardName: '',
     expiry: '',
   })
+
   return (
     <>
       <AuthContext.Provider value={{ auth, setAuth }}>

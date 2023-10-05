@@ -2,8 +2,10 @@ import React from 'react'
 
 import dayjs from 'dayjs'
 import { DatePicker } from 'antd'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useAuth } from '@/hooks/useAuth'
+import jwtDecode from 'jwt-decode'
+import Router from 'next/router'
 
 const disabledDate = (current) => {
   return current && current > new Date()
@@ -11,9 +13,21 @@ const disabledDate = (current) => {
 
 export default function ProfileForm() {
   const { auth, setAuth } = useAuth()
-
+  //重新整理後驗證登入狀態
+  useEffect(() => {
+    if (localStorage.getItem('loginToken')) {
+      console.log(jwtDecode(localStorage.getItem('loginToken')))
+      const data = jwtDecode(localStorage.getItem('loginToken'))
+      setAuth({ ...data })
+      setformData({ ...data })
+      console.log(auth)
+    } else {
+      Router.push('/user/login')
+    }
+  }, [])
   //宣告儲存會員資料
   const [formData, setformData] = useState({ ...auth })
+
   //宣告會員填寫狀態
   const [error, setError] = useState('')
   const [errMesage, setErrMesage] = useState({
@@ -43,7 +57,7 @@ export default function ProfileForm() {
           id="name"
           name="name"
           className="form-control"
-          defaultValue={formData.name}
+          defaultValue={formData.last_name + formData.first_name}
           onChange={(e) => {
             if (e.target.value.length === 0) {
               let mes = '請填入姓名'

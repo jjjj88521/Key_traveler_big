@@ -103,9 +103,9 @@ export default function Profile() {
   return (
     <>
       <div className="container">
-        <h1 className="mb-5 fw-bolder">填寫基本註冊資料</h1>
-        <div className="row ">
-          <RegisterForm {...registerForm} />
+        <h1 className="mb-5 fw-bolder offset-sm-1">填寫基本註冊資料</h1>
+        <div className="row offset-sm-1">
+          <RegisterForm {...registerForm} className="" />
           <Steps
             className={`${style['none-user']} col-2 offset-2`}
             direction="vertical"
