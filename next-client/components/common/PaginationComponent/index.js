@@ -19,10 +19,6 @@ export default function PaginationComponent({
     if (type === 'prev' || type === 'next') {
       return (
         <>
-          <div
-            className="bg-primary-subtle text-primary"
-            style={{ borderRadius: '6px' }}
-          >
             <i
               className={
                 type === 'prev'
