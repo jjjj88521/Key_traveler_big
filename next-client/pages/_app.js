@@ -2,9 +2,9 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import DefaultLayout from '@/components/layout/default-layout'
 import '@/styles/globals.scss'
-import { ConfigProvider } from 'antd'
 import AntdConfigProvider from './_antd-config-provider'
 import HomeLayout from '@/components/layout/home-layout'
+import HydrationFix from './_hydration-fix'
 
 export default function MyApp({ Component, pageProps }) {
   // Use the layout defined at the page level, if available
@@ -18,17 +18,19 @@ export default function MyApp({ Component, pageProps }) {
 
   const getLayout =
     Component.getLayout ||
-    ((page) =>
-      // 判斷是否是首頁
-      pathname === '/' ? (
+    ((page) => (
+      // 解決水合作用的問題
+      <HydrationFix>
         <AntdConfigProvider>
-          <HomeLayout pageTitle={pageProps.pageTitle}>{page}</HomeLayout>
+          {/* 判斷是否為首頁，如果是則顯示 HomeLayout，否則顯示 DefaultLayout */}
+          {pathname === '/' ? (
+            <HomeLayout>{page}</HomeLayout>
+          ) : (
+            <DefaultLayout>{page}</DefaultLayout>
+          )}
         </AntdConfigProvider>
-      ) : (
-        <AntdConfigProvider>
-          <DefaultLayout pageTitle={pageProps.pageTitle}>{page}</DefaultLayout>
-        </AntdConfigProvider>
-      ))
+      </HydrationFix>
+    ))
 
   return getLayout(<Component {...pageProps} />)
 }
