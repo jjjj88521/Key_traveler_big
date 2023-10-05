@@ -13,7 +13,7 @@ const data = Array.from({
   title: `周年慶會員禮${i + 1}`,
   description: '周年慶會員禮-當月全館消費滿1500元享85折優惠(限1筆訂單)',
   threshold: 150,
-  endTime: '2023-10-05',
+  endTime: '2023-10-06',
   createDate: '2023-08-28 16:06:44',
 }))
 // 一開始先關聯user_coupon找出系統發放的優惠券
@@ -43,10 +43,7 @@ export default function Coupon() {
 
   // 新增優惠碼
   const [couponData, setCouponData] = useState(data)
-  // useEffect(() => {
-  //   // 當 data 變化時觸發這裡的程式碼
-  //   console.log('Data has changed:', couponData)
-  // }, [couponData]) // 透過指定依賴項 data 來監聽資料變化
+
 
   const handleAddCoupon = (e) => {
     console.log(e.target.className.includes('coupon_newCouponBtnMobile'))
