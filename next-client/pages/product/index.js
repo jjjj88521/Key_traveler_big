@@ -4,6 +4,7 @@ import styles from './product.module.css'
 import Accordion from '@/components/product/accordion'
 import AsideFilter from '@/components/product/AsideFilter'
 import CardHover from '@/components/CardHover'
+import PaginationComponent from '@/components/common/PaginationComponent'
 
 // <div className="container">
 // <div className={styles['banner']}>
@@ -124,8 +125,11 @@ export default function ProductIndex() {
       </div>
 
       {/* pagination */}
-      <div className="text-center mb-3">
-        <h1 className="text-primary">&lt; 1...4 5 6...10 &gt;</h1>
+      <div className="m-3">
+        <PaginationComponent
+          totalItems={120}
+          pageSize={12}
+        ></PaginationComponent>
       </div>
     </>
   )
