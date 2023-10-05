@@ -147,7 +147,15 @@ export default function ProfileForm() {
             defaultValue={dayjs(formData.birthday, 'YYYY-MM-DD')}
           />
         </div>
-
+        <button
+          type="button"
+          className="btn btn-primary text-white col-sm-5 col-12 offset-sm-7 mt-5"
+          onClick={() => {
+            localStorage.removeItem('loginToken')
+          }}
+        >
+          登出
+        </button>
         <button
           type="button"
           className="btn btn-primary text-white col-sm-5 col-12 offset-sm-7 mt-5"

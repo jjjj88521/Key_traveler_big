@@ -70,7 +70,10 @@ export default function LoginForm() {
 
   //解構
   const { auth, setAuth } = useAuth()
-  //監聽LoginToken
+
+  useEffect(() => {
+    console.log(auth)
+  }, [auth])
 
   return (
     <>
@@ -126,7 +129,7 @@ export default function LoginForm() {
               }
               fetchData()
 
-              console.log(auth)
+              // console.log(auth)
             }}
           >
             登入
