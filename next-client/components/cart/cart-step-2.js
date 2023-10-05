@@ -1,22 +1,8 @@
 import React, { useState } from 'react'
 import style from './cart2.module.scss'
-import { Steps, Divider } from 'antd'
+import { Divider } from 'antd'
 import { Radio, List } from 'antd'
-// const description = 'This is a description.'
-const items = [
-  {
-    title: '確認商品',
-    // description,
-  },
-  {
-    title: '確認訂單',
-    // description,
-  },
-  {
-    title: '填寫訂單資訊',
-    // description,
-  },
-]
+
 const cardListData = [
   {
     value: '1',
@@ -35,7 +21,7 @@ const cardListData = [
   },
 ]
 
-export default function Cart2({ toggleCart }) {
+export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
   // 收件人資料_S
   const [buyerValue, setbuyerValue] = useState(1)
   const buyeronChange = (e) => {
@@ -122,19 +108,6 @@ export default function Cart2({ toggleCart }) {
         <div className="row mt-5">
           <div className="col-10 mx-auto">
             <div className="d-flex justify-content-center mb-3">
-              {/* <Steps
-            current={1}
-            labelPlacement="vertical"
-            items={items}
-            className="d-flex align-self-center"
-            style={{ width: '70%' }}
-          /> */}
-              <Steps
-                current={1}
-                labelPlacement="vertical"
-                items={items}
-                responsive="false"
-              />
             </div>
             <div className="orderInfo">
               <div className={`${style['buyerInfo']}`}>
@@ -183,20 +156,6 @@ export default function Cart2({ toggleCart }) {
               <div className="buyerInfoMobile mt-4 d-none"></div>
               <div className={`${style['getProductInfo']}`}>
                 <div className={`${style['cart_subtitle']}`}>取貨方式</div>
-                <div className="radioNotUse">
-                  {/* <div className={`${style['info']}`}>
-            <label>
-              <input
-                type="radio"
-                name="radioGroup"
-                value="option1"
-                checked
-                style={{ marginRight: '5px', marginLeft: '30px' }}
-              />
-              宅配到府
-            </label>
-          </div> */}
-                </div>
                 <Radio.Group
                   onChange={recProductonChange}
                   value={recProductValue}
@@ -216,10 +175,16 @@ export default function Cart2({ toggleCart }) {
                     value={buyerValue}
                     className="ms-3"
                   >
-                    <Radio value={1} className="text-light">
+                    <Radio
+                      value={1}
+                      className={`${style['recRadio']} text-light`}
+                    >
                       同訂購人
                     </Radio>
-                    <Radio value={2} className="text-light">
+                    <Radio
+                      value={2}
+                      className={`${style['recRadio']} text-light`}
+                    >
                       修改收件人資料
                     </Radio>
                   </Radio.Group>
@@ -474,11 +439,18 @@ export default function Cart2({ toggleCart }) {
               <button
                 class={`btn ${style['button_reverse']} me-2`}
                 id="checkProduct"
-                onClick={toggleCart}
+                onClick={ongotoPage1}
               >
                 上一步
               </button>
-              <button class={`btn ${style['button_main']}`} id="completeOrder">
+              <button
+                class={`btn btn-primary px-3 py-2`}
+                id="completeOrder"
+                onClick={() => {
+                  localStorage.setItem('someKey1', 'someValue11111')
+                  ongotoPage3()
+                }}
+              >
                 送出訂單
               </button>
             </div>
@@ -489,14 +461,3 @@ export default function Cart2({ toggleCart }) {
     </>
   )
 }
-
-// import React from 'react'
-
-// export default function Cart2({ toggleCart }) {
-//   return (
-//     <>
-//       <button onClick={toggleCart}>Change to Cart1</button>
-//       <div>This is Cart2</div>
-//     </>
-//   )
-// }

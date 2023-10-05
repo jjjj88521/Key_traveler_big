@@ -31,7 +31,6 @@
     position: absolute;
     left: 20px;
     top: calc(50% - 25px);
-    // border-radius: 30px;
     h3{
         margin-left: 30px;
         margin-top: 60px;
@@ -94,8 +93,6 @@
     color: #DC9329;
     background-color: #ffffff;
     border:1px solid #DC9329;
-    border-radius: 10px;
-    padding: 10px 20px;
     &:hover{
         background-color: #e1a349;
         color: #fff;
@@ -104,4 +101,18 @@
 }
 .buyerInfo, .getProductInfo, .receiverInfo,.paymentInfo{
     margin-bottom: 40px;
+}
+
+.recRadio{
+    position: relative;
+    &::before {
+        content: "";
+        position: absolute;
+        border: 1px solid #eeeeee;
+        border-radius: 25px;
+        top: 2px;
+        left: -0.5px;
+        width: 18px;
+        height: 18px;
+    }
 }
