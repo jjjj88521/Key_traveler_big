@@ -19,14 +19,13 @@ export default function PaginationComponent({
     if (type === 'prev' || type === 'next') {
       return (
         <>
-            <i
-              className={
-                type === 'prev'
-                  ? 'fa-solid fa-caret-left'
-                  : 'fa-solid fa-caret-right'
-              }
-            ></i>
-          </div>
+          <i
+            className={
+              type === 'prev'
+                ? 'fa-solid fa-caret-left'
+                : 'fa-solid fa-caret-right'
+            }
+          ></i>
         </>
       )
     }
