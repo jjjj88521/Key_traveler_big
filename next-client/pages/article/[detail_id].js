@@ -5,8 +5,9 @@ import art_detail_style from '@/styles/article/art_detail_style.module.scss'
 import moment from 'moment'
 import Link from 'next/link'
 import DetailCat from './detail_cat'
+import ArticleFilter from './cate/[cat_id]'
 
-export default function ArticleFilter() {
+export default function DetailFilter() {
   // 設定路由
   const router = useRouter()
   const { isReady, query } = router
@@ -318,6 +319,15 @@ export default function ArticleFilter() {
     setCreat([newComment, ...creat])
     setCommentValue('')
   }
+
+  //   const [cateCount, setCateCount] = useState(0)
+  //   useEffect(() => {
+  //     const personalCateCount = ArticleFilter.filter(
+  //       (item) => item.cate === '公告'
+  //     )
+  //     setCateCount(personalCateCount)
+  //   }, [])
+
   return (
     <>
       {/* 手機版分類 */}
@@ -477,7 +487,7 @@ export default function ArticleFilter() {
             </div>
             {/* 分類表 */}
             <div className="pb-5 d-none d-sm-block">
-              <Link href="#" className="text-decoration-none">
+              <Link href="/article/cate/1" className="text-decoration-none">
                 <div
                   className={`${art_detail_style['category']} position-relative p-2`}
                 >
@@ -488,7 +498,7 @@ export default function ArticleFilter() {
                   </div>
                 </div>
               </Link>
-              <Link href="#" className="text-decoration-none">
+              <Link href="/article/cate/2" className="text-decoration-none">
                 <div
                   className={`${art_detail_style['category']} position-relative p-2`}
                 >
@@ -499,7 +509,7 @@ export default function ArticleFilter() {
                   </div>
                 </div>
               </Link>
-              <Link href="#" className="text-decoration-none">
+              <Link href="/article/cate/3" className="text-decoration-none">
                 <div
                   className={`${art_detail_style['category']} position-relative p-2`}
                 >
@@ -510,7 +520,7 @@ export default function ArticleFilter() {
                   </div>
                 </div>
               </Link>
-              <Link href="#" className="text-decoration-none">
+              <Link href="/article/cate/4" className="text-decoration-none">
                 <div
                   className={`${art_detail_style['category']} position-relative p-2`}
                 >

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { Tag } from 'antd'
 import art_list_style from '@/styles/article/art_list_style.module.scss'
 import Link from 'next/link'
+import PaginationComponent from '@/components/common/PaginationComponent'
 
 export default function ArticleFilter() {
   // 設定路由
@@ -142,6 +143,28 @@ export default function ArticleFilter() {
       date: '2023-09-21',
     },
   ]
+  //   分頁設定
+  const PageSize = 9
+  const totalItemsForCategory = data.filter(
+    (item) => selectedCategory === null || item.cate === selectedCategory
+  )
+  const totalPageCount = totalItemsForCategory.length
+  console.log(totalPageCount)
+  //   const totalPageCount = Math.ceil(totalItemsForCategory.length / PageSize)
+  //   console.log(totalPageCount)
+  const [currentPage, setCurrentPage] = useState(1)
+  const handlePageChange = (page) => {
+    setCurrentPage(page)
+    console.log(page)
+  }
+  const startIndex = (currentPage - 1) * PageSize
+  const endIndex =
+    currentPage * PageSize < totalItemsForCategory.length
+      ? currentPage * PageSize
+      : totalItemsForCategory.length
+  console.log(startIndex)
+  //   const displayedData = totalItemsForCategory.slice(startIndex, endIndex)
+  //   console.log(displayedData)
   return (
     <>
       <div className="container mt-sm-5 mt-3">
@@ -308,7 +331,7 @@ export default function ArticleFilter() {
                     item.cate === selectedCategory) &&
                   (searchCard === '' || item.title.includes(searchCard))
               )
-
+              .slice(startIndex, endIndex)
               .map((item, index) => {
                 return (
                   <div className="col mb-4" key={item.id}>
@@ -340,11 +363,14 @@ export default function ArticleFilter() {
                 )
               })}
             {/* 放分頁 */}
-            {/* <PaginationComponent
-        totalItems={12}
-        pageSize={1}
-        //onPageChange={2}
-      ></PaginationComponent> */}
+            <div className="pb-3" style={{ width: '100%' }}>
+              <PaginationComponent
+                totalItems={totalPageCount}
+                pageSize={PageSize}
+                //   currentPage={displayedData}
+                onPageChange={handlePageChange}
+              ></PaginationComponent>
+            </div>
           </div>
         </div>
       </div>
