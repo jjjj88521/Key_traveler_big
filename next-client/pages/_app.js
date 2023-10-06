@@ -8,7 +8,6 @@ import HomeLayout from '@/components/layout/home-layout'
 import { AuthProvider } from '@/hooks/useAuth'
 import HydrationFix from './_hydration-fix'
 
-
 export default function MyApp({ Component, pageProps }) {
   // Use the layout defined at the page level, if available
   // 頁面載入引入 bootstrap
@@ -34,12 +33,10 @@ export default function MyApp({ Component, pageProps }) {
         </AntdConfigProvider>
       </HydrationFix>
     ))
-    
   // AuthProvider 會員登入用
-    return getLayout(
+  return getLayout(
     <AuthProvider>
       <Component {...pageProps} />
     </AuthProvider>
   )
-
 }

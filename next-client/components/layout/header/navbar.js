@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Dropdown, Space, Badge, Drawer, Menu } from 'antd'
 import style from '@/styles/default-layout/_default-layout.module.scss'
-import { set } from 'lodash'
 
 export default function Navbar() {
   // 導航欄位假資料
@@ -18,23 +17,23 @@ export default function Navbar() {
         },
         {
           name: '鍵盤套件',
-          link: '/product/鍵盤套件',
+          link: '/product/1',
         },
         {
           name: '軸體',
-          link: '/product/軸體',
+          link: '/product/2',
         },
         {
           name: '鍵帽',
-          link: '/product/鍵帽',
+          link: '/product/3',
         },
         {
           name: '成品鍵盤',
-          link: '/product/成品鍵盤',
+          link: '/product/4',
         },
         {
           name: '鍵盤零件 & 工具',
-          link: '/product/鍵盤零件&工具',
+          link: '/product/5',
         },
       ],
     },
@@ -70,23 +69,23 @@ export default function Navbar() {
       children: [
         {
           name: '全部文章',
-          link: '/article/category/0',
+          link: '/article/cate/0',
         },
         {
           name: '公告',
-          link: '/article/category/1',
+          link: '/article/cate/1',
         },
         {
           name: '開箱文',
-          link: '/article/category/2',
+          link: '/article/cate/2',
         },
         {
           name: '組裝教學',
-          link: '/article/category/3',
+          link: '/article/cate/3',
         },
         {
           name: '活動',
-          link: '/article/category/4',
+          link: '/article/cate/4',
         },
       ],
     },
@@ -216,7 +215,9 @@ export default function Navbar() {
             <div className="col d-sm-flex d-none align-items-center justify-content-end">
               {/* 會員中心 */}
               <div className="text-primary fs-5">
-                <i className="fa-regular fa-user"></i>
+                <Link href="/user">
+                  <i className="fa-regular fa-user"></i>
+                </Link>
               </div>
               {/* 喜歡商品 */}
               <div className="text-primary ps-5 fs-5">
@@ -224,17 +225,19 @@ export default function Navbar() {
               </div>
               {/* 購物車按鈕 */}
               <div className="">
-                <Badge count={2} color="#DC9329">
-                  <i className="fa-solid fa-cart-shopping text-primary ps-5 fs-5"></i>
-                </Badge>
+                <Link href="/cart">
+                  <Badge count={2} color="#DC9329">
+                    <i className="fa-solid fa-cart-shopping text-primary ps-5 fs-5"></i>
+                  </Badge>
+                </Link>
               </div>
             </div>
             {/* 手機版選單按鈕 */}
             <div className="col d-sm-none d-block">
               <div className="d-flex align-items-center justify-content-end h-100">
-                <div onClick={showMobileMenu}>
+                <button class="btn border-0" onClick={showMobileMenu}>
                   <i className="fa-solid fa-bars text-primary fs-3 cursor-pointer"></i>
-                </div>
+                </button>
               </div>
             </div>
           </div>
