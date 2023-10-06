@@ -19,15 +19,13 @@ export default function PaginationComponent({
     if (type === 'prev' || type === 'next') {
       return (
         <>
-          <div className="bg-primary-subtle text-primary">
-            <i
-              className={
-                type === 'prev'
-                  ? 'fa-solid fa-caret-left'
-                  : 'fa-solid fa-caret-right'
-              }
-            ></i>
-          </div>
+          <i
+            className={
+              type === 'prev'
+                ? 'fa-solid fa-caret-left'
+                : 'fa-solid fa-caret-right'
+            }
+          ></i>
         </>
       )
     }
@@ -37,6 +35,7 @@ export default function PaginationComponent({
         className={
           currentPage === page ? 'text-light' : 'text-primary bg-primary-subtle'
         }
+        style={{ borderRadius: '6px' }}
       >
         {originalElement}
       </div>
@@ -53,6 +52,7 @@ export default function PaginationComponent({
           onChange={handlePageChange}
           itemRender={itemRender}
           showSizeChanger={false}
+          responsive={true}
         />
       </div>
     </>
