@@ -28,9 +28,22 @@ function UserSideBar() {
             className="accordion-collapse collapse"
           >
             <div className={`accordion-body ${styles['accBody']}`}>
-              <h6 className="fw-bold mb-3">個人檔案</h6>
-              <h6 className="fw-bold mb-3">信用卡</h6>
-              <h6 className="fw-bold">修改密碼</h6>
+              <h6 className="fw-bold mb-3">
+                <Link href="/user/profile" className="fw-bold mb-3">
+                  個人檔案
+                </Link>
+              </h6>
+              <h6 className="fw-bold mb-3">
+                {' '}
+                <Link href="/user/credit-card-profile" className="fw-bold mb-3">
+                  信用卡
+                </Link>
+              </h6>
+              <h6 className="fw-bold mb-3">
+                <Link href="/user/reset-password" className="fw-bold">
+                  修改密碼
+                </Link>
+              </h6>
             </div>
           </div>
           {/* 以上同一組 */}

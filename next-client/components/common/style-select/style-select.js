@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import style from './_style-select.module.scss'
 
-const StyleSelect = ({ title, children, onSelect }) => {
+const StyleSelect = ({ title, children, onSelect, hasTitle = true }) => {
   // 製作點擊後變色的效果，並且儲存點擊的值，預設為第一個 style-select-item
   const [active, setActive] = useState(null)
-  const [selected, setSelected] = useState(null)
+  const [selected, setSelected] = useState(
+    children[0].props.value || children[0].props.children
+  )
+  // console.log(children)
 
   const handleClick = (key, value) => {
     setActive(key)
@@ -16,7 +19,11 @@ const StyleSelect = ({ title, children, onSelect }) => {
 
   return (
     <div className={`${style['style-select']}`}>
-      <h5 className="text-secondary">{title}</h5>
+      {hasTitle && (
+        <h5 className="text-secondary d-flex justify-content-center d-sm-block">
+          {title}
+        </h5>
+      )}
       <div className={`${style['style-select-list']}`}>
         {React.Children.map(children, (child) => {
           if (React.isValidElement(child)) {
@@ -35,7 +42,14 @@ const StyleSelect = ({ title, children, onSelect }) => {
   )
 }
 
-const Item = ({ active, selected, key, value, onClick, onSelect }) => {
+const Item = ({
+  children,
+  selected,
+  key,
+  value = children,
+  onClick,
+  onSelect,
+}) => {
   return (
     <div
       onSelect={() => {
@@ -43,10 +57,10 @@ const Item = ({ active, selected, key, value, onClick, onSelect }) => {
       }}
       onClick={() => onClick(key, value)}
       className={`${style['style-select-item']} ${
-        active === key && selected === value ? style['active'] : ''
+        selected === value ? style['active'] : ''
       }`}
     >
-      {value}
+      {children}
     </div>
   )
 }
