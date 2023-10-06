@@ -21,6 +21,14 @@
     width: 200px;
     height: 40px;
   }
+  &.up {
+    top: -100px;
+    transition: all 0.3s ease;
+  }
+  &.down {
+    top: 0;
+    transition: all 0.3s ease;
+  }
 }
 
 @media screen and (max-width: 576px) {
