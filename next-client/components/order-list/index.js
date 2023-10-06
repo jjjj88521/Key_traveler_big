@@ -1,79 +1,78 @@
 import { React, useState } from 'react'
 import style from '@/styles/order.module.scss'
-import UserSideBar from '../user-side-bar'
-import UserSideBarMobile from '../user-side-bar-mobile'
+import UserSideBar from '@/pages/user/user-side-bar'
+import UserSideBarMobile from '@/pages/user/user-side-bar-mobile'
 import PaginationComponent from '@/components/common/PaginationComponent'
 import Link from 'next/link'
-import OrderList from '@/components/order-list'
 
+export default function OrderList() {
+  const orders = [
+    {
+      id: 1,
+      orderId: 'P00001',
+      date: '2023-08-15',
+      totalPrice: 1800,
+    },
+    {
+      id: 2,
+      orderId: 'G00002',
+      date: '2023-08-16',
+      totalPrice: 800,
+    },
+    {
+      id: 3,
+      orderId: 'R00003',
+      date: '2023-08-17',
+      totalPrice: 1000,
+    },
+  ]
+  const [selectedFilter, setSelectedFilter] = useState('全部')
 
-export default function Order() {
-  // const orders = [
-  //   {
-  //     id: 1,
-  //     number: 'P00001',
-  //     date: '2023-08-15',
-  //     totalPrice: 1800,
-  //   },
-  //   {
-  //     id: 2,
-  //     number: 'G00002',
-  //     date: '2023-08-16',
-  //     totalPrice: 800,
-  //   },
-  //   {
-  //     id: 3,
-  //     number: 'R00003',
-  //     date: '2023-08-17',
-  //     totalPrice: 1000,
-  //   },
-  // ]
-  // const [selectedFilter, setSelectedFilter] = useState('全部')
+  const filteredOrders = orders.filter((v) => {
+    if (selectedFilter === '全部') {
+      // 顯示所有訂單
+      return true
+    } else {
+      const filterKey =
+        selectedFilter === '一般' ? 'P' : selectedFilter === '團購' ? 'G' : 'R'
+      return v.orderId.startsWith(filterKey)
+    }
+  })
+  const handleFilterChange = (value) => {
+    setSelectedFilter(value)
+    setCurrentPage(1)
+  }
 
-  // const filteredOrders = orders.filter((order) => {
-  //   if (selectedFilter === '全部') {
-  //     // 顯示所有訂單
-  //     return true
-  //   } else {
-  //     const filterKey =
-  //       selectedFilter === '一般' ? 'P' : selectedFilter === '團購' ? 'G' : 'R'
-  //     return order.number.startsWith(filterKey)
-  //   }
-  // })
-  // const handleFilterChange = (value) => {
-  //   setSelectedFilter(value)
-  //   setCurrentPage(1)
-  // }
-  // // 依篩選出的訂單數量標示序號
-  // const calculateOrderNumber = () => {
-  //   let count = 0
-  //   return () => {
-  //     count++
-  //     return count
-  //   }
-  // }
-  // const getOrderNumber = calculateOrderNumber()
+  const [currentPage, setCurrentPage] = useState(1)
+  // 每頁顯示的項目數量
+  const pageSize = 2
 
-  // const [currentPage, setCurrentPage] = useState(1)
-  // // 每頁顯示的項目數量
-  // const pageSize = 10
-  // // 處理頁碼變更事件
-  // const handlePageChange = (page) => {
-  //   setCurrentPage(page)
-  //   // console.log('currentPage is' + currentPage)
-  //   // 在這裡可以處理分頁後的資料載入或其他操作
-  // }
+  // 處理頁碼變更事件
+  const handlePageChange = (page) => {
+    setCurrentPage(page)
+    // console.log('currentPage is' + currentPage)
+    // 在這裡可以處理分頁後的資料載入或其他操作
+  }
 
-  // // 根據目前頁和每頁顯示的數量計算要顯示的數據
-  // const startIndex = (currentPage - 1) * pageSize
-  // const endIndex = startIndex + pageSize
-  // const currentOrders = filteredOrders.slice(startIndex, endIndex)
+  // 根據目前頁和每頁顯示的數量計算要顯示的數據
+  const startIndex = (currentPage - 1) * pageSize
+  const endIndex = startIndex + pageSize
+  const currentOrders = filteredOrders.slice(startIndex, endIndex)
+
+  // 依篩選出的訂單數量標示序號
+  const calculateOrderNumber = () => {
+    let count = 0
+    return () => {
+      count++
+      return count
+    }
+  }
+  const getOrderNumber = calculateOrderNumber()
   return (
     <>
-      <OrderList />
-      {/* <div className="container">
+      <div className="container">
         <div className="row my-sm-4 my-2 ">
-          <h2 className="fw-bolder text-start col-sm-3 col-12 mb-0 ">
+          <h2 className="fw-bolder text-start col-sm-3 col-12 mt-3 mb-0">
             歷史訂單
           </h2>
         </div>
@@ -82,7 +81,7 @@ export default function Order() {
             <div className="d-sm-block d-none">
               <UserSideBar />
             </div>
-            <div className="d-sm-none d-block col-12 mb-3">
+            <div className="d-sm-none d-block col-12 mb-4">
               <UserSideBarMobile className="col-12 w-100" />
             </div>
           </div>
@@ -150,7 +149,9 @@ export default function Order() {
                 </div>
               </div>
             </div>
-            
+            {/* 歷史訂單列表頁 電腦版 */}
+            {/* {`table d-none d-sm-table`} */}
+            {/* {`${style['table-desktop']} table`} */}
             <table className={`table d-none d-sm-table`}>
               <thead className="">
                 <tr className="">
@@ -162,63 +163,73 @@ export default function Order() {
                 </tr>
               </thead>
               <tbody>
-                {currentOrders.map((order) => (
-                  <tr className="" key={order.id}>
-                    <td className="text-center">{getOrderNumber()}</td>
-                    <td className="ps-5">{order.number}</td>
-                    <td className="ps-5">{order.date}</td>
-                    <td className="ps-5">{order.totalPrice}</td>
+                {currentOrders.map((v, i) => (
+                  <tr className="" key={v.id}>
+                    <td className="text-center">{i + 1}</td>
+                    <td className="ps-5">{v.orderId}</td>
+                    <td className="ps-5">{v.date}</td>
+                    <td className="ps-5">{v.totalPrice}</td>
                     <td className="ps-5">
-                      <button className="btn btn-primary text-light">
+                      <Link
+                        href={`http://localhost:3000/user/order/${v.orderId}`}
+                        className="btn btn-primary text-light"
+                      >
                         查看
-                      </button>
+                      </Link>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            
-            {filteredOrders.map((order) => (
+            {/* 歷史訂單列表頁 手機版 */}
+            {/* {`table table-bordered d-table d-sm-none`} */}
+            {/* {`${style['table-mobile']} table table-bordered`} */}
+            {currentOrders.map((v, i) => (
               <table
                 className={`table table-bordered d-table d-sm-none`}
-                key={order.id}
+                key={v.id}
               >
                 <tbody>
                   <tr>
-                    <th className="ps-3">{getOrderNumber()}</th>
+                    <th className="ps-3">{i + 1}</th>
                     <td></td>
                   </tr>
                   <tr>
                     <th>訂單編號</th>
-                    <td>{order.number}</td>
+                    <td>{v.orderId}</td>
                   </tr>
                   <tr>
                     <th>訂單日期</th>
-                    <td>{order.date}</td>
+                    <td>{v.date}</td>
                   </tr>
                   <tr>
                     <th>訂單金額</th>
-                    <td>{order.totalPrice}</td>
+                    <td>{v.totalPrice}</td>
                   </tr>
                   <tr>
                     <td className="text-center" colSpan={2}>
-                      <button className="btn btn-primary text-light">
+                      <Link
+                        className="btn btn-primary text-light"
+                        href={`http://localhost:3000/user/order/${v.orderId}`}
+                      >
                         查看
-                      </button>
+                      </Link>
                     </td>
                   </tr>
                 </tbody>
               </table>
             ))}
-            <PaginationComponent
-              totalItems={filteredOrders.length} // 總項目數量
-              pageSize={pageSize} // 每頁顯示的項目數量
-              currentPage={currentPage} // 目前頁碼
-              onPageChange={handlePageChange} // 處理頁碼變化事件的callback function
-            />
+            <div className="my-4">
+              <PaginationComponent
+                totalItems={filteredOrders.length} // 總項目數量
+                pageSize={pageSize} // 每頁顯示的項目數量
+                currentPage={currentPage} // 目前頁碼
+                onPageChange={handlePageChange} // 處理頁碼變化事件的callback function
+              />
+            </div>
           </div>
         </div>
-      </div> */}
+      </div>
     </>
   )
 }
