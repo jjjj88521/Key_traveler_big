@@ -1,20 +1,9 @@
 import React from 'react'
 import { Steps } from 'antd'
 import style from '@/styles/user/register.module.scss'
-
-const fakeUserData = [
-  {
-    name: 'AAA',
-    account: 'BBB',
-    gender: '男',
-    address: 'CCC',
-    phone: '0912345678',
-    birthday: '19930928',
-    Email: 'DDD@DD.D',
-    password: '12345',
-    confirmPassword: '12345',
-  },
-]
+import { useState } from 'react'
+import { DatePicker } from 'antd'
+import RegisterForm from '@/components/user/register-form'
 
 const description = [
   '姓名',
@@ -29,6 +18,49 @@ const description = [
 ]
 
 export default function Profile() {
+  //宣告儲存會員資料
+  const [formData, setformData] = useState({
+    name: '',
+    account: '',
+    gender: '',
+    address: '',
+    phone: '',
+    birthday: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    cardNumber: '',
+    cardName: '',
+    expiry: '',
+  })
+  //宣告會員填寫狀態
+  const [errMesage, setErrMesage] = useState({
+    name: '',
+    account: '',
+    address: '',
+    gender: '',
+    phone: '',
+    birthday: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  })
+  //宣告步驟碼
+  // const [stepHash, setStepHash] = useState(-1)
+  //宣告完成狀態
+  const stepStateArray = ['wait', 'process', 'finish', 'error']
+  const [stepState, setStepState] = useState({
+    name: stepStateArray[0],
+    account: stepStateArray[0],
+    address: stepStateArray[0],
+    gender: stepStateArray[0],
+    phone: stepStateArray[0],
+    birthday: stepStateArray[0],
+    email: stepStateArray[0],
+    password: stepStateArray[0],
+    confirmPassword: stepStateArray[0],
+  })
+
   // ant design 套件用
   const [
     name,
@@ -42,168 +74,77 @@ export default function Profile() {
     confirmPassword,
   ] = description
 
+  //處理錯誤訊息
+  function handleErrMessage(e, mes) {
+    setErrMesage({ ...errMesage, [e.target.name]: mes })
+  }
+  //處理step狀態碼
+  function handleSetStepState(e, i) {
+    setStepState({ ...stepState, [e.target.name]: stepStateArray[i] })
+  }
+  //處理會員儲存資料
+  function handleSetformData(e, mes) {
+    setformData({ ...formData, [e.target.name]: e.target.value })
+  }
+  //傳遞props用
+  const registerForm = {
+    handleErrMessage,
+    handleSetStepState,
+    handleSetformData,
+    errMesage,
+    setErrMesage,
+    setformData,
+    setStepState,
+    formData,
+    stepState,
+    stepStateArray,
+    birthday,
+  }
   return (
     <>
       <div className="container">
-        <div className="row justify-content-evenly">
-          <h1 className="mb-5 offset-1 fw-bolder">填寫基本註冊資料</h1>
-          <form action="" className="mb-5 col-md-8 col-10">
-            <label htmlFor="name" className="form-label">
-              姓名
-            </label>
-            <input type="text" id="name" name="name" className="form-control" />
-            <br />
-            <label htmlFor="acount" className="form-label">
-              帳號
-            </label>
-            <input
-              type="text"
-              id="acount"
-              name="acount"
-              className="form-control"
-            />
-            <br />
-            <label htmlFor="gender" className="form-label">
-              性別
-            </label>
-            <input
-              type="text"
-              id="gender"
-              name="gender"
-              className="form-control"
-            />
-            <br />
-            <label htmlFor="address" className="form-label">
-              地址
-            </label>
-            <select
-              type="text"
-              id="address"
-              name="address"
-              className="form-control"
-            >
-              <option value="1">男</option>
-              <option value="0">女</option>
-            </select>
-            <br />
-            <label htmlFor="phone" className="form-label">
-              手機
-            </label>
-            <input
-              type="text"
-              id="phone"
-              name="phone"
-              className="form-control"
-            />
-            <br />
-            <div class="birthday">
-              <label htmlFor="birthday" className="form-label">
-                生日
-              </label>
-              <div className="input-group">
-                {' '}
-                <select
-                  type="text"
-                  id="year"
-                  name="birthday"
-                  value="year"
-                  className="form-select"
-                >
-                  <option value="1990">1990</option>
-                </select>
-                <select
-                  type="text"
-                  id="month"
-                  name="birthday"
-                  value="07"
-                  className="form-select"
-                >
-                  <option value="07">07</option>
-                </select>
-                <select
-                  type="text"
-                  id="day"
-                  name="birthday"
-                  value="26"
-                  className="form-select"
-                >
-                  <option value="26">26</option>
-                </select>
-              </div>
-            </div>
-            <br />
-            <label htmlFor="email" className="form-label">
-              E-mail
-            </label>
-            <input
-              type="text"
-              id="email"
-              name="email"
-              className="form-control"
-            />
-            <br />
-            <label htmlFor="password" className="form-label">
-              設定密碼
-            </label>
-            <input
-              type="text"
-              id="password"
-              name="password"
-              className="form-control"
-            />
-            <br />
-            <label htmlFor="confirmPassword" className="form-label">
-              確認密碼
-            </label>
-            <input
-              type="text"
-              id="confirmPassword"
-              name="confirmPassword"
-              className="form-control"
-            />
-            <div className="button-group row justify-content-evenly mt-5  ">
-              <button
-                className={`${style['none-user']} btn btn-primary col-3 text-white`}
-              >
-                重填
-              </button>
-              <button className="btn btn-primary col-sm-3 col-10 text-white ">
-                送出
-              </button>
-            </div>
-          </form>
-
+        <h1 className="mb-5 fw-bolder offset-sm-1">填寫基本註冊資料</h1>
+        <div className="row offset-sm-1">
+          <RegisterForm {...registerForm} className="" />
           <Steps
-            className={`${style['none-user']} col-2`}
+            className={`${style['none-user']} col-2 offset-2`}
             direction="vertical"
-            current={3}
             items={[
               {
                 title: name,
+                status: stepState.name,
               },
               {
                 title: account,
-              },
-              {
-                title: gender,
+                status: stepState.account,
               },
               {
                 title: address,
+                status: stepState.address,
+              },
+              {
+                title: gender,
+                status: stepState.gender,
               },
               {
                 title: phone,
+                status: stepState.phone,
               },
               {
                 title: birthday,
+                status: stepState.birthday,
               },
               {
                 title: email,
+                status: stepState.email,
               },
               {
                 title: password,
+                status: stepState.password,
               },
               {
                 title: confirmPassword,
+                status: stepState.confirmPassword,
               },
             ]}
           />
