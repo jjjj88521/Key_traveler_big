@@ -1,12 +1,115 @@
-import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
-import { Avatar, List, Space } from 'antd'
-import { Input } from 'antd'
+import { useRouter } from 'next/router'
+import { Avatar, List, Space, Input, Tag } from 'antd'
 import art_detail_style from '@/styles/article/art_detail_style.module.scss'
 import moment from 'moment'
-import CKeditor from '@/components/CKeditor'
+import Link from 'next/link'
+import DetailCat from './detail_cat'
+import ArticleFilter from './cate/[cat_id]'
 
-export default function ArticleDetail() {
+export default function DetailFilter() {
+  // 設定路由
+  const router = useRouter()
+  const { isReady, query } = router
+  const detail_id = query.detail_id
+  console.log(router.query.detail_id)
+
+  const ArticleContent = [
+    {
+      id: '0',
+      title: '資料庫DB-article-title',
+      userInfo: 'by.user_id + 發佈時間',
+      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      content: '123456',
+    },
+    {
+      id: '1',
+      title: 'title01',
+      userInfo: 'by.user_id + 發佈時間',
+      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      content: '789',
+    },
+    {
+      id: '2',
+      title: 'title02',
+      userInfo: 'by.user_id + 發佈時間',
+      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      content: '101112',
+    },
+    {
+      id: '3',
+      title: 'title03',
+      userInfo: 'by.user_id + 發佈時間',
+      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      content: '131415',
+    },
+    {
+      id: '4',
+      title: 'title04',
+      userInfo: 'by.user_id + 發佈時間',
+      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      content: '161718',
+    },
+    {
+      id: '5',
+      title: 'title05',
+      userInfo: 'by.user_id + 發佈時間',
+      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      content: '192021',
+    },
+    {
+      id: '6',
+      title: 'title06',
+      userInfo: 'by.user_id + 發佈時間',
+      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      content: '222324',
+    },
+    {
+      id: '7',
+      title: 'title07',
+      userInfo: 'by.user_id + 發佈時間',
+      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      content: '252627',
+    },
+    {
+      id: '8',
+      title: 'title08',
+      userInfo: 'by.user_id + 發佈時間',
+      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      content: '282930',
+    },
+    {
+      id: '9',
+      title: 'title09',
+      userInfo: 'by.user_id + 發佈時間',
+      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      content: '313233',
+    },
+    {
+      id: '10',
+      title: 'title10',
+      userInfo: 'by.user_id + 發佈時間',
+      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      content: '343536',
+    },
+    {
+      id: '11',
+      title: 'title11',
+      userInfo: 'by.user_id + 發佈時間',
+      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      content: '373839',
+    },
+    {
+      id: '12',
+      title: 'title12',
+      userInfo: 'by.user_id + 發佈時間',
+      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      content: '404142',
+    },
+  ]
+  //對應路由 文章篩選
+  const filterArticle = ArticleContent.find((item) => item.id === detail_id)
+  console.log(filterArticle)
   // 收藏按鈕功能
   const [like, setLike] = useState(false)
 
@@ -41,43 +144,161 @@ export default function ArticleDetail() {
   // 留言列表物件
   const formattedDateTime = moment().format('DD/MM/YYYY HH:mm:ss A')
 
-  const artComment = [
-    {
-      title: 'Ant Design Title 1',
-      date: '2023',
-      description: '輸入內容',
-    },
-    {
-      title: 'Ant Design Title 2',
-      date: '2023',
-      description: '輸入內容',
-    },
-    {
-      title: 'Ant Design Title 3',
-      date: '2023',
-      description: '輸入內容',
-    },
-    {
-      title: 'Ant Design Title 4',
-      date: '2023',
-      description: '輸入內容',
-    },
-    {
-      title: 'Ant Design Title 5',
-      date: '2023',
-      description: '輸入內容',
-    },
-    {
-      title: 'Ant Design Title 6',
-      date: '2023',
-      description: '輸入內容',
-    },
-    {
-      title: 'Ant Design Title 7',
-      date: '2023',
-      description: '輸入內容',
-    },
-  ]
+  const artComment = {
+    1: [
+      {
+        title: 'Route1 Title 1',
+        date: '2023',
+        description: '輸入內容',
+      },
+      {
+        title: 'Route1 Title 2',
+        date: '2023',
+        description: '輸入內容',
+      },
+      {
+        title: 'Route1 Title 3',
+        date: '2023',
+        description: '輸入內容',
+      },
+      {
+        title: 'Route1 Title 4',
+        date: '2023',
+        description: '輸入內容',
+      },
+      {
+        title: 'Route1 Title 5',
+        date: '2023',
+        description: '輸入內容',
+      },
+      {
+        title: 'Route1 Title 6',
+        date: '2023',
+        description: '輸入內容',
+      },
+      {
+        title: 'Route1 Title 7',
+        date: '2023',
+        description: '輸入內容',
+      },
+    ],
+    2: [
+      {
+        title: 'Route2 Title 1',
+        date: '2023',
+        description: '輸入內容',
+      },
+      {
+        title: 'Route2 Title 2',
+        date: '2023',
+        description: '輸入內容',
+      },
+      {
+        title: 'Route2 Title 3',
+        date: '2023',
+        description: '輸入內容',
+      },
+      {
+        title: 'Route2 Title 4',
+        date: '2023',
+        description: '輸入內容',
+      },
+      {
+        title: 'Route2 Title 5',
+        date: '2023',
+        description: '輸入內容',
+      },
+      {
+        title: 'Route2 Title 6',
+        date: '2023',
+        description: '輸入內容',
+      },
+      {
+        title: 'Route2 Title 7',
+        date: '2023',
+        description: '輸入內容',
+      },
+    ],
+    3: [
+      {
+        title: 'Route3 Title 1',
+        date: '2023',
+        description: '輸入內容',
+      },
+      {
+        title: 'Route3 Title 2',
+        date: '2023',
+        description: '輸入內容',
+      },
+      {
+        title: 'Route3 Title 3',
+        date: '2023',
+        description: '輸入內容',
+      },
+      {
+        title: 'Route3 Title 4',
+        date: '2023',
+        description: '輸入內容',
+      },
+      {
+        title: 'Route3 Title 5',
+        date: '2023',
+        description: '輸入內容',
+      },
+      {
+        title: 'Route3 Title 6',
+        date: '2023',
+        description: '輸入內容',
+      },
+      {
+        title: 'Route3 Title 7',
+        date: '2023',
+        description: '輸入內容',
+      },
+    ],
+    4: [
+      {
+        title: 'Route4 Title 1',
+        date: '2023',
+        description: '輸入內容',
+      },
+      {
+        title: 'Route4 Title 2',
+        date: '2023',
+        description: '輸入內容',
+      },
+      {
+        title: 'Route4 Title 3',
+        date: '2023',
+        description: '輸入內容',
+      },
+      {
+        title: 'Route4 Title 4',
+        date: '2023',
+        description: '輸入內容',
+      },
+      {
+        title: 'Route4 Title 5',
+        date: '2023',
+        description: '輸入內容',
+      },
+      {
+        title: 'Route4 Title 6',
+        date: '2023',
+        description: '輸入內容',
+      },
+      {
+        title: 'Route4 Title 7',
+        date: '2023',
+        description: '輸入內容',
+      },
+    ],
+  }
+  //   console.log(artComment[1])
+
+  const articleData = artComment[detail_id] || []
+  //   console.log(articleData)
+  console.log(artComment[detail_id])
   //留言顯示功能
   const [displayItemCount, setDisplayItemCount] = useState(3)
   const ShowMore = () => {
@@ -85,9 +306,9 @@ export default function ArticleDetail() {
   }
   // 留言撰寫功能
   const [commentValue, setCommentValue] = useState('')
-  const [creat, setCreat] = useState(artComment)
+  const [creat, setCreat] = useState(articleData)
   const { TextArea } = Input
-
+  console.log(creat)
   const handleAddComment = () => {
     const newComment = {
       title: 'user_id',
@@ -99,30 +320,19 @@ export default function ArticleDetail() {
     setCommentValue('')
   }
 
+  //   const [cateCount, setCateCount] = useState(0)
+  //   useEffect(() => {
+  //     const personalCateCount = ArticleFilter.filter(
+  //       (item) => item.cate === '公告'
+  //     )
+  //     setCateCount(personalCateCount)
+  //   }, [])
+
   return (
     <>
-      <div className="bg-primary d-flex justify-content-center d-sm-none">
-        <Link href="#" className="text-decoration-none">
-          <div className="px-3">
-            <p className="text-dark my-2 ">公告</p>
-          </div>
-        </Link>
-        <Link href="#" className="text-decoration-none">
-          <div className="border-start border-dark border-2 px-3">
-            <p className="text-dark my-2 ">開箱文</p>
-          </div>
-        </Link>
-        <Link href="#" className="text-decoration-none">
-          <div className="border-start border-dark border-2 px-3">
-            <p className="text-dark my-2 ">組裝教學</p>
-          </div>
-        </Link>
-        <Link href="#" className="text-decoration-none">
-          <div className="border-start border-dark border-2 px-3">
-            <p className="text-dark my-2 ">活動</p>
-          </div>
-        </Link>
-      </div>
+      {/* 手機版分類 */}
+      <DetailCat />
+
       <div className="container mb-5  mt-sm-5 mt-3">
         <div className="row">
           {/* 左側欄 */}
@@ -137,7 +347,7 @@ export default function ArticleDetail() {
             >
               {/* 收藏按鈕 */}
               <Link
-                href={''}
+                href="#"
                 // type="button"
                 onClick={() => {
                   like ? setLike(false) : setLike(true)
@@ -156,58 +366,32 @@ export default function ArticleDetail() {
                 )}
               </Link>
 
-              <h2 className="fw-bolder mt-4">資料庫DB-article-title</h2>
-              <h5 className="text-secondary mb-5">by.user_id + 發佈時間</h5>
-              <p>
-                內文 舉例:親愛的用戶們，
-                我們非常興奮地宣布，我們的全新鍵盤賣場現已正式上線！無論您是電競愛好者、專業打字者還是追求個性化的用戶，我們將為您提供最優質的鍵盤選擇，以滿足您對極致打字體驗的追求。
-                在我們的鍵盤賣場中，您將發現各種類型的鍵盤，包括機械鍵盤、薄膜鍵盤和靜音鍵盤等等。無論您喜歡什麼類型的鍵盤，我們都有合適的選擇，以滿足您的需求。
-                我們與頂尖品牌合作，為您提供最優質的產品。您可以找到知名品牌如Cherry、Razer、Corsair和Logitech等等。這些品牌以卓越的品質和出色的性能聞名於世，為您提供最佳的打字體驗。
-                我們的鍵盤賣場致力於提供卓越的購物體驗和優質的客戶服務。我們的團隊將竭誠為您提供專業建議和協助，以確保您選擇到最適合您的鍵盤。
-                此外，我們還提供各種不同的配件和個性化選項，以讓您的鍵盤獨一無二。您可以選擇各種款式的鍵帽、背光效果和線材，定制您的打字工具，展現您的獨特風格。
-                別再猶豫了！立即訪問我們的鍵盤賣場，探索各種精選鍵盤和令人驚嘆的配件。我們保證您將獲得一個超越預期的打字體驗。
-                期待為您提供最佳的鍵盤選擇！
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <br />
-                <img
-                  src={
-                    'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg'
-                  }
-                  className="ArticleImg"
-                  alt="..."
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
-                />
-              </p>
+              {/* 路由對應文章內容 */}
+              {filterArticle ? (
+                <>
+                  <h2 className="fw-bolder mt-4">{filterArticle.title}</h2>
+                  <h5 className="text-secondary mb-5">
+                    {filterArticle.userInfo}
+                  </h5>
+                  <p className="">
+                    {filterArticle.content}
+                    <img
+                      className=""
+                      src={filterArticle.img}
+                      alt="..."
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                      }}
+                    />
+                  </p>
+                </>
+              ) : (
+                <p>No content found for ID {detail_id}</p>
+              )}
             </div>
+
             {/* 左下側 文章留言區 */}
             {/* 撰寫區 */}
             <div
@@ -254,11 +438,9 @@ export default function ArticleDetail() {
             {/* 發佈列表區 */}
             <List
               itemLayout="horizontal"
-              dataSource={creat.slice(0, displayItemCount)}
+              dataSource={articleData.slice(0, displayItemCount)}
               renderItem={(item, index) => (
                 <List.Item>
-                  {/* <div>2023.09.26</div> */}
-
                   <List.Item.Meta
                     className="mt-3"
                     avatar={
@@ -305,7 +487,7 @@ export default function ArticleDetail() {
             </div>
             {/* 分類表 */}
             <div className="pb-5 d-none d-sm-block">
-              <Link href="#" className="text-decoration-none">
+              <Link href="/article/cate/1" className="text-decoration-none">
                 <div
                   className={`${art_detail_style['category']} position-relative p-2`}
                 >
@@ -316,7 +498,7 @@ export default function ArticleDetail() {
                   </div>
                 </div>
               </Link>
-              <Link href="#" className="text-decoration-none">
+              <Link href="/article/cate/2" className="text-decoration-none">
                 <div
                   className={`${art_detail_style['category']} position-relative p-2`}
                 >
@@ -327,7 +509,7 @@ export default function ArticleDetail() {
                   </div>
                 </div>
               </Link>
-              <Link href="#" className="text-decoration-none">
+              <Link href="/article/cate/3" className="text-decoration-none">
                 <div
                   className={`${art_detail_style['category']} position-relative p-2`}
                 >
@@ -338,7 +520,7 @@ export default function ArticleDetail() {
                   </div>
                 </div>
               </Link>
-              <Link href="#" className="text-decoration-none">
+              <Link href="/article/cate/4" className="text-decoration-none">
                 <div
                   className={`${art_detail_style['category']} position-relative p-2`}
                 >

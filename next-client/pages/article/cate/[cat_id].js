@@ -1,22 +1,62 @@
-import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
-import { Divider, Space, Tag } from 'antd'
-import art_list_style from '@/styles/article/art_list_style.module.scss'
-import PaginationComponent from '@/components/common/PaginationComponent'
 import { useRouter } from 'next/router'
+import { Tag } from 'antd'
+import art_list_style from '@/styles/article/art_list_style.module.scss'
+import Link from 'next/link'
+import PaginationComponent from '@/components/common/PaginationComponent'
 
-// import PaginationComponent from '@/components/common/PaginationComponent'
+export default function ArticleFilter() {
+  // 設定路由
+  const router = useRouter()
+  const { isReady, query } = router
+  const cat_id = query.cat_id
 
-export default function Article() {
-  const [selectedCategory, setSelectedCategory] = useState(null)
+  const [selectedCategory, setSelectedCategory] = useState(() => {
+    if (cat_id === '1') {
+      return '公告'
+    } else if (cat_id === '2') {
+      return '開箱文'
+    } else if (cat_id === '3') {
+      return '組裝教學'
+    } else if (cat_id === '4') {
+      return '活動'
+    } else {
+      return null
+    }
+  })
+
+  const [selectValue, setSelectValue] = useState(null)
+  useEffect(() => {
+    if (isReady) {
+      setSelectValue(cat_id)
+      switch (cat_id) {
+        case '0':
+          setSelectedCategory(null)
+          break
+        case '1':
+          setSelectedCategory('公告')
+          break
+        case '2':
+          setSelectedCategory('開箱文')
+          break
+        case '3':
+          setSelectedCategory('組裝教學')
+          break
+        case '4':
+          setSelectedCategory('活動')
+          break
+        default:
+          break
+      }
+    }
+  }, [isReady, cat_id])
+  //   console.log(selectedCategory)
 
   const [searchCard, setSearchCard] = useState('')
   const handleSearch = (e) => {
     // console.log('搜尋關鍵字：', e.target.value)
     setSearchCard(e.target.value)
   }
-
-  // 卡片物件
   const data = [
     {
       id: '1',
@@ -122,6 +162,9 @@ export default function Article() {
     currentPage * PageSize < totalItemsForCategory.length
       ? currentPage * PageSize
       : totalItemsForCategory.length
+  console.log(startIndex)
+  //   const displayedData = totalItemsForCategory.slice(startIndex, endIndex)
+  //   console.log(displayedData)
   return (
     <>
       <div className="container mt-sm-5 mt-3">
@@ -144,89 +187,25 @@ export default function Article() {
           </div>
         </nav>
         {/* 手機版分類選單 */}
-        <div class="dropdown d-sm-none mb-4">
-          <Link
-            href={'/article/cate/0'}
-            onClick={() => setSelectedCategory(null)}
-            className={`${
-              selectedCategory === null
-                ? 'bg-primary text-white'
-                : art_list_style['side_category']
-            } btn btn-secondary dropdown-toggle fw-bolder d-flex justify-content-between align-items-center`}
-            type="button"
-            id="dropdownMenuButton1"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            style={{ width: '100%', backgroundColor: '#F9F1E7' }}
-          >
-            所有文章
-          </Link>
-          <ul
-            class="dropdown-menu text-center "
-            aria-labelledby="dropdownMenuButton1"
-            style={{
-              width: '100%',
+        <div class="d-sm-none mb-4">
+          <select
+            className="form-select"
+            aria-label="Select category"
+            onChange={(e) => {
+              //   const selectedValue = e.target.value
+              //   setSelectedCategory(
+              //     selectedValue === 'all' ? null : selectedValue
+              //   )
+              router.push(`/article/cate/${e.target.value}`)
             }}
+            value={selectValue}
           >
-            <li>
-              <Link
-                className={`${
-                  selectedCategory === '公告'
-                    ? 'bg-primary text-white'
-                    : art_list_style['side_category']
-                } dropdown-item`}
-                href={'/article/cate/1'}
-                onClick={() => {
-                  setSelectedCategory('公告')
-                  const dropdownToggle = document.getElementById(
-                    'dropdownMenuButton1'
-                  )
-                  dropdownToggle.click()
-                }}
-              >
-                公告
-              </Link>
-            </li>
-            <li>
-              <Link
-                className={`${
-                  selectedCategory === '開箱文'
-                    ? 'bg-primary text-white'
-                    : art_list_style['side_category']
-                } dropdown-item`}
-                href={'/article/cate/2'}
-                onClick={() => setSelectedCategory('開箱文')}
-              >
-                開箱文
-              </Link>
-            </li>
-            <li>
-              <Link
-                className={`${
-                  selectedCategory === '組裝教學'
-                    ? 'bg-primary text-white'
-                    : art_list_style['side_category']
-                } dropdown-item`}
-                href={'/article/cate/3'}
-                onClick={() => setSelectedCategory('組裝教學')}
-              >
-                組裝教學
-              </Link>
-            </li>
-            <li>
-              <Link
-                className={`${
-                  selectedCategory === '活動'
-                    ? 'bg-primary text-white'
-                    : art_list_style['side_category']
-                } dropdown-item`}
-                href={'/article/cate/4'}
-                onClick={() => setSelectedCategory('活動')}
-              >
-                活動
-              </Link>
-            </li>
-          </ul>
+            <option value="0">所有文章</option>
+            <option value="1">公告</option>
+            <option value="2">開箱文</option>
+            <option value="3">組裝教學</option>
+            <option value="4">活動</option>
+          </select>
         </div>
 
         <div className="row gx-sm-5">
@@ -250,16 +229,8 @@ export default function Article() {
                 </form>
               </div>
             </nav>
-            {/* 分類表 */}
 
-            {/* <Link href="#" className="text-decoration-none">
-              <div className={`bg-primary position-relative p-2`}>
-                <h5 className="text-white fw-bolder m-0">所有文章</h5>
-                <div className="position-absolute end-0 top-50 translate-middle me-4">
-                  <i className="text-white fa-solid fa-circle-chevron-right fa-lg "></i>
-                </div>
-              </div>
-            </Link> */}
+            {/* 分類表 */}
             <Link
               href={'/article/cate/0'}
               onClick={() => setSelectedCategory(null)}
@@ -278,16 +249,6 @@ export default function Article() {
               </div>
             </Link>
 
-            {/* <Link href="#" className="text-decoration-none">
-              <div
-                className={`${art_list_style['side_category']} position-relative p-2`}
-              >
-                <h5 className=" fw-bolder m-0">公告</h5>
-                <div className="position-absolute end-0 top-50 translate-middle me-4">
-                  <i className="fa-solid fa-circle-chevron-right fa-lg "></i>
-                </div>
-              </div>
-            </Link> */}
             <Link
               href={'/article/cate/1'}
               onClick={() => setSelectedCategory('公告')}
@@ -306,16 +267,6 @@ export default function Article() {
               </div>
             </Link>
 
-            {/* <Link href="#" className="text-decoration-none">
-              <div
-                className={`${art_list_style['side_category']} position-relative p-2`}
-              >
-                <h5 className=" fw-bolder m-0">開箱文</h5>
-                <div className="position-absolute end-0 top-50 translate-middle me-4">
-                  <i className="fa-solid fa-circle-chevron-right fa-lg "></i>
-                </div>
-              </div>
-            </Link> */}
             <Link
               href={'/article/cate/2'}
               onClick={() => setSelectedCategory('開箱文')}
@@ -334,16 +285,6 @@ export default function Article() {
               </div>
             </Link>
 
-            {/* <Link href="#" className="text-decoration-none">
-              <div
-                className={`${art_list_style['side_category']} position-relative p-2`}
-              >
-                <h5 className=" fw-bolder m-0">組裝教學</h5>
-                <div className="position-absolute end-0 top-50 translate-middle me-4">
-                  <i className="fa-solid fa-circle-chevron-right fa-lg "></i>
-                </div>
-              </div>
-            </Link> */}
             <Link
               href={'/article/cate/3'}
               onClick={() => setSelectedCategory('組裝教學')}
@@ -362,16 +303,6 @@ export default function Article() {
               </div>
             </Link>
 
-            {/* <Link href="#" className="text-decoration-none">
-              <div
-                className={`${art_list_style['side_category']} position-relative p-2`}
-              >
-                <h5 className=" fw-bolder m-0">活動</h5>
-                <div className="position-absolute end-0 top-50 translate-middle me-4">
-                  <i className="fa-solid fa-circle-chevron-right fa-lg "></i>
-                </div>
-              </div>
-            </Link> */}
             <Link
               href={'/article/cate/4'}
               onClick={() => setSelectedCategory('活動')}
@@ -401,7 +332,6 @@ export default function Article() {
                   (searchCard === '' || item.title.includes(searchCard))
               )
               .slice(startIndex, endIndex)
-
               .map((item, index) => {
                 return (
                   <div className="col mb-4" key={item.id}>
@@ -419,10 +349,7 @@ export default function Article() {
                         <h3 className="card-title mb-3">
                           {item.title + item.id}
                         </h3>
-                        {/* <a
-                      href="#"
-                      className="btn btn-sm btn-primary rounded-pill mb-3 text-white fw-bold"
-                    ></a> */}
+
                         <Link href={'#'}>
                           <Tag className="bg-primary text-white fw-bolder mb-3">
                             {item.cate}
