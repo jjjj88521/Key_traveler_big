@@ -20,13 +20,18 @@ export default function PaginationComponent({
     if (type === 'prev' || type === 'next') {
       return (
         <>
-          <i
-            className={
-              type === 'prev'
-                ? 'fa-solid fa-caret-left'
-                : 'fa-solid fa-caret-right'
-            }
-          ></i>
+          <div
+            className="bg-primary-subtle text-primary"
+            style={{ borderRadius: '6px' }}
+          >
+            <i
+              className={
+                type === 'prev'
+                  ? 'fa-solid fa-caret-left'
+                  : 'fa-solid fa-caret-right'
+              }
+            ></i>
+          </div>
         </>
       )
     }
@@ -54,6 +59,7 @@ export default function PaginationComponent({
           itemRender={itemRender}
           showSizeChanger={false}
           responsive={true}
+          defaultCurrent={1}
         />
       </div>
     </>
