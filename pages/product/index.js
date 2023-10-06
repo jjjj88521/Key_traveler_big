@@ -3,7 +3,7 @@ import { Drawer, Button } from 'antd'
 import styles from './product.module.css'
 import Accordion from '@/components/product/accordion'
 import AsideFilter from '@/components/product/AsideFilter'
-import CardHover from '@/components/CardHover'
+import List from '@/components/product/List'
 import PaginationComponent from '@/components/common/PaginationComponent'
 
 // <div className="container">
@@ -119,7 +119,7 @@ export default function ProductIndex() {
             </Drawer>
 
             {/* product list & card group  */}
-            <CardHover></CardHover>
+            <List></List>
           </div>
         </div>
       </div>

@@ -1,9 +1,8 @@
-// CardHover.js
 import React from 'react'
-import Card from './Card'
+import Card from '@/components/product/Card'
 import fakeData from './fakeData'
 
-export default function CardHover() {
+export default function List() {
   // 複製預設數據填滿整個頁面12筆
   const allData = [...fakeData]
   const defaultData = {

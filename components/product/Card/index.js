@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styles from './card.module.scss'
 import { useRouter } from 'next/router'
-import ProductFetcher from './ProductFetcher'
+import ProductFetcher from '../List/ProductFetcher'
 
 export default function Card({ title, brand, price, imagePath }) {
   const [data, setData] = useState(null)
@@ -57,7 +57,7 @@ export default function Card({ title, brand, price, imagePath }) {
           </div>
         </div>
       ) : (
-        <div className="mt-5 mx-auto fs-3">課程籌備中,請敬請期待</div>
+        <div className="mt-5 mx-auto fs-3">商品準備中,請敬請期待</div>
       )}
       {/*onDataFetched 為第12行定義的 這邊存入onCourseFetched並帶到子元件*/}
       <ProductFetcher onProductFetched={onDataFetched} />

@@ -3,7 +3,7 @@ import { Drawer, Button } from 'antd'
 import styles from './product.module.css'
 import Accordion from '@/components/product/accordion'
 import AsideFilter from '@/components/product/AsideFilter'
-import CardHover from '@/components/CardHover'
+import CardHover from '@/components/product/List'
 
 // <div className="container">
 // <div className={styles['banner']}>
