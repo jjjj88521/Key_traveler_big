@@ -82,7 +82,7 @@ export default function Coupon() {
               歷史紀錄
             </h2>
           </div>
-          <div>
+          <div style={{ margin: '20px 25px 5px' }}>
             <Tabs
               defaultActiveKey="1"
               items={items}
