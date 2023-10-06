@@ -1,17 +1,64 @@
-# Key_traveler_big
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## next-client
+## Getting Started
+圖片部分請去雲端硬碟載
 
-存放前端的資料夾
+First, run the development server:
 
-## server
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+```
 
-存放後端的資料夾
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## 大專用到東西
+You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
 
-[路由規畫表](https://docs.google.com/spreadsheets/d/1ToiMmJx-ZmSnj73OWcbF4nLgNXNAt92rZ9A2c5FaVRM/edit#gid=0)
+[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
-[鍵之旅人-專案工作項目](<https://docs.google.com/spreadsheets/d/1ToiMmJx-ZmSnj73OWcbF4nLgNXNAt92rZ9A2c5FaVRM/edit#gid=0](https://docs.google.com/document/d/1XAEhP3QKlVKMg-fHnSYH3jWg6Ug33e2rM_twZngaotk/edit#heading=h.7dgppiozh6pm)https://docs.google.com/document/d/1XAEhP3QKlVKMg-fHnSYH3jWg6Ug33e2rM_twZngaotk/edit#heading=h.7dgppiozh6pm>)
+The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-[logo 圖檔](https://drive.google.com/drive/folders/1vpp4Dgiq2rkQOmy3r6N7sPKqFFQiGUe8)
+This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## 專案架構
+## 目前的 package
+- dependencies
+    - "axios": "^1.4.0"
+    - "bootstrap": "^5.3.2"
+    - "eslint-config-next": "13.4.2"
+    - "formik": "^2.4.4"
+    - "lodash": "^4.17.21"
+    - "next": "13.4.2",
+    - "prop-types": "^15.8.1"
+    - "react": "18.2.0"
+    - "react-dom": "18.2.0"
+    - "validator": "^13.9.0"
+- devDependencies
+    - "eslint": "^8.40.0"
+    - "eslint-config-prettier": "^8.8.0"
+    - "eslint-import-resolver-alias": "^1.1.2"
+    - "eslint-plugin-import": "^2.27.5"
+    - "eslint-plugin-jsx-a11y": "^6.7.1"
+    - "eslint-plugin-prettier": "^4.2.1"
+    - "eslint-plugin-react": "^7.32.2"
+    - "eslint-plugin-react-hooks": "^4.6.0"
+    - "prettier": "^2.8.8"
+    - "sass": "^1.67.0"
