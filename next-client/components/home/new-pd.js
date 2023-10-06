@@ -1,7 +1,22 @@
+import axios from 'axios'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 export default function NewPd() {
+  const [newProducts, setNewProducts] = useState([])
+  useEffect(() => {
+    axios
+      .get(
+        'http://localhost:3005/api/products/qs?orderby=created_time,desc&perpage=4'
+      )
+      .then((res) => {
+        setNewProducts(res.data.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
+  console.log(newProducts)
   return (
     <section className={''}>
       <div className="container py-5">

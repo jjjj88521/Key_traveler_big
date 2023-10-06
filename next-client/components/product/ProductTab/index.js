@@ -1,43 +1,77 @@
-import { useState } from 'react'
-import TabButton from './TabButton.js'
+import { Children, cloneElement, useState, useRef } from 'react'
 import IntroTab from './IntroTab.js'
-import SpecTab from './SpecTab.js'
-import ReviewTab from './ReviewTab.js'
+import SpecTab from './spec-tab'
+import ReviewTab from './review-tab'
+import style from '@/styles/_fade-in-out.module.scss'
+import GbDescription from './gb-desc.js'
 
-export default function TabContainer() {
+export default function TabContainer({
+  feature,
+  featureImgs,
+  specTable,
+  commentData,
+  children,
+}) {
   const [tab, setTab] = useState('intro')
+
+  // tab 切換，滾動到該位置
+  const TabRef = useRef(null)
+  const handleScroll = () => {
+    if (TabRef.current) {
+      TabRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
   return (
-    <>
-      <div className="px-sm-4 px-0 border-top border-2">
-        <div className="row justify-content-center py-sm-5 py-4 gap-sm-5 gap-0">
-          <div className="col-4 col-sm-auto text-center">
-            <TabButton
-              isActive={tab === 'intro'}
-              onClick={() => setTab('intro')}
-            >
-              商品介紹
-            </TabButton>
+    <section ref={TabRef} className="">
+      <div className="container">
+        <div className="px-sm-4 px-0 py-sm-5 py-2 border-top border-2">
+          <div className="row justify-content-center py-4 gap-sm-5 gap-0">
+            {Children.map(children, (child) => {
+              return (
+                <div className="col-4 col-sm-auto text-center">
+                  {cloneElement(child, {
+                    isActive: tab === child.props.tabName,
+                    onClick: () => {
+                      setTab(child.props.tabName)
+                    },
+                  })}
+                </div>
+              )
+            })}
           </div>
-          <div className="col-4 col-sm-auto text-center">
-            <TabButton isActive={tab === 'spec'} onClick={() => setTab('spec')}>
-              商品規格
-            </TabButton>
+          {/* 主要內容 */}
+          <div
+            className={`${style['fade-in-out']} ${
+              tab === 'intro' ? style['active'] : ''
+            }`}
+          >
+            {tab === 'intro' && (
+              <IntroTab feature={feature} featureImgs={featureImgs} />
+            )}
           </div>
-          <div className="col-4 col-sm-auto text-center">
-            <TabButton
-              isActive={tab === 'review'}
-              onClick={() => setTab('review')}
-            >
-              商品評價[5]
-            </TabButton>
+          <div
+            className={`${style['fade-in-out']} ${
+              tab === 'spec' ? style['active'] : ''
+            }`}
+          >
+            {tab === 'spec' && <SpecTab specTable={specTable} />}
+          </div>
+          <div
+            className={`${style['fade-in-out']} ${
+              tab === 'review' ? style['active'] : ''
+            }`}
+          >
+            {tab === 'review' && <ReviewTab commentData={commentData} />}
+          </div>
+          <div
+            className={`${style['fade-in-out']} ${
+              tab === 'gb-desc' ? style['active'] : ''
+            }`}
+          >
+            {tab === 'gb-desc' && <GbDescription />}
           </div>
         </div>
-        {/* <hr />
-        <p>上面的hr之後再拿掉，目前這樣分區比較清楚</p> */}
-        {tab === 'intro' && <IntroTab />}
-        {tab === 'spec' && <SpecTab />}
-        {tab === 'review' && <ReviewTab />}
       </div>
-    </>
+    </section>
   )
 }

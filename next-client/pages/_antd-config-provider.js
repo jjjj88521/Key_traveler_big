@@ -24,6 +24,7 @@ export default function AntdConfigProvider({ children }) {
           Pagination: {
             // antd 分頁頁碼樣式
             itemActiveBg: '#DC9329',
+            itemBg: '#000000',
           },
           Tabs: {
             cardPadding: '10px 20px',
