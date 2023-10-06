@@ -13,6 +13,7 @@ export default function PaginationComponent({
   const handlePageChange = (page) => {
     setCurrentPage(page)
     onPageChange(page) // 呼叫傳遞進來的 onPageChange
+    window.scrollTo({ top: 0, behavior: 'auto' })
   }
 
   const itemRender = (page, type, originalElement) => {
