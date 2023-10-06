@@ -1,87 +1,104 @@
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Avatar, List, Space } from 'antd'
 import { Input } from 'antd'
+import art_detail_style from '@/styles/article/art_detail_style.module.scss'
+import moment from 'moment'
+import CKeditor from '@/components/CKeditor'
 
-const { TextArea } = Input
-const ButtonStyle = {
-  // 媒體查詢，當視窗寬度達到 576px 時，套用以下樣式
-  // '@media (min-width: 576px)': {
-  //   width: '200px', // 设置宽度为自动，保持原始宽度
-  // },
-  backgroundColor: '#198cf8',
-}
 export default function ArticleDetail() {
+  // 收藏按鈕功能
+  const [like, setLike] = useState(false)
+
   // 感興趣列表物件
-  let data = [
+  const interesrData = [
     {
       title: 'interest title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      img: 'https://keebsforall.com/cdn/shop/products/DSC00941.jpg?v=1689791499&width=1000',
       user: 'by.user_id',
     },
     {
       title: 'interest title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      img: 'https://keebsforall.com/cdn/shop/products/DSC00941.jpg?v=1689791499&width=1000',
       user: 'by.user_id',
     },
     {
       title: 'interest title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      img: 'https://keebsforall.com/cdn/shop/products/DSC00941.jpg?v=1689791499&width=1000',
       user: 'by.user_id',
     },
     {
       title: 'interest title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      img: 'https://keebsforall.com/cdn/shop/products/DSC00941.jpg?v=1689791499&width=1000',
       user: 'by.user_id',
     },
     {
       title: 'interest title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+      img: 'https://keebsforall.com/cdn/shop/products/DSC00941.jpg?v=1689791499&width=1000',
       user: 'by.user_id',
     },
   ]
   // 留言列表物件
+  const formattedDateTime = moment().format('DD/MM/YYYY HH:mm:ss A')
+
   const artComment = [
     {
       title: 'Ant Design Title 1',
+      date: '2023',
+      description: '輸入內容',
     },
     {
       title: 'Ant Design Title 2',
+      date: '2023',
+      description: '輸入內容',
     },
     {
       title: 'Ant Design Title 3',
+      date: '2023',
+      description: '輸入內容',
     },
     {
       title: 'Ant Design Title 4',
+      date: '2023',
+      description: '輸入內容',
+    },
+    {
+      title: 'Ant Design Title 5',
+      date: '2023',
+      description: '輸入內容',
+    },
+    {
+      title: 'Ant Design Title 6',
+      date: '2023',
+      description: '輸入內容',
+    },
+    {
+      title: 'Ant Design Title 7',
+      date: '2023',
+      description: '輸入內容',
     },
   ]
-  const [value, setValue] = useState('')
-  // const onChange = (e) => {
-  //   console.log('Change:', e.target.value)
-  // }
-  // const App = () => (
-  //   <Space size={16} wrap>
-  //     <Avatar icon={<UserOutlined />} />
-  //     <Avatar>U</Avatar>
-  //     <Avatar size={40}>USER</Avatar>
-  //     <Avatar src={url} />
-  //     <Avatar src={<img src={url} alt="avatar" />} />
-  //     <Avatar
-  //       style={{
-  //         backgroundColor: '#fde3cf',
-  //         color: '#f56a00',
-  //       }}
-  //     >
-  //       U
-  //     </Avatar>
-  //     <Avatar
-  //       style={{
-  //         backgroundColor: '#87d068',
-  //       }}
-  //       icon={<UserOutlined />}
-  //     />
-  //   </Space>
-  // )
+  //留言顯示功能
+  const [displayItemCount, setDisplayItemCount] = useState(3)
+  const ShowMore = () => {
+    setDisplayItemCount((prevCount) => prevCount + 3)
+  }
+  // 留言撰寫功能
+  const [commentValue, setCommentValue] = useState('')
+  const [creat, setCreat] = useState(artComment)
+  const { TextArea } = Input
+
+  const handleAddComment = () => {
+    const newComment = {
+      title: 'user_id',
+
+      description: commentValue,
+      date: formattedDateTime,
+    }
+    setCreat([newComment, ...creat])
+    setCommentValue('')
+  }
+
   return (
     <>
       <div className="bg-primary d-flex justify-content-center d-sm-none">
@@ -118,10 +135,26 @@ export default function ArticleDetail() {
                   '0 0 0 5px #171717, 0 2px 8px 10px rgba(0, 0, 0, .6)',
               }}
             >
-              <i
-                className="fa-regular fa-heart fa-2xl position-absolute btn"
-                style={{ top: '20px', right: '10px' }}
-              ></i>
+              {/* 收藏按鈕 */}
+              <Link
+                href={''}
+                // type="button"
+                onClick={() => {
+                  like ? setLike(false) : setLike(true)
+                }}
+              >
+                {like ? (
+                  <i
+                    className="fa-solid fa-heart fa-2xl position-absolute"
+                    style={{ top: '20px', right: '10px', color: '#ff0000' }}
+                  ></i>
+                ) : (
+                  <i
+                    className="fa-regular fa-heart fa-2xl position-absolute"
+                    style={{ top: '20px', right: '10px' }}
+                  ></i>
+                )}
+              </Link>
 
               <h2 className="fw-bolder mt-4">資料庫DB-article-title</h2>
               <h5 className="text-secondary mb-5">by.user_id + 發佈時間</h5>
@@ -197,10 +230,10 @@ export default function ArticleDetail() {
               />
               <div className="w-100">
                 <TextArea
-                  value={value}
+                  value={commentValue}
                   showCount
                   maxLength={200}
-                  onChange={(e) => setValue(e.target.value)}
+                  onChange={(e) => setCommentValue(e.target.value)}
                   placeholder="Controlled autosize"
                   autoSize={{
                     minRows: 3,
@@ -211,6 +244,7 @@ export default function ArticleDetail() {
                 <button
                   className="btn btn-primary text-white my-4 w-100"
                   // style={ButtonStyle}
+                  onClick={handleAddComment}
                 >
                   Add comment
                 </button>
@@ -220,7 +254,7 @@ export default function ArticleDetail() {
             {/* 發佈列表區 */}
             <List
               itemLayout="horizontal"
-              dataSource={artComment}
+              dataSource={creat.slice(0, displayItemCount)}
               renderItem={(item, index) => (
                 <List.Item>
                   {/* <div>2023.09.26</div> */}
@@ -242,11 +276,11 @@ export default function ArticleDetail() {
                       >
                         <span className="fs-6">{item.title}</span>
                         <span className="text-secondary fw-light fst-italic">
-                          2023.09.26
+                          {item.date}
                         </span>
                       </div>
                     }
-                    description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                    description={item.description}
                   />
                 </List.Item>
               )}
@@ -254,8 +288,10 @@ export default function ArticleDetail() {
             {/* show more */}
             <div className="d-flex justify-content-center my-4">
               <button
-                className="btn border border-primary text-primary"
+                className={`${art_detail_style['showMoreBTN']} btn border border-primary`}
+                // className="btn border border-primary text-primary"
                 style={{ width: '250px' }}
+                onClick={ShowMore}
               >
                 show more
               </button>
@@ -270,38 +306,46 @@ export default function ArticleDetail() {
             {/* 分類表 */}
             <div className="pb-5 d-none d-sm-block">
               <Link href="#" className="text-decoration-none">
-                <div className="bg-white position-relative p-2">
-                  <p className="text-secondary m-0">公告</p>
-                  <div className="position-absolute end-0 top-50 translate-middle me-4 text-secondary">
+                <div
+                  className={`${art_detail_style['category']} position-relative p-2`}
+                >
+                  <p className=" m-0">公告</p>
+                  <div className="position-absolute end-0 top-50 translate-middle me-4 ">
                     0
-                    {/* <i className="fa-solid fa-circle-chevron-right fa-lg text-secondary"></i> */}
+                    {/* <i className="fa-solid fa-circle-chevron-right fa-lg "></i> */}
                   </div>
                 </div>
               </Link>
               <Link href="#" className="text-decoration-none">
-                <div className="bg-white position-relative p-2">
-                  <p className="text-secondary m-0">開箱文</p>
-                  <div className="position-absolute end-0 top-50 translate-middle me-4 text-secondary">
+                <div
+                  className={`${art_detail_style['category']} position-relative p-2`}
+                >
+                  <p className=" m-0">開箱文</p>
+                  <div className="position-absolute end-0 top-50 translate-middle me-4 ">
                     0
-                    {/* <i className="fa-solid fa-circle-chevron-right fa-lg text-secondary"></i> */}
+                    {/* <i className="fa-solid fa-circle-chevron-right fa-lg "></i> */}
                   </div>
                 </div>
               </Link>
               <Link href="#" className="text-decoration-none">
-                <div className="bg-white position-relative p-2">
-                  <p className="text-secondary m-0">組裝教學</p>
-                  <div className="position-absolute end-0 top-50 translate-middle me-4 text-secondary">
+                <div
+                  className={`${art_detail_style['category']} position-relative p-2`}
+                >
+                  <p className=" m-0">組裝教學</p>
+                  <div className="position-absolute end-0 top-50 translate-middle me-4 ">
                     0
-                    {/* <i className="fa-solid fa-circle-chevron-right fa-lg text-secondary"></i> */}
+                    {/* <i className="fa-solid fa-circle-chevron-right fa-lg "></i> */}
                   </div>
                 </div>
               </Link>
               <Link href="#" className="text-decoration-none">
-                <div className="bg-white position-relative p-2">
-                  <p className="text-secondary m-0">活動</p>
-                  <div className="position-absolute end-0 top-50 translate-middle me-4 text-secondary">
+                <div
+                  className={`${art_detail_style['category']} position-relative p-2`}
+                >
+                  <p className=" m-0">活動</p>
+                  <div className="position-absolute end-0 top-50 translate-middle me-4 ">
                     0
-                    {/* <i className="fa-solid fa-circle-chevron-right fa-lg text-secondary"></i> */}
+                    {/* <i className="fa-solid fa-circle-chevron-right fa-lg "></i> */}
                   </div>
                 </div>
               </Link>
@@ -311,12 +355,12 @@ export default function ArticleDetail() {
               <h4 className="fw-bold">你可能感興趣的文章</h4>
             </div>
             {/* 卡片與map函式 */}
-            {data.map((item, index) => {
+            {interesrData.map((item, index) => {
               return (
                 <>
                   <Link href="#" className="text-decoration-none">
                     <div
-                      className="row pb-2  border-bottom border-2 border-dark"
+                      className={`${art_detail_style['interest_card']} row py-2 border-bottom border-2 border-dark`}
                       key={index}
                     >
                       <div className="col-4 px-0">
@@ -340,7 +384,10 @@ export default function ArticleDetail() {
                         </div>
                       </div>
                       <div className="col-8">
-                        <div className="card border-0">
+                        <div
+                          className="card border-0"
+                          style={{ backgroundColor: 'transparent' }}
+                        >
                           <div className="card-body">
                             <h5 className="card-title">{item.title}</h5>
                             <p className="card-text text-secondary">

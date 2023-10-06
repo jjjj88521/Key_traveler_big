@@ -1,0 +1,57 @@
+@import '@/styles/variables';
+
+.custom-link {
+    color: #2d2d2d; // 默认字体颜色
+    transition: color 0.2s; // 添加颜色过渡效果
+  
+    &:hover {
+      color: #DC9329; // 鼠标悬停时的字体颜色
+    }
+  }
+.createTime{
+    display: block;
+    @media screen and (max-width: $maxWidth){
+        display: none;
+    }
+}
+.createTimeMobile{
+    display: none;
+    @media screen and (max-width: $maxWidth){
+        display: block;
+    }
+}
+.yet{
+    display: flex;
+    align-items: center;
+    @media screen and (max-width: $maxWidth){
+        display: none;
+    }
+}
+.yetMobile{
+    display: none;
+    @media screen and (max-width: $maxWidth){
+        display: flex;
+        flex-direction: column;
+        margin-left: -15px;
+        .item_order{
+            max-width: 130px;
+            font-size: 0.8rem;
+        }
+    }
+}
+.toComment{
+    display: flex;
+    align-items: center;
+    @media screen and (max-width: $maxWidth){
+        display: none;
+    }
+}
+.toCommentMobile{
+    display: none;
+    @media screen and (max-width: $maxWidth){
+        height: 100%;
+        display: flex;
+        align-items: end;
+        padding-bottom: 2px;
+    }
+}

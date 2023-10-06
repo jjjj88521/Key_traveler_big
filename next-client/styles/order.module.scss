@@ -9,4 +9,9 @@
 //     display: table;
 //   } 
 // }
-  
+.sortBtn {
+    display: flex;
+    flex-direction: row;
+    padding: 8px 15px;
+    align-items: center;
+  }

@@ -24,14 +24,16 @@ export default function AntdConfigProvider({ children }) {
           Pagination: {
             // antd 分頁頁碼樣式
             itemActiveBg: '#DC9329',
+            itemBg: '#000000',
           },
           Tabs: {
             cardPadding: '10px 20px',
-            horizontalMargin: '20px 25px 5px',
             colorBgContainer: '#DC9329',
             itemSelectedColor: '#ffffff',
-            borderRadius: 20,
             colorText: '#888888',
+          },
+          List: {
+            metaMarginBottom: 8,
           },
         },
       }}

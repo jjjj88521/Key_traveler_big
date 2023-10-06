@@ -1,40 +1,49 @@
+@mixin transition {
+  transition: all 0.4s ease;
+}
+
 .home-sec2 {
   position: relative;
   .cate-select {
-    transition: all 0.3s ease;
+    @include transition;
+    h4 {
+      @include transition;
+    }
+    .cate-card {
+      @include transition;
+    }
     .overlay {
-      // position: absolute;
-      // top: 0;
-      // left: 0;
-      // width: 100%;
-      // height: 100%;
-      // background-color: #dc942949;
       display: flex;
       align-items: center;
       justify-content: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #dc942949;
+      opacity: 0;
       transition: all 0.3s ease;
     }
     img {
-      transition: all 0.3s ease;
+      @include transition;
     }
-
     &:hover {
-      img {
-        transform: scale(1.1);
+      .cate-card {
+        transform: scaleY(1.1);
       }
-      &::after {
-        opacity: 1;
+      img {
+        transform: scale(1.05);
       }
       .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #dc942949;
+        opacity: 1;
+        h4 {
+          opacity: 1;
+        }
       }
       h4 {
-        color: white;
+        // color: white;
+        opacity: 0;
       }
     }
   }
