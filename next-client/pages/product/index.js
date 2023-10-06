@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Drawer, Button } from 'antd'
 import styles from './product.module.css'
 import Accordion from '@/components/product/accordion'
 import AsideFilter from '@/components/product/AsideFilter'
+import CardHover from '@/components/CardHover'
+import PaginationComponent from '@/components/common/PaginationComponent'
 
 // <div className="container">
 // <div className={styles['banner']}>
@@ -16,23 +19,39 @@ export async function getStaticProps() {
 }
 
 export default function ProductIndex() {
+  const [open, setOpen] = useState(false)
+
+  const showDrawer = () => {
+    setOpen(true)
+  }
+
+  const onClose = () => {
+    setOpen(false)
+  }
+
   return (
     <>
-      <div className={styles['banner']}>
-        <img src="/images/testBanner.png" alt="預留位子先不放圖" />
-        <h1 className={`text-primary ${styles['display1']}`}>鍵盤套件</h1>
+      <div className={styles.banner}>
+        <div className="w-100 h-100 p-4 p-sm-0">
+          <img
+            className={`w-100 h-100 object-fit-cover ${styles.rounded}`}
+            src="/images/testBanner.png"
+            alt="banner"
+          />
+        </div>
+        <h1 className={`text-primary ${styles['display1']}`}>全部商品</h1>
       </div>
-
-      <div className="container pt-5 pb-3">
+      <div className="container pt-md-5 ps-4 pe-4 p-sm-0">
         <div className="row">
-          <div className="col-3 pe-5">
+          <div className="d-none d-sm-block col-12 col-sm-3 pe-md-5 pe-1">
             <Accordion />
+            <hr className="text-primary opacity-100"></hr>
             <AsideFilter />
           </div>
 
           {/* sort btn & card group */}
-          <div className="col-9">
-            <div className="d-flex justify-content-end align-items-center mb-3">
+          <div className="col-12 col-sm-9">
+            <div className="d-sm-flex d-none justify-content-end align-items-center mb-3">
               <div className={`bg-primary-subtle ${styles['sortBtn']}`}>
                 <p className="fs-6">排序</p>
                 <div className="dropdown">
@@ -70,36 +89,47 @@ export default function ProductIndex() {
               </div>
             </div>
 
-            {/* product list & card group  */}
-            <div className="d-flex justify-content-end row row-cols-2 row-cols-md-3 g-4">
-              {Array(12)
-                .fill()
-                .map((_, index) => (
-                  <div className="col " key={index}>
-                    <div className="card">
-                      <img
-                        src="/images/card.png"
-                        className="card-img-top"
-                        alt="..."
-                      />
-                      <div className="card-body">
-                        <h5 className="card-title">Card title</h5>
-                        <p className="card-text">
-                          Some quick example text to build on the card title and
-                          make up the bulk of the cards content.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+            {/* 手機版篩選、排序結合 */}
+            <div
+              className="d-block d-sm-none bg-primary-subtle mb-3 text-end"
+              style={{ fontSize: '16px', padding: '5px 20px' }}
+            >
+              <Button
+                type="primary"
+                onClick={showDrawer}
+                className="bg-transparent text-black p-0"
+                style={{ fontSize: '16px' }}
+              >
+                <i
+                  class="fa-solid fa-sliders"
+                  style={{ marginRight: '10px' }}
+                ></i>{' '}
+                篩選
+              </Button>
             </div>
+            <Drawer
+              title="Basic Drawer"
+              placement="right"
+              onClose={onClose}
+              open={open}
+            >
+              <Accordion />
+              <hr className="text-primary opacity-100"></hr>
+              <AsideFilter />
+            </Drawer>
+
+            {/* product list & card group  */}
+            <CardHover></CardHover>
           </div>
         </div>
       </div>
 
       {/* pagination */}
-      <div className="text-center mb-3">
-        <h1 className="text-primary">&lt; 1...4 5 6...10 &gt;</h1>
+      <div className="m-3">
+        <PaginationComponent
+          totalItems={120}
+          pageSize={12}
+        ></PaginationComponent>
       </div>
     </>
   )

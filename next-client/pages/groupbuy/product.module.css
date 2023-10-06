@@ -1,12 +1,16 @@
+.customBorder {
+  border: none;
+}
+
 .banner {
   height: 250px;
   position: relative;
 }
 
 .rounded {
-    @media (max-width: 576px) {
-        border-radius: 10px;
-      }
+  @media (max-width: 576px) {
+    border-radius: 10px;
+  }
 }
 
 .display1 {

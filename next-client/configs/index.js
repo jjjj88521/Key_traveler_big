@@ -8,6 +8,7 @@ export const pathsLocaleMap = [
     path: '/',
   },
   // ===== 商品 =====
+
   {
     name: '商品',
     path: '/product',
@@ -32,6 +33,7 @@ export const pathsLocaleMap = [
     name: '鍵盤零件 & 工具',
     path: '/product/5',
   },
+
   // 套件
   {
     name: '60%',
