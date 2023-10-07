@@ -45,6 +45,7 @@ yarn.lock
 *.jpeg
 *.svg
 *.gif
+*.ico
 
 #測試檔案
 API-test.js

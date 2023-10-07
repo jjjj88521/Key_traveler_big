@@ -50,7 +50,7 @@ export default function ProfileForm() {
   }
   return (
     <>
-      <form action="" className="col-12 col-sm-5 offset-sm-1 ">
+      <form action="" className="w-100">
         <label htmlFor="name" className="col-form-label ">
           姓名
         </label>
@@ -134,7 +134,7 @@ export default function ProfileForm() {
             }
           }}
         />
-{/* 生日理論上不能改 */}
+        {/* 生日理論上不能改 */}
         {/* <div className="birthday mt-3">
           <label htmlFor="birthday" className="col-form-label">
             生日
@@ -153,7 +153,6 @@ export default function ProfileForm() {
           type="button"
           className="btn btn-primary text-white col-sm-5 col-12 offset-sm-7 mt-5"
           onClick={() => {
-            
             function logout() {
               axios
                 .post('http://localhost:3005/api/auth-jwt/logout')

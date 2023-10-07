@@ -1,12 +1,12 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import DefaultLayout from '@/components/layout/default-layout'
 import '@/styles/globals.scss'
 import AntdConfigProvider from './_antd-config-provider'
 import HomeLayout from '@/components/layout/home-layout'
-
 import { AuthProvider } from '@/hooks/useAuth'
 import HydrationFix from './_hydration-fix'
+import UserLayout from '@/components/layout/user-layout'
 
 export default function MyApp({ Component, pageProps }) {
   // Use the layout defined at the page level, if available
@@ -17,26 +17,38 @@ export default function MyApp({ Component, pageProps }) {
 
   const router = useRouter()
   const { pathname } = router
+  const [isLoginPage, setIsLoginPage] = useState(false)
+
+  useEffect(() => {
+    if (pathname === '/user/login') {
+      setIsLoginPage(true)
+    } else {
+      setIsLoginPage(false)
+    }
+  }, [])
 
   const getLayout =
     Component.getLayout ||
-    ((page) => (
-      // 解決水合作用的問題
-      <HydrationFix>
-        <AntdConfigProvider>
-          {/* 判斷是否為首頁，如果是則顯示 HomeLayout，否則顯示 DefaultLayout */}
-          {pathname === '/' ? (
-            <HomeLayout>{page}</HomeLayout>
-          ) : (
-            <DefaultLayout>{page}</DefaultLayout>
-          )}
-        </AntdConfigProvider>
-      </HydrationFix>
-    ))
+    ((page) => {
+      // 首頁、會員中心、其他的 layout
+      let layoutComponent
+      switch (true) {
+        case pathname === '/':
+          layoutComponent = <HomeLayout>{page}</HomeLayout>
+          break
+        default:
+          layoutComponent = <DefaultLayout>{page}</DefaultLayout>
+          break
+      }
+      return (
+        // 會員登入
+        <AuthProvider>
+          <HydrationFix>
+            <AntdConfigProvider>{layoutComponent}</AntdConfigProvider>
+          </HydrationFix>
+        </AuthProvider>
+      )
+    })
   // AuthProvider 會員登入用
-  return getLayout(
-    <AuthProvider>
-      <Component {...pageProps} />
-    </AuthProvider>
-  )
+  return getLayout(<Component {...pageProps} />)
 }

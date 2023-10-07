@@ -76,13 +76,6 @@ export default function ResetPassword() {
         >
           確定
         </button>
-
-        <div className="row mt-2 text-sm-end text-center">
-          <p className={`${styles['notice']}`}>
-            還不是會員？
-            <Link href="/user/register">加入我們</Link>。
-          </p>
-        </div>
       </form>
     </>
   )

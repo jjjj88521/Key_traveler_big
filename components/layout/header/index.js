@@ -22,19 +22,7 @@ export default function Header() {
   // 偵測視窗滾動，下滑 header 上移隱藏，上滑 header下移顯示
   const headerRef = useRef(null)
   const [prevScrollY, setPrevScrollY] = useState(0)
-  // const animeHide = anime({
-  //   targets: headerRef.current,
-  //   translateY: [0, -100],
-  //   easing: 'easeInOutQuad',
-  //   duration: 1000,
-  // })
 
-  // const animeShow = anime({
-  //   targets: headerRef.current,
-  //   translateY: [-100, 0],
-  //   easing: 'easeInOutQuad',
-  //   duration: 1000,
-  // })
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
