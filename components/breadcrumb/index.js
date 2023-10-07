@@ -33,7 +33,7 @@ export default function MyBreadcrumb() {
     }
 
     // 只有在pathname中包含'/product/'時才發送商品信息請求
-  }, [isReady, pathname, router.query])
+  }, [])
 
   // 要放到連結的 path 陣列
   // const paths = pathname.split('/')

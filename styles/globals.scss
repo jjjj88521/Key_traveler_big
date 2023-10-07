@@ -13,7 +13,7 @@
 @import '~bootstrap-icons/font/bootstrap-icons';
 
 // google Noto Sans TC 字體 & Poppins 字體 (英文)
-@import 'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500&&family=Poppins:wght@500;600;700;800;900&family=VT323&display=swap';
+@import 'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;800;900&&family=Poppins:wght@500;600;700;800;900&family=VT323&display=swap';
 
 // @fortawesome/fontawesome-free 可以直接使用 fontawesome 的圖
 @import '~@fortawesome/fontawesome-free/scss/fontawesome';
@@ -41,19 +41,14 @@
 //   padding: 60px 15px 0;
 // }
 
-main {
-  margin-top: 100px;
-}
-
 a {
   color: inherit;
   text-decoration: none;
 }
 
 body {
-  font-family: 'Poppins', 'Noto Sans TC Regular', Helvetica, Arial,
-    'PingFang TC', '苹方-繁', 'Heiti TC', '黑體-繁', 'Microsoft JhengHei',
-    '微軟正黑體',
+  font-family: 'Poppins', 'Noto Sans TC', Helvetica, Arial, 'PingFang TC',
+    '苹方-繁', 'Heiti TC', '黑體-繁', 'Microsoft JhengHei', '微軟正黑體',
     // Cross-platform generic font family (default user interface font)
     system-ui,
     // Safari for macOS and iOS (San Francisco)
@@ -75,9 +70,10 @@ body {
     'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
-ul, li{
-    list-style: none;
-    padding: 0;
+ul,
+li {
+  list-style: none;
+  padding: 0;
 }
 
 .form-member {
@@ -95,11 +91,11 @@ ul, li{
   --bs-btn-hover-color: #fff;
 }
 
-@media screen and (max-width: 576px) {
-  main {
-    margin-top: 60px;
-  }
-}
+// @media screen and (max-width: 576px) {
+//   main {
+//     margin-top: 60px;
+//   }
+// }
 
 // below is test only
 @media screen and (max-width: 576px) {

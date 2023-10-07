@@ -22,9 +22,9 @@ export default function TabContainer({
     }
   }
   return (
-    <section ref={TabRef} className="">
-      <div className="container">
-        <div className="px-sm-4 px-0 py-sm-5 py-2 border-top border-2">
+    <section className="">
+      <div className="container" ref={TabRef}>
+        <div className="px-sm-4 px-0 py-2 border-top border-2">
           <div className="row justify-content-center py-4 gap-sm-5 gap-0">
             {Children.map(children, (child) => {
               return (
