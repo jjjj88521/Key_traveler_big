@@ -3,94 +3,98 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Dropdown, Space, Badge, Drawer, Menu } from 'antd'
 import style from '@/styles/default-layout/_default-layout.module.scss'
+import { useAuth } from '@/hooks/useAuth'
+import Swal from 'sweetalert2'
+import axios from 'axios'
+import { useRouter } from 'next/router'
+
+// 導航欄位
+const navItems = [
+  {
+    name: '商品',
+    link: '/product',
+    children: [
+      {
+        name: '全部商品',
+        link: '/product',
+      },
+      {
+        name: '鍵盤套件',
+        link: '/product/1',
+      },
+      {
+        name: '軸體',
+        link: '/product/2',
+      },
+      {
+        name: '鍵帽',
+        link: '/product/3',
+      },
+      {
+        name: '成品鍵盤',
+        link: '/product/4',
+      },
+      {
+        name: '鍵盤零件 & 工具',
+        link: '/product/5',
+      },
+    ],
+  },
+  {
+    name: '團購專區',
+    link: '/groupbuy',
+    children: [
+      {
+        name: '全部商品',
+        link: '/groupbuy',
+      },
+      {
+        name: '團購中',
+        link: '/groupbuy/category/1',
+      },
+      {
+        name: '即將開團',
+        link: '/groupbuy/category/2',
+      },
+      {
+        name: '團購結束',
+        link: '/groupbuy/category/3',
+      },
+    ],
+  },
+  {
+    name: '租用鍵盤',
+    link: '/rent',
+  },
+  {
+    name: '文章區',
+    link: '/article',
+    children: [
+      {
+        name: '全部文章',
+        link: '/article/cate/0',
+      },
+      {
+        name: '公告',
+        link: '/article/cate/1',
+      },
+      {
+        name: '開箱文',
+        link: '/article/cate/2',
+      },
+      {
+        name: '組裝教學',
+        link: '/article/cate/3',
+      },
+      {
+        name: '活動',
+        link: '/article/cate/4',
+      },
+    ],
+  },
+]
 
 export default function Navbar() {
-  // 導航欄位假資料
-  const navItems = [
-    {
-      name: '商品',
-      link: '/product',
-      children: [
-        {
-          name: '全部商品',
-          link: '/product',
-        },
-        {
-          name: '鍵盤套件',
-          link: '/product/1',
-        },
-        {
-          name: '軸體',
-          link: '/product/2',
-        },
-        {
-          name: '鍵帽',
-          link: '/product/3',
-        },
-        {
-          name: '成品鍵盤',
-          link: '/product/4',
-        },
-        {
-          name: '鍵盤零件 & 工具',
-          link: '/product/5',
-        },
-      ],
-    },
-    {
-      name: '團購專區',
-      link: '/groupbuy',
-      children: [
-        {
-          name: '全部商品',
-          link: '/groupbuy',
-        },
-        {
-          name: '團購中',
-          link: '/groupbuy/category/1',
-        },
-        {
-          name: '即將開團',
-          link: '/groupbuy/category/2',
-        },
-        {
-          name: '團購結束',
-          link: '/groupbuy/category/3',
-        },
-      ],
-    },
-    {
-      name: '租用鍵盤',
-      link: '/rent',
-    },
-    {
-      name: '文章區',
-      link: '/article',
-      children: [
-        {
-          name: '全部文章',
-          link: '/article/cate/0',
-        },
-        {
-          name: '公告',
-          link: '/article/cate/1',
-        },
-        {
-          name: '開箱文',
-          link: '/article/cate/2',
-        },
-        {
-          name: '組裝教學',
-          link: '/article/cate/3',
-        },
-        {
-          name: '活動',
-          link: '/article/cate/4',
-        },
-      ],
-    },
-  ]
-
   // === 手機版滑入選單 ===
   const [open, setOpen] = useState(false)
   const showMobileMenu = () => {
@@ -146,6 +150,73 @@ export default function Navbar() {
       setOpenKeys(keys)
     } else {
       setOpenKeys(latestOpenKey ? [latestOpenKey] : [])
+    }
+  }
+
+  // 判斷是否登入，登入後顯示登出按鈕
+  const { auth, setAuth } = useAuth()
+
+  const router = useRouter()
+
+  // 登出
+  const handleLogout = async () => {
+    try {
+      Swal.fire({
+        title: '確定要登出嗎？',
+        text: '登出後將無法使用會員功能',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '確定',
+        cancelButtonText: '取消',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .post(
+              'http://localhost:3005/api/auth-jwt/logout',
+              {},
+              {
+                withCredentials: true, // save cookie in browser
+              }
+            )
+            .then((res) => {
+              localStorage.removeItem('loginToken')
+              setAuth({
+                isAuth: false,
+                user: {
+                  id: 0,
+                  name: '',
+                  account: '',
+                  gender: '',
+                  address: '',
+                  phone: '',
+                  birthday: '',
+                  email: '',
+                  password: '',
+                  confirmPassword: '',
+                  cardNumber: '',
+                  cardName: '',
+                  expiry: '',
+                },
+              })
+              Swal.fire({
+                icon: 'success',
+                title: '登出成功',
+                showConfirmButton: false,
+                timer: 1500,
+              }).then(() => {
+                router.push('/')
+              })
+            })
+        }
+      })
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: '登出失敗',
+        text: '發生了一些錯誤，請稍後再試',
+      })
     }
   }
 
@@ -231,6 +302,17 @@ export default function Navbar() {
                   </Badge>
                 </Link>
               </div>
+              {/* 登出按鈕，只有登入才會出現 */}
+              {auth.isAuth ? (
+                <div className="text-primary ps-5">
+                  <button
+                    className="btn border-0 text-primary"
+                    onClick={handleLogout}
+                  >
+                    <i class="fa-solid fa-right-from-bracket fs-5"></i>
+                  </button>
+                </div>
+              ) : null}
             </div>
             {/* 手機版選單按鈕 */}
             <div className="col d-sm-none d-block">

@@ -13,22 +13,23 @@ const disabledDate = (current) => {
 
 export default function ProfileForm() {
   const { auth, setAuth } = useAuth()
+  console.log(auth)
   //登出
 
   // 重新整理後驗證登入狀態
-  useEffect(() => {
-    if (localStorage.getItem('loginToken')) {
-      console.log(jwtDecode(localStorage.getItem('loginToken')))
-      const data = jwtDecode(localStorage.getItem('loginToken'))
-      setAuth({ ...data })
-      setformData({ ...data })
-      console.log(auth)
-    } else {
-      Router.push('/user/login')
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (localStorage.getItem('loginToken')) {
+  //     console.log(jwtDecode(localStorage.getItem('loginToken')))
+  //     const data = jwtDecode(localStorage.getItem('loginToken'))
+  //     setAuth({ ...data })
+  //     setformData({ ...data })
+  //     console.log(auth)
+  //   } else {
+  //     Router.push('/user/login')
+  //   }
+  // }, [])
   //宣告儲存會員資料
-  const [formData, setformData] = useState({ ...auth })
+  const [formData, setformData] = useState({ ...auth.user })
 
   //宣告會員填寫狀態
   const [error, setError] = useState('')
@@ -149,43 +150,6 @@ export default function ProfileForm() {
             defaultValue={dayjs(formData.birthday, 'YYYY-MM-DD')}
           />
         </div> */}
-        <button
-          type="button"
-          className="btn btn-primary text-white col-sm-5 col-12 offset-sm-7 mt-5"
-          onClick={() => {
-            function logout() {
-              axios
-                .post('http://localhost:3005/api/auth-jwt/logout')
-                .then((res) => {
-                  console.log(res)
-                })
-                .catch((err) => {
-                  console.log(err)
-                })
-            }
-            logout()
-
-            setAuth({
-              isAuth: false,
-              name: '',
-              account: '',
-              gender: '',
-              address: '',
-              phone: '',
-              birthday: '',
-              email: '',
-              password: '',
-              confirmPassword: '',
-              cardNumber: '',
-              cardName: '',
-              expiry: '',
-            })
-            localStorage.removeItem('loginToken')
-            // Router.push('/user/login')
-          }}
-        >
-          登出
-        </button>
         <button
           type="button"
           className="btn btn-primary text-white col-sm-5 col-12 offset-sm-7 mt-5"
