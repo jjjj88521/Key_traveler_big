@@ -33,73 +33,73 @@ export default function LoginForm() {
 
   const router = useRouter()
   // 戳登入的API讀取資料、存入local Storage
-  async function handleLoginApi(inputAuth) {
-    // return new Promise((resolve, reject) => {
-    //   axios
-    //     .post('http://localhost:3005/api/auth-jwt/login', {
-    //       account: account,
-    //       password: password,
-    //     })
-    //     .then((res) => {
-    //       localStorage.setItem('loginToken', res.data.accessToken)
-    //       console.log('loginToken已經成功存在localstorage1')
-    //       setAuth({
-    //         isAuth: true,
-    //         user: jwtDecode(res.data.accessToken),
-    //       })
-    //       setLoginToken(res.data.accessToken)
-    //       console.log(loginToken)
-    //       resolve()
-    //     })
-    //     .catch((err) => {
-    //       console.log(err)
-    //       reject(err)
-    //     })
-    // })
-    const formData = {
-      account: inputAuth.account,
-      password: inputAuth.password,
-    }
-    console.log(formData)
+  // async function handleLoginApi(inputAuth) {
+  //   // return new Promise((resolve, reject) => {
+  //   //   axios
+  //   //     .post('http://localhost:3005/api/auth-jwt/login', {
+  //   //       account: account,
+  //   //       password: password,
+  //   //     })
+  //   //     .then((res) => {
+  //   //       localStorage.setItem('loginToken', res.data.accessToken)
+  //   //       console.log('loginToken已經成功存在localstorage1')
+  //   //       setAuth({
+  //   //         isAuth: true,
+  //   //         user: jwtDecode(res.data.accessToken),
+  //   //       })
+  //   //       setLoginToken(res.data.accessToken)
+  //   //       console.log(loginToken)
+  //   //       resolve()
+  //   //     })
+  //   //     .catch((err) => {
+  //   //       console.log(err)
+  //   //       reject(err)
+  //   //     })
+  //   // })
+  //   const formData = {
+  //     account: inputAuth.account,
+  //     password: inputAuth.password,
+  //   }
+  //   console.log(formData)
 
-    try {
-      const response = await axios.post(
-        'http://localhost:3005/api/auth-jwt/login',
-        formData,
-        {
-          withCredentials: true, // save cookie in browser
-        }
-      )
+  //   try {
+  //     const response = await axios.post(
+  //       'http://localhost:3005/api/auth-jwt/login',
+  //       formData,
+  //       {
+  //         withCredentials: true, // save cookie in browser
+  //       }
+  //     )
 
-      if (response.data.code !== 200) {
-        Swal.fire({
-          icon: 'error',
-          title: '登入失敗',
-          text: '帳號或密碼錯誤',
-          timer: 1500,
-        })
-      }
-      // console.log(response.data)
-      setAuth({
-        isAuth: true,
-        user: jwtDecode(response.data.accessToken),
-      })
-      // setLoginToken(response.data.accessToken)
-      Swal.fire({
-        icon: 'success',
-        title: '登入成功',
-        showConfirmButton: false,
-        timer: 1500,
-      }).then(() => {
-        router.push('/user/profile')
-      })
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  //     if (response.data.code !== 200) {
+  //       Swal.fire({
+  //         icon: 'error',
+  //         title: '登入失敗',
+  //         text: '帳號或密碼錯誤',
+  //         timer: 1500,
+  //       })
+  //     }
+  //     // console.log(response.data)
+  //     setAuth({
+  //       isAuth: true,
+  //       user: jwtDecode(response.data.accessToken),
+  //     })
+  //     // setLoginToken(response.data.accessToken)
+  //     Swal.fire({
+  //       icon: 'success',
+  //       title: '登入成功',
+  //       showConfirmButton: false,
+  //       timer: 1500,
+  //     }).then(() => {
+  //       router.push('/user/profile')
+  //     })
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
 
-  //解構
-  const { auth, setAuth } = useAuth()
+  // 引入 auth context，登入的操作也寫在裡面了，拿出來用就好
+  const { auth, setAuth, login } = useAuth()
 
   useEffect(() => {
     console.log(auth)
@@ -107,7 +107,7 @@ export default function LoginForm() {
 
   return (
     <>
-      <div className="container " style={{ width: '50%' }}>
+      <div className="container col-sm-6">
         <div className="logo mb-3 text-center ">
           <Image
             src="/images/header-logo-desktop.png"
@@ -150,7 +150,7 @@ export default function LoginForm() {
             type="button"
             class="btn btn-primary my-3 w-100"
             onClick={() => {
-              handleLoginApi(inputAuth)
+              login(inputAuth.account, inputAuth.password)
             }}
           >
             登入

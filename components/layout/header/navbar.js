@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Dropdown, Space, Badge, Drawer, Menu } from 'antd'
+import { Dropdown, Space, Badge, Drawer, Menu, Button } from 'antd'
 import style from '@/styles/default-layout/_default-layout.module.scss'
 import { useAuth } from '@/hooks/useAuth'
 import Swal from 'sweetalert2'
@@ -154,72 +154,7 @@ export default function Navbar() {
   }
 
   // 判斷是否登入，登入後顯示登出按鈕
-  const { auth, setAuth } = useAuth()
-
-  const router = useRouter()
-
-  // 登出
-  const handleLogout = async () => {
-    try {
-      Swal.fire({
-        title: '確定要登出嗎？',
-        text: '登出後將無法使用會員功能',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: '確定',
-        cancelButtonText: '取消',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          axios
-            .post(
-              'http://localhost:3005/api/auth-jwt/logout',
-              {},
-              {
-                withCredentials: true, // save cookie in browser
-              }
-            )
-            .then((res) => {
-              localStorage.removeItem('loginToken')
-              setAuth({
-                isAuth: false,
-                user: {
-                  id: 0,
-                  name: '',
-                  account: '',
-                  gender: '',
-                  address: '',
-                  phone: '',
-                  birthday: '',
-                  email: '',
-                  password: '',
-                  confirmPassword: '',
-                  cardNumber: '',
-                  cardName: '',
-                  expiry: '',
-                },
-              })
-              Swal.fire({
-                icon: 'success',
-                title: '登出成功',
-                showConfirmButton: false,
-                timer: 1500,
-              }).then(() => {
-                router.push('/')
-              })
-            })
-        }
-      })
-    } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: '登出失敗',
-        text: '發生了一些錯誤，請稍後再試',
-      })
-    }
-  }
-
+  const { auth, setAuth, logout } = useAuth()
   return (
     <>
       <nav className="navbar navbar-expand-lg h-100">
@@ -307,7 +242,7 @@ export default function Navbar() {
                 <div className="text-primary ps-5">
                   <button
                     className="btn border-0 text-primary"
-                    onClick={handleLogout}
+                    onClick={logout}
                   >
                     <i class="fa-solid fa-right-from-bracket fs-5"></i>
                   </button>
@@ -327,15 +262,26 @@ export default function Navbar() {
       </nav>
 
       <Drawer open={open} onClose={hideMobileMenu} width={300}>
-        <Menu
-          type="primary"
-          className="px-0"
-          mode="inline"
-          style={{ height: '100%', borderRight: 0 }}
-          openKeys={openKeys}
-          onOpenChange={onOpenChange}
-          items={mobileItems}
-        />
+        <div className="d-flex flex-column justify-content-between h-100">
+          <Menu
+            type="primary"
+            className="px-0"
+            mode="inline"
+            style={{ height: '80%', borderRight: 0 }}
+            openKeys={openKeys}
+            onOpenChange={onOpenChange}
+            items={mobileItems}
+          />
+          {auth.isAuth ? (
+            <Button type="primary" danger onClick={logout} block>
+              登出
+            </Button>
+          ) : (
+            <Button type="primary" block>
+              <Link href={'/user/login'}>登入</Link>
+            </Button>
+          )}
+        </div>
       </Drawer>
     </>
   )
