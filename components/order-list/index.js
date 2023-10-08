@@ -1,7 +1,6 @@
 import { React, useState } from 'react'
 import style from '@/styles/order.module.scss'
-import UserSideBar from '@/pages/user/user-side-bar'
-import UserSideBarMobile from '@/pages/user/user-side-bar-mobile'
+import UserDropdown from '@/components/user/user-dropdown'
 import PaginationComponent from '@/components/common/PaginationComponent'
 import Link from 'next/link'
 
@@ -77,14 +76,15 @@ export default function OrderList() {
           </h2>
         </div>
         <div className="row">
-          <div className="col-sm-3 col-12 px-0 mx-0">
+          <UserDropdown />
+          {/* <div className="col-sm-3 col-12 px-0 mx-0">         
             <div className="d-sm-block d-none">
               <UserSideBar />
             </div>
             <div className="d-sm-none d-block col-12 mb-4">
               <UserSideBarMobile className="col-12 w-100" />
             </div>
-          </div>
+          </div> */}
           <div className="col-sm-8 offset-sm-1 col-12">
             <div className="d-flex justify-content-end mb-2">
               <div

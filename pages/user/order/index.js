@@ -1,11 +1,9 @@
 import { React, useState } from 'react'
 import style from '@/styles/order.module.scss'
-import UserSideBar from '../user-side-bar'
-import UserSideBarMobile from '../user-side-bar-mobile'
+import UserDropdown from '@/components/user/user-dropdown'
 import PaginationComponent from '@/components/common/PaginationComponent'
 import Link from 'next/link'
 import OrderList from '@/components/order-list'
-
 
 export default function Order() {
   // const orders = [

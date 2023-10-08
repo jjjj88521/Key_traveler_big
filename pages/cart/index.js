@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import style from './cart.module.scss'
+import style from '@/components/cart/cart2.module.scss'
 import { Steps, Divider, Radio, List } from 'antd'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {

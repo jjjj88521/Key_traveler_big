@@ -4,7 +4,8 @@ import DefaultLayout from '@/components/layout/default-layout'
 import '@/styles/globals.scss'
 import AntdConfigProvider from './_antd-config-provider'
 import HomeLayout from '@/components/layout/home-layout'
-
+import { CartProvider } from '@/hooks/use-cart'
+import { SecondCartProvider } from '@/hooks/useSecondCart'
 import { AuthProvider } from '@/hooks/useAuth'
 import HydrationFix from './_hydration-fix'
 
@@ -36,7 +37,11 @@ export default function MyApp({ Component, pageProps }) {
   // AuthProvider 會員登入用
   return getLayout(
     <AuthProvider>
-      <Component {...pageProps} />
+      <CartProvider>
+        <SecondCartProvider>
+          <Component {...pageProps} />
+        </SecondCartProvider>
+      </CartProvider>
     </AuthProvider>
   )
 }
