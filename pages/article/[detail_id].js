@@ -6,6 +6,7 @@ import moment from 'moment'
 import Link from 'next/link'
 import DetailCat from './detail_cat'
 import ArticleFilter from './cate/[cat_id]'
+import axios from 'axios'
 
 export default function DetailFilter() {
   // 設定路由
@@ -14,101 +15,117 @@ export default function DetailFilter() {
   const detail_id = query.detail_id
   console.log(router.query.detail_id)
 
-  const ArticleContent = [
-    {
-      id: '0',
-      title: '資料庫DB-article-title',
-      userInfo: 'by.user_id + 發佈時間',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      content: '123456',
-    },
-    {
-      id: '1',
-      title: 'title01',
-      userInfo: 'by.user_id + 發佈時間',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      content: '789',
-    },
-    {
-      id: '2',
-      title: 'title02',
-      userInfo: 'by.user_id + 發佈時間',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      content: '101112',
-    },
-    {
-      id: '3',
-      title: 'title03',
-      userInfo: 'by.user_id + 發佈時間',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      content: '131415',
-    },
-    {
-      id: '4',
-      title: 'title04',
-      userInfo: 'by.user_id + 發佈時間',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      content: '161718',
-    },
-    {
-      id: '5',
-      title: 'title05',
-      userInfo: 'by.user_id + 發佈時間',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      content: '192021',
-    },
-    {
-      id: '6',
-      title: 'title06',
-      userInfo: 'by.user_id + 發佈時間',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      content: '222324',
-    },
-    {
-      id: '7',
-      title: 'title07',
-      userInfo: 'by.user_id + 發佈時間',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      content: '252627',
-    },
-    {
-      id: '8',
-      title: 'title08',
-      userInfo: 'by.user_id + 發佈時間',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      content: '282930',
-    },
-    {
-      id: '9',
-      title: 'title09',
-      userInfo: 'by.user_id + 發佈時間',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      content: '313233',
-    },
-    {
-      id: '10',
-      title: 'title10',
-      userInfo: 'by.user_id + 發佈時間',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      content: '343536',
-    },
-    {
-      id: '11',
-      title: 'title11',
-      userInfo: 'by.user_id + 發佈時間',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      content: '373839',
-    },
-    {
-      id: '12',
-      title: 'title12',
-      userInfo: 'by.user_id + 發佈時間',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      content: '404142',
-    },
-  ]
+  const [ArticleContent, setArticleContent] = useState([])
+  const [CountCate, setCountCate] = useState([])
+  useEffect(() => {
+    axios.get('http://localhost:3005/apitest/aticle/').then((response) => {
+      console.log('response.data.articles')
+      console.log(response.data.articles)
+      setArticleContent(response.data.articles)
+    })
+    axios
+      .get('http://localhost:3005/apitest/aticle/count_cate')
+      .then((response) => {
+        console.log('response.data.cates')
+        console.log(response.data.cates)
+        setCountCate(response.data.cates)
+      })
+  }, [])
+  // const ArticleContent = [
+  //   {
+  //     id: '0',
+  //     title: '資料庫DB-article-title',
+  //     userInfo: 'by.user_id + 發佈時間',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     content: '123456',
+  //   },
+  //   {
+  //     id: '1',
+  //     title: 'title01',
+  //     userInfo: 'by.user_id + 發佈時間',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     content: '789',
+  //   },
+  //   {
+  //     id: '2',
+  //     title: 'title02',
+  //     userInfo: 'by.user_id + 發佈時間',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     content: '101112',
+  //   },
+  //   {
+  //     id: '3',
+  //     title: 'title03',
+  //     userInfo: 'by.user_id + 發佈時間',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     content: '131415',
+  //   },
+  //   {
+  //     id: '4',
+  //     title: 'title04',
+  //     userInfo: 'by.user_id + 發佈時間',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     content: '161718',
+  //   },
+  //   {
+  //     id: '5',
+  //     title: 'title05',
+  //     userInfo: 'by.user_id + 發佈時間',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     content: '192021',
+  //   },
+  //   {
+  //     id: '6',
+  //     title: 'title06',
+  //     userInfo: 'by.user_id + 發佈時間',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     content: '222324',
+  //   },
+  //   {
+  //     id: '7',
+  //     title: 'title07',
+  //     userInfo: 'by.user_id + 發佈時間',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     content: '252627',
+  //   },
+  //   {
+  //     id: '8',
+  //     title: 'title08',
+  //     userInfo: 'by.user_id + 發佈時間',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     content: '282930',
+  //   },
+  //   {
+  //     id: '9',
+  //     title: 'title09',
+  //     userInfo: 'by.user_id + 發佈時間',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     content: '313233',
+  //   },
+  //   {
+  //     id: '10',
+  //     title: 'title10',
+  //     userInfo: 'by.user_id + 發佈時間',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     content: '343536',
+  //   },
+  //   {
+  //     id: '11',
+  //     title: 'title11',
+  //     userInfo: 'by.user_id + 發佈時間',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     content: '373839',
+  //   },
+  //   {
+  //     id: '12',
+  //     title: 'title12',
+  //     userInfo: 'by.user_id + 發佈時間',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     content: '404142',
+  //   },
+  // ]
   //對應路由 文章篩選
-  const filterArticle = ArticleContent.find((item) => item.id === detail_id)
+  const filterArticle = ArticleContent.find((item) => item.id == detail_id)
   console.log(filterArticle)
   // 收藏按鈕功能
   const [like, setLike] = useState(false)
@@ -370,11 +387,9 @@ export default function DetailFilter() {
               {filterArticle ? (
                 <>
                   <h2 className="fw-bolder mt-4">{filterArticle.title}</h2>
-                  <h5 className="text-secondary mb-5">
-                    {filterArticle.userInfo}
-                  </h5>
+                  <h5 className="text-secondary mb-5">{filterArticle.date}</h5>
                   <p className="">
-                    {filterArticle.content}
+                    {filterArticle.article}
                     <img
                       className=""
                       src={filterArticle.img}
@@ -493,7 +508,11 @@ export default function DetailFilter() {
                 >
                   <p className=" m-0">公告</p>
                   <div className="position-absolute end-0 top-50 translate-middle me-4 ">
-                    0
+                    {CountCate.map((item) => {
+                      if (item.cate === '公告') {
+                        return item.count
+                      }
+                    })}
                     {/* <i className="fa-solid fa-circle-chevron-right fa-lg "></i> */}
                   </div>
                 </div>
@@ -504,7 +523,11 @@ export default function DetailFilter() {
                 >
                   <p className=" m-0">開箱文</p>
                   <div className="position-absolute end-0 top-50 translate-middle me-4 ">
-                    0
+                    {CountCate.map((item) => {
+                      if (item.cate === '開箱文') {
+                        return item.count
+                      }
+                    })}
                     {/* <i className="fa-solid fa-circle-chevron-right fa-lg "></i> */}
                   </div>
                 </div>
@@ -515,7 +538,11 @@ export default function DetailFilter() {
                 >
                   <p className=" m-0">組裝教學</p>
                   <div className="position-absolute end-0 top-50 translate-middle me-4 ">
-                    0
+                    {CountCate.map((item) => {
+                      if (item.cate === '組裝教學') {
+                        return item.count
+                      }
+                    })}
                     {/* <i className="fa-solid fa-circle-chevron-right fa-lg "></i> */}
                   </div>
                 </div>
@@ -526,7 +553,11 @@ export default function DetailFilter() {
                 >
                   <p className=" m-0">活動</p>
                   <div className="position-absolute end-0 top-50 translate-middle me-4 ">
-                    0
+                    {CountCate.map((item) => {
+                      if (item.cate === '活動') {
+                        return item.count
+                      }
+                    })}
                     {/* <i className="fa-solid fa-circle-chevron-right fa-lg "></i> */}
                   </div>
                 </div>
