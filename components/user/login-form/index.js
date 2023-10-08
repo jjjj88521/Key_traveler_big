@@ -4,6 +4,8 @@ import jwtDecode from 'jwt-decode'
 import Image from 'next/image'
 import { useAuth } from '@/hooks/useAuth'
 import Link from 'next/link'
+import Swal from 'sweetalert2'
+import { useRouter } from 'next/router'
 
 const fakeUserData = [
   {
@@ -29,47 +31,75 @@ export default function LoginForm() {
     password: '',
   })
 
-  //存Token
-  const [loginToken, setLoginToken] = useState('')
-  //解析完存資料
-  const [profileData, setProfileData] = useState({})
+  const router = useRouter()
   // 戳登入的API讀取資料、存入local Storage
-  function handleLoginApi(account, password) {
-    return new Promise((resolve, reject) => {
-      axios
-        .post('http://localhost:3005/api/auth-jwt/login', {
-          account: account,
-          password: password,
-        })
-        .then((res) => {
-          localStorage.setItem('loginToken', res.data.accessToken)
-          console.log('loginToken已經成功存在localstorage1')
-          setLoginToken(res.data.accessToken)
-          console.log(loginToken)
-          resolve()
-        })
-        .catch((err) => {
-          console.log(err)
-          reject(err)
-        })
-    })
-  }
+  // async function handleLoginApi(inputAuth) {
+  //   // return new Promise((resolve, reject) => {
+  //   //   axios
+  //   //     .post('http://localhost:3005/api/auth-jwt/login', {
+  //   //       account: account,
+  //   //       password: password,
+  //   //     })
+  //   //     .then((res) => {
+  //   //       localStorage.setItem('loginToken', res.data.accessToken)
+  //   //       console.log('loginToken已經成功存在localstorage1')
+  //   //       setAuth({
+  //   //         isAuth: true,
+  //   //         user: jwtDecode(res.data.accessToken),
+  //   //       })
+  //   //       setLoginToken(res.data.accessToken)
+  //   //       console.log(loginToken)
+  //   //       resolve()
+  //   //     })
+  //   //     .catch((err) => {
+  //   //       console.log(err)
+  //   //       reject(err)
+  //   //     })
+  //   // })
+  //   const formData = {
+  //     account: inputAuth.account,
+  //     password: inputAuth.password,
+  //   }
+  //   console.log(formData)
 
-  //取得localStorege，並解析Token，存到profileData
-  function loginProfile() {
-    return new Promise((resolve) => {
-      const localData = localStorage.getItem('loginToken')
-      // 檢查是否有資料
-      if (localData) {
-        setAuth(jwtDecode(localData))
-        console.log('成功讀取LocalStorage資料2')
-        resolve()
-      }
-    })
-  }
+  //   try {
+  //     const response = await axios.post(
+  //       'http://localhost:3005/api/auth-jwt/login',
+  //       formData,
+  //       {
+  //         withCredentials: true, // save cookie in browser
+  //       }
+  //     )
 
-  //解構
-  const { auth, setAuth } = useAuth()
+  //     if (response.data.code !== 200) {
+  //       Swal.fire({
+  //         icon: 'error',
+  //         title: '登入失敗',
+  //         text: '帳號或密碼錯誤',
+  //         timer: 1500,
+  //       })
+  //     }
+  //     // console.log(response.data)
+  //     setAuth({
+  //       isAuth: true,
+  //       user: jwtDecode(response.data.accessToken),
+  //     })
+  //     // setLoginToken(response.data.accessToken)
+  //     Swal.fire({
+  //       icon: 'success',
+  //       title: '登入成功',
+  //       showConfirmButton: false,
+  //       timer: 1500,
+  //     }).then(() => {
+  //       router.push('/user/profile')
+  //     })
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+
+  // 引入 auth context，登入的操作也寫在裡面了，拿出來用就好
+  const { auth, setAuth, login } = useAuth()
 
   useEffect(() => {
     console.log(auth)
@@ -77,9 +107,8 @@ export default function LoginForm() {
 
   return (
     <>
-      <div className="container " style={{ width: '50%' }}>
+      <div className="container col-sm-6">
         <div className="logo mb-3 text-center ">
-          {' '}
           <Image
             src="/images/header-logo-desktop.png"
             width={250}
@@ -108,32 +137,24 @@ export default function LoginForm() {
               密碼
             </label>
             <input
-              type="text"
+              type="password"
               name="password"
               id="password"
-              className="form-control "
+              className="form-control"
               onBlur={(e) => {
                 setInputAuth({ ...inputAuth, [e.target.name]: e.target.value })
               }}
             />
           </div>
-          <Link
-            // href=""
-            href="/user/profile"
+          <button
             type="button"
             class="btn btn-primary my-3 w-100"
             onClick={() => {
-              const fetchData = async () => {
-                await handleLoginApi(inputAuth.account, inputAuth.password)
-                await loginProfile()
-              }
-              fetchData()
-
-              // console.log(auth)
+              login(inputAuth.account, inputAuth.password)
             }}
           >
             登入
-          </Link>
+          </button>
         </form>
         <div className=" text-center my-3">
           <p className=" ">
@@ -142,7 +163,7 @@ export default function LoginForm() {
               立刻註冊
             </Link>
           </p>
-          <Link href="/forget-password" className=" text-primary  ">
+          <Link href="/user/forget-password" className="text-primary">
             忘記密碼
           </Link>
         </div>

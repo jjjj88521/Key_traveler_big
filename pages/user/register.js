@@ -4,6 +4,7 @@ import style from '@/styles/user/register.module.scss'
 import { useState } from 'react'
 import { DatePicker } from 'antd'
 import RegisterForm from '@/components/user/register-form'
+import UserLayout from '@/components/layout/user-layout'
 
 const description = [
   '姓名',
@@ -102,8 +103,7 @@ export default function Profile() {
   }
   return (
     <>
-      <div className="container">
-        <h1 className="mb-5 fw-bolder offset-sm-1">填寫基本註冊資料</h1>
+      <UserLayout title="填寫註冊資料" isLoginPage={true}>
         <div className="row offset-sm-1">
           <RegisterForm {...registerForm} className="" />
           <Steps
@@ -149,7 +149,7 @@ export default function Profile() {
             ]}
           />
         </div>
-      </div>
+      </UserLayout>
     </>
   )
 }

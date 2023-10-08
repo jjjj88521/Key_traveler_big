@@ -7,8 +7,40 @@ export const pathsLocaleMap = [
     name: '首頁',
     path: '/',
   },
+  // ===== 會員中心 =====
+  {
+    name: '會員中心',
+    path: '/user',
+  },
+  {
+    name: '登入',
+    path: '/user/login',
+  },
+  {
+    name: '註冊',
+    path: '/user/register',
+  },
+  {
+    name: '忘記密碼',
+    path: '/user/forget-password',
+  },
+  {
+    name: '修改密碼',
+    path: '/user/reset-password',
+  },
+  {
+    name: '個人檔案',
+    path: '/user/profile',
+  },
+  {
+    name: '訂單',
+    path: '/user/order',
+  },
+  {
+    name: '收藏商品',
+    path: '/user/product-like',
+  },
   // ===== 商品 =====
-
   {
     name: '商品',
     path: '/product',
