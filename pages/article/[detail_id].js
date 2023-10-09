@@ -17,7 +17,13 @@ export default function DetailFilter() {
 
   const [ArticleContent, setArticleContent] = useState([])
   const [CountCate, setCountCate] = useState([])
+  // const [artComment, setArtComment] = useState([])
+  const [creat, setCreat] = useState([])
+
   useEffect(() => {
+    // useEffect會比前面的21行以前的程式碼都還要早執行 因此我們監控isＲeady的變化
+    // 當前面的程式碼都跑完了 這時detail_id才回有值 而isＲeady會是從false變成true
+    if (!isReady) return
     axios.get('http://localhost:3005/apitest/aticle/').then((response) => {
       console.log('response.data.articles')
       console.log(response.data.articles)
@@ -30,7 +36,15 @@ export default function DetailFilter() {
         console.log(response.data.cates)
         setCountCate(response.data.cates)
       })
-  }, [])
+    axios
+      .get(`http://localhost:3005/apitest/aticle/comment/${detail_id}`)
+      .then((response) => {
+        console.log('response.data.comments')
+        console.log(response.data.comments)
+        // setArtComment(response.data.comments)
+        setCreat(response.data.comments)
+      })
+  }, [isReady])
   // const ArticleContent = [
   //   {
   //     id: '0',
@@ -159,163 +173,201 @@ export default function DetailFilter() {
     },
   ]
   // 留言列表物件
-  const formattedDateTime = moment().format('DD/MM/YYYY HH:mm:ss A')
+  // const formattedDateTime = moment().format('DD/MM/YYYY HH:mm:ss A')
+  const formattedDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
 
-  const artComment = {
-    1: [
-      {
-        title: 'Route1 Title 1',
-        date: '2023',
-        description: '輸入內容',
-      },
-      {
-        title: 'Route1 Title 2',
-        date: '2023',
-        description: '輸入內容',
-      },
-      {
-        title: 'Route1 Title 3',
-        date: '2023',
-        description: '輸入內容',
-      },
-      {
-        title: 'Route1 Title 4',
-        date: '2023',
-        description: '輸入內容',
-      },
-      {
-        title: 'Route1 Title 5',
-        date: '2023',
-        description: '輸入內容',
-      },
-      {
-        title: 'Route1 Title 6',
-        date: '2023',
-        description: '輸入內容',
-      },
-      {
-        title: 'Route1 Title 7',
-        date: '2023',
-        description: '輸入內容',
-      },
-    ],
-    2: [
-      {
-        title: 'Route2 Title 1',
-        date: '2023',
-        description: '輸入內容',
-      },
-      {
-        title: 'Route2 Title 2',
-        date: '2023',
-        description: '輸入內容',
-      },
-      {
-        title: 'Route2 Title 3',
-        date: '2023',
-        description: '輸入內容',
-      },
-      {
-        title: 'Route2 Title 4',
-        date: '2023',
-        description: '輸入內容',
-      },
-      {
-        title: 'Route2 Title 5',
-        date: '2023',
-        description: '輸入內容',
-      },
-      {
-        title: 'Route2 Title 6',
-        date: '2023',
-        description: '輸入內容',
-      },
-      {
-        title: 'Route2 Title 7',
-        date: '2023',
-        description: '輸入內容',
-      },
-    ],
-    3: [
-      {
-        title: 'Route3 Title 1',
-        date: '2023',
-        description: '輸入內容',
-      },
-      {
-        title: 'Route3 Title 2',
-        date: '2023',
-        description: '輸入內容',
-      },
-      {
-        title: 'Route3 Title 3',
-        date: '2023',
-        description: '輸入內容',
-      },
-      {
-        title: 'Route3 Title 4',
-        date: '2023',
-        description: '輸入內容',
-      },
-      {
-        title: 'Route3 Title 5',
-        date: '2023',
-        description: '輸入內容',
-      },
-      {
-        title: 'Route3 Title 6',
-        date: '2023',
-        description: '輸入內容',
-      },
-      {
-        title: 'Route3 Title 7',
-        date: '2023',
-        description: '輸入內容',
-      },
-    ],
-    4: [
-      {
-        title: 'Route4 Title 1',
-        date: '2023',
-        description: '輸入內容',
-      },
-      {
-        title: 'Route4 Title 2',
-        date: '2023',
-        description: '輸入內容',
-      },
-      {
-        title: 'Route4 Title 3',
-        date: '2023',
-        description: '輸入內容',
-      },
-      {
-        title: 'Route4 Title 4',
-        date: '2023',
-        description: '輸入內容',
-      },
-      {
-        title: 'Route4 Title 5',
-        date: '2023',
-        description: '輸入內容',
-      },
-      {
-        title: 'Route4 Title 6',
-        date: '2023',
-        description: '輸入內容',
-      },
-      {
-        title: 'Route4 Title 7',
-        date: '2023',
-        description: '輸入內容',
-      },
-    ],
-  }
+  // const artComment = [
+  //   {
+  //     user_id: 'Ant Design Title 1',
+  //     create_at: '2023',
+  //     comment: '輸入內容',
+  //   },
+  //   {
+  //     user_id: 'Ant Design Title 2',
+  //     create_at: '2023',
+  //     comment: '輸入內容',
+  //   },
+  //   {
+  //     user_id: 'Ant Design Title 3',
+  //     create_at: '2023',
+  //     comment: '輸入內容',
+  //   },
+  //   {
+  //     user_id: 'Ant Design Title 4',
+  //     create_at: '2023',
+  //     comment: '輸入內容',
+  //   },
+  //   {
+  //     user_id: 'Ant Design Title 5',
+  //     create_at: '2023',
+  //     comment: '輸入內容',
+  //   },
+  //   {
+  //     user_id: 'Ant Design Title 6',
+  //     create_at: '2023',
+  //     comment: '輸入內容',
+  //   },
+  //   {
+  //     user_id: 'Ant Design Title 7',
+  //     create_at: '2023',
+  //     comment: '輸入內容',
+  //   },
+  // ]
+  // const artComment = {
+  //   1: [
+  //     {
+  //       title: 'Route1 Title 1',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //     {
+  //       title: 'Route1 Title 2',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //     {
+  //       title: 'Route1 Title 3',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //     {
+  //       title: 'Route1 Title 4',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //     {
+  //       title: 'Route1 Title 5',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //     {
+  //       title: 'Route1 Title 6',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //     {
+  //       title: 'Route1 Title 7',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //   ],
+  //   2: [
+  //     {
+  //       title: 'Route2 Title 1',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //     {
+  //       title: 'Route2 Title 2',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //     {
+  //       title: 'Route2 Title 3',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //     {
+  //       title: 'Route2 Title 4',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //     {
+  //       title: 'Route2 Title 5',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //     {
+  //       title: 'Route2 Title 6',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //     {
+  //       title: 'Route2 Title 7',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //   ],
+  //   3: [
+  //     {
+  //       title: 'Route3 Title 1',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //     {
+  //       title: 'Route3 Title 2',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //     {
+  //       title: 'Route3 Title 3',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //     {
+  //       title: 'Route3 Title 4',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //     {
+  //       title: 'Route3 Title 5',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //     {
+  //       title: 'Route3 Title 6',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //     {
+  //       title: 'Route3 Title 7',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //   ],
+  //   4: [
+  //     {
+  //       title: 'Route4 Title 1',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //     {
+  //       title: 'Route4 Title 2',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //     {
+  //       title: 'Route4 Title 3',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //     {
+  //       title: 'Route4 Title 4',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //     {
+  //       title: 'Route4 Title 5',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //     {
+  //       title: 'Route4 Title 6',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //     {
+  //       title: 'Route4 Title 7',
+  //       date: '2023',
+  //       description: '輸入內容',
+  //     },
+  //   ],
+  // }
   //   console.log(artComment[1])
 
-  const articleData = artComment[detail_id] || []
+  // const articleData = artComment[detail_id] || []
   //   console.log(articleData)
-  console.log(artComment[detail_id])
+  // console.log(artComment[detail_id])
   //留言顯示功能
   const [displayItemCount, setDisplayItemCount] = useState(3)
   const ShowMore = () => {
@@ -323,18 +375,26 @@ export default function DetailFilter() {
   }
   // 留言撰寫功能
   const [commentValue, setCommentValue] = useState('')
-  const [creat, setCreat] = useState(articleData)
+  // console.log(commentValue)
+  // const [creat, setCreat] = useState(artComment)
   const { TextArea } = Input
+  console.log('creat')
   console.log(creat)
+
   const handleAddComment = () => {
     const newComment = {
-      title: 'user_id',
-
-      description: commentValue,
-      date: formattedDateTime,
+      user_id: 50,
+      article_id: detail_id,
+      comment: commentValue,
+      create_at: formattedDateTime,
     }
-    setCreat([newComment, ...creat])
-    setCommentValue('')
+    axios
+      .post(`http://localhost:3005/apitest/aticle/addComent`, newComment)
+      .then((response) => {
+        console.log('success add comment')
+        setCreat([newComment, ...creat])
+        setCommentValue('')
+      })
   }
 
   //   const [cateCount, setCateCount] = useState(0)
@@ -453,7 +513,7 @@ export default function DetailFilter() {
             {/* 發佈列表區 */}
             <List
               itemLayout="horizontal"
-              dataSource={articleData.slice(0, displayItemCount)}
+              dataSource={creat.slice(0, displayItemCount)}
               renderItem={(item, index) => (
                 <List.Item>
                   <List.Item.Meta
@@ -471,13 +531,13 @@ export default function DetailFilter() {
                           alignItems: 'center',
                         }}
                       >
-                        <span className="fs-6">{item.title}</span>
+                        <span className="fs-6">{item.account}</span>
                         <span className="text-secondary fw-light fst-italic">
-                          {item.date}
+                          {item.create_at}
                         </span>
                       </div>
                     }
-                    description={item.description}
+                    description={item.comment}
                   />
                 </List.Item>
               )}

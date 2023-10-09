@@ -86,6 +86,8 @@ export default function ArticleDetail() {
   // 留言撰寫功能
   const [commentValue, setCommentValue] = useState('')
   const [creat, setCreat] = useState(artComment)
+  // console.log(creat)
+
   const { TextArea } = Input
 
   const handleAddComment = () => {
@@ -95,6 +97,7 @@ export default function ArticleDetail() {
       description: commentValue,
       date: formattedDateTime,
     }
+    // console.log(newComment)
     setCreat([newComment, ...creat])
     setCommentValue('')
   }
