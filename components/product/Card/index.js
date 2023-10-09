@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import styles from './card.module.scss'
-import { useRouter } from 'next/router'
-import ProductFetcher from '../List/ProductFetcher'
+import ProductFetcher from './ProductFetcher'
 
 export default function Card({ title, brand, price, imagePath }) {
   const [data, setData] = useState(null)
   console.log(data)
-  const router = useRouter()
 
   const onDataFetched = (fetchedData) => {
     setData(fetchedData)
@@ -33,8 +31,8 @@ export default function Card({ title, brand, price, imagePath }) {
             alt="Product"
           />
           {/* 待完成，判斷有貨or缺貨(outofstock)，判斷是否為新品(ribbon) */}
-          {/* <div className={styles['ribbon']}></div> */}
-          <div className={styles['outofstock']}></div>
+          <div className={styles['ribbon']}></div>
+          {/* <div className={styles['outofstock']}></div> */}
           <div className="card-body w-100 position-relative bg-secondary-subtle py-4 vstack gap-2">
             <h5 className={`${styles['card-title-name']} card-title fw-bold`}>
               {title}

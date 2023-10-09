@@ -7,7 +7,7 @@ export default function ProductFetcher({ onProductFetched }) {
       try {
         const response = await axios.get('http://localhost:3005/api/products')
         console.log(response.data)
-        onProductFetched(response.data.products)
+        onProductFetched(response.data)
       } catch (error) {
         console.log('資料獲取失敗：', error)
       }

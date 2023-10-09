@@ -22,26 +22,22 @@ export default function List() {
     setData(fetchedData)
   }
 
-  console.log(data)
-
   return (
     <>
-      {data && (
-        <div className="d-flex row row-cols-2 row-cols-md-3 g-4 mb-sm-0 mb-4">
-          {data.map((product, index) => (
-            <div className="col" key={index}>
-              <div className="col">
-                <Card
-                  title={product.name}
-                  brand={product.brand}
-                  price={product.price}
-                />
-              </div>
+      <div className="d-flex row row-cols-2 row-cols-md-3 g-4 mb-sm-0 mb-4">
+        {allData.map((product, index) => (
+          <div className="col" key={index}>
+            <div className="col">
+              <Card
+                title={product.title}
+                brand={product.brand}
+                price={product.price}
+                imagePath={product.imagePath}
+              />
             </div>
-          ))}
-        </div>
-      )}
-      <ProductFetcher onProductFetched={onDataFetched} />
+          </div>
+        ))}
+      </div>
     </>
   )
 }
