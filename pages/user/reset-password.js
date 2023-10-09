@@ -1,19 +1,11 @@
+import UserLayout from '@/components/layout/user-layout'
 import ResetPassword from '@/components/user/reset-password-form'
 import UserSideBar from '@/components/user/user-side-bar'
 import UserSideBarMobile from '@/components/user/user-side-bar-mobile'
 export default function ForgetPasswordForm() {
   return (
-    <main className={`container`}>
-      <h2 className="mb-sm-5 mb-4 fw-bolder">重設密碼</h2>
-      <div className="row mb-5">
-        <div className="col-sm-2 col-12 px-0 mx-0">
-          <div className="d-sm-block d-none">
-            <UserSideBar />
-          </div>
-          <div className="d-sm-none d-block mb-4">
-            <UserSideBarMobile />
-          </div>
-        </div>
+    <UserLayout title="修改密碼">
+      <div className="row pb-5">
         <div className="col-sm-5 offset-sm-1 col-12">
           <ResetPassword />
         </div>
@@ -54,6 +46,6 @@ export default function ForgetPasswordForm() {
           </ol>
         </div>
       </div>
-    </main>
+    </UserLayout>
   )
 }

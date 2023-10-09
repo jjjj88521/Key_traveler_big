@@ -23,20 +23,20 @@ export default function CreditCardForm() {
   }
   const { auth, setAuth } = useAuth()
   // 重新整理後驗證登入狀態
-  useEffect(() => {
-    if (localStorage.getItem('loginToken')) {
-      console.log(jwtDecode(localStorage.getItem('loginToken')))
-      const data = jwtDecode(localStorage.getItem('loginToken'))
-      setAuth({ ...data })
-      // setCardData({ ...data })
-      console.log(auth)
-    } else {
-      Router.push('/user/login')
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (localStorage.getItem('loginToken')) {
+  //     console.log(jwtDecode(localStorage.getItem('loginToken')))
+  //     const data = jwtDecode(localStorage.getItem('loginToken'))
+  //     setAuth({ ...data })
+  //     // setCardData({ ...data })
+  //     console.log(auth)
+  //   } else {
+  //     Router.push('/user/login')
+  //   }
+  // }, [])
   return (
     <>
-      <form className="col-sm-4 col-12 offset-0 offset-sm-1">
+      <form className="col-sm-6 col-12">
         <section className="mb-3">
           <label htmlFor="cardNumber" className="mb-0 form-label">
             卡號
@@ -46,7 +46,7 @@ export default function CreditCardForm() {
             name="cardNumber"
             pattern="^[0-9]*$"
             maxLength="16"
-            defaultValue={auth.card_number}
+            defaultValue={auth.user.card_number}
             className={`${style['hide-arrow']} col-8 col-sm-8 col-12 form-control`}
             placeholder="Card Number"
             onChange={handleInputChange}
@@ -61,7 +61,7 @@ export default function CreditCardForm() {
             className="col-sm-8 col-12 form-control"
             type="text"
             name="cardName"
-            defaultValue={auth.card_name}
+            defaultValue={auth.user.card_name}
             placeholder="Card Holder Name"
             onChange={handleInputChange}
             onFocus={(e) => setCardData({ ...cardData, focus: e.target.name })}
@@ -93,7 +93,7 @@ export default function CreditCardForm() {
           儲存
         </button>
       </form>
-      <div className="col-sm-3 col-12 offset-sm-1 offset-0">
+      <div className="col-sm-6 col-12">
         {' '}
         <Cards
           cvc={cardData.cvc}
