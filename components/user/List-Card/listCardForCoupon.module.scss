@@ -1,0 +1,21 @@
+@import '@/styles/variables';
+
+.cardStyle {
+  max-height: '170px';
+  @media screen and (max-width: $maxWidth) {
+    max-height: '200px';
+  }
+}
+.couponDesription {
+  max-width: 300px;
+  div {
+    height: 40px;
+    overflow-y: auto;
+  }
+  @media screen and (max-width: $maxWidth) {
+    div {
+      height: 50px;
+      overflow-y: auto;
+    }
+  }
+}
