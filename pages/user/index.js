@@ -30,7 +30,7 @@ export default function User() {
 
   return (
     <>
-      <div style={{ height: '480px' }}>頁面跳轉中...</div>
+      <div style={{ height: '480px' }}></div>
       {console.log(auth.isAuth)}
     </>
   )

@@ -7,23 +7,6 @@ import Link from 'next/link'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
 
-const fakeUserData = [
-  {
-    isAuth: true,
-    name: 'AAA',
-    account: 'admin',
-    gender: '0',
-    address: 'CCC',
-    phone: '0912345678',
-    birthday: '1993-09-28',
-    email: 'DDD@DD.D',
-    password: '12345',
-    confirmPassword: '12345',
-    cardNumber: '1234567891011121',
-    cardName: 'AAA',
-    expiry: '0426',
-  },
-]
 export default function LoginForm() {
   //存login 資料
   const [inputAuth, setInputAuth] = useState({
@@ -129,6 +112,7 @@ export default function LoginForm() {
               className="form-control"
               onBlur={(e) => {
                 setInputAuth({ ...inputAuth, [e.target.name]: e.target.value })
+                console.log(e.target.value)
               }}
             />
           </div>

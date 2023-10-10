@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { DatePicker } from 'antd'
 import RegisterForm from '@/components/user/register-form'
 import UserLayout from '@/components/layout/user-layout'
+import moment from 'moment'
 
 const description = [
   '姓名',
@@ -17,7 +18,7 @@ const description = [
   '設定密碼',
   '確認密碼',
 ]
-
+const currentDateTime = moment().format('YYYY/MM/DD HH:mm:ss')
 export default function Profile() {
   //宣告儲存會員資料
   const [formData, setformData] = useState({
@@ -30,9 +31,9 @@ export default function Profile() {
     email: '',
     password: '',
     confirmPassword: '',
-    cardNumber: '',
-    cardName: '',
-    expiry: '',
+    vip: 0,
+    valid: 1,
+    start_time: currentDateTime,
   })
   //宣告會員填寫狀態
   const [errMesage, setErrMesage] = useState({

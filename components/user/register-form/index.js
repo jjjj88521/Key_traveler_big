@@ -1,5 +1,8 @@
 import { DatePicker } from 'antd'
 import style from '@/styles/user/register.module.scss'
+import axios from 'axios'
+import Swal from 'sweetalert2'
+import { useRouter } from 'next/router'
 const disabledDate = (current) => {
   return current && current > new Date()
 }
@@ -16,6 +19,31 @@ export default function RegisterForm({
   stepStateArray,
   birthday,
 }) {
+  const router = useRouter()
+  const createUser = (user) => {
+    // 新增會員資料
+    axios
+      .post('http://localhost:3005/api/users/', user)
+      .then((response) => {
+        if (response.data.message === 'success') {
+          console.log('新增成功')
+        } else {
+          console.log('新增失敗')
+          console.log(response)
+          Swal.fire({
+            icon: 'error',
+            title: '註冊失敗',
+            text: '帳號或Email已存在',
+            showConfirmButton: false,
+            timer: 1500,
+          })
+        }
+      })
+      .catch((error) => {
+        console.error('新增失敗:', error)
+        console.log('新增發生錯誤')
+      })
+  }
   return (
     <>
       <form action="" className="mb-5 col-md-7 col-sm-12">
@@ -65,6 +93,22 @@ export default function RegisterForm({
               handleErrMessage(e, mes)
               handleSetStepState(e, 3)
             }
+            //處理名子
+            let fullName = e.target.value
+            let splitName = fullName.split('')
+            let last_name = splitName[0]
+
+            let first_name = ''
+            for (let i = 1; i < splitName.length; i++) {
+              first_name = first_name + splitName[i]
+            }
+            console.log(last_name)
+            console.log(first_name)
+            setformData({
+              ...formData,
+              last_name: last_name,
+              first_name: first_name,
+            })
           }}
         />
         {/*  */}
@@ -256,8 +300,8 @@ export default function RegisterForm({
           onChange={(date, dateString) => {
             if (dateString) {
               let mes = ''
-              setErrMesage({ ...errMesage, [birthday]: mes })
-              setformData({ ...formData, [birthday]: dateString })
+              setErrMesage({ ...errMesage, birthday: mes })
+              setformData({ ...formData, birthday: dateString })
               setStepState({ ...stepState, birthday: stepStateArray[2] })
             } else {
               let mes = '請填入日期'
@@ -266,19 +310,19 @@ export default function RegisterForm({
             }
             ;<p className={'text-danger'}>{errMesage.birthday}</p>
           }}
-          onBlur={(date, dateString) => {
-            if (dateString) {
-              let mes = ''
-              setErrMesage({ ...errMesage, [birthday]: mes })
-              setformData({ ...formData, [birthday]: dateString })
-              setStepState({ ...stepState, birthday: stepStateArray[2] })
-            } else {
-              let mes = '請填入日期'
-              setErrMesage(birthday, mes)
-              setStepState({ ...stepState, birthday: stepStateArray[3] })
-            }
-            ;<p className={'text-danger'}>{errMesage.birthday}</p>
-          }}
+          // onBlur={(date, dateString) => {
+          //   if (dateString) {
+          //     let mes = ''
+          //     setErrMesage({ ...errMesage, [birthday]: mes })
+          //     setformData({ ...formData, [birthday]: dateString })
+          //     setStepState({ ...stepState, birthday: stepStateArray[2] })
+          //   } else {
+          //     let mes = '請填入日期'
+          //     setErrMesage(birthday, mes)
+          //     setStepState({ ...stepState, birthday: stepStateArray[3] })
+          //   }
+          //   ;<p className={'text-danger'}>{errMesage.birthday}</p>
+          // }}
           className="form-control"
         />
         <p className={'text-danger'}>{}</p>
@@ -433,7 +477,43 @@ export default function RegisterForm({
           >
             重填
           </button>
-          <button className="btn btn-primary col-sm-3 col-10 text-white ">
+          <button
+            type="button"
+            className="btn btn-primary col-sm-3 col-10 text-white "
+            onClick={() => {
+              console.log(formData)
+              // delete formData.confirmPassword
+              // console.log(formData)
+              // createUser(formData)
+              if (
+                stepState.name === 'finish' &&
+                stepState.account === 'finish' &&
+                stepState.address === 'finish' &&
+                stepState.gender === 'finish' &&
+                stepState.phone === 'finish' &&
+                stepState.birthday === 'finish' &&
+                stepState.email === 'finish' &&
+                stepState.password === 'finish' &&
+                stepState.confirmPassword === 'finish'
+              ) {
+                // console.log(formData)
+                delete formData.confirmPassword
+                console.log(formData)
+                createUser(formData)
+                console.log('OK')
+                Swal.fire({
+                  icon: 'success',
+                  title: '註冊成功，請重新登入',
+                  showConfirmButton: false,
+                  timer: 1500,
+                }).then(() => {
+                  router.push('/user/login')
+                })
+              } else {
+                console.log('falil')
+              }
+            }}
+          >
             送出
           </button>
         </div>

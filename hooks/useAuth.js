@@ -22,7 +22,7 @@ export function AuthProvider({ children }) {
       confirmPassword: '',
       cardNumber: '',
       cardName: '',
-      expiry: '',
+      exp: '',
     },
   })
 

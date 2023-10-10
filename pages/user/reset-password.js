@@ -9,10 +9,10 @@ export default function ForgetPasswordForm() {
         <div className="col-sm-5 offset-sm-1 col-12">
           <ResetPassword />
         </div>
-        <div className="waring-message col-sm-3 offset-sm-1 col-12">
+        <div className="waring-message col-sm-4 offset-sm-1 col-12">
           <p>溫馨提示:</p>
           <ol>
-            <li>
+            <li className="">
               密碼長度要求:
               <ul>
                 <li>您的新密碼至少需要有 6 個字符</li>
