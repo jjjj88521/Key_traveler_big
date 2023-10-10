@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Drawer, Button } from 'antd'
 import styles from './product.module.css'
 import Accordion from '@/components/product/accordion'
 import AsideFilter from '@/components/product/AsideFilter'
-import List from '@/components/product/List'
 import PaginationComponent from '@/components/common/PaginationComponent'
+import ProductFetcher from './ProductFetcher'
+import Card from '@/components/product/Card'
+import fakeData from './fakeData'
 
 // <div className="container">
 // <div className={styles['banner']}>
@@ -19,15 +21,33 @@ export async function getStaticProps() {
 }
 
 export default function ProductIndex() {
-  const [open, setOpen] = useState(false)
+  const [data, setData] = useState([])
+  const handleProductFetched = (fetchedData) => {
+    setData(fetchedData)
+  }
 
+  // Drawer相關
+  const [open, setOpen] = useState(false)
   const showDrawer = () => {
     setOpen(true)
   }
-
   const onClose = () => {
     setOpen(false)
   }
+
+  // 分頁相關
+  const PageSize = 12
+  const totalPageCount = data.length
+  console.log(totalPageCount)
+  const [currentPage, setCurrentPage] = useState(1)
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage)
+  }
+  //   const startIndex = (currentPage - 1) * PageSize
+  //   const endIndex =
+  //     currentPage * PageSize < totalItemsForCategory.length
+  //       ? currentPage * PageSize
+  //       : totalItemsForCategory.length
 
   return (
     <>
@@ -119,7 +139,20 @@ export default function ProductIndex() {
             </Drawer>
 
             {/* product list & card group  */}
-            <List></List>
+            <div className="d-flex row row-cols-2 row-cols-md-3 g-4 mb-sm-0 mb-4">
+              {fakeData.map((product, index) => (
+                <div className="col" key={index}>
+                  <div className="col">
+                    <Card
+                      title={product.title}
+                      brand={product.brand}
+                      price={product.price}
+                      imagePath={product.imagePath}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -127,10 +160,13 @@ export default function ProductIndex() {
       {/* pagination */}
       <div className="m-3">
         <PaginationComponent
-          totalItems={120}
-          pageSize={12}
+          totalItems={totalPageCount}
+          pageSize={PageSize}
+          onPageChange={handlePageChange}
         ></PaginationComponent>
       </div>
+
+      <ProductFetcher onProductFetched={handleProductFetched} />
     </>
   )
 }

@@ -4,7 +4,6 @@ import ProductFetcher from './ProductFetcher'
 
 export default function Card({ title, brand, price, imagePath }) {
   const [data, setData] = useState(null)
-  console.log(data)
 
   const onDataFetched = (fetchedData) => {
     setData(fetchedData)
