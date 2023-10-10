@@ -1,11 +1,14 @@
+import { useState } from 'react'
 import styles from '@/styles/user/member.module.css'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/useAuth'
+import UserLayout from '@/components/layout/user-layout'
 
 export default function ForgetPassword() {
   const { auth, setAuth } = useAuth()
+  const [userData, setUserData] = useState({ ...auth.user })
   return (
-    <>
+    <UserLayout title={'忘記密碼'} isLoginPage={true}>
       <div className="container">
         <p
           className={`text-center mb-3 ${styles['text-note']} col-sm-6 offset-sm-3 col-12 offset-0`}
@@ -19,7 +22,7 @@ export default function ForgetPassword() {
                 type="email"
                 className={`form-control`}
                 placeholder="電子郵件地址"
-                defaultValue={auth.email}
+                defaultValue={userData.email}
               />
             </div>
             <div className={`${styles['error']} my-2 text-start`}>
@@ -88,6 +91,6 @@ export default function ForgetPassword() {
           </div>
         </form>
       </div>
-    </>
+    </UserLayout>
   )
 }
