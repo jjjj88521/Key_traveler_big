@@ -6,7 +6,6 @@ import AsideFilter from '@/components/product/AsideFilter'
 import PaginationComponent from '@/components/common/PaginationComponent'
 import ProductFetcher from './ProductFetcher'
 import Card from '@/components/product/Card'
-import fakeData from './fakeData'
 
 // <div className="container">
 // <div className={styles['banner']}>
@@ -43,11 +42,10 @@ export default function ProductIndex() {
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage)
   }
-  //   const startIndex = (currentPage - 1) * PageSize
-  //   const endIndex =
-  //     currentPage * PageSize < totalItemsForCategory.length
-  //       ? currentPage * PageSize
-  //       : totalItemsForCategory.length
+  // 計算目前頁面應該顯示的Card數組片段
+  const startIndex = (currentPage - 1) * PageSize
+  const endIndex = startIndex + PageSize
+  const currentPageData = data.slice(startIndex, endIndex)
 
   return (
     <>
@@ -138,16 +136,16 @@ export default function ProductIndex() {
               <AsideFilter />
             </Drawer>
 
-            {/* product list & card group  */}
+            {/* card group  */}
             <div className="d-flex row row-cols-2 row-cols-md-3 g-4 mb-sm-0 mb-4">
-              {fakeData.map((product, index) => (
-                <div className="col" key={index}>
+              {currentPageData.map((v, i) => (
+                <div className="col" key={i}>
                   <div className="col">
                     <Card
-                      title={product.title}
-                      brand={product.brand}
-                      price={product.price}
-                      imagePath={product.imagePath}
+                      title={v.name}
+                      brand={v.brand}
+                      price={v.price}
+                      imagePath={v.imagePath}
                     />
                   </div>
                 </div>
@@ -157,7 +155,7 @@ export default function ProductIndex() {
         </div>
       </div>
 
-      {/* pagination */}
+      {/* 分頁頁碼 */}
       <div className="m-3">
         <PaginationComponent
           totalItems={totalPageCount}
