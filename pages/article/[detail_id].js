@@ -19,7 +19,7 @@ export default function DetailFilter() {
   const [CountCate, setCountCate] = useState([])
   // const [artComment, setArtComment] = useState([])
   const [creat, setCreat] = useState([])
-
+  console.log(creat)
   useEffect(() => {
     // useEffect會比前面的21行以前的程式碼都還要早執行 因此我們監控isＲeady的變化
     // 當前面的程式碼都跑完了 這時detail_id才回有值 而isＲeady會是從false變成true
@@ -45,99 +45,7 @@ export default function DetailFilter() {
         setCreat(response.data.comments)
       })
   }, [isReady])
-  // const ArticleContent = [
-  //   {
-  //     id: '0',
-  //     title: '資料庫DB-article-title',
-  //     userInfo: 'by.user_id + 發佈時間',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     content: '123456',
-  //   },
-  //   {
-  //     id: '1',
-  //     title: 'title01',
-  //     userInfo: 'by.user_id + 發佈時間',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     content: '789',
-  //   },
-  //   {
-  //     id: '2',
-  //     title: 'title02',
-  //     userInfo: 'by.user_id + 發佈時間',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     content: '101112',
-  //   },
-  //   {
-  //     id: '3',
-  //     title: 'title03',
-  //     userInfo: 'by.user_id + 發佈時間',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     content: '131415',
-  //   },
-  //   {
-  //     id: '4',
-  //     title: 'title04',
-  //     userInfo: 'by.user_id + 發佈時間',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     content: '161718',
-  //   },
-  //   {
-  //     id: '5',
-  //     title: 'title05',
-  //     userInfo: 'by.user_id + 發佈時間',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     content: '192021',
-  //   },
-  //   {
-  //     id: '6',
-  //     title: 'title06',
-  //     userInfo: 'by.user_id + 發佈時間',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     content: '222324',
-  //   },
-  //   {
-  //     id: '7',
-  //     title: 'title07',
-  //     userInfo: 'by.user_id + 發佈時間',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     content: '252627',
-  //   },
-  //   {
-  //     id: '8',
-  //     title: 'title08',
-  //     userInfo: 'by.user_id + 發佈時間',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     content: '282930',
-  //   },
-  //   {
-  //     id: '9',
-  //     title: 'title09',
-  //     userInfo: 'by.user_id + 發佈時間',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     content: '313233',
-  //   },
-  //   {
-  //     id: '10',
-  //     title: 'title10',
-  //     userInfo: 'by.user_id + 發佈時間',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     content: '343536',
-  //   },
-  //   {
-  //     id: '11',
-  //     title: 'title11',
-  //     userInfo: 'by.user_id + 發佈時間',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     content: '373839',
-  //   },
-  //   {
-  //     id: '12',
-  //     title: 'title12',
-  //     userInfo: 'by.user_id + 發佈時間',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     content: '404142',
-  //   },
-  // ]
+
   //對應路由 文章篩選
   const filterArticle = ArticleContent.find((item) => item.id == detail_id)
   console.log(filterArticle)
@@ -176,7 +84,7 @@ export default function DetailFilter() {
   // const formattedDateTime = moment().format('DD/MM/YYYY HH:mm:ss A')
   const formattedDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
 
-  // const artComment = [
+  //  留言顯示功能
   //   {
   //     user_id: 'Ant Design Title 1',
   //     create_at: '2023',
@@ -447,7 +355,10 @@ export default function DetailFilter() {
               {filterArticle ? (
                 <>
                   <h2 className="fw-bolder mt-4">{filterArticle.title}</h2>
-                  <h5 className="text-secondary mb-5">{filterArticle.date}</h5>
+                  <h5 className="text-secondary mb-5">
+                    <span className="pe-5">by. {filterArticle.user_id}</span>
+                    {filterArticle.date}
+                  </h5>
                   <p className="">
                     {filterArticle.article}
                     <img
