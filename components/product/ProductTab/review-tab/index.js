@@ -4,7 +4,7 @@ import {
   StyleSelect,
 } from '@/components/common/style-select/style-select'
 import useStyleSelect from '@/hooks/useStyleSelect'
-import { List, Rate } from 'antd'
+import { Dropdown, List, Rate, Space, Typography } from 'antd'
 import { useRef, useState, useEffect } from 'react'
 import CommentItem from './comment-item'
 import axios from 'axios'
@@ -13,6 +13,7 @@ import LoadingPage from '@/components/common/loadingPage'
 import { useProductData } from '@/context/product'
 import { useRouter } from 'next/router'
 import { fetchProductComment } from '@/libs/productFetcher'
+import { DownOutlined } from '@ant-design/icons'
 
 export default function ReviewTab() {
   const { productData, commentData, setCommentData } = useProductData()
@@ -130,7 +131,22 @@ export default function ReviewTab() {
             </StyleSelect>
           </div>
           {/* 時間排序 */}
-          <div className="col"></div>
+          <div className="col d-flex justify-content-center align-items-end">
+            <Dropdown
+              trigger={['click']}
+              items={[
+                { key: '1', label: '時間 進到遠' },
+                { key: '2', label: '時間 遠到近' },
+              ]}
+            >
+              <Typography.Link>
+                <Space className="fs-5 text-dark fw-bold">
+                  排序
+                  <DownOutlined />
+                </Space>
+              </Typography.Link>
+            </Dropdown>
+          </div>
         </div>
         {/* 評論列表 */}
         {isloading ? (

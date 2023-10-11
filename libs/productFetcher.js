@@ -88,13 +88,19 @@ const deleteProductLike = async (cate, pid) => {
     console.log(error)
   }
 }
-
+/**
+ * @param {number} currentPage
+ * @param {string} cate
+ * @param {array} orderby
+ * @returns {object}
+ */
 // 用戶獲取所有收藏的商品
-const fetchProductLikeList = async (currentPage, cate) => {
+const fetchProductLikeList = async (currentPage, cate, orderby) => {
   try {
     const response = await axios.get(
-      `http://localhost:3005/api/product-like/like-list?page=${currentPage || 1}
-      ${cate ? `&cate=${cate}` : ''}`,
+      `http://localhost:3005/api/product-like/like-list?page=${currentPage}${
+        cate ? `&cate=${cate}` : ''
+      }${orderby ? `&orderby=${orderby.join(',')}` : ''}`,
       {
         withCredentials: true, // 跨域獲取cookie
       }
