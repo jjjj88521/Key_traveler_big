@@ -1,7 +1,5 @@
 import UserLayout from '@/components/layout/user-layout'
 import ResetPassword from '@/components/user/reset-password-form'
-import UserSideBar from '@/components/user/user-side-bar'
-import UserSideBarMobile from '@/components/user/user-side-bar-mobile'
 export default function ForgetPasswordForm() {
   return (
     <UserLayout title="修改密碼">
