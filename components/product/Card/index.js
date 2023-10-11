@@ -7,7 +7,7 @@ export default function Card({ title, brand, price, image, stock }) {
       <div className={`card h-auto ${styles['card']} overflow-hidden border-0`}>
         <img
           //   src={`/images/product/${image}`}
-          src={`http://localhost:3000/images/product/${image}`}
+          src={`/images/product/${image}`}
           className={`card-img-top ${styles.cardImg}`}
           alt="Product"
         />
