@@ -3,9 +3,16 @@ import style from '@/styles/user/register.module.scss'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
+import { useRef } from 'react'
+
 const disabledDate = (current) => {
   return current && current > new Date()
 }
+//阻止表單送出
+const handleSubmit = (event) => {
+  event.preventDefault()
+}
+
 export default function RegisterForm({
   handleErrMessage,
   handleSetStepState,
@@ -19,6 +26,7 @@ export default function RegisterForm({
   stepStateArray,
   birthday,
 }) {
+  const formRef = useRef(null) //重填功能
   const router = useRouter()
   const createUser = (user) => {
     // 新增會員資料
@@ -46,7 +54,12 @@ export default function RegisterForm({
   }
   return (
     <>
-      <form action="" className="mb-5 col-md-7 col-sm-12">
+      <form
+        action=""
+        onSubmit={handleSubmit}
+        className="mb-5 col-md-7 col-sm-12"
+        ref={formRef}
+      >
         <label htmlFor="name" className="form-label">
           姓名
         </label>
@@ -474,6 +487,9 @@ export default function RegisterForm({
         <div className="button-group row justify-content-evenly mt-5  ">
           <button
             className={`${style['none-user']} btn btn-primary col-3 text-white`}
+            onClick={() => {
+              formRef.current.reset()
+            }}
           >
             重填
           </button>

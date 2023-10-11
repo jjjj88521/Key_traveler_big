@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import styles from '@/styles/user/member.module.css'
 import axios from 'axios'
 import jwtDecode from 'jwt-decode'
 import Image from 'next/image'
@@ -6,8 +7,49 @@ import { useAuth } from '@/hooks/useAuth'
 import Link from 'next/link'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
-
+import GoogleLogo from '@/components/icons/google-logo'
+import LineLogo from '@/components/icons/line-logo'
+import FacebookLogo from '@/components/icons/facebook-logo'
+import useFirebase from '@/hooks/use-firebase'
 export default function LoginForm() {
+  //google第三方登入用S
+  // loginGoogleRedirect無callback，要改用initApp在頁面初次渲染後監聽google登入狀態
+  const { logoutFirebase, loginGoogleRedirect, initApp } = useFirebase()
+
+  // 這裡要設定initApp，讓這個頁面能監聽firebase的google登入狀態
+  useEffect(() => {
+    initApp(callbackGoogleLoginRedirect)
+  }, [])
+
+  // 處理google登入後，要向伺服器進行登入動作
+  const callbackGoogleLoginRedirect = async (providerData) => {
+    console.log(providerData)
+
+    // 如果目前react(next)已經登入中，不需要再作登入動作
+    if (auth.isAuth) return
+
+    const res = await axios.post(
+      'http://localhost:3005/api/google-login/session',
+      providerData,
+      {
+        withCredentials: true, // 注意: 必要的，儲存 cookie 在瀏覽器中
+      }
+    )
+
+    console.log(res.data)
+
+    if (res.data.message === 'success') {
+      setAuth({
+        isAuth: true,
+        userData: res.data.user,
+      })
+    } else {
+      alert('有錯誤')
+    }
+  }
+
+  //google第三方登入用E
+
   //存login 資料
   const [inputAuth, setInputAuth] = useState({
     account: '',
@@ -83,6 +125,26 @@ export default function LoginForm() {
 
   // 引入 auth context，登入的操作也寫在裡面了，拿出來用就好
   const { auth, setAuth, login } = useAuth()
+  // google 快速登入API
+  // function googleLogin() {
+  //   return new Promise((resolve, reject) => {
+  //     axios
+  //       .post('http://localhost:3005/api/google-login/jwt')
+  //       .then((res) => {
+  //         if (res.data.code === 200) {
+  //           console.log('成功讀取')
+  //           console.log(res)
+  //         } else {
+  //           console.log('讀取失敗1')
+  //           console.log(res)
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         console.log('讀取失敗2')
+  //         console.log(err)
+  //       })
+  //   })
+  // }
 
   useEffect(() => {
     console.log(auth)
@@ -90,7 +152,7 @@ export default function LoginForm() {
 
   return (
     <>
-      <div className="container col-sm-6">
+      <div className={`container ${styles['bg-image']}`}>
         <div className="logo mb-3 text-center ">
           <Image
             src="/images/header-logo-desktop.png"
@@ -100,9 +162,9 @@ export default function LoginForm() {
             className=""
           />
         </div>
-        <form className="w-50 mx-auto">
-          <div className="row mb-3 ">
-            <label htmlFor="account" className="form-label px-0">
+        <form className={`${styles['w-sm-50']}  w-100  mx-auto`}>
+          <div className="row mb-3  ">
+            <label htmlFor="account" className="form-label px-0 mt-3">
               帳號
             </label>
             <input
@@ -132,7 +194,7 @@ export default function LoginForm() {
           </div>
           <button
             type="button"
-            class="btn btn-primary my-3 w-100"
+            class="btn btn-primary my-5 w-100 "
             onClick={() => {
               login(inputAuth.account, inputAuth.password)
             }}
@@ -140,6 +202,30 @@ export default function LoginForm() {
             登入
           </button>
         </form>
+
+        <div className="row mb-2 col-sm-8 offset-sm-2">
+          <div className={`mb-3 ${styles['hr-sect']} `}>快速登入</div>
+          <div className="col-sm-12 text-start">
+            <div className="d-flex justify-content-center my-3">
+              <button type="button" className="mx-3 border-0 bg-transparent">
+                <LineLogo />
+              </button>
+              <button
+                type="button"
+                className="mx-3 border-0 bg-transparent"
+                onClick={() => {
+                  loginGoogleRedirect()
+                  console.log('click')
+                }}
+              >
+                <GoogleLogo />
+              </button>
+              <button type="button" className="mx-3 border-0 bg-transparent">
+                <FacebookLogo />
+              </button>
+            </div>
+          </div>
+        </div>
         <div className=" text-center my-3">
           <p className=" ">
             還不是會員嗎?
