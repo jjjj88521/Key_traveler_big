@@ -24,9 +24,11 @@ export default function ProfileForm() {
       .put('http://localhost:3005/api/users/update', user)
       .then((response) => {
         if (response.data.message === 'success') {
+          console.log(response)
           console.log('成功更新')
         } else {
           console.log('更新失敗')
+          console.log(response)
         }
       })
       .catch((error) => {

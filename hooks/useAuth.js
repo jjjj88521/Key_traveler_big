@@ -44,6 +44,7 @@ export function AuthProvider({ children }) {
             isAuth: true,
             user: response.data.user,
           })
+          // checkLogin()
         })
         .catch((error) => {
           if (
@@ -64,6 +65,24 @@ export function AuthProvider({ children }) {
     } catch (error) {
       console.log(error)
     }
+  }
+  // 重新讀取資料庫
+  async function checkLogin() {
+    await axios
+      .get('http://localhost:3005/api/auth-jwt/check-login', {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(`checklogoin:${res}`)
+        const id = auth.user.id
+        axios.get(`http://localhost:3005/api/users/${id}`).then((res) => {
+          console.log(res.data)
+          setAuth({ ...res.data })
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   // 登入
@@ -181,6 +200,8 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     if (router.isReady && !auth.isAuth) {
       checkAuth()
+
+      console.log(auth)
     }
   }, [router.isReady, asPath])
 
