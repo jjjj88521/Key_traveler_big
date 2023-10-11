@@ -1,4 +1,10 @@
-import React, { useReducer, useContext, createContext, useEffect } from 'react'
+import React, {
+  useReducer,
+  useContext,
+  createContext,
+  useEffect,
+  useState,
+} from 'react'
 import { reducer, init } from './cart-reducer'
 
 const CartContext = createContext(null)
@@ -25,6 +31,7 @@ export const CartProvider = ({
   initialProducts = [
     {
       id: 5,
+      check: false,
       img: '/images/1669370674683000804.jpg',
       brand: 'Meletrix',
       name: 'Meletrix ZoomPad 數字鍵盤套件 SP版(左手版)',
@@ -37,6 +44,7 @@ export const CartProvider = ({
     },
     {
       id: 2,
+      check: false,
       img: '/images/1669370674683000804.jpg',
       brand: 'Meletrix',
       name: 'Meletrix ZoomPad 數字鍵盤套件 SP版(左手版)',
@@ -80,6 +88,21 @@ export const CartProvider = ({
     })
   }
 
+  const checkItem = (id) => {
+    dispatch({
+      type: 'CHECK_ITEM',
+      payload: {
+        id,
+      },
+    })
+  }
+
+  const checkAllItem = (checkall) => {
+    dispatch({
+      type: 'CHECK_ALL_ITEM',
+      payload: { checkall },
+    })
+  }
   /**
    * 給定一item物件，依照id尋找後更新其中的屬性值
    * @param {Object} item
@@ -138,6 +161,15 @@ export const CartProvider = ({
       },
     })
   }
+
+  // const handleCartTotal = () => {}
+  // const [allCartsTotal, setAllCartsTotal] = useState(0)
+
+  // useEffect(() => {
+  //   setAllCartsTotal(state.allCartsTotal)
+  //   console.log(typeof state.allCartsTotal)
+  // }, [state.cartTotal])
+
   // const handleToggleCheckAll = (checkAll) => {
   //   return dispatch({
   //     type: 'Toggle_Check_All',
@@ -146,6 +178,7 @@ export const CartProvider = ({
   //     },
   //   })
   // }
+
   return (
     <CartContext.Provider
       value={{
@@ -153,6 +186,8 @@ export const CartProvider = ({
         items: state.items,
         addItem,
         removeItem,
+        checkItem,
+        checkAllItem,
         updateItem,
         clearCart,
         isInCart,

@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 // 初始化狀態
 // isEmpty, totalItems, cartTotal為最後計算得出
 export const initialState = {
@@ -5,6 +6,7 @@ export const initialState = {
   isEmpty: true,
   totalItems: 0, //商品數量+-
   cartTotal: 0, //總計
+  allCartsTotal: 0,
 }
 
 // 置於上述items陣列中的每個項目的物件模型
@@ -61,6 +63,41 @@ const removeItem = (state, action) => {
   return state.items.filter((item) => item.id !== action.payload.id)
 }
 
+const checkItem = (state, action) => {
+  // 尋找是否有已存在的索引值
+  const existingItemIndex = state.items.findIndex(
+    (item) => item.id === action.payload.id
+  )
+
+  // 如果有存在，改變check的值
+  if (existingItemIndex > -1) {
+    const item = state.items[existingItemIndex]
+    const id = item.id
+    // console.log(item.check);
+    const check = !item.check
+
+    const action = {
+      type: 'CHECK_ITEM',
+      payload: { id, check },
+    }
+
+    return updateItem(state, action)
+  }
+  return [...state.items, action.payload]
+}
+
+const checkAllItem = (state, action) => {
+  // 獲取要設置的狀態（true 或 false）
+  const isChecked = !action.payload.checkall
+
+  const newState = [...state.items]
+  newState.map((i) => {
+    // console.log(i.id)
+    i.check = isChecked
+  })
+  return newState
+}
+
 /**
  * upateItem (ex. quantity, color, name, price...)
  * ex. action = {type="UPDATE_ITEM", payload: {id:1, quantity:1, color:'red'}
@@ -80,6 +117,7 @@ const updateItem = (state, action) => {
       ...newState[existingItemIndex],
       ...action.payload,
     }
+    // console.log(newState);
     return newState
   }
 
@@ -200,20 +238,30 @@ const calculateRentItemTotals = (items) => {
     }
   })
 }
-//計算一般商品總計
-const calculateTotal = (items) =>
-  items.reduce((total, item) => total + item.quantity * item.price, 0)
 
+//計算一般商品總計
+const calculateTotal = (items) => {
+  const total = items.reduce(
+    (total, item) => total + (item.check ? item.quantity * item.price : 0),
+    0
+  )
+  return total
+}
 // 計算租用商品總計
 const calculateRentTotal = (items) => {
   // 先計算每個商品的小計
   const itemsWithSubtotals = calculateRentItemTotals(items)
-
   // 使用 reduce 函數將小計相加起來
-  const total = itemsWithSubtotals.reduce((acc, item) => acc + item.subtotal, 0)
-
+  const total = itemsWithSubtotals.reduce(
+    (acc, item) => acc + (item.check ? item.subtotal : 0),
+    0
+  )
   return total
 }
+
+// const calculateAllCartsTotal = (items) => {
+//   calculateTotal(items) + calculateRentTotal(items)
+// }
 const calculateTotalItems = (items) =>
   items.reduce((sum, item) => sum + item.quantity, 0)
 
@@ -228,6 +276,7 @@ const generateCartState = (state, items) => {
     items: calculateItemTotals(items),
     totalItems: calculateTotalItems(items),
     cartTotal: calculateTotal(items),
+    // allCartsTotal: calculateAllCartsTotal(items),
     isEmpty,
   }
 }
@@ -240,6 +289,7 @@ const generateRentCartState = (state, items) => {
     items: calculateRentItemTotals(items),
     totalItems: calculateTotalItems(items),
     cartTotal: calculateRentTotal(items),
+    // allCartsTotal: calculateAllCartsTotal(items),
     isEmpty,
   }
 }
@@ -257,6 +307,16 @@ export const reducer = (state, action) => {
       return generateCartState(state, addItem(state, action))
     case 'REMOVE_ITEM':
       return generateCartState(state, removeItem(state, action))
+    case 'REMOVE_RENT_ITEM':
+      return generateRentCartState(state, removeItem(state, action))
+    case 'CHECK_ITEM':
+      return generateCartState(state, checkItem(state, action))
+    case 'CHECK_RENT_ITEM':
+      return generateRentCartState(state, checkItem(state, action))
+    case 'CHECK_ALL_ITEM':
+      return generateCartState(state, checkAllItem(state, action))
+    case 'CHECK_ALL_RENT_ITEM':
+      return generateRentCartState(state, checkAllItem(state, action))
     case 'UPDATE_ITEM':
       return generateCartState(state, updateItem(state, action))
     case 'UPDATE_RENT_ITEM':
@@ -265,8 +325,8 @@ export const reducer = (state, action) => {
       return generateCartState(state, plusItemQuantityOnce(state, action))
     case 'MINUS_ONE':
       return generateCartState(state, minusItemQuantityOnce(state, action))
-    case 'Toggle_Check_All':
-      return generateCartState(state, toggleCheckAll(state, action))
+    // case 'Toggle_Check_All':
+    //   return generateCartState(state, toggleCheckAll(state, action))
     case 'Start_Date_Change':
       return generateRentCartState(state, startDateChange(state, action))
     case 'End_Date_Change':

@@ -16,6 +16,8 @@ export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
     cart,
     items,
     removeItem,
+    checkItem,
+    checkAllItem,
     getCurrentDate,
     handleStartDateChange,
     handleEndDateChange,
@@ -190,7 +192,10 @@ export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
               <input
                 type="checkbox"
                 checked={checkAll}
-                onChange={handleToggleCheckAll}
+                onChange={() => {
+                  handleToggleCheckAll()
+                  checkAllItem(checkAll)
+                }}
                 // checked={checkAllRent}
                 // onChange={(e) => {
                 //   setCheckAllRent(e.target.checked)
@@ -215,7 +220,10 @@ export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
                 <input
                   type="checkbox"
                   checked={checkedItems[v.id] || false}
-                  onChange={() => handleToggleCheck(v.id)}
+                  onChange={() => {
+                    handleToggleCheck(v.id)
+                    checkItem(v.id)
+                  }}
                   // checked={v.check}
                   // onClick={() => {
                   //   handleToggleCheckRent(v.id)
@@ -310,7 +318,10 @@ export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
               <input
                 type="checkbox"
                 checked={checkAll}
-                onChange={handleToggleCheckAll}
+                onChange={() => {
+                  handleToggleCheckAll()
+                  checkAllItem(checkAll)
+                }}
                 // checked={checkAllRent}
                 // onChange={(e) => {
                 //   setCheckAllRent(e.target.checked)
@@ -342,7 +353,10 @@ export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
                 <input
                   type="checkbox"
                   checked={checkedItems[v.id] || false}
-                  onChange={() => handleToggleCheck(v.id)}
+                  onChange={() => {
+                    handleToggleCheck(v.id)
+                    checkItem(v.id)
+                  }}
                   // checked={v.check}
                   // onClick={() => {
                   //   handleToggleCheckRent(v.id)

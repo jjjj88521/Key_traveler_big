@@ -11,7 +11,15 @@ import { useCart } from '@/hooks/use-cart'
 export default function PCartList({ setOrderTotalP, setOrderAmountP }) {
   // const { priceData, setPrice } = useCartContext()
   // 使用hooks 解出所需的狀態與函式(自context)
-  const { cart, items, plusOne, minusOne, removeItem } = useCart()
+  const {
+    cart,
+    items,
+    plusOne,
+    minusOne,
+    removeItem,
+    checkItem,
+    checkAllItem,
+  } = useCart()
 
   // const initialProducts = [
   //   {
@@ -32,8 +40,8 @@ export default function PCartList({ setOrderTotalP, setOrderAmountP }) {
 
   // const [products, setProducts] = useState(items)
   // const [checkAll, setCheckAll] = useState(false)
-  const [orderTotal, setOrderTotal] = useState(0) // 總金額的狀態變數
-  const [orderAmount, setOrderAmount] = useState(0) //總件數的狀態變數
+  // const [orderTotal, setOrderTotal] = useState(0) // 總金額的狀態變數
+  // const [orderAmount, setOrderAmount] = useState(0) //總件數的狀態變數
   const [checkAll, setCheckAll] = useState(false)
   const [checkedItems, setCheckedItems] = useState({})
 
@@ -68,33 +76,33 @@ export default function PCartList({ setOrderTotalP, setOrderAmountP }) {
   }
 
   // 欲購買(有打勾的)總金額
-  const updateOrderTotal = (checkedItems) => {
-    let newOrderTotal = 0
-    items.forEach((item) => {
-      if (checkedItems[item.id]) {
-        newOrderTotal += item.price * item.quantity
-      }
-    })
-    setOrderTotal(newOrderTotal)
-    // console.log(newOrderTotal)
-  }
+  // const updateOrderTotal = (checkedItems) => {
+  //   let newOrderTotal = 0
+  //   items.forEach((item) => {
+  //     if (checkedItems[item.id]) {
+  //       newOrderTotal += item.price * item.quantity
+  //     }
+  //   })
+  //   setOrderTotal(newOrderTotal)
+  //   // console.log(newOrderTotal)
+  // }
 
   // 欲購買(有打勾的)總件數:一個打勾即一件
-  const updateOrderAmount = (checkedItems) => {
-    const count = Object.values(checkedItems).filter(
-      (isChecked) => isChecked
-    ).length
-    setOrderAmount(count)
-    console.log(count)
-  }
+  // const updateOrderAmount = (checkedItems) => {
+  //   const count = Object.values(checkedItems).filter(
+  //     (isChecked) => isChecked
+  //   ).length
+  //   setOrderAmount(count)
+  //   console.log(count)
+  // }
   useEffect(() => {
     // 單選全勾，全選就勾
     const allChecked =
       items.length > 0 && items.every((item) => checkedItems[item.id])
     setCheckAll(allChecked)
-    updateOrderTotal(checkedItems)
+    // updateOrderTotal(checkedItems)
 
-    updateOrderAmount(checkedItems)
+    // updateOrderAmount(checkedItems)
   }, [items, checkedItems])
   // useEffect(() => {
   //   updateOrderTotal(checkedItems)
@@ -207,7 +215,10 @@ export default function PCartList({ setOrderTotalP, setOrderAmountP }) {
               <input
                 type="checkbox"
                 checked={checkAll}
-                onChange={handleToggleCheckAll}
+                onChange={() => {
+                  handleToggleCheckAll()
+                  checkAllItem(checkAll)
+                }}
                 // onChange={(e) => {
                 //   // setCheckAll(e.target.checked)
                 //   // handleToggleCheckAll(e.target.checked)
@@ -238,7 +249,10 @@ export default function PCartList({ setOrderTotalP, setOrderAmountP }) {
                   type="checkbox"
                   // checked={v.check}
                   checked={checkedItems[v.id] || false}
-                  onChange={() => handleToggleCheck(v.id)}
+                  onChange={() => {
+                    handleToggleCheck(v.id)
+                    checkItem(v.id)
+                  }}
                 />
               </td>
               <td className="d-flex">
@@ -335,7 +349,10 @@ export default function PCartList({ setOrderTotalP, setOrderAmountP }) {
               <input
                 type="checkbox"
                 checked={checkAll}
-                onChange={handleToggleCheckAll}
+                onChange={() => {
+                  handleToggleCheckAll()
+                  checkAllItem(checkAll)
+                }}
                 // onChange={(e) => {
                 //   setCheckAll(e.target.checked)
                 //   handleToggleCheckAll(e.target.checked)
@@ -367,7 +384,10 @@ export default function PCartList({ setOrderTotalP, setOrderAmountP }) {
                   type="checkbox"
                   // checked={v.check}
                   checked={checkedItems[v.id] || false}
-                  onChange={() => handleToggleCheck(v.id)}
+                  onChange={() => {
+                    handleToggleCheck(v.id)
+                    checkItem(v.id)
+                  }}
                 />
               </td>
               <td className="d-flex px-1">

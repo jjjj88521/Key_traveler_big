@@ -10,7 +10,15 @@ import { useThirdCart } from '@/hooks/useThirdCart'
 export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
   // const { priceData, setPrice } = useCartContext()
   // 使用hooks 解出所需的狀態與函式(自context)
-  const { cart, items, plusOne, minusOne, removeItem } = useThirdCart()
+  const {
+    cart,
+    items,
+    plusOne,
+    minusOne,
+    removeItem,
+    checkItem,
+    checkAllItem,
+  } = useThirdCart()
 
   // const initialProducts = [
   //   {
@@ -169,7 +177,10 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
               <input
                 type="checkbox"
                 checked={checkAll}
-                onChange={handleToggleCheckAll}
+                onChange={() => {
+                  handleToggleCheckAll()
+                  checkAllItem(checkAll)
+                }}
                 // onChange={(e) => {
                 //   // setCheckAll(e.target.checked)
                 //   // handleToggleCheckAll(e.target.checked)
@@ -200,7 +211,10 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
                   type="checkbox"
                   // checked={v.check}
                   checked={checkedItems[v.id] || false}
-                  onChange={() => handleToggleCheck(v.id)}
+                  onChange={() => {
+                    handleToggleCheck(v.id)
+                    checkItem(v.id)
+                  }}
                 />
               </td>
               <td className="d-flex">
@@ -297,7 +311,10 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
               <input
                 type="checkbox"
                 checked={checkAll}
-                onChange={handleToggleCheckAll}
+                onChange={() => {
+                  handleToggleCheckAll()
+                  checkAllItem(checkAll)
+                }}
                 // onChange={(e) => {
                 //   // setCheckAll(e.target.checked)
                 //   // handleToggleCheckAll(e.target.checked)
@@ -329,7 +346,10 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
                   type="checkbox"
                   // checked={v.check}
                   checked={checkedItems[v.id] || false}
-                  onChange={() => handleToggleCheck(v.id)}
+                  onChange={() => {
+                    handleToggleCheck(v.id)
+                    checkItem(v.id)
+                  }}
                 />
               </td>
               <td className="d-flex px-1">

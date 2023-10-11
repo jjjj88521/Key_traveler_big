@@ -51,10 +51,26 @@ export const SecondCartProvider = ({
 
   const removeItem = (id) => {
     dispatch({
-      type: 'REMOVE_ITEM',
+      type: 'REMOVE_RENT_ITEM',
       payload: {
         id,
       },
+    })
+  }
+
+  const checkItem = (id) => {
+    dispatch({
+      type: 'CHECK_RENT_ITEM',
+      payload: {
+        id,
+      },
+    })
+  }
+
+  const checkAllItem = (checkall) => {
+    dispatch({
+      type: 'CHECK_ALL_RENT_ITEM',
+      payload: { checkall },
     })
   }
 
@@ -130,6 +146,8 @@ export const SecondCartProvider = ({
         items: state.items,
         addItem,
         removeItem,
+        checkItem,
+        checkAllItem,
         updateItem,
         clearCart,
         isInCart,
