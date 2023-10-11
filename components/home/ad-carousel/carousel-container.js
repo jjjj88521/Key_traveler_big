@@ -3,17 +3,13 @@ import style from './_carousel-container.module.scss'
 import Link from 'next/link'
 import Image from 'next/image'
 
-export default function CarouselContainer({
-  hideMouseBall,
-  mousePosition,
-  mouseTriggerRect,
-}) {
+export default function CarouselContainer({ hideMouseBall, mousePosition }) {
   // 取得連結按鈕的位置
   const carouselBoxRef = useRef(null)
 
   useEffect(() => {
     if (carouselBoxRef.current) {
-      if (
+      const isMouseInsideCarousel =
         mousePosition.x > carouselBoxRef.current.offsetLeft &&
         mousePosition.x <
           carouselBoxRef.current.offsetLeft +
@@ -21,11 +17,12 @@ export default function CarouselContainer({
         mousePosition.y > carouselBoxRef.current.offsetTop &&
         mousePosition.y <
           carouselBoxRef.current.offsetTop + carouselBoxRef.current.offsetHeight
-      ) {
+
+      if (isMouseInsideCarousel) {
         hideMouseBall()
       }
     }
-  }, [carouselBoxRef, hideMouseBall, mousePosition])
+  }, [mousePosition, hideMouseBall])
 
   return (
     <div className={`${style['carousel-container']} carousel-container`}>
