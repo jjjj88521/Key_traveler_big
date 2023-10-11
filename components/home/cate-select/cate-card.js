@@ -2,9 +2,9 @@ import React from 'react'
 import Link from 'next/link'
 import style from '@/styles/home/_cate-select.module.scss'
 
-export default function CateCard({ name, img }) {
+export default function CateCard({ name, img, link }) {
   return (
-    <Link href="/product" className="text-decoration-none">
+    <Link href={link} className="text-decoration-none">
       <div className={`${style['cate-select']} overflow-hidden rounded-4`}>
         <div className={`${style['cate-card']} card rounded-4 border-0`}>
           <div className="card-img overflow-hidden rounded-4">

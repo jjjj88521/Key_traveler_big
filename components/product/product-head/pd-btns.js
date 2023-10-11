@@ -17,12 +17,22 @@ const BuyBtn = () => {
   )
 }
 
-const LikeBtn = ({ isLiked = false }) => {
-  const [liked, setLiked] = useState(isLiked)
+const LikeBtn = ({ isLiked = false, onToggleLike }) => {
+  // const [liked, setLiked] = useState(isLiked)
+  const handleToggleLike = () => {
+    onToggleLike()
+  }
   return (
-    <button className={`h4 bg-white border-0`} onClick={() => setLiked(!liked)}>
-      <span className={`${liked ? 'text-danger' : ''}`}>
-        <i className={`${liked ? 'fa-solid' : 'fa-regular'} fa-heart pe-2`}></i>
+    <button
+      className={`h4 bg-white border-0`}
+      onClick={() => {
+        handleToggleLike()
+      }}
+    >
+      <span className={`${isLiked ? 'text-danger' : ''}`}>
+        <i
+          className={`${isLiked ? 'fa-solid' : 'fa-regular'} fa-heart pe-2`}
+        ></i>
         Like
       </span>
     </button>
