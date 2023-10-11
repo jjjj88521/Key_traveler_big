@@ -145,7 +145,8 @@ export default function ProductIndex() {
                       title={v.name}
                       brand={v.brand}
                       price={v.price}
-                      imagePath={v.imagePath}
+                      image={v.images}
+                      stock={v.stock}
                     />
                   </div>
                 </div>

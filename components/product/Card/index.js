@@ -1,27 +1,21 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import styles from './card.module.scss'
 
-export default function Card({ title, brand, price, imagePath }) {
-  // 截斷過長的文字
-  function truncateText(text, maxLength) {
-    if (text.length <= maxLength) {
-      return text
-    } else {
-      return text.substring(0, maxLength) + '...'
-    }
-  }
-
+export default function Card({ title, brand, price, image, stock }) {
   return (
     <>
       <div className={`card h-auto ${styles['card']} overflow-hidden border-0`}>
         <img
-          src={imagePath}
+          src={`/public/images/${image}`}
           className={`card-img-top ${styles.cardImg}`}
           alt="Product"
         />
-        {/* 待完成，判斷有貨or缺貨(outofstock)，判斷是否為新品(ribbon) */}
-        <div className={styles['ribbon']}></div>
-        {/* <div className={styles['outofstock']}></div> */}
+        {/* 待完成，判斷是否為新品(ribbon) */}
+        {stock === 0 ? (
+          <div className={styles['outofstock']}></div>
+        ) : (
+          <div className={styles['ribbon']}></div>
+        )}
         <div className="card-body w-100 position-relative bg-secondary-subtle py-4 vstack gap-2">
           <h5 className={`${styles['card-title-name']} card-title fw-bold`}>
             {title}
@@ -38,7 +32,14 @@ export default function Card({ title, brand, price, imagePath }) {
           </button>
         </div>
         <div className={`d-flex flex-column gap-3 ${styles['info']}`}>
-          <button className={styles['infoBtn1']}>加入購物車</button>
+          <button
+            className={`${styles['infoBtn1']} ${
+              stock === 0 ? styles['invalidButton'] : ''
+            }`}
+            disabled={stock === 0} //根據是否缺貨
+          >
+            加入購物車
+          </button>
           <button className={styles['infoBtn2']}>
             <i className="fa-regular fa-heart"></i> Like
           </button>

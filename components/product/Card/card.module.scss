@@ -84,6 +84,16 @@
         color: white;
       }
     }
+    .invalidButton {
+      background: #ddd;
+      color: #aaa;
+      cursor: default;
+
+      &:hover {
+        background: #ddd;
+        color: #aaa;
+      }
+    }
 
     .infoBtn2 {
       background: none;
@@ -188,7 +198,7 @@
     text-align: center;
     width: 70px;
     height: 70px;
-    top: calc(50% - 35px);
+    top: calc(20% - 35px);
     left: calc(50% - 35px);
     font-size: 0.8em;
     font-weight: bold;
