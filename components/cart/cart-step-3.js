@@ -3,8 +3,6 @@ import { Steps } from 'antd'
 import CartStep from './cart-step'
 
 export default function CartStep3() {
-  const someValue = localStorage.getItem('someKey')
-  console.log(someValue) // 在控制台中查看值，您可以根据需要进行显示
   return (
     <div className="container text-center mt-5" style={{ height: '500px' }}>
       {/* <Steps

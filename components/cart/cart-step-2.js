@@ -1,27 +1,35 @@
-import React, { useState } from 'react'
+import { React, useState, useEffect } from 'react'
 import style from './cart2.module.scss'
 import { Divider } from 'antd'
 import { Radio, List } from 'antd'
-
-const cardListData = [
-  {
-    value: '1',
-    bank: 'xx銀行',
-    last4num: '1234',
-  },
-  {
-    value: '2',
-    bank: 'yy銀行',
-    last4num: '5678',
-  },
-  {
-    value: '3',
-    bank: 'zz銀行',
-    last4num: '9012',
-  },
-]
+import { useAuth } from '@/hooks/useAuth'
 
 export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
+  const { auth, coupon, getCoupon } = useAuth()
+  useEffect(() => {
+    getCoupon()
+  }, [])
+  console.log(auth.user)
+  console.log(coupon)
+
+  const cardListData = [
+    {
+      value: '1',
+      bank: 'xx銀行',
+      last4num: auth.user.card_number.slice(12, 16),
+    },
+    {
+      value: '2',
+      bank: 'yy銀行',
+      last4num: '5678',
+    },
+    {
+      value: '3',
+      bank: 'zz銀行',
+      last4num: '9012',
+    },
+  ]
+  // {auth.user.card_number.slice(12, 16)}
   // 收件人資料_S
   const [buyerValue, setbuyerValue] = useState(1)
   const buyeronChange = (e) => {
@@ -70,15 +78,6 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
   }
   // 付款方式_E
 
-  // 信用卡選取_S
-  const [selectedPayment, setSelectedPayment] = useState(1)
-  const handleRadioChange = (e) => {
-    console.log('payment card checked', e.target.value)
-
-    setSelectedPayment(e.target.value)
-  }
-  // 信用卡選取_E
-
   // 信用卡新增_S
   const [paymentData, setPaymentData] = useState(cardListData)
   const [newBank, setNewBank] = useState('aa銀行')
@@ -101,14 +100,21 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
     }
   }
   // 信用卡新增_E
+  // 信用卡選取_S
+  const [selectedPayment, setSelectedPayment] = useState(paymentData[0].value)
+  const handleRadioChange = (e) => {
+    console.log('payment card checked', e.target.value)
+
+    setSelectedPayment(e.target.value)
+  }
+  // 信用卡選取_E
 
   return (
     <>
       <div className="container">
         <div className="row mt-5">
           <div className="col-10 mx-auto">
-            <div className="d-flex justify-content-center mb-3">
-            </div>
+            <div className="d-flex justify-content-center mb-3"></div>
             <div className="orderInfo">
               <div className={`${style['buyerInfo']}`}>
                 <div className={`${style['cart_subtitle']}`}>訂購人資訊</div>
@@ -119,7 +125,8 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
                     姓名
                   </div>
                   <div className={`col-9 border ${style['infoRight']}`}>
-                    會員姓名
+                    {/* 會員姓名 */}
+                    {auth.user.last_name + auth.user.first_name}
                   </div>
                 </div>
                 <div
@@ -129,7 +136,8 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
                     Email
                   </div>
                   <div className={`col-9 border ${style['infoRight']}`}>
-                    會員Email
+                    {/* 會員Email */}
+                    {auth.user.email}
                   </div>
                 </div>
                 <div
@@ -139,7 +147,8 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
                     電話
                   </div>
                   <div className={`col-9 border ${style['infoRight']}`}>
-                    會員電話
+                    {/* 會員電話 */}
+                    {auth.user.phone}
                   </div>
                 </div>
                 <div
@@ -149,7 +158,8 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
                     地址
                   </div>
                   <div className={`col-9 border ${style['infoRight']}`}>
-                    會員地址
+                    {/* 會員地址 */}
+                    {auth.user.address}
                   </div>
                 </div>
               </div>
@@ -198,7 +208,8 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
                         姓名
                       </div>
                       <div className={`col-9 border ${style['infoRight']}`}>
-                        會員姓名
+                        {/* 會員姓名 */}
+                        {auth.user.last_name + auth.user.first_name}
                       </div>
                     </div>
                     <div
@@ -208,7 +219,8 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
                         電話
                       </div>
                       <div className={`col-9 border ${style['infoRight']}`}>
-                        會員電話
+                        {/* 會員電話 */}
+                        {auth.user.phone}
                       </div>
                     </div>
                     <div
@@ -218,7 +230,8 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
                         地址
                       </div>
                       <div className={`col-9 border ${style['infoRight']}`}>
-                        會員地址
+                        {/* 會員地址 */}
+                        {auth.user.address}
                       </div>
                     </div>
                   </div>
@@ -317,7 +330,7 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
                     id="modal"
                   >
                     <div
-                      class={`${style['dia']} d-none ps-4 pe-4`}
+                      className={`${style['dia']} d-none ps-4 pe-4`}
                       id="dialog"
                       style={{ paddingTop: '35px' }}
                     >
@@ -395,14 +408,14 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
                         onChange={(e) => setNewBank(e.target.value)}
                       ></input>
                       <button
-                        class={`btn ${style['button_main']}`}
+                        className={`btn ${style['button_main']}`}
                         id="newbtn"
                         onClick={addPaymentOption}
                       >
                         新增
                       </button>
                       <button
-                        class={`btn ${style['button_reverse']}`}
+                        className={`btn ${style['button_reverse']}`}
                         id="closebtn"
                         onClick={() => {
                           document
@@ -414,7 +427,7 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
                       </button>
                     </div>
                     <button
-                      class={`btn ${style['button_main']} ms-4`}
+                      className={`btn ${style['button_main']} ms-4`}
                       id="show"
                       onClick={() => {
                         document
@@ -437,17 +450,16 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
             </div>
             <div className="stepBtn d-flex justify-content-end">
               <button
-                class={`btn ${style['button_reverse']} me-2`}
+                className={`btn ${style['button_reverse']} me-2`}
                 id="checkProduct"
                 onClick={ongotoPage1}
               >
                 上一步
               </button>
               <button
-                class={`btn btn-primary px-3 py-2`}
+                className={`btn btn-primary px-3 py-2`}
                 id="completeOrder"
                 onClick={() => {
-                  localStorage.setItem('someKey1', 'someValue11111')
                   ongotoPage3()
                 }}
               >

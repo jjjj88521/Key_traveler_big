@@ -7,8 +7,14 @@ import PCartList from '@/components/cart/p-cart-list'
 import RCartList from '@/components/cart/r-cart-list'
 import GCartList from '@/components/cart/g-cart-list'
 import ProceedToCheckout from '@/components/cart/proceed-to-checkout'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function Cart() {
+  const { auth, coupon, getCoupon } = useAuth()
+  useEffect(() => {
+    getCoupon()
+  }, [])
+  console.log(coupon)
   const [currentStep, setCurrentStep] = useState(1)
 
   const handleStepChange = (step) => {

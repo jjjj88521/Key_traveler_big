@@ -1,8 +1,8 @@
 import { React, useState } from 'react'
-import style from './coupon.module.scss'
-import { Card, List } from 'antd'
 import PaginationComponent from '@/components/common/PaginationComponent'
-import { Tabs } from 'antd'
+import UserLayout from '@/components/layout/user-layout'
+import ListCardHistory from '@/components/user/List-Card/list-card-history'
+import TabButtonForUser from '@/components/user/coupon-tabs'
 
 const expiredData = Array.from({
   length: 3,
@@ -70,87 +70,30 @@ export default function Coupon() {
   const tabsOnChange = (key) => {
     console.log('tab key:' + key)
     setTabkey(key)
+    setCurrentPage(1)
   }
 
   return (
     <>
-      {console.log('load tabkey:' + tabkey)}
-      <div>
-        <div className="all_coupon container bg-secondary-subtle my-4 py-3 col-11 col-lg-7 ">
-          <div className="d-flex align-items-center justify-content-between mt-5">
-            <h2 style={{ paddingLeft: '24px' }} className="m-0">
-              歷史紀錄
-            </h2>
-          </div>
+      <UserLayout title={'歷史紀錄'}>
+        <div>
           <div style={{ margin: '20px 25px 5px' }}>
-            <Tabs
-              defaultActiveKey="1"
-              items={items}
-              type="card"
-              onChange={tabsOnChange}
+            <TabButtonForUser tabItems={items} tabsChange={tabsOnChange} />
+          </div>
+          <div style={{ minHeight: '500px' }}>
+            <ListCardHistory
+              hisTab={tabkey}
+              hisData={tabkey == '1' ? displayedExpiredData : displayedUsedData}
             />
           </div>
-          <div>
-            <List
-              grid={{
-                gutter: 0,
-                xs: 1,
-                sm: 1,
-                md: 2,
-                lg: 2,
-                xl: 2,
-                xxl: 2,
-              }}
-              size="large"
-              dataSource={
-                tabkey === '1' ? displayedExpiredData : displayedUsedData
-              }
-              renderItem={(item) => (
-                <List.Item key={item.key + 1}>
-                  <Card
-                    className={
-                      tabkey === '1'
-                        ? `${style['expiredCoupon']}`
-                        : `${style['usedCoupon']}`
-                    }
-                  >
-                    <div
-                      className={`d-flex align-items-center`}
-                      id={
-                        tabkey === '1'
-                          ? 'expired_' + (item.key + 1)
-                          : 'used_' + (item.key + 1)
-                      }
-                    >
-                      {/* <div> */}
-                      <img
-                        width={100}
-                        alt="logo"
-                        src="/images/coupon_notUse.png"
-                      />
-                      {/* </div> */}
-                      <div className={`ms-2 text-secondary`}>
-                        <h5>{item.title}</h5>
-                        <h6 style={{ maxWidth: '300px' }}>
-                          {item.description}
-                        </h6>
-                        <p className="m-0">低消 ${item.threshold} 起</p>
-                        <p className="m-0">有效日期：{item.endTime}</p>
-                      </div>
-                    </div>
-                  </Card>
-                </List.Item>
-              )}
-            />
-            <PaginationComponent
-              totalItems={tabkey === '1' ? expiredData.length : usedData.length} // 总项目数量
-              pageSize={pageSize} // 每页显示的项目数量
-              currentPage={currentPage} // 当前页码
-              onPageChange={handlePageChange} // 处理页码变化事件的回调函数
-            />
-          </div>
+          <PaginationComponent
+            totalItems={tabkey === '1' ? expiredData.length : usedData.length} // 总项目数量
+            pageSize={pageSize} // 每页显示的项目数量
+            currentPage={currentPage} // 当前页码
+            onPageChange={handlePageChange} // 处理页码变化事件的回调函数
+          />
         </div>
-      </div>
+      </UserLayout>
     </>
   )
 }

@@ -1,6 +1,8 @@
 import { React, useEffect } from 'react'
 import NewCouponPage from '@/components/common/PaginationComponent/newCouponPage'
 import ListCardForCoupon from '../List-Card'
+import { useRouter } from 'next/router'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function CouponExpiring({
   couponExpiringData,
@@ -10,17 +12,25 @@ export default function CouponExpiring({
   handlePageChange,
   filterExpiringData,
 }) {
+  const router = useRouter()
+  const { auth, coupon, getCoupon } = useAuth()
+  const { isReady, asPath } = router
   useEffect(() => {
-    // 在组件加载时过滤并设置初始的数据
-    const filteredData = filterExpiringData(couponExpiringData)
-    setCouponExpiringData(filteredData)
-  }, []) // 空数组表示只在组件加载时运行一次
+    if (isReady) {
+      // 在组件加载时过滤并设置初始的数据
+      const filteredData = filterExpiringData(couponExpiringData)
+      setCouponExpiringData(filteredData)
+    }
+  }, [isReady]) // 空数组表示只在组件加载时运行一次
 
   // 根據目前頁和每頁顯示的數量計算要顯示的數據
   const startEIndex = (currentPage - 1) * pageSize
   const endEIndex = startEIndex + pageSize
-  const displayedEData = couponExpiringData.slice(startEIndex, endEIndex)
-  console.log(displayedEData.length)
+  const displayedEData = Array.isArray(couponExpiringData)
+    ? couponExpiringData.slice(startEIndex, endEIndex)
+    : []
+  // const displayedEData = couponExpiringData.slice(startEIndex, endEIndex)
+  // console.log(displayedEData.length)
   return (
     <>
       <div className={`mt-1`}>

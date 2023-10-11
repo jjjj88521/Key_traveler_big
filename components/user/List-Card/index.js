@@ -8,6 +8,7 @@ const millisecondsInADay = 1000 * 60 * 60 * 24
 export default function ListCardForCoupon({ data, type }) {
   return (
     <>
+      {/* <div style={{ minHeight: '500px' }}> */}
       <List
         grid={{
           gutter: 0,
@@ -33,7 +34,9 @@ export default function ListCardForCoupon({ data, type }) {
                   />
                 </div>
                 <div className="ms-2">
-                  <h5 className="text-primary">{item.title}</h5>
+                  <h5 className="text-primary">
+                    {item.coupon_name || item.coupon_code}
+                  </h5>
                   <h6 className={`${style['couponDesription']}`}>
                     <div>{item.description}</div>
                   </h6>
@@ -49,21 +52,21 @@ export default function ListCardForCoupon({ data, type }) {
                   <p>
                     有效日期：
                     {type === 'All' ? (
-                      item.endTime
+                      item.end_date
                     ) : (
                       <div className="text-danger">
                         <i className="fa-solid fa-clock me-1"></i>
-                        {item.endTime}
+                        {item.end_date}
                         <br></br>
                         <p className="mb-0 ms-3">
                           (剩餘{' '}
                           {Math.floor(
-                            (moment(item.endTime) - moment()) /
+                            (moment(item.end_date) - moment()) /
                               millisecondsInADay
                           )}{' '}
                           天{' '}
                           {Math.floor(
-                            ((moment(item.endTime) - moment()) %
+                            ((moment(item.end_date) - moment()) %
                               millisecondsInADay) /
                               (1000 * 60 * 60)
                           )}{' '}
@@ -78,6 +81,7 @@ export default function ListCardForCoupon({ data, type }) {
           </List.Item>
         )}
       />
+      {/* </div> */}
     </>
   )
 }
