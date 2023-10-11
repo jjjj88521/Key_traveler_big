@@ -1,9 +1,14 @@
 import React, { useState } from 'react'
 // import { useCartContext } from '@/context/cart'
+import { useCart } from '@/hooks/use-cart'
+import { useSecondCart } from '@/hooks/useSecondCart'
+import { useThirdCart } from '@/hooks/useThirdCart'
 
 export default function ProceedToCheckout({ orderTotalAll, orderAmountAll }) {
   // const { priceData, setPrice } = useCartContext()
-
+  const firstCart = useCart()
+  const secondCart = useSecondCart()
+  const thirdCart = useThirdCart()
   const initialCoupons = [
     {
       id: 1,

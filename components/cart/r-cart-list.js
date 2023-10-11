@@ -15,10 +15,7 @@ export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
   const {
     cart,
     items,
-    plusOne,
-    minusOne,
     removeItem,
-    toggleCheckAll,
     getCurrentDate,
     handleStartDateChange,
     handleEndDateChange,
@@ -47,7 +44,34 @@ export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
   // const [totalAmount, setTotalAmount] = useState(0) // 總計的狀態變數
   // const [orderTotal, setOrderTotal] = useState(0) // 總金額的狀態變數
   // const [orderAmount, setOrderAmount] = useState(0) //總件數的狀態變數
+  const [checkAll, setCheckAll] = useState(false)
+  const [checkedItems, setCheckedItems] = useState({})
 
+  // 單選
+  const handleToggleCheck = (id) => {
+    const updatedCheckedItems = { ...checkedItems }
+    updatedCheckedItems[id] = !updatedCheckedItems[id]
+    setCheckedItems(updatedCheckedItems)
+  }
+
+  // 全選
+  const handleToggleCheckAll = () => {
+    setCheckAll(!checkAll)
+    const updatedCheckedItems = {}
+    if (!checkAll) {
+      items.forEach((item) => {
+        updatedCheckedItems[item.id] = true
+      })
+    }
+    setCheckedItems(updatedCheckedItems)
+  }
+
+  useEffect(() => {
+    // 單選全勾，全選就勾
+    const allChecked =
+      items.length > 0 && items.every((item) => checkedItems[item.id])
+    setCheckAll(allChecked)
+  }, [items, checkedItems])
   // //R總計
   // useEffect(() => {
   //   // 計算小計和總計及總金額
@@ -165,6 +189,8 @@ export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
             >
               <input
                 type="checkbox"
+                checked={checkAll}
+                onChange={handleToggleCheckAll}
                 // checked={checkAllRent}
                 // onChange={(e) => {
                 //   setCheckAllRent(e.target.checked)
@@ -183,11 +209,13 @@ export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
           </tr>
         </thead>
         <tbody className="accordion-collapse collapse show" id="collapseThree">
-          {items.map((v) => (
-            <tr key={v.id}>
+          {items.map((v, i) => (
+            <tr key={i}>
               <td className="text-center align-middle">
                 <input
                   type="checkbox"
+                  checked={checkedItems[v.id] || false}
+                  onChange={() => handleToggleCheck(v.id)}
                   // checked={v.check}
                   // onClick={() => {
                   //   handleToggleCheckRent(v.id)
@@ -199,23 +227,21 @@ export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
                   <Image src={v.img} width={100} height={100} alt="" />
                 </div>
                 <div className="p-2">
-                  <div>Qwertykey</div>
+                  <div>{v.brand}</div>
                   <div>{v.name}</div>
                   <div className="pt-1">
-                    <select
-                      className="form-select form-select-sm mb-1"
-                      style={{ width: 140 }}
-                      disabled
-                    >
-                      <option>陽極紅</option>
-                    </select>
-                    <select
-                      className="form-select form-select-sm"
-                      style={{ width: 140 }}
-                      disabled
-                    >
-                      <option>噴砂銀</option>
-                    </select>
+                    {Object.keys(v.spec).map((key) => (
+                      <select
+                        key={key}
+                        className="form-select form-select-sm mb-1"
+                        style={{ width: 140 }}
+                        disabled
+                      >
+                        {v.spec[key].map((option, optionIndex) => (
+                          <option key={optionIndex}>{option}</option>
+                        ))}
+                      </select>
+                    ))}
                   </div>
                 </div>
               </td>
@@ -283,6 +309,8 @@ export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
             >
               <input
                 type="checkbox"
+                checked={checkAll}
+                onChange={handleToggleCheckAll}
                 // checked={checkAllRent}
                 // onChange={(e) => {
                 //   setCheckAllRent(e.target.checked)
@@ -308,11 +336,13 @@ export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
           </tr>
         </thead>
         <tbody className="accordion-collapse collapse show" id="collapseThree">
-          {items.map((v) => (
-            <tr key={v.id}>
+          {items.map((v, i) => (
+            <tr key={i}>
               <td className="text-center align-middle px-1">
                 <input
                   type="checkbox"
+                  checked={checkedItems[v.id] || false}
+                  onChange={() => handleToggleCheck(v.id)}
                   // checked={v.check}
                   // onClick={() => {
                   //   handleToggleCheckRent(v.id)
@@ -324,23 +354,21 @@ export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
                   <Image src={v.img} width={100} height={100} alt="" />
                 </div>
                 <div>
-                  <div className="">Qwertykey</div>
-                  <div>{items.name}</div>
+                  <div className="">{v.brand}</div>
+                  <div>{v.name}</div>
                   <div className="p-1">
-                    <select
-                      className="form-select form-select-sm py-0 mb-1"
-                      style={{ width: 100 }}
-                      disabled
-                    >
-                      <option>陽極紅</option>
-                    </select>
-                    <select
-                      className="form-select form-select-sm py-0"
-                      style={{ width: 100 }}
-                      disabled
-                    >
-                      <option>噴砂銀</option>
-                    </select>
+                    {Object.keys(v.spec).map((key) => (
+                      <select
+                        key={key}
+                        className="form-select form-select-sm mb-1"
+                        style={{ width: 140 }}
+                        disabled
+                      >
+                        {v.spec[key].map((option, optionIndex) => (
+                          <option key={optionIndex}>{option}</option>
+                        ))}
+                      </select>
+                    ))}
                   </div>
                   <div className="input-group ms-1 mt-1">
                     <input

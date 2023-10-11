@@ -6,6 +6,7 @@ import AntdConfigProvider from './_antd-config-provider'
 import HomeLayout from '@/components/layout/home-layout'
 import { CartProvider } from '@/hooks/use-cart'
 import { SecondCartProvider } from '@/hooks/useSecondCart'
+import { ThirdCartProvider } from '@/hooks/useThirdCart'
 import { AuthProvider } from '@/hooks/useAuth'
 import HydrationFix from './_hydration-fix'
 
@@ -39,7 +40,9 @@ export default function MyApp({ Component, pageProps }) {
     <AuthProvider>
       <CartProvider>
         <SecondCartProvider>
-          <Component {...pageProps} />
+          <ThirdCartProvider>
+            <Component {...pageProps} />
+          </ThirdCartProvider>
         </SecondCartProvider>
       </CartProvider>
     </AuthProvider>

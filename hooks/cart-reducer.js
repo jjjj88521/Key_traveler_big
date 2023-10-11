@@ -12,17 +12,19 @@ export const initialState = {
 // const item = {
 //   id: '',
 //   img: '',
+//   brand: '',
 //   name: '',
 //   price: 0,
 //   quantity: 0,
+//   spec: '',
 // }
 
 //全選
-const toggleCheckAll = (state, action) => {
-  return state.items.map((item) => {
-    return { ...item, check: action.payload }
-  })
-}
+// const toggleCheckAll = (state, action) => {
+//   return state.items.map((item) => {
+//     return { ...item, check: action.payload }
+//   })
+// }
 /**
  * addItem 加入項目於state中
  * @param  {} state
@@ -144,7 +146,7 @@ const startDateChange = (state, action) => {
     item.startDate = newStartDate
     const startDate = item.startDate
     const action = {
-      type: 'UPDATE_ITEM',
+      type: 'UPDATE_RENT_ITEM',
       payload: { id, startDate },
     }
 
@@ -167,7 +169,7 @@ const endDateChange = (state, action) => {
     item.endDate = newEndDate
     const endDate = item.endDate
     const action = {
-      type: 'UPDATE_ITEM',
+      type: 'UPDATE_RENT_ITEM',
       payload: { id, endDate },
     }
 
@@ -201,10 +203,17 @@ const calculateRentItemTotals = (items) => {
 //計算一般商品總計
 const calculateTotal = (items) =>
   items.reduce((total, item) => total + item.quantity * item.price, 0)
-//計算租用商品總計
-const calculateRentTotal = (items) =>
-  items.reduce((total, item) => total + item.subtotal, 0)
 
+// 計算租用商品總計
+const calculateRentTotal = (items) => {
+  // 先計算每個商品的小計
+  const itemsWithSubtotals = calculateRentItemTotals(items)
+
+  // 使用 reduce 函數將小計相加起來
+  const total = itemsWithSubtotals.reduce((acc, item) => acc + item.subtotal, 0)
+
+  return total
+}
 const calculateTotalItems = (items) =>
   items.reduce((sum, item) => sum + item.quantity, 0)
 
@@ -225,7 +234,6 @@ const generateCartState = (state, items) => {
 const generateRentCartState = (state, items) => {
   // isEmpty為布林值
   const isEmpty = items.length === 0
-
   return {
     ...initialState,
     ...state,
@@ -240,7 +248,9 @@ const generateRentCartState = (state, items) => {
 export const init = (items) => {
   return generateCartState({}, items)
 }
-
+export const initRent = (items) => {
+  return generateRentCartState({}, items)
+}
 export const reducer = (state, action) => {
   switch (action.type) {
     case 'ADD_ITEM':
@@ -249,6 +259,8 @@ export const reducer = (state, action) => {
       return generateCartState(state, removeItem(state, action))
     case 'UPDATE_ITEM':
       return generateCartState(state, updateItem(state, action))
+    case 'UPDATE_RENT_ITEM':
+      return generateRentCartState(state, updateItem(state, action))
     case 'PLUS_ONE':
       return generateCartState(state, plusItemQuantityOnce(state, action))
     case 'MINUS_ONE':

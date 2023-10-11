@@ -13,29 +13,39 @@ const CartContext = createContext(null)
 // item = {
 //   id: '',
 //   img: '',
+//   brand: '',
 //   name: '',
 //   price: 0,
 //   quantity: 0,
+//   spec: '',
 // }
 
 export const CartProvider = ({
   children,
   initialProducts = [
     {
-      id: 1,
-      // check: false,
+      id: 5,
       img: '/images/1669370674683000804.jpg',
-      name: 'QK75鍵盤鍵盤鍵盤鍵盤',
+      brand: 'Meletrix',
+      name: 'Meletrix ZoomPad 數字鍵盤套件 SP版(左手版)',
       price: 3000,
       quantity: 1,
+      spec: {
+        外殼: ['EE 耀夜黑', 'EE 細花白'],
+        '配重/旋鈕': ['電泳 白', '陽極 黑'],
+      },
     },
     {
       id: 2,
-      // check: false,
       img: '/images/1669370674683000804.jpg',
-      name: 'QK75鍵盤鍵盤鍵盤鍵盤',
+      brand: 'Meletrix',
+      name: 'Meletrix ZoomPad 數字鍵盤套件 SP版(左手版)',
       price: 1000,
       quantity: 1,
+      spec: {
+        外殼: ['EE 耀夜黑', 'EE 細花白'],
+        '配重/旋鈕': ['電泳 白', '陽極 黑'],
+      },
     },
   ], //初始化購物車的加入項目
 }) => {
@@ -128,14 +138,14 @@ export const CartProvider = ({
       },
     })
   }
-  const toggleCheckAll = (checkAll) => {
-    return dispatch({
-      type: 'Toggle_Check_All',
-      payload: {
-        checkAll,
-      },
-    })
-  }
+  // const handleToggleCheckAll = (checkAll) => {
+  //   return dispatch({
+  //     type: 'Toggle_Check_All',
+  //     payload: {
+  //       checkAll,
+  //     },
+  //   })
+  // }
   return (
     <CartContext.Provider
       value={{
@@ -148,7 +158,6 @@ export const CartProvider = ({
         isInCart,
         plusOne,
         minusOne,
-        toggleCheckAll,
       }}
     >
       {children}

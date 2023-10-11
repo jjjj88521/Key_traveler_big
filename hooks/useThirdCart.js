@@ -1,20 +1,35 @@
 import React, { useReducer, useContext, createContext, useEffect } from 'react'
-import { reducer, initRent } from './cart-reducer'
+import { reducer, init } from './cart-reducer'
 
-const SecondCartContext = createContext(null)
+const ThirdCartContext = createContext(null)
 
-export const SecondCartProvider = ({
+// initialState = {
+//   items: [],
+//   isEmpty: true,
+//   totalItems: 0, //商品數量+-
+//   cartTotal: 0, //總計
+// }
+
+// item = {
+//   id: '',
+//   img: '',
+//   brand: '',
+//   name: '',
+//   price: 0,
+//   quantity: 0,
+//   spec: '',
+// }
+
+export const ThirdCartProvider = ({
   children,
-  initialRentProducts = [
+  initialProducts = [
     {
       id: 1,
-      check: false,
+      // check: false,
       img: '/images/1669370674683000804.jpg',
       brand: 'Meletrix',
       name: 'Meletrix ZoomPad 數字鍵盤套件 SP版(左手版)',
-      price: 300,
-      startDate: '2023-10-15',
-      endDate: '2023-10-16',
+      price: 3000,
       quantity: 1,
       spec: {
         外殼: ['EE 耀夜黑', 'EE 細花白'],
@@ -23,25 +38,29 @@ export const SecondCartProvider = ({
     },
     {
       id: 2,
-      check: false,
+      // check: false,
       img: '/images/1669370674683000804.jpg',
       brand: 'Meletrix',
       name: 'Meletrix ZoomPad 數字鍵盤套件 SP版(左手版)',
-      price: 100,
-      startDate: '2023-10-17',
-      endDate: '2023-10-18',
+      price: 1000,
       quantity: 1,
       spec: {
         外殼: ['EE 耀夜黑', 'EE 細花白'],
         '配重/旋鈕': ['電泳 白', '陽極 黑'],
       },
     },
-  ],
+  ], //初始化購物車的加入項目
 }) => {
-  let items = initialRentProducts
+  let items = initialProducts
 
-  const [state, dispatch] = useReducer(reducer, items, initRent)
+  // init state, init來自cartReducer中
+  const [state, dispatch] = useReducer(reducer, items, init)
 
+  /**
+   * 加入新項目(quantity:1)，重覆項目 quantity: quantity + 1
+   * @param  {Object} item
+   * @returns {void}
+   */
   const addItem = (item) => {
     dispatch({
       type: 'ADD_ITEM',
@@ -49,6 +68,11 @@ export const SecondCartProvider = ({
     })
   }
 
+  /**
+   * 給定一id值，將這商品移出陣列中
+   * @param {string} id
+   * @returns {void}
+   */
   const removeItem = (id) => {
     dispatch({
       type: 'REMOVE_ITEM',
@@ -58,23 +82,42 @@ export const SecondCartProvider = ({
     })
   }
 
+  /**
+   * 給定一item物件，依照id尋找後更新其中的屬性值
+   * @param {Object} item
+   * @returns {void}
+   */
   const updateItem = (item) => {
     dispatch({
-      type: 'UPDATE_RENT_ITEM',
+      type: 'UPDATE_ITEM',
       payload: item,
     })
   }
 
+  /**
+   * 清空整個購物車
+   * @returns {void}}
+   */
   const clearCart = () => {
     dispatch({
       type: 'CLEAR_CART',
     })
   }
 
+  /**
+   * 給定一id值，回傳是否存在於購物車中
+   * @param {string} id
+   * @returns {boolean}
+   */
   const isInCart = (id) => {
     return state.items.some((item) => item.id === id)
   }
 
+  /**
+   * 給定一id值，有尋找到商品時，設定quantity: quantity + 1
+   * @param {string} id
+   * @returns {void}
+   */
   const plusOne = (id) => {
     return dispatch({
       type: 'PLUS_ONE',
@@ -83,8 +126,11 @@ export const SecondCartProvider = ({
       },
     })
   }
+
   /**
-   * @param  {} id
+   * 給定一id值，有尋找到商品時，設定quantity: quantity - 1，但 quantity 最小值為1
+   * @param {string} id
+   * @returns {void}
    */
   const minusOne = (id) => {
     return dispatch({
@@ -94,37 +140,16 @@ export const SecondCartProvider = ({
       },
     })
   }
-  // 租用日期不可選已過去日期
-  // 獲取當前日期並格式化為 yyyy-MM-dd
-  const getCurrentDate = () => {
-    const today = new Date()
-    const year = today.getFullYear()
-    const month = String(today.getMonth() + 1).padStart(2, '0')
-    const day = String(today.getDate()).padStart(2, '0')
-    return `${year}-${month}-${day}`
-  }
-  //租用起日
-  const handleStartDateChange = (id, newStartDate) => {
+  const toggleCheckAll = (checkAll) => {
     return dispatch({
-      type: 'Start_Date_Change',
+      type: 'Toggle_Check_All',
       payload: {
-        id,
-        newStartDate,
-      },
-    })
-  }
-  //租用迄日
-  const handleEndDateChange = (id, newEndDate) => {
-    return dispatch({
-      type: 'End_Date_Change',
-      payload: {
-        id,
-        newEndDate,
+        checkAll,
       },
     })
   }
   return (
-    <SecondCartContext.Provider
+    <ThirdCartContext.Provider
       value={{
         cart: state,
         items: state.items,
@@ -135,14 +160,12 @@ export const SecondCartProvider = ({
         isInCart,
         plusOne,
         minusOne,
-        getCurrentDate,
-        handleStartDateChange,
-        handleEndDateChange,
+        toggleCheckAll,
       }}
     >
       {children}
-    </SecondCartContext.Provider>
+    </ThirdCartContext.Provider>
   )
 }
 
-export const useSecondCart = () => useContext(SecondCartContext)
+export const useThirdCart = () => useContext(ThirdCartContext)

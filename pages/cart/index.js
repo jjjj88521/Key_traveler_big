@@ -8,6 +8,7 @@ import {
   faCaretDown,
   faCaretRight,
 } from '@fortawesome/free-solid-svg-icons'
+import Link from 'next/link'
 
 import CartStep1 from '@/components/cart/cart-step-1'
 import PCartList from '@/components/cart/p-cart-list'
@@ -138,6 +139,10 @@ export default function Cart() {
       <div className="container">
         <CartStep1 />
         <h1 className="text-primary fs-3 pt-5 pb-3">購物車清單</h1>
+        <p>
+          <Link href="/cart/product-list">商品列表頁範例</Link>
+        </p>
+
         <PCartList
           setOrderTotalP={setOrderTotalP}
           setOrderAmountP={setOrderAmountP}

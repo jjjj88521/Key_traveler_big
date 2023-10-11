@@ -11,8 +11,7 @@ import { useCart } from '@/hooks/use-cart'
 export default function PCartList({ setOrderTotalP, setOrderAmountP }) {
   // const { priceData, setPrice } = useCartContext()
   // 使用hooks 解出所需的狀態與函式(自context)
-  const { cart, items, plusOne, minusOne, removeItem, toggleCheckAll } =
-    useCart()
+  const { cart, items, plusOne, minusOne, removeItem } = useCart()
 
   // const initialProducts = [
   //   {
@@ -33,8 +32,73 @@ export default function PCartList({ setOrderTotalP, setOrderAmountP }) {
 
   // const [products, setProducts] = useState(items)
   // const [checkAll, setCheckAll] = useState(false)
-  // const [orderTotal, setOrderTotal] = useState(0) // 總金額的狀態變數
-  // const [orderAmount, setOrderAmount] = useState(0) //總件數的狀態變數
+  const [orderTotal, setOrderTotal] = useState(0) // 總金額的狀態變數
+  const [orderAmount, setOrderAmount] = useState(0) //總件數的狀態變數
+  const [checkAll, setCheckAll] = useState(false)
+  const [checkedItems, setCheckedItems] = useState({})
+
+  // 全選
+  const handleToggleCheckAll = () => {
+    const updatedCheckedItems = {}
+    setCheckAll(!checkAll)
+    if (!checkAll) {
+      items.forEach((item) => {
+        updatedCheckedItems[item.id] = true
+      })
+    } else {
+      items.forEach((item) => {
+        updatedCheckedItems[item.id] = false
+      })
+    }
+    setCheckedItems(updatedCheckedItems)
+    // console.log(updatedCheckedItems)
+    // updateOrderTotal(updatedCheckedItems)
+    // updateOrderAmount(updatedCheckedItems)
+  }
+
+  // 單選
+  const handleToggleCheck = (id) => {
+    const updatedCheckedItems = { ...checkedItems }
+    updatedCheckedItems[id] = !updatedCheckedItems[id]
+    setCheckedItems(updatedCheckedItems)
+
+    // console.log(checkedItems)
+    // updateOrderTotal(updatedCheckedItems)
+    // updateOrderAmount(updatedCheckedItems)
+  }
+
+  // 欲購買(有打勾的)總金額
+  const updateOrderTotal = (checkedItems) => {
+    let newOrderTotal = 0
+    items.forEach((item) => {
+      if (checkedItems[item.id]) {
+        newOrderTotal += item.price * item.quantity
+      }
+    })
+    setOrderTotal(newOrderTotal)
+    // console.log(newOrderTotal)
+  }
+
+  // 欲購買(有打勾的)總件數:一個打勾即一件
+  const updateOrderAmount = (checkedItems) => {
+    const count = Object.values(checkedItems).filter(
+      (isChecked) => isChecked
+    ).length
+    setOrderAmount(count)
+    console.log(count)
+  }
+  useEffect(() => {
+    // 單選全勾，全選就勾
+    const allChecked =
+      items.length > 0 && items.every((item) => checkedItems[item.id])
+    setCheckAll(allChecked)
+    updateOrderTotal(checkedItems)
+
+    updateOrderAmount(checkedItems)
+  }, [items, checkedItems])
+  // useEffect(() => {
+  //   updateOrderTotal(checkedItems)
+  // }, [items])
 
   // console.log('p-cart : ' + priceData)
   //P總金額
@@ -142,12 +206,12 @@ export default function PCartList({ setOrderTotalP, setOrderAmountP }) {
             >
               <input
                 type="checkbox"
-                // checked={checkAll}
-                onChange={(e) => {
-                  toggleCheckAll(e.target.checked)
-                  // setCheckAll(e.target.checked)
-                  // handleToggleCheckAll(e.target.checked)
-                }}
+                checked={checkAll}
+                onChange={handleToggleCheckAll}
+                // onChange={(e) => {
+                //   // setCheckAll(e.target.checked)
+                //   // handleToggleCheckAll(e.target.checked)
+                // }}
               />
             </th>
             <th className="bg-primary text-white ps-3" style={{ width: '40%' }}>
@@ -167,15 +231,14 @@ export default function PCartList({ setOrderTotalP, setOrderAmountP }) {
           </tr>
         </thead>
         <tbody className="accordion-collapse collapse show" id="collapseOne">
-          {items.map((v) => (
-            <tr key={v.id}>
+          {items.map((v, i) => (
+            <tr key={i}>
               <td className="text-center align-middle">
                 <input
                   type="checkbox"
-                  checked={v.check}
-                  // onChange={() => {
-                  //   handleToggleCheck(v.id)
-                  // }}
+                  // checked={v.check}
+                  checked={checkedItems[v.id] || false}
+                  onChange={() => handleToggleCheck(v.id)}
                 />
               </td>
               <td className="d-flex">
@@ -183,23 +246,21 @@ export default function PCartList({ setOrderTotalP, setOrderAmountP }) {
                   <Image src={v.img} width={100} height={100} alt="" />
                 </div>
                 <div className="p-2">
-                  <div>Qwertykey</div>
+                  <div>{v.brand}</div>
                   <div>{v.name}</div>
                   <div className="pt-1">
-                    <select
-                      className="form-select form-select-sm mb-1"
-                      style={{ width: 140 }}
-                      disabled
-                    >
-                      <option>陽極紅</option>
-                    </select>
-                    <select
-                      className="form-select form-select-sm"
-                      style={{ width: 140 }}
-                      disabled
-                    >
-                      <option>噴砂銀</option>
-                    </select>
+                    {Object.keys(v.spec).map((key) => (
+                      <select
+                        key={key}
+                        className="form-select form-select-sm mb-1"
+                        style={{ width: 140 }}
+                        disabled
+                      >
+                        {v.spec[key].map((option, optionIndex) => (
+                          <option key={optionIndex}>{option}</option>
+                        ))}
+                      </select>
+                    ))}
                   </div>
                 </div>
               </td>
@@ -273,7 +334,8 @@ export default function PCartList({ setOrderTotalP, setOrderAmountP }) {
             >
               <input
                 type="checkbox"
-                // checked={checkAll}
+                checked={checkAll}
+                onChange={handleToggleCheckAll}
                 // onChange={(e) => {
                 //   setCheckAll(e.target.checked)
                 //   handleToggleCheckAll(e.target.checked)
@@ -298,15 +360,14 @@ export default function PCartList({ setOrderTotalP, setOrderAmountP }) {
           </tr>
         </thead>
         <tbody className="accordion-collapse collapse show" id="collapseOne">
-          {items.map((v) => (
-            <tr key={v.id}>
+          {items.map((v, i) => (
+            <tr key={i}>
               <td className="text-center align-middle px-1">
                 <input
                   type="checkbox"
                   // checked={v.check}
-                  // onChange={() => {
-                  //   handleToggleCheck(v.id)
-                  // }}
+                  checked={checkedItems[v.id] || false}
+                  onChange={() => handleToggleCheck(v.id)}
                 />
               </td>
               <td className="d-flex px-1">
@@ -314,23 +375,21 @@ export default function PCartList({ setOrderTotalP, setOrderAmountP }) {
                   <Image src={v.img} width={100} height={100} alt="" />
                 </div>
                 <div>
-                  <div>Qwertykey</div>
+                  <div>{v.brand}</div>
                   <div>{v.name}</div>
                   <div className="pt-1">
-                    <select
-                      className="form-select form-select-sm mb-1 py-0"
-                      style={{ width: 100 }}
-                      disabled
-                    >
-                      <option>陽極紅</option>
-                    </select>
-                    <select
-                      className="form-select form-select-sm py-0"
-                      style={{ width: 100 }}
-                      disabled
-                    >
-                      <option>噴砂銀</option>
-                    </select>
+                    {Object.keys(v.spec).map((key) => (
+                      <select
+                        key={key}
+                        className="form-select form-select-sm mb-1"
+                        style={{ width: 140 }}
+                        disabled
+                      >
+                        {v.spec[key].map((option, optionIndex) => (
+                          <option key={optionIndex}>{option}</option>
+                        ))}
+                      </select>
+                    ))}
                   </div>
                   <div className="d-flex pt-1">
                     <div className="pt-2">${v.price * v.quantity}</div>
@@ -356,7 +415,7 @@ export default function PCartList({ setOrderTotalP, setOrderAmountP }) {
                       <input
                         type="number"
                         className="form-control py-0 text-center"
-                        defaultValue={v.quantity}
+                        value={v.quantity}
                       />
                       <span className="input-group-text p-0">
                         <button
