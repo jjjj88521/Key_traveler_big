@@ -48,6 +48,9 @@ export default function ArticleFilter() {
         default:
           break
       }
+      // if (selectValue !== cat_id) {
+      //   setCurrentPage(1)
+      // }
     }
   }, [isReady, cat_id])
   //   console.log(selectedCategory)
@@ -55,11 +58,13 @@ export default function ArticleFilter() {
   const [searchCard, setSearchCard] = useState('')
   const handleSearch = (e) => {
     // console.log('搜尋關鍵字：', e.target.value)
+    console.log(e)
     setSearchCard(e.target.value)
   }
+  const [searchResult, setSearchResult] = useState('')
   const [data, setData] = useState([])
   useEffect(() => {
-    axios.get('http://localhost:3005/apitest/aticle/').then((response) => {
+    axios.get('http://localhost:3005/api/article/').then((response) => {
       console.log('response.data.articles')
       console.log(response.data.articles)
       setData(response.data.articles)
@@ -230,9 +235,19 @@ export default function ArticleFilter() {
                     placeholder="Search"
                     aria-label="Search"
                     value={searchCard}
-                    onChange={handleSearch}
+                    onChange={(e) => {
+                      // console.log('搜尋關鍵字：', e.target.value)
+                      console.log(e)
+                      setSearchCard(e.target.value)
+                    }}
                   />
-                  <button className="btn btn-outline-secondary" type="submit">
+                  <button
+                    onClick={() => {
+                      setSearchResult(searchCard)
+                    }}
+                    className="btn btn-outline-secondary"
+                    type="button"
+                  >
                     <i className="fa-solid fa-magnifying-glass"></i>
                   </button>
                 </form>
