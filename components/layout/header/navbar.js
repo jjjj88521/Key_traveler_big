@@ -95,6 +95,7 @@ const navItems = [
 ]
 
 export default function Navbar() {
+  const router = useRouter()
   // === 手機版滑入選單 ===
   const [open, setOpen] = useState(false)
   const showMobileMenu = () => {
@@ -155,6 +156,10 @@ export default function Navbar() {
 
   // 判斷是否登入，登入後顯示登出按鈕
   const { auth, setAuth, logout } = useAuth()
+  const handleLogout = () => {
+    localStorage.setItem('redirect', router.asPath)
+    logout()
+  }
   return (
     <>
       <nav className="navbar navbar-expand-lg h-100">
@@ -218,7 +223,7 @@ export default function Navbar() {
                 )
               })}
             </div>
-            <div className="col d-sm-flex d-none align-items-center justify-content-end">
+            <div className="col d-sm-flex d-none align-items-center justify-content-end gap-5">
               {/* 會員中心 */}
               <div className="text-primary fs-5">
                 <Link href="/user">
@@ -226,23 +231,25 @@ export default function Navbar() {
                 </Link>
               </div>
               {/* 喜歡商品 */}
-              <div className="text-primary ps-5 fs-5">
-                <i className="fa-regular fa-heart"></i>
+              <div className="text-primary fs-5">
+                <Link href="/user/product-like">
+                  <i className="fa-regular fa-heart"></i>
+                </Link>
               </div>
               {/* 購物車按鈕 */}
-              <div className="">
+              <div className="align-items-center d-flex">
                 <Link href="/cart">
                   <Badge count={2} color="#DC9329">
-                    <i className="fa-solid fa-cart-shopping text-primary ps-5 fs-5"></i>
+                    <i className="fa-solid fa-cart-shopping text-primary fs-5"></i>
                   </Badge>
                 </Link>
               </div>
               {/* 登出按鈕，只有登入才會出現 */}
               {auth.isAuth ? (
-                <div className="text-primary ps-5">
+                <div className="text-primary">
                   <button
                     className="btn border-0 text-primary"
-                    onClick={logout}
+                    onClick={handleLogout}
                   >
                     <i class="fa-solid fa-right-from-bracket fs-5"></i>
                   </button>
@@ -273,7 +280,7 @@ export default function Navbar() {
             items={mobileItems}
           />
           {auth.isAuth ? (
-            <Button type="primary" danger onClick={logout} block>
+            <Button type="primary" danger onClick={handleLogout} block>
               登出
             </Button>
           ) : (

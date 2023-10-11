@@ -4,14 +4,9 @@ import SpecTab from './spec-tab'
 import ReviewTab from './review-tab'
 import style from '@/styles/_fade-in-out.module.scss'
 import GbDescription from './gb-desc.js'
+import { useProductData } from '@/context/product.js'
 
-export default function TabContainer({
-  feature,
-  featureImgs,
-  specTable,
-  commentData,
-  children,
-}) {
+export default function TabContainer({ children }) {
   const [tab, setTab] = useState('intro')
 
   // tab 切換，滾動到該位置
@@ -21,6 +16,17 @@ export default function TabContainer({
       TabRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
   }
+
+  // 使用 productDataContext 取得商品資料
+  const { productData } = useProductData()
+  let { feature, feature_img: featureImgs, specTable } = productData
+  featureImgs =
+    Object.keys(productData).length > 0
+      ? JSON.parse(productData.feature_img)
+      : []
+  specTable =
+    Object.keys(productData).length > 0 ? JSON.parse(productData.spec) : []
+
   return (
     <section className="">
       <div className="container" ref={TabRef}>
@@ -61,7 +67,7 @@ export default function TabContainer({
               tab === 'review' ? style['active'] : ''
             }`}
           >
-            {tab === 'review' && <ReviewTab commentData={commentData} />}
+            {tab === 'review' && <ReviewTab />}
           </div>
           <div
             className={`${style['fade-in-out']} ${

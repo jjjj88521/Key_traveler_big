@@ -7,6 +7,7 @@ import HomeLayout from '@/components/layout/home-layout'
 import { AuthProvider } from '@/hooks/useAuth'
 import HydrationFix from './_hydration-fix'
 import UserLayout from '@/components/layout/user-layout'
+import { ProductDataProvider } from '@/context/product'
 
 export default function MyApp({ Component, pageProps }) {
   // Use the layout defined at the page level, if available
@@ -43,9 +44,11 @@ export default function MyApp({ Component, pageProps }) {
       return (
         // 會員登入
         <AuthProvider>
-          <HydrationFix>
-            <AntdConfigProvider>{layoutComponent}</AntdConfigProvider>
-          </HydrationFix>
+          <ProductDataProvider>
+            <HydrationFix>
+              <AntdConfigProvider>{layoutComponent}</AntdConfigProvider>
+            </HydrationFix>
+          </ProductDataProvider>
         </AuthProvider>
       )
     })

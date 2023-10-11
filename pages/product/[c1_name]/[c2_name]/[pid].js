@@ -7,51 +7,84 @@ import TabButton from '@/components/product/ProductTab/TabButton'
 import PdLoading from '@/components/product/pd-loading'
 import axios from 'axios'
 import useRecentlyViewed from '@/hooks/useRecentlyViewed'
-// 評論假資料
-const commentData = Array.from({
-  length: 36,
-}).map((_, i) => ({
-  key: i,
-  account: 'account' + i,
-  avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-  star: Math.ceil(Math.random() * 5),
-  comment: 'comment' + i,
-  // 隨機日期2023-01-01 ~ 2023-12-31
-  createTime: '2023-01-01',
-}))
+import Swal from 'sweetalert2'
+import useLoading from '@/hooks/useLoading'
+import { useProductData } from '@/context/product'
+import {
+  fetchProduct,
+  fetchProductComment,
+  fetchProductLike,
+  addProductLike,
+  deleteProductLike,
+} from '@/libs/productFetcher'
 
 export default function ProductDetail() {
   const router = useRouter()
+  const { pid } = router.query
   const { isReady } = router
   // 接一般商品 api，後端路由 http://localhost:3005/api/products/[pid]
-  const [product, setProduct] = useState({})
+  // const [productData, setProductData] = useState({})
+  const {
+    productData,
+    setProductData,
+    commentData,
+    setCommentData,
+    isLiked,
+    setIsLiked,
+  } = useProductData()
+  // const [isLiked, setIsLiked] = useState(false)
 
   // 存是否正在載入
-  const [isLoading, setIsLoading] = useState(true)
-
-  async function fetchProduct(pid) {
+  const [isLoading, setIsLoading] = useLoading(
+    Object.keys(productData).length > 0
+  )
+  const handleToggleLike = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:3005/api/products/${pid}`
-      )
-      if (response.status !== 200) {
+      const response = isLiked
+        ? await deleteProductLike('pd', pid)
+        : await addProductLike('pd', pid)
+
+      console.log(response)
+
+      if (response.code === '200') {
+        setIsLiked(!isLiked)
+        const successMessage = response.message
+        Swal.fire({
+          icon: 'success',
+          title: successMessage,
+          showConfirmButton: false,
+          timer: 1500,
+        })
+      } else {
         throw new Error('發生錯誤')
       }
-      const productData = response.data // 假設API返回商品信息的數據
-      setProduct(productData)
-      setTimeout(() => {
-        setIsLoading(false)
-      }, 500)
     } catch (error) {
-      // 處理其他錯誤
-      console.error('發生錯誤:', error)
+      Swal.fire({
+        icon: 'error',
+        title: '請先登入',
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(() => {
+        // 存入登入前的頁面，登入成功就跳轉回來
+        localStorage.setItem('redirect', router.asPath)
+        router.push('/user/login')
+      })
     }
   }
 
   useEffect(() => {
     if (isReady) {
-      const { pid } = router.query
-      fetchProduct(pid)
+      ;(async () => {
+        await fetchProduct(pid).then((product) => {
+          setProductData(product)
+        })
+        await fetchProductComment(pid).then((comment) => {
+          setCommentData(comment)
+        })
+        await fetchProductLike('pd', pid).then((like) => {
+          setIsLiked(like)
+        })
+      })()
     }
   }, [isReady])
 
@@ -60,30 +93,26 @@ export default function ProductDetail() {
     type: 'product',
   })
   useEffect(() => {
-    if (Object.keys(product).length > 0) {
-      addToRecentlyViewed(product)
+    if (Object.keys(productData).length > 0) {
+      addToRecentlyViewed(productData)
     }
-  }, [product])
+  }, [productData])
 
   // 商品資料解構，以及將一些數據轉換成物件或陣列
-  const { name = '', brand = '', price = '', feature = '' } = product
+  const { name = '', brand = '', price = '' } = productData
   const style_select =
-    Object.keys(product).length > 0 ? JSON.parse(product.style_select) : []
-  const feature_img =
-    Object.keys(product).length > 0 ? JSON.parse(product.feature_img) : []
-  const spec = Object.keys(product).length > 0 ? JSON.parse(product.spec) : []
+    Object.keys(productData).length > 0
+      ? JSON.parse(productData.style_select)
+      : []
   const images =
-    Object.keys(product).length > 0 ? JSON.parse(product.images) : []
-
-  const ratingSum = commentData.reduce((acc, cur) => acc + cur.star, 0)
-  const avgRating = (ratingSum / commentData.length).toFixed(1)
+    Object.keys(productData).length > 0 ? JSON.parse(productData.images) : []
 
   return (
     <>
       <Head>
         <title>{name}</title>
       </Head>
-      {Object.keys(product).length === 0 || isLoading ? (
+      {Object.keys(productData).length === 0 || isLoading ? (
         <PdLoading />
       ) : (
         <>
@@ -93,29 +122,17 @@ export default function ProductDetail() {
             brand={brand}
             price={price}
             images={images}
-            rating={avgRating}
-            commentCount={commentData.length}
-            isLiked={false}
+            rating={commentData.avgStar}
+            commentCount={commentData.total}
+            isLiked={isLiked}
+            onToggleLike={handleToggleLike}
             StyleSelectItems={style_select}
           />
-          {/* 商品詳細 tab 切換資訊、規格表、評論 */}
-          <TabContainer
-            feature={feature}
-            featureImgs={feature_img}
-            specTable={spec}
-            commentData={commentData}
-          >
-            <TabButton tabName="intro">商品介紹</TabButton>
-            <TabButton tabName="spec">商品規格</TabButton>
-            <TabButton tabName="review">
-              商品評價[{commentData.length}]
-            </TabButton>
-          </TabContainer>
           {/* 喜歡商品 */}
           <section className="">
             <div className="container border-top border-2 py-5">
-              <h2 className="fw-bold fs-2 text-center">你可能喜歡的商品</h2>
-              <div className="row row-cols-sm-4 row-cols-2">
+              <h2 className="fs-2 text-center">你可能喜歡的商品</h2>
+              <div className="row row-cols-sm-4 row-cols-2 py-3">
                 <div className="col">
                   <div className="card">card預留</div>
                 </div>
@@ -134,8 +151,8 @@ export default function ProductDetail() {
           {/* 瀏覽過商品 */}
           <section className="">
             <div className="container border-top border-2 py-5">
-              <h2 className="fw-bold fs-2 text-center">瀏覽過的商品</h2>
-              <div className="row row-cols-sm-4 row-cols-2">
+              <h2 className="fs-2 text-center">瀏覽過的商品</h2>
+              <div className="row row-cols-sm-4 row-cols-2 py-3">
                 <div className="col">
                   <div className="card">card預留</div>
                 </div>
@@ -151,6 +168,14 @@ export default function ProductDetail() {
               </div>
             </div>
           </section>
+          {/* 商品詳細 tab 切換資訊、規格表、評論 */}
+          <TabContainer>
+            <TabButton tabName="intro">商品介紹</TabButton>
+            <TabButton tabName="spec">商品規格</TabButton>
+            <TabButton tabName="review">
+              商品評價[{commentData.total}]
+            </TabButton>
+          </TabContainer>
         </>
       )}
     </>
