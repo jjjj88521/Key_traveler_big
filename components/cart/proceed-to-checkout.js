@@ -1,9 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 // import { useCartContext } from '@/context/cart'
-
-export default function ProceedToCheckout({ orderTotalAll, orderAmountAll }) {
+import { useAuth } from '@/hooks/useAuth'
+export default function ProceedToCheckout({
+  orderTotalAll,
+  orderAmountAll,
+  onCheckout,
+}) {
   // const { priceData, setPrice } = useCartContext()
-
+  const { auth, coupon, getCoupon } = useAuth()
+  useEffect(() => {
+    getCoupon()
+  }, [])
+  console.log(coupon)
   const initialCoupons = [
     {
       id: 1,
@@ -92,7 +100,12 @@ export default function ProceedToCheckout({ orderTotalAll, orderAmountAll }) {
               {/* {priceData} */}
             </span>
           </span>
-          <a className="btn btn-primary text-white ms-2 px-3 py-2">去結帳</a>
+          <a
+            className="btn btn-primary text-white ms-2 px-3 py-2"
+            onClick={onCheckout}
+          >
+            去結帳
+          </a>
         </div>
       </div>
     </>
