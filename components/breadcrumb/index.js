@@ -4,36 +4,22 @@ import { pathsLocaleMap } from '@/configs'
 import { MyBreadcrumbList, MyBreadcrumbItem } from './my-breadcrumb'
 import { HomeFilled } from '@ant-design/icons'
 import axios from 'axios'
+import { useProductData } from '@/context/product'
 
 export default function MyBreadcrumb() {
   // 獲取目前路徑
   const router = useRouter()
   const { isReady, asPath } = router
   const pathname = asPath.split('?')[0]
+  const { productData } = useProductData()
 
   // 如果有 pid，獲取商品資訊
   const [productName, setProductName] = useState(null)
   useEffect(() => {
-    if (isReady) {
-      const { pid } = router.query
-      if (pathname.includes('/product/')) {
-        fetchProductInfo(pid)
-      }
+    if (productData) {
+      setProductName(productData.name)
     }
-    async function fetchProductInfo(pid) {
-      try {
-        const response = await axios.get(
-          `http://localhost:3005/api/products/${pid}`
-        )
-        const productData = response.data // 假設API返回商品信息的數據
-        setProductName(productData.name)
-      } catch (error) {
-        console.error('獲取商品信息時出錯:', error)
-      }
-    }
-
-    // 只有在pathname中包含'/product/'時才發送商品信息請求
-  }, [isReady, pathname, router.query])
+  }, [productData])
 
   // 要放到連結的 path 陣列
   // const paths = pathname.split('/')

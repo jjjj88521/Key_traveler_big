@@ -7,8 +7,6 @@ import 'swiper/scss'
 
 import 'swiper/scss/pagination'
 import 'swiper/scss/navigation'
-import Link from 'next/link'
-import { Card } from 'antd'
 
 import { SwiperPrevBtn, SwiperNextBtn } from '@/components/home/swiper-btns'
 import CateCard from './cate-card'
@@ -49,21 +47,38 @@ const CateSelect = () => {
             <i className="fa-solid fa-chevron-right text-primary"></i>
           </SwiperNextBtn>
           <SwiperSlide className="h-100">
-            <CateCard name={'鍵盤套件'} img={'/images/home-cate/cate1.png'} />
+            <CateCard
+              name={'鍵盤套件'}
+              img={'/images/home-cate/cate1.png'}
+              link={'/product/1'}
+            />
           </SwiperSlide>
           <SwiperSlide>
-            <CateCard name={'軸體'} img={'/images/home-cate/cate2.png'} />
+            <CateCard
+              name={'軸體'}
+              img={'/images/home-cate/cate2.png'}
+              link={'/product/2'}
+            />
           </SwiperSlide>
           <SwiperSlide>
-            <CateCard name={'鍵帽'} img={'/images/home-cate/cate3.png'} />
+            <CateCard
+              name={'鍵帽'}
+              img={'/images/home-cate/cate3.png'}
+              link={'/product/3'}
+            />
           </SwiperSlide>
           <SwiperSlide>
-            <CateCard name={'成品鍵盤'} img={'/images/home-cate/cate1.png'} />
+            <CateCard
+              name={'成品鍵盤'}
+              img={'/images/home-cate/cate1.png'}
+              link={'/product/4'}
+            />
           </SwiperSlide>
           <SwiperSlide>
             <CateCard
               name={'鍵盤零件 & 工具'}
               img={'/images/home-cate/cate1.png'}
+              link={'/product/5'}
             />
           </SwiperSlide>
         </Swiper>

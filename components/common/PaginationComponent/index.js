@@ -6,14 +6,16 @@ export default function PaginationComponent({
   totalItems,
   pageSize,
   onPageChange,
+  currentPage: propCurrentPage,
+  scrollTo,
 }) {
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(propCurrentPage)
 
   // 頁數變化
   const handlePageChange = (page) => {
     setCurrentPage(page)
     onPageChange(page) // 呼叫傳遞進來的 onPageChange
-    window.scrollTo({ top: 0, behavior: 'auto' })
+    window.scrollTo({ top: scrollTo ? scrollTo : 0, behavior: 'auto' })
   }
 
   const itemRender = (page, type, originalElement) => {

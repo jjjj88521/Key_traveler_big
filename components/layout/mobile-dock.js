@@ -1,7 +1,10 @@
 import React from 'react'
 import { Badge } from 'antd'
+import { useAuth } from '@/hooks/useAuth'
+import Link from 'next/link'
 
 export default function MobileDock() {
+  // const { auth, setAuth, logout } = useAuth()
   return (
     <>
       <div
@@ -17,10 +20,14 @@ export default function MobileDock() {
               <i className="fa-solid fa-house text-primary fs-5"></i>
             </div>
             <div className="col text-center">
-              <i className="fa-regular fa-user text-primary fs-5"></i>
+              <Link href="/user">
+                <i className="fa-regular fa-user text-primary fs-5"></i>
+              </Link>
             </div>
             <div className="col text-center">
-              <i className="fa-regular fa-heart text-primary fs-5"></i>
+              <Link href="/user/product-like">
+                <i className="fa-regular fa-heart text-primary fs-5"></i>
+              </Link>
             </div>
             <div className="col text-center">
               <Badge count={2} color="#DC9329">

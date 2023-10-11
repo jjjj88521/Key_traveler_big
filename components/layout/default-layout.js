@@ -14,8 +14,8 @@ export default function DefaultLayout({ pageTitle = '', children }) {
         <meta name="viewport" content="width=device-width" />
       </Head>
       <Header></Header>
+      <MyBreadcrumb />
       <main>
-        <MyBreadcrumb />
         {children}
         <GoTop />
       </main>
