@@ -6,10 +6,12 @@ export default function Card({ title, brand, price, image, stock }) {
     <>
       <div className={`card h-auto ${styles['card']} overflow-hidden border-0`}>
         <img
-          src={`/public/images/${image}`}
+          //   src={`/images/product/${image}`}
+          src={`http://localhost:3000/images/product/${image}`}
           className={`card-img-top ${styles.cardImg}`}
           alt="Product"
         />
+
         {/* 待完成，判斷是否為新品(ribbon) */}
         {stock === 0 ? (
           <div className={styles['outofstock']}></div>

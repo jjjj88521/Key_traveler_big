@@ -21,6 +21,7 @@ export async function getStaticProps() {
 
 export default function ProductIndex() {
   const [data, setData] = useState([])
+  console.log(data)
   const handleProductFetched = (fetchedData) => {
     setData(fetchedData)
   }
@@ -37,7 +38,6 @@ export default function ProductIndex() {
   // 分頁相關
   const PageSize = 12
   const totalPageCount = data.length
-  console.log(totalPageCount)
   const [currentPage, setCurrentPage] = useState(1)
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage)
@@ -69,6 +69,7 @@ export default function ProductIndex() {
 
           {/* sort btn & card group */}
           <div className="col-12 col-sm-9">
+            {/* sort btn */}
             <div className="d-sm-flex d-none justify-content-end align-items-center mb-3">
               <div className={`bg-primary-subtle ${styles['sortBtn']}`}>
                 <p className="fs-6">排序</p>
@@ -82,6 +83,11 @@ export default function ProductIndex() {
                     預設
                   </button>
                   <ul className="dropdown-menu">
+                    <li>
+                      <a className="dropdown-item" href="#">
+                        有貨優先
+                      </a>
+                    </li>
                     <li>
                       <a className="dropdown-item" href="#">
                         價錢：由低到高
@@ -145,7 +151,7 @@ export default function ProductIndex() {
                       title={v.name}
                       brand={v.brand}
                       price={v.price}
-                      image={v.images}
+                      image={v.images ? JSON.parse(v.images)[0] : null}
                       stock={v.stock}
                     />
                   </div>
