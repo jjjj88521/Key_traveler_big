@@ -27,23 +27,40 @@ export function AuthProvider({ children }) {
   })
 
   const router = useRouter()
+  const { asPath } = router
 
   // 檢查會員證證用
   const checkAuth = async () => {
     try {
-      const response = await axios.get(
-        'http://localhost:3005/api/auth-jwt/check-login',
-        {
+      await axios
+        .get('http://localhost:3005/api/auth-jwt/check-login', {
           withCredentials: true,
-        }
-      )
-      console.log(response.data)
-      if (response.data.message === 'authorized') {
-        setAuth({
-          isAuth: true,
-          user: response.data.user,
         })
-      }
+        .then((response) => {
+          if (response.data.message !== 'authorized') {
+            throw new Error('請先登入會員')
+          }
+          setAuth({
+            isAuth: true,
+            user: response.data.user,
+          })
+        })
+        .catch((error) => {
+          if (
+            asPath.startsWith('/user') &&
+            asPath !== '/user/login' &&
+            asPath !== '/user/register'
+          ) {
+            Swal.fire({
+              icon: 'error',
+              title: error.message,
+              showConfirmButton: false,
+              timer: 1500,
+            }).then(() => {
+              router.push('/user/login')
+            })
+          }
+        })
     } catch (error) {
       console.log(error)
     }
@@ -51,6 +68,8 @@ export function AuthProvider({ children }) {
 
   // 登入
   const login = async (account, password) => {
+    // 取得原頁面，登入成功跳轉到原頁面
+    const redirect = localStorage.getItem('redirect') || '/user/profile'
     const formData = {
       account: account,
       password: password,
@@ -84,7 +103,8 @@ export function AuthProvider({ children }) {
         showConfirmButton: false,
         timer: 1500,
       }).then(() => {
-        router.push('/user/profile')
+        localStorage.removeItem('redirect')
+        router.push(redirect)
       })
     } catch (error) {
       console.log(error)
@@ -93,6 +113,8 @@ export function AuthProvider({ children }) {
 
   // 登出
   const logout = async () => {
+    // 登出跳轉回原頁面
+    const redirect = localStorage.getItem('redirect') || '/'
     try {
       Swal.fire({
         title: '確定要登出嗎？',
@@ -139,7 +161,9 @@ export function AuthProvider({ children }) {
                 showConfirmButton: false,
                 timer: 1500,
               }).then(() => {
-                router.push('/')
+                // 跳轉回原頁面
+                localStorage.removeItem('redirect')
+                router.push(redirect.startsWith('/user') ? '/' : redirect)
               })
             })
         }
@@ -158,7 +182,7 @@ export function AuthProvider({ children }) {
     if (router.isReady && !auth.isAuth) {
       checkAuth()
     }
-  }, [])
+  }, [router.isReady, asPath])
 
   return (
     <>

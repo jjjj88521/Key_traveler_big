@@ -1,9 +1,8 @@
 import { React, useState } from 'react'
-import UserSideBar from './user-side-bar'
-import UserSideBarMobile from './user-side-bar-mobile'
 import Link from 'next/link'
 import { Tabs, Avatar, List, Rate, Drawer } from 'antd'
 import style from './comments.module.scss'
+import UserLayout from '@/components/layout/user-layout'
 const moment = require('moment')
 
 const commentsData = [
@@ -262,271 +261,242 @@ export default function Comments() {
   const hasMoreData = updateYetData.length > visibleItemCount
 
   return (
-    <>
-      <div className={`container`}>
-        <h2 className="fw-bolder">歷史評價</h2>
-        <div className="row my-sm-5 my-3">
-          {/* 下拉選單 */}
-          <div className="col-sm-2 col-12 px- mx-0">
-            <div className="d-sm-block d-none">
-              <UserSideBar />
-            </div>
-            <div className="d-sm-none d-block mb-4">
-              <UserSideBarMobile className="col-10 w-100" />
-            </div>
-          </div>
-          <div className="col-10 offset-1 col-sm-9">
-            <div>
-              <Tabs
-                defaultActiveKey="1"
-                items={items}
-                onChange={tabsOnChange}
-                type="card"
-                style={{ margin: '0 -15px' }}
-              />
-            </div>
-            <div>
-              {tabkey === '1' ? (
-                allItemsAreComment ? (
-                  <div className="h3 text-danger">尚無待評價之商品</div>
-                ) : (
-                  <div>
-                    <List
-                      dataSource={updateYetData.slice(0, visibleItemCount)}
-                      itemLayout="vertical"
-                      renderItem={(item) => {
-                        return item.isComment === false ? (
-                          <List.Item
-                            key={item.key}
-                            extra={
-                              <div className="h-100">
-                                <a
-                                  href="#"
-                                  className={`${style['toComment']} text-primary py-3`}
-                                  onClick={() => showDrawer(item)} // 传递当前 List.Item 作为参数
-                                >
-                                  去評價
-                                  <i class="fa-regular fa-hand-point-left ms-2"></i>
-                                </a>
-                                <a
-                                  href="#"
-                                  type="button"
-                                  className={`${style['toCommentMobile']} text-primary `}
-                                  onClick={() => showDrawer(item)} // 传递当前 List.Item 作为参数
-                                >
-                                  去評價
-                                </a>
-                              </div>
-                            }
-                          >
-                            <div className={`${style['yet']}`}>
-                              <Link
-                                href="/"
-                                className="d-flex align-items-center"
-                              >
-                                <img height={50} src={item.productPic} />
-                                <p
-                                  className={`mb-0 ms-2 ${style['custom-link']}`}
-                                >
-                                  {item.product}
-                                </p>
-                              </Link>
-                              <a className="ms-4 text-light rounded bg-primary p-1">
-                                訂單編號:{item.orderId}
-                              </a>
-                            </div>
-                            <div className={`${style['yetMobile']}`}>
-                              <Link
-                                href="/"
-                                className="d-flex align-items-center"
-                              >
-                                <img height={50} src={item.productPic} />
-                                <p
-                                  className={`mb-0 ms-2 ${style['custom-link']}`}
-                                >
-                                  {item.product}
-                                </p>
-                              </Link>
-                              <a
-                                className={`${style['item_order']} mt-3 text-light rounded bg-primary p-1`}
-                              >
-                                訂單編號:{item.orderId}
-                              </a>
-                            </div>
-
-                            <Drawer
-                              // title="Comment Info"
-                              placement="right"
-                              open={open}
-                              closeIcon={false}
-                              keyboard={false}
-                              maskClosable={false}
-                            >
-                              {selectedItem && (
-                                <div>
-                                  <div className="d-flex align-items-center">
-                                    <img
-                                      height={50}
-                                      src={selectedItem.productPic}
-                                    />
-
-                                    <p className="my-0 ms-2">
-                                      {selectedItem.product}
-                                    </p>
-                                    <p className="my-0 ms-1">
-                                      {selectedItem.category1}
-                                    </p>
-                                    <p className="my-0 ms-1">
-                                      {selectedItem.category2}
-                                    </p>
-                                    {/* 其他项目的渲染 */}
-                                  </div>
-                                  <div className="mt-3">
-                                    <div className="d-flex align-items-center">
-                                      <Rate
-                                        allowHalf
-                                        onChange={handleSetStar}
-                                        style={{ fontSize: '1.2rem' }}
-                                        value={star}
-                                        defaultValue={0}
-                                      />
-                                      {star ? (
-                                        <p className="ms-2 my-0 starNum">
-                                          {star}
-                                        </p>
-                                      ) : (
-                                        ''
-                                      )}
-                                    </div>
-                                    <div className="mt-3">
-                                      <p>評論內容:</p>
-                                      <textarea
-                                        className="form-control"
-                                        id="comment_area"
-                                        placeholder="請輸入評價內容"
-                                        value={textareaValue}
-                                        onChange={handleTextareaChange}
-                                      ></textarea>
-                                    </div>
-                                    <div className="mt-3">
-                                      <button
-                                        className="btn btn-primary"
-                                        onClick={handleNewComment}
-                                      >
-                                        新增
-                                      </button>
-                                      <button
-                                        className="btn btn-secondary ms-2"
-                                        onClick={onClose}
-                                      >
-                                        取消
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                              )}
-                            </Drawer>
-                          </List.Item>
-                        ) : (
-                          ''
-                        )
-                      }}
-                    />
-                    {hasMoreData ? (
-                      <div className="d-flex justify-content-center">
-                        <button
-                          className="btn btn-primary px-5"
-                          onClick={handleLoadMore}
-                        >
-                          看更多
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="text-primary w-100 text-center">
-                        已經到底了!
-                      </div>
-                    )}
-                  </div>
-                )
-              ) : (
+    <UserLayout title={'商品評價'}>
+      <div className="col-10 offset-1 col-sm-9">
+        <div>
+          <Tabs
+            defaultActiveKey="1"
+            items={items}
+            onChange={tabsOnChange}
+            type="card"
+            style={{ margin: '0 -15px' }}
+          />
+        </div>
+        <div>
+          {tabkey === '1' ? (
+            allItemsAreComment ? (
+              <div className="h3 text-danger">尚無待評價之商品</div>
+            ) : (
+              <div>
                 <List
-                  dataSource={updateData}
+                  dataSource={updateYetData.slice(0, visibleItemCount)}
                   itemLayout="vertical"
-                  renderItem={(item) => (
-                    <List.Item
-                      extra={
-                        <div className={`text-end ${style['createTime']}`}>
-                          {item.createTime}
-                        </div>
-                      }
-                    >
-                      <List.Item.Meta
-                        avatar={
-                          <Avatar
-                            src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=5`}
-                          />
+                  renderItem={(item) => {
+                    return item.isComment === false ? (
+                      <List.Item
+                        key={item.key}
+                        extra={
+                          <div className="h-100">
+                            <a
+                              href="#"
+                              className={`${style['toComment']} text-primary py-3`}
+                              onClick={() => showDrawer(item)} // 传递当前 List.Item 作为参数
+                            >
+                              去評價
+                              <i class="fa-regular fa-hand-point-left ms-2"></i>
+                            </a>
+                            <a
+                              href="#"
+                              type="button"
+                              className={`${style['toCommentMobile']} text-primary `}
+                              onClick={() => showDrawer(item)} // 传递当前 List.Item 作为参数
+                            >
+                              去評價
+                            </a>
+                          </div>
                         }
-                        title={
-                          <div>
-                            {item.user}
-                            <div className=" mt-1 d-flex align-items-center">
-                              <Link
-                                href="/"
-                                className="d-flex align-items-center"
-                              >
-                                <p className={`mb-0 ${style['custom-link']}`}>
-                                  {item.product}
+                      >
+                        <div className={`${style['yet']}`}>
+                          <Link href="/" className="d-flex align-items-center">
+                            <img height={50} src={item.productPic} />
+                            <p className={`mb-0 ms-2 ${style['custom-link']}`}>
+                              {item.product}
+                            </p>
+                          </Link>
+                          <a className="ms-4 text-light rounded bg-primary p-1">
+                            訂單編號:{item.orderId}
+                          </a>
+                        </div>
+                        <div className={`${style['yetMobile']}`}>
+                          <Link href="/" className="d-flex align-items-center">
+                            <img height={50} src={item.productPic} />
+                            <p className={`mb-0 ms-2 ${style['custom-link']}`}>
+                              {item.product}
+                            </p>
+                          </Link>
+                          <a
+                            className={`${style['item_order']} mt-3 text-light rounded bg-primary p-1`}
+                          >
+                            訂單編號:{item.orderId}
+                          </a>
+                        </div>
+
+                        <Drawer
+                          // title="Comment Info"
+                          placement="right"
+                          open={open}
+                          closeIcon={false}
+                          keyboard={false}
+                          maskClosable={false}
+                        >
+                          {selectedItem && (
+                            <div>
+                              <div className="d-flex align-items-center">
+                                <img
+                                  height={50}
+                                  src={selectedItem.productPic}
+                                />
+
+                                <p className="my-0 ms-2">
+                                  {selectedItem.product}
                                 </p>
-                              </Link>
-                              <div
-                                className="ms-3 bg-primary text-light rounded px-1"
-                                style={{
-                                  fontSize: '0.8rem',
-                                  paddingTop: '0.1rem',
-                                  paddingBottom: '0.1rem',
-                                }}
-                              >
-                                {item.category1}
+                                <p className="my-0 ms-1">
+                                  {selectedItem.category1}
+                                </p>
+                                <p className="my-0 ms-1">
+                                  {selectedItem.category2}
+                                </p>
+                                {/* 其他项目的渲染 */}
                               </div>
-                              <div
-                                className="ms-1 bg-primary text-light rounded px-1"
-                                style={{
-                                  fontSize: '0.8rem',
-                                  paddingTop: '0.1rem',
-                                  paddingBottom: '0.1rem',
-                                }}
-                              >
-                                {item.category2}
+                              <div className="mt-3">
+                                <div className="d-flex align-items-center">
+                                  <Rate
+                                    allowHalf
+                                    onChange={handleSetStar}
+                                    style={{ fontSize: '1.2rem' }}
+                                    value={star}
+                                    defaultValue={0}
+                                  />
+                                  {star ? (
+                                    <p className="ms-2 my-0 starNum">{star}</p>
+                                  ) : (
+                                    ''
+                                  )}
+                                </div>
+                                <div className="mt-3">
+                                  <p>評論內容:</p>
+                                  <textarea
+                                    className="form-control"
+                                    id="comment_area"
+                                    placeholder="請輸入評價內容"
+                                    value={textareaValue}
+                                    onChange={handleTextareaChange}
+                                  ></textarea>
+                                </div>
+                                <div className="mt-3">
+                                  <button
+                                    className="btn btn-primary"
+                                    onClick={handleNewComment}
+                                  >
+                                    新增
+                                  </button>
+                                  <button
+                                    className="btn btn-secondary ms-2"
+                                    onClick={onClose}
+                                  >
+                                    取消
+                                  </button>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        }
-                        description={
-                          <div className="d-flex align-items-center">
-                            <Rate
-                              disabled
-                              allowHalf
-                              defaultValue={item.star}
-                              style={{ fontSize: '0.9rem' }}
-                            />
-                            <p className="ms-2 my-0">{item.star}</p>
-                          </div>
-                        }
-                      />
-                      <div style={{ marginLeft: '48px' }}>
-                        <div className={`${style['createTimeMobile']}`}>
-                          {item.createTime}
-                        </div>
-                        <div className="mt-1">{item.description}</div>
-                      </div>
-                    </List.Item>
-                  )}
+                          )}
+                        </Drawer>
+                      </List.Item>
+                    ) : (
+                      ''
+                    )
+                  }}
                 />
+                {hasMoreData ? (
+                  <div className="d-flex justify-content-center">
+                    <button
+                      className="btn btn-primary px-5"
+                      onClick={handleLoadMore}
+                    >
+                      看更多
+                    </button>
+                  </div>
+                ) : (
+                  <div className="text-primary w-100 text-center">
+                    已經到底了!
+                  </div>
+                )}
+              </div>
+            )
+          ) : (
+            <List
+              dataSource={updateData}
+              itemLayout="vertical"
+              renderItem={(item) => (
+                <List.Item
+                  extra={
+                    <div className={`text-end ${style['createTime']}`}>
+                      {item.createTime}
+                    </div>
+                  }
+                >
+                  <List.Item.Meta
+                    avatar={
+                      <Avatar
+                        src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=5`}
+                      />
+                    }
+                    title={
+                      <div>
+                        {item.user}
+                        <div className=" mt-1 d-flex align-items-center">
+                          <Link href="/" className="d-flex align-items-center">
+                            <p className={`mb-0 ${style['custom-link']}`}>
+                              {item.product}
+                            </p>
+                          </Link>
+                          <div
+                            className="ms-3 bg-primary text-light rounded px-1"
+                            style={{
+                              fontSize: '0.8rem',
+                              paddingTop: '0.1rem',
+                              paddingBottom: '0.1rem',
+                            }}
+                          >
+                            {item.category1}
+                          </div>
+                          <div
+                            className="ms-1 bg-primary text-light rounded px-1"
+                            style={{
+                              fontSize: '0.8rem',
+                              paddingTop: '0.1rem',
+                              paddingBottom: '0.1rem',
+                            }}
+                          >
+                            {item.category2}
+                          </div>
+                        </div>
+                      </div>
+                    }
+                    description={
+                      <div className="d-flex align-items-center">
+                        <Rate
+                          disabled
+                          allowHalf
+                          defaultValue={item.star}
+                          style={{ fontSize: '0.9rem' }}
+                        />
+                        <p className="ms-2 my-0">{item.star}</p>
+                      </div>
+                    }
+                  />
+                  <div style={{ marginLeft: '48px' }}>
+                    <div className={`${style['createTimeMobile']}`}>
+                      {item.createTime}
+                    </div>
+                    <div className="mt-1">{item.description}</div>
+                  </div>
+                </List.Item>
               )}
-            </div>
-          </div>
+            />
+          )}
         </div>
       </div>
-    </>
+    </UserLayout>
   )
 }

@@ -14,7 +14,7 @@ export default function IntroTab({ feature, featureImgs }) {
       ))}
       {/* 圖片 */}
       <div className="d-flex justify-content-center">
-        <div className="text-center w-75">
+        <div className="text-center w-50">
           {featureImgs.map((img, index) => (
             <img
               key={index}
