@@ -6,7 +6,6 @@ import AsideFilter from '@/components/product/AsideFilter'
 import PaginationComponent from '@/components/common/PaginationComponent'
 import Card from '@/components/product/Card'
 import axios from 'axios'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 export default function ProductCate1() {
@@ -21,14 +20,34 @@ export default function ProductCate1() {
       axios
         .get(`http://localhost:3005/api/products/qs?cate_1=${c1_name}`)
         .then((res) => {
-          setCateProducts(res.data.data)
+          setCateProducts(res.data)
         })
         .catch((err) => {
           console.log(err)
         })
     }
-  }, [router.isReady])
-  console.log(cateProducts)
+  }, [router.isReady, c1_name])
+  //   console.log(cateProducts)
+  //   console.log(cateProducts.data)
+
+  // 分頁相關
+  const PageSize = 12
+  const totalPageCount = cateProducts.total
+  const [currentPage, setCurrentPage] = useState(1)
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage)
+    // 創建新的 Axios 請求，包含分頁頁碼
+    axios
+      .get(
+        `http://localhost:3005/api/products/qs?cate_1=${c1_name}&page=${newPage}`
+      )
+      .then((res) => {
+        setCateProducts(res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 
   // Drawer相關
   const [open, setOpen] = useState(false)
@@ -136,32 +155,37 @@ export default function ProductCate1() {
 
             {/* card group  */}
             <div className="d-flex row row-cols-2 row-cols-md-3 g-4 mb-sm-0 mb-4">
-              {cateProducts.map((v, i) => (
-                <div className="col" key={i}>
-                  <div className="col">
-                    <Card
-                      title={v.name}
-                      brand={v.brand}
-                      price={v.price}
-                      image={v.images ? JSON.parse(v.images)[0] : null}
-                      stock={v.stock}
-                    />
+              {cateProducts.data && cateProducts.data.length > 0 ? (
+                cateProducts.data.map((v, i) => (
+                  <div className="col" key={i}>
+                    <div className="col">
+                      <Card
+                        title={v.name}
+                        brand={v.brand}
+                        price={v.price}
+                        image={v.images ? JSON.parse(v.images)[0] : null}
+                        stock={v.stock}
+                      />
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <p>商品準備中</p>
+              )}
             </div>
           </div>
         </div>
       </div>
 
       {/* 分頁頁碼 */}
-      {/* <div className="m-5">
+      <div className="m-5">
         <PaginationComponent
+          currentPage={currentPage}
           totalItems={totalPageCount}
           pageSize={PageSize}
           onPageChange={handlePageChange}
         ></PaginationComponent>
-      </div> */}
+      </div>
     </>
   )
 }

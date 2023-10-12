@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Drawer, Button } from 'antd'
 import styles from './product.module.css'
 import AsideFilter from '@/components/product/AsideFilter'
-import List from '@/components/groupbuy/List'
 
 // <div className="container">
 // <div className={styles['banner']}>
@@ -114,7 +113,6 @@ export default function ProductIndex() {
             </Drawer>
 
             {/* product list & card group  */}
-            <List></List>
           </div>
         </div>
       </div>
