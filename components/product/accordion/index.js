@@ -29,12 +29,24 @@ function Accordion() {
               <li>
                 <Link href="/product/1/3">60%</Link>
               </li>
-              <li>65%</li>
-              <li>75%</li>
-              <li>80%</li>
-              <li>98%</li>
-              <li>100%</li>
-              <li>Num Pad</li>
+              <li>
+                <Link href="/product/1/4">65%</Link>
+              </li>
+              <li>
+                <Link href="/product/1/5">75%</Link>
+              </li>
+              <li>
+                <Link href="/product/1/6">80%</Link>
+              </li>
+              <li>
+                <Link href="/product/1/7">98%</Link>
+              </li>
+              <li>
+                <Link href="/product/1/8">100%</Link>
+              </li>
+              <li>
+                <Link href="/product/1/9">Num Pad</Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -60,11 +72,21 @@ function Accordion() {
         >
           <div className={`accordion-body ${styles['accBody']}`}>
             <ul>
-              <li>段落有聲軸</li>
-              <li>段落無聲軸</li>
-              <li>線性軸</li>
-              <li>提前段落</li>
-              <li>靜音軸</li>
+              <li>
+                <Link href="/product/2/1">段落有聲軸</Link>
+              </li>
+              <li>
+                <Link href="/product/2/2">段落無聲軸</Link>
+              </li>
+              <li>
+                <Link href="/product/2/20">線性軸</Link>
+              </li>
+              <li>
+                <Link href="/product/2/21">提前段落</Link>
+              </li>
+              <li>
+                <Link href="/product/2/22">靜音軸</Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -90,17 +112,39 @@ function Accordion() {
         >
           <div className={`accordion-body ${styles['accBody']}`}>
             <ul>
-              <li>Cerry原廠高</li>
-              <li>OEM高</li>
-              <li>SA高</li>
-              <li>DSA高</li>
-              <li>XDA高</li>
-              <li>ADA高</li>
-              <li>WDA高</li>
-              <li>KCA高</li>
-              <li>MDA高</li>
-              <li>MA高</li>
-              <li>個性鍵帽</li>
+              <li>
+                <Link href="/product/3/10">Cerry原廠高</Link>
+              </li>
+              <li>
+                <Link href="/product/3/11">OEM高</Link>
+              </li>
+              <li>
+                <Link href="/product/3/23">SA高</Link>
+              </li>
+              <li>
+                <Link href="/product/3/24">DSA高</Link>
+              </li>
+              <li>
+                <Link href="/product/3/25">XDA高</Link>
+              </li>
+              <li>
+                <Link href="/product/3/26">ADA高</Link>
+              </li>
+              <li>
+                <Link href="/product/3/27">WDA高</Link>
+              </li>
+              <li>
+                <Link href="/product/3/28">KCA高</Link>
+              </li>
+              <li>
+                <Link href="/product/3/29">MDA高</Link>
+              </li>
+              <li>
+                <Link href="/product/3/30">MA高</Link>
+              </li>
+              <li>
+                <Link href="/product/3/31">個性鍵帽</Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -126,11 +170,21 @@ function Accordion() {
         >
           <div className={`accordion-body ${styles['accBody']}`}>
             <ul>
-              <li>機械式鍵盤</li>
-              <li>光軸鍵盤</li>
-              <li>電容式鍵盤</li>
-              <li>類機械式鍵盤</li>
-              <li>薄膜鍵盤</li>
+              <li>
+                <Link href="/product/4/13">機械式鍵盤</Link>
+              </li>
+              <li>
+                <Link href="/product/4/14">光軸鍵盤</Link>
+              </li>
+              <li>
+                <Link href="/product/4/15">電容式鍵盤</Link>
+              </li>
+              <li>
+                <Link href="/product/4/16">類機械式鍵盤</Link>
+              </li>
+              <li>
+                <Link href="/product/4/17">薄膜鍵盤</Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -156,11 +210,21 @@ function Accordion() {
         >
           <div className={`accordion-body ${styles['accBody']}`}>
             <ul>
-              <li>潤滑油</li>
-              <li>衛星軸</li>
-              <li>滑鼠墊</li>
-              <li>鍵盤手托</li>
-              <li>鍵帽 & 軸體工具</li>
+              <li>
+                <Link href="/product/5/18">潤滑油</Link>
+              </li>
+              <li>
+                <Link href="/product/5/19">衛星軸</Link>
+              </li>
+              <li>
+                <Link href="/product/5/32">滑鼠墊</Link>
+              </li>
+              <li>
+                <Link href="/product/5/33">鍵盤手托</Link>
+              </li>
+              <li>
+                <Link href="/product/5/34">鍵帽 & 軸體工具</Link>
+              </li>
             </ul>
           </div>
         </div>
