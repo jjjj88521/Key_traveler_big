@@ -15,7 +15,12 @@ import { Dropdown, Radio, Space, Typography } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
 
 export default function ProductLike() {
-  const [productLikeList, setProductLikeList] = useState([])
+  const [productLikeList, setProductLikeList] = useState({
+    cate: null,
+    page: 1,
+    total: 0,
+    products: [],
+  })
   const [total, setTotal] = useState(0)
   // 存當前頁數
   const [currentPage, setCurrentPage] = useState(1)

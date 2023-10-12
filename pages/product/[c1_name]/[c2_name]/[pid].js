@@ -16,6 +16,7 @@ import {
   fetchProductLike,
   addProductLike,
   deleteProductLike,
+  fetchPdCommentCount,
 } from '@/libs/productFetcher'
 
 export default function ProductDetail() {
@@ -29,6 +30,8 @@ export default function ProductDetail() {
     setProductData,
     commentData,
     setCommentData,
+    commentCount,
+    setCommentCount,
     isLiked,
     setIsLiked,
   } = useProductData()
@@ -78,8 +81,8 @@ export default function ProductDetail() {
         await fetchProduct(pid).then((product) => {
           setProductData(product)
         })
-        await fetchProductComment(pid).then((comment) => {
-          setCommentData(comment)
+        await fetchPdCommentCount(pid).then((data) => {
+          setCommentCount(data)
         })
         await fetchProductLike('pd', pid).then((like) => {
           setIsLiked(like)
@@ -122,8 +125,8 @@ export default function ProductDetail() {
             brand={brand}
             price={price}
             images={images}
-            rating={commentData.avgStar}
-            commentCount={commentData.total}
+            rating={commentCount.avgStar}
+            commentCount={commentCount.total}
             isLiked={isLiked}
             onToggleLike={handleToggleLike}
             StyleSelectItems={style_select}
@@ -173,7 +176,7 @@ export default function ProductDetail() {
             <TabButton tabName="intro">商品介紹</TabButton>
             <TabButton tabName="spec">商品規格</TabButton>
             <TabButton tabName="review">
-              商品評價[{commentData.total}]
+              商品評價[{commentCount.total}]
             </TabButton>
           </TabContainer>
         </>

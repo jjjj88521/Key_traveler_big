@@ -35,6 +35,11 @@ export default function AntdConfigProvider({ children }) {
           List: {
             metaMarginBottom: 8,
           },
+          Progress: {
+            defaultColor: '#DC9329',
+            colorSuccess: '#DC9329',
+            colorText: '#DC9329',
+          },
         },
       }}
     >

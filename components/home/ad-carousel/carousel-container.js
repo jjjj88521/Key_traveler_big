@@ -26,12 +26,7 @@ export default function CarouselContainer({ hideMouseBall, mousePosition }) {
 
   return (
     <div className={`${style['carousel-container']} carousel-container`}>
-      <Image
-        src="/images/product/000-1.jpg"
-        alt="example"
-        width={600}
-        height={400}
-      />
+      <img src="/images/home-ad/test2.jpg" alt="example" />
       <div
         ref={carouselBoxRef}
         className={`${style['carousel-box']} text-primary carousel-box`}

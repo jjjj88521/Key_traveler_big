@@ -37,6 +37,20 @@ const fetchProductComment = async (pid, ...qs) => {
   }
 }
 
+// 取得該商品的評論數量資料
+const fetchPdCommentCount = async (pid) => {
+  const url = `http://localhost:3005/api/comment/product/${pid}/count`
+  try {
+    const response = await axios.get(url)
+    if (response.status !== 200) {
+      throw new Error('發生錯誤')
+    }
+    return response.data
+  } catch (error) {
+    console.error('發生錯誤:', error)
+  }
+}
+
 // 取得該商品是否已被收藏
 const fetchProductLike = async (cate, pid) => {
   try {
@@ -121,4 +135,5 @@ export {
   addProductLike,
   deleteProductLike,
   fetchProductLikeList,
+  fetchPdCommentCount,
 }
