@@ -17,14 +17,16 @@ export default function CartStep1() {
   return (
     <>
       {/* step 1 */}
-      <Steps
-        current={0}
-        labelPlacement="vertical"
-        items={items}
-        responsive={false}
-        className="mt-5 mx-auto"
-        style={{ width: '90%' }}
-      />
+      <div>
+        <Steps
+          current={0}
+          labelPlacement="vertical"
+          items={items}
+          responsive={false}
+          className="mt-5 mx-sm-auto ms-4"
+          style={{ width: '65%' }}
+        />
+      </div>
     </>
   )
 }

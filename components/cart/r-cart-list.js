@@ -21,6 +21,7 @@ export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
     getCurrentDate,
     handleStartDateChange,
     handleEndDateChange,
+    cartTotalR,
   } = useSecondCart()
 
   // const initialRentProducts = [
@@ -168,10 +169,10 @@ export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
       <div className="mb-3 text-primary d-none d-sm-block d-sm-flex">
         <div
           className="pe-2"
-          data-bs-target="#collapseThree"
+          data-bs-target="#collapseTwo"
           data-bs-toggle="collapse"
           aria-expanded="true"
-          aria-controls="collapseThree"
+          aria-controls="collapseTwo"
         >
           <FontAwesomeIcon
             icon={faCircleChevronDown}
@@ -213,7 +214,7 @@ export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
             <th className="bg-primary text-white"></th>
           </tr>
         </thead>
-        <tbody className="accordion-collapse collapse show" id="collapseThree">
+        <tbody className="accordion-collapse collapse show" id="collapseTwo">
           {items.map((v, i) => (
             <tr key={i}>
               <td className="text-center align-middle">
@@ -335,10 +336,10 @@ export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
                 <div className="ps-1">({items.length})</div>
                 <div
                   className="ms-auto pe-1"
-                  data-bs-target="#collapseThree"
+                  data-bs-target="#collapseTwo"
                   data-bs-toggle="collapse"
                   aria-expanded="true"
-                  aria-controls="collapseThree"
+                  aria-controls="collapseTwo"
                 >
                   <FontAwesomeIcon icon={faCircleChevronDown} />
                 </div>
@@ -346,7 +347,7 @@ export default function RCartList({ setOrderTotalR, setOrderAmountR }) {
             </th>
           </tr>
         </thead>
-        <tbody className="accordion-collapse collapse show" id="collapseThree">
+        <tbody className="accordion-collapse collapse show" id="collapseTwo">
           {items.map((v, i) => (
             <tr key={i}>
               <td className="text-center align-middle px-1">

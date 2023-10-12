@@ -29,38 +29,43 @@ const CartContext = createContext(null)
 export const CartProvider = ({
   children,
   initialProducts = [
-    {
-      id: 5,
-      check: false,
-      img: '/images/1669370674683000804.jpg',
-      brand: 'Meletrix',
-      name: 'Meletrix ZoomPad 數字鍵盤套件 SP版(左手版)',
-      price: 3000,
-      quantity: 1,
-      spec: {
-        外殼: ['EE 耀夜黑', 'EE 細花白'],
-        '配重/旋鈕': ['電泳 白', '陽極 黑'],
-      },
-    },
-    {
-      id: 2,
-      check: false,
-      img: '/images/1669370674683000804.jpg',
-      brand: 'Meletrix',
-      name: 'Meletrix ZoomPad 數字鍵盤套件 SP版(左手版)',
-      price: 1000,
-      quantity: 1,
-      spec: {
-        外殼: ['EE 耀夜黑', 'EE 細花白'],
-        '配重/旋鈕': ['電泳 白', '陽極 黑'],
-      },
-    },
+    // {
+    //   id: 5,
+    //   check: false,
+    //   img: '/images/1669370674683000804.jpg',
+    //   brand: 'Meletrix',
+    //   name: 'Meletrix ZoomPad 數字鍵盤套件 SP版(左手版)',
+    //   price: 3000,
+    //   quantity: 1,
+    //   spec: {
+    //     外殼: ['EE 耀夜黑', 'EE 細花白'],
+    //     '配重/旋鈕': ['電泳 白', '陽極 黑'],
+    //   },
+    // },
+    // {
+    //   id: 2,
+    //   check: false,
+    //   img: '/images/1669370674683000804.jpg',
+    //   brand: 'Meletrix',
+    //   name: 'Meletrix ZoomPad 數字鍵盤套件 SP版(左手版)',
+    //   price: 1000,
+    //   quantity: 1,
+    //   spec: {
+    //     外殼: ['EE 耀夜黑', 'EE 細花白'],
+    //     '配重/旋鈕': ['電泳 白', '陽極 黑'],
+    //   },
+    // },
   ], //初始化購物車的加入項目
 }) => {
   let items = initialProducts
 
   // init state, init來自cartReducer中
   const [state, dispatch] = useReducer(reducer, items, init)
+  const [cartTotalP, setCartTotalP] = useState(0)
+
+  useEffect(() => {
+    setCartTotalP(state.cartTotal)
+  }, [state])
 
   /**
    * 加入新項目(quantity:1)，重覆項目 quantity: quantity + 1
@@ -193,6 +198,7 @@ export const CartProvider = ({
         isInCart,
         plusOne,
         minusOne,
+        cartTotalP,
       }}
     >
       {children}

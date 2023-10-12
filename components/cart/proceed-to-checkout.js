@@ -9,6 +9,10 @@ export default function ProceedToCheckout({ orderTotalAll, orderAmountAll }) {
   const firstCart = useCart()
   const secondCart = useSecondCart()
   const thirdCart = useThirdCart()
+
+  const allCartsTotal =
+    firstCart.cartTotalP + secondCart.cartTotalR + thirdCart.cartTotalG
+
   const initialCoupons = [
     {
       id: 1,
@@ -93,8 +97,9 @@ export default function ProceedToCheckout({ orderTotalAll, orderAmountAll }) {
             共<span className="orderAmount">{orderAmountAll}</span>
             件商品, 總金額: $
             <span className="orderTotal">
-              {orderTotalAll}
+              {/* {orderTotalAll} */}
               {/* {priceData} */}
+              {allCartsTotal}
             </span>
           </span>
           <a className="btn btn-primary text-white ms-2 px-3 py-2">去結帳</a>

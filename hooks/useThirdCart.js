@@ -1,4 +1,10 @@
-import React, { useReducer, useContext, createContext, useEffect } from 'react'
+import React, {
+  useReducer,
+  useContext,
+  createContext,
+  useEffect,
+  useState,
+} from 'react'
 import { reducer, init } from './cart-reducer'
 
 const ThirdCartContext = createContext(null)
@@ -55,7 +61,11 @@ export const ThirdCartProvider = ({
 
   // init state, init來自cartReducer中
   const [state, dispatch] = useReducer(reducer, items, init)
+  const [cartTotalG, setCartTotalG] = useState(0)
 
+  useEffect(() => {
+    setCartTotalG(state.cartTotal)
+  }, [state])
   /**
    * 加入新項目(quantity:1)，重覆項目 quantity: quantity + 1
    * @param  {Object} item
@@ -170,6 +180,7 @@ export const ThirdCartProvider = ({
         isInCart,
         plusOne,
         minusOne,
+        cartTotalG,
       }}
     >
       {children}

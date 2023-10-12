@@ -19,6 +19,7 @@ export default function PCartList({ setOrderTotalP, setOrderAmountP }) {
     removeItem,
     checkItem,
     checkAllItem,
+    cartTotalP,
   } = useCart()
 
   // const initialProducts = [

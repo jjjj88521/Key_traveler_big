@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import Link from 'next/link'
 
 import CartStep1 from '@/components/cart/cart-step-1'
 import CartStep2 from '@/components/cart/cart-step-2'
@@ -61,9 +60,6 @@ export default function Cart() {
       {currentStep === 1 && (
         <div className="container">
           <h1 className="text-primary fs-3 pt-5 pb-3">購物車清單</h1>
-          <p>
-            <Link href="/cart/product-list">商品列表頁範例</Link>
-          </p>
           <PCartList
             setOrderTotalP={setOrderTotalP}
             setOrderAmountP={setOrderAmountP}

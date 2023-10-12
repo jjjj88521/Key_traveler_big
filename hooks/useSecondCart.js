@@ -1,4 +1,10 @@
-import React, { useReducer, useContext, createContext, useEffect } from 'react'
+import React, {
+  useReducer,
+  useContext,
+  createContext,
+  useEffect,
+  useState,
+} from 'react'
 import { reducer, initRent } from './cart-reducer'
 
 const SecondCartContext = createContext(null)
@@ -41,6 +47,11 @@ export const SecondCartProvider = ({
   let items = initialRentProducts
 
   const [state, dispatch] = useReducer(reducer, items, initRent)
+  const [cartTotalR, setCartTotalR] = useState(0)
+
+  useEffect(() => {
+    setCartTotalR(state.cartTotal)
+  }, [state])
 
   const addItem = (item) => {
     dispatch({
@@ -156,6 +167,7 @@ export const SecondCartProvider = ({
         getCurrentDate,
         handleStartDateChange,
         handleEndDateChange,
+        cartTotalR,
       }}
     >
       {children}
