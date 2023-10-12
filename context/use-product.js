@@ -4,6 +4,7 @@ const ProductDataContext = createContext()
 
 export function ProductDataProvider({ children }) {
   const [productData, setProductData] = useState({})
+  const [maybeLike, setMaybeLike] = useState([])
   const [commentData, setCommentData] = useState({})
   const [commentCount, setCommentCount] = useState({})
   const [isLiked, setIsLiked] = useState(false)
@@ -13,6 +14,8 @@ export function ProductDataProvider({ children }) {
       value={{
         productData,
         setProductData,
+        maybeLike,
+        setMaybeLike,
         commentData,
         setCommentData,
         commentCount,

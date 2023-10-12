@@ -17,6 +17,23 @@ const fetchProduct = async (pid) => {
   }
 }
 
+// 取得該商品的你可能會喜歡的商品
+const fetchMaybeLike = async (pid) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:3005/api/products/${pid}/maybe-like`
+    )
+    if (response.status !== 200) {
+      throw new Error('發生錯誤')
+    }
+    // console.log(response)
+    return response.data
+  } catch (error) {
+    // 處理其他錯誤
+    console.error('發生錯誤:', error)
+  }
+}
+
 // 取得單一商品評論資料
 const fetchProductComment = async (pid, ...qs) => {
   const [star, page] = qs
@@ -136,4 +153,5 @@ export {
   deleteProductLike,
   fetchProductLikeList,
   fetchPdCommentCount,
+  fetchMaybeLike,
 }

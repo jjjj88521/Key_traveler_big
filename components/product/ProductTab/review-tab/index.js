@@ -10,7 +10,7 @@ import CommentItem from './comment-item'
 import axios from 'axios'
 import useLoading from '@/hooks/useLoading'
 import LoadingPage from '@/components/common/loadingPage'
-import { useProductData } from '@/context/product'
+import { useProductData } from '@/context/use-product'
 import { useRouter } from 'next/router'
 import { fetchProductComment } from '@/libs/productFetcher'
 import { DownOutlined } from '@ant-design/icons'
@@ -89,7 +89,7 @@ export default function ReviewTab() {
     <>
       <div className="comment-list py-3" ref={commentListRef}>
         {/* 上方選單區 */}
-        <div className="row pb-3 gap-5">
+        <div className="row pb-3">
           <div className="col-sm-4 col-12 d-flex flex-column gap-3">
             {/* 平均星數 */}
             <div className="vstack gap-3 align-item-center">
@@ -99,45 +99,43 @@ export default function ReviewTab() {
                 </h2>
                 <Rate value={commentCount.avgStar} disabled allowHalf />
               </div>
+              <div className="text-center text-secondary">
+                {commentCount.total} 則評論
+              </div>
+              {/* 各星數評論數 */}
               <div className="px-2">
                 {commentCount.eachStar.map((star, index) => {
-                  const starMap = {
-                    5: '五星',
-                    4: '四星',
-                    3: '三星',
-                    2: '二星',
-                    1: '一星',
-                  }
                   return (
-                    <div key={index} className="d-flex align-items-center">
-                      <Progress
-                        percent={
-                          commentCount.total === 0
-                            ? 0
-                            : (star.count / commentCount.total) * 100
-                        }
-                        showInfo={false}
-                      />
-                      <div className="d-flex flex-nowrap text-nowrap">
-                        {`${starMap[star.star]}`}(
-                        <div
-                          className="text-center"
-                          style={{ minWidth: '30px' }}
-                        >
-                          {star.count}
+                    <div key={index} className="row">
+                      <div className="col-auto d-flex justify-content-between px-0">
+                        <div className="text-center" style={{ width: '20px' }}>
+                          {star.star}
                         </div>
-                        )
+                        <Rate count={1} value={1} />
+                      </div>
+                      <div className="col-10 px-1 d-flex justify-content-center">
+                        <Progress
+                          percent={
+                            commentCount.total === 0
+                              ? 0
+                              : (star.count / commentCount.total) * 100
+                          }
+                          showInfo={false}
+                        />
+                      </div>
+
+                      <div className="col px-0 d-flex justify-content-center text-nowrap">
+                        {star.count}
                       </div>
                     </div>
                   )
                 })}
               </div>
             </div>
-            {/* 篩選 */}
-            {/* 時間排序 */}
           </div>
-          <div className="col">
+          <div className="col-sm-8 col-12">
             <div className="d-flex justify-content-between">
+              {/* 篩選 */}
               <StyleSelect
                 title="星數"
                 onSelect={handleStarSelect}
@@ -163,15 +161,29 @@ export default function ReviewTab() {
                 </Item>
               </StyleSelect>
               <div className="d-flex">
+                {/* 時間排序 */}
                 <Dropdown
                   trigger={['click']}
-                  items={[
-                    { key: '1', label: '時間 進到遠' },
-                    { key: '2', label: '時間 遠到近' },
-                  ]}
+                  menu={{
+                    items: [
+                      {
+                        key: '1',
+                        label: '預設排序',
+                      },
+                      {
+                        key: '2',
+                        label: '時間由新到舊',
+                      },
+                      {
+                        key: '3',
+                        label: '時間由舊到新',
+                      },
+                    ],
+                    // onClick: handleChangeOrderby,
+                  }}
                 >
                   <Typography.Link>
-                    <Space className="fs-5 text-dark fw-bold">
+                    <Space className="fs-6 text-dark fw-bold">
                       排序
                       <DownOutlined />
                     </Space>
@@ -183,7 +195,7 @@ export default function ReviewTab() {
             {isloading ? (
               <LoadingPage />
             ) : (
-              <>
+              <div className="pt-3">
                 <List
                   size="large"
                   dataSource={filteredData}
@@ -203,7 +215,7 @@ export default function ReviewTab() {
                     scrollTo={scrollHeight}
                   />
                 </div>
-              </>
+              </div>
             )}
           </div>
         </div>

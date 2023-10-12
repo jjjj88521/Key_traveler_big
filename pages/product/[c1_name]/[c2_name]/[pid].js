@@ -9,14 +9,14 @@ import axios from 'axios'
 import useRecentlyViewed from '@/hooks/useRecentlyViewed'
 import Swal from 'sweetalert2'
 import useLoading from '@/hooks/useLoading'
-import { useProductData } from '@/context/product'
+import { useProductData } from '@/context/use-product'
 import {
   fetchProduct,
-  fetchProductComment,
   fetchProductLike,
   addProductLike,
   deleteProductLike,
   fetchPdCommentCount,
+  fetchMaybeLike,
 } from '@/libs/productFetcher'
 
 export default function ProductDetail() {
@@ -28,8 +28,8 @@ export default function ProductDetail() {
   const {
     productData,
     setProductData,
-    commentData,
-    setCommentData,
+    maybeLike,
+    setMaybeLike,
     commentCount,
     setCommentCount,
     isLiked,
@@ -74,7 +74,7 @@ export default function ProductDetail() {
       })
     }
   }
-
+  console.log('maybeLike', maybeLike)
   useEffect(() => {
     if (isReady) {
       ;(async () => {
@@ -86,6 +86,9 @@ export default function ProductDetail() {
         })
         await fetchProductLike('pd', pid).then((like) => {
           setIsLiked(like)
+        })
+        await fetchMaybeLike(pid).then((products) => {
+          setMaybeLike(products)
         })
       })()
     }
