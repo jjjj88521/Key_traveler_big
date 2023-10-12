@@ -1,33 +1,49 @@
 import ImgCrop from 'antd-img-crop'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Upload } from 'antd'
 import axios from 'axios'
+
 const UploadAvatar = () => {
   const [fileList, setFileList] = useState([])
+  useEffect(() => {
+    uploadApi()
+  }, [fileList])
+  // 在上传成功后清空文件列表
+  // const clearFileList = () => {
+  //   setFileList([])
+  // }
 
   const onChange = ({ fileList: newFileList }) => {
     // 限制只保留一个文件
     setFileList(newFileList.slice(-1))
-    console.log(newFileList)
     uploadApi()
   }
-  const uploadApi = async () => {
-    const formData = new FormData()
-    formData.append('avatar', fileList[0])
 
-    try {
-      await axios.post('http://localhost:3005/api/users/upload2', formData, {
-        withCredentials: true, // 如果需要在axios请求中包括Cookies
-        headers: {
-          'Content-Type': 'multipart/form-data', // 必须设置为'multipart/form-data'
-        },
+  const uploadApi = async () => {
+    if (fileList.length === 1) {
+      // 仅当有文件时才执行上传
+      const formData = new FormData()
+      fileList.forEach((file) => {
+        formData.append('avatar', file.originFileObj)
       })
-      console.log('上传成功')
-      console.log(formData)
-    } catch (error) {
-      console.error('上传失败', error)
+
+      axios
+        .post('http://localhost:3005/api/users/upload2', formData, {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((response) => {
+          console.log('上传成功', response)
+          // 清空文件列表
+        })
+        .catch((error) => {
+          console.error('上传失败', error)
+        })
     }
   }
+
   const onPreview = async (file) => {
     let src = file.url
     if (!src) {
@@ -44,8 +60,9 @@ const UploadAvatar = () => {
   }
 
   return (
-    <ImgCrop rotationSlider shape="round">
+    <ImgCrop rotationSlider cropShape="round">
       <Upload
+        name="avatar"
         action="http://localhost:3005/api/users/upload"
         method="post"
         listType="picture-circle"

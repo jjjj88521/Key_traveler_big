@@ -7,6 +7,7 @@ import { useAuth } from '@/hooks/useAuth'
 import jwtDecode from 'jwt-decode'
 import Router from 'next/router'
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 const disabledDate = (current) => {
   return current && current > new Date()
@@ -208,6 +209,14 @@ export default function ProfileForm() {
             console.log('AAA')
             console.log(id)
             updateUser(id, formData.user)
+            if (id) {
+              Swal.fire({
+                icon: 'success',
+                title: '修改成功',
+                showConfirmButton: false,
+                timer: 1500,
+              })
+            }
           }}
         >
           儲存

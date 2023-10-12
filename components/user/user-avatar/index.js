@@ -56,7 +56,9 @@ export default function UserAvatar() {
             }}
           > */}
           {/* 選擇圖片  */}
-          <UploadAvatar />
+          <div>
+            <UploadAvatar />
+          </div>
           {/* <input
               type="file"
               ref={fileInputRef}
