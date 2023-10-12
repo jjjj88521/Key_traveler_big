@@ -4,7 +4,9 @@ import styles from './card.module.scss'
 export default function Card({ title, brand, price, image, stock }) {
   return (
     <>
-      <div className={`card h-auto ${styles['card']} overflow-hidden border-0`}>
+      <div
+        className={`card h-auto border border-1 ${styles['card']} overflow-hidden`}
+      >
         <img
           //   src={`/images/product/${image}`}
           src={`/images/product/${image}`}

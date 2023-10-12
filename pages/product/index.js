@@ -163,7 +163,7 @@ export default function ProductIndex() {
       </div>
 
       {/* 分頁頁碼 */}
-      <div className="m-3">
+      <div className="m-5">
         <PaginationComponent
           totalItems={totalPageCount}
           pageSize={PageSize}
