@@ -16,7 +16,7 @@ export default function Article() {
     setSearchCard(e.target.value)
   }
   useEffect(() => {
-    axios.get('http://localhost:3005/apitest/aticle').then((response) => {
+    axios.get('http://localhost:3005/api/article').then((response) => {
       // console.log(response.data.articles)
       console.log(response.data.articles)
       setData(response.data.articles)
