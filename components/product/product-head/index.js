@@ -17,6 +17,7 @@ export default function ProductHead({
   rating,
   commentCount,
   isLiked = false,
+  onToggleLike,
   StyleSelectItems,
 }) {
   // 使用樣式選擇 hook
@@ -68,7 +69,7 @@ export default function ProductHead({
             </div>
             {/* 喜歡按鈕 */}
             <div className="d-flex justify-content-center">
-              <LikeBtn isLiked={isLiked} />
+              <LikeBtn isLiked={isLiked} onToggleLike={onToggleLike} />
             </div>
           </div>
         </div>
