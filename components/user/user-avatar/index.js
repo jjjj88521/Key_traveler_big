@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import Image from 'next/image'
-
+import UploadAvatar from '../upload-avatar'
 export default function UserAvatar() {
   const [selectedFile, setSelectedFile] = useState(null)
   const [previewUrl, setPreviewUrl] = useState('')
@@ -36,7 +36,7 @@ export default function UserAvatar() {
               height={12.5}
             />
           </p>
-          <div className="avatar-img ">
+          {/* <div className="avatar-img ">
             <Image
               src={
                 previewUrl ||
@@ -47,16 +47,17 @@ export default function UserAvatar() {
               height={150}
               className="rounded-circle border border-primary"
             />
-          </div>
-          <button
+          </div> */}
+          {/* <button
             type="button"
             className="btn btn-primary text-white my-4"
             onClick={() => {
               fileInputRef.current.click()
             }}
-          >
-            選擇圖片{' '}
-            <input
+          > */}
+          {/* 選擇圖片  */}
+          <UploadAvatar />
+          {/* <input
               type="file"
               ref={fileInputRef}
               className="d-none"
@@ -64,14 +65,12 @@ export default function UserAvatar() {
                 handleFileSelect(e)
                 console.log(e.target.files[0])
               }}
-            />
-          </button>
+            /> */}
+          {/* </button> */}
           <p className="ps-3 mb-0 align-self-start text-black-50">
             檔案大小1MB
           </p>
-          <p className="ps-3 align-self-start text-black-50">
-            檔案限制: JPEG, PNG
-          </p>
+          <p className="ps-3 align-self-start text-black-50">檔案限制: JPEG</p>
         </div>
       </div>
     </>
