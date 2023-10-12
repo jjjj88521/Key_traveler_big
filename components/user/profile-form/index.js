@@ -13,10 +13,10 @@ const disabledDate = (current) => {
 }
 
 export default function ProfileForm() {
+  const { auth, setAuth } = useAuth()
   useEffect(() => {
     setformData({ ...auth.user })
   }, [])
-  const { auth, setAuth } = useAuth()
   // 更新會員資料
   const updateUser = (userId, user) => {
     // 更新會員資料
@@ -25,9 +25,9 @@ export default function ProfileForm() {
       .then((response) => {
         if (response.data.message === 'success') {
           console.log(response)
-          console.log('成功更新')
+          console.log('成功更新1')
         } else {
-          console.log('更新失敗')
+          console.log('更新失敗1')
           console.log(response)
         }
       })
@@ -68,7 +68,17 @@ export default function ProfileForm() {
     setErrMesage({ ...errMesage, [e.target.name]: mes })
   }
   function handleSetformData(e, mes) {
-    setformData({ ...formData, [e.target.name]: e.target.value })
+    setformData({
+      isAuth: auth.isAuth,
+      user: { ...auth.user, [e.target.name]: e.target.value },
+    })
+    // setformData((prevData) => ({
+    //   ...prevData,
+    //   user: {
+    //     ...prevData.user,
+    //     [e.target.name]: e.target.value,
+    //   },
+    // }))
   }
   return (
     <>
@@ -191,9 +201,13 @@ export default function ProfileForm() {
             // console.log(formData.user)
             delete formData.exp
             delete formData.iat
-
+            console.log('123123123')
             console.log(formData)
-            updateUser(formData.id, formData)
+            console.log(auth)
+            let id = formData.user.id
+            console.log('AAA')
+            console.log(id)
+            updateUser(id, formData.user)
           }}
         >
           儲存
