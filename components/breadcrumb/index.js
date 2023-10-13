@@ -4,7 +4,7 @@ import { pathsLocaleMap } from '@/configs'
 import { MyBreadcrumbList, MyBreadcrumbItem } from './my-breadcrumb'
 import { HomeFilled } from '@ant-design/icons'
 import axios from 'axios'
-import { useProductData } from '@/context/product'
+import { useProductData } from '@/context/use-product'
 
 export default function MyBreadcrumb() {
   // 獲取目前路徑

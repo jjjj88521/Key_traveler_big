@@ -1,7 +1,7 @@
 .carousel-container {
   height: 600px;
   position: relative;
-  border-radius: 10px;
+  // border-radius: 10px;
   overflow: hidden;
   img {
     width: 100%;
@@ -9,7 +9,7 @@
     object-fit: cover;
   }
   .carousel-box {
-    background-color: #FFF3E3;
+    background-color: #fff3e3;
     min-width: 300px;
     height: 200px;
     border-radius: 20px;
@@ -27,7 +27,7 @@
 
 @media screen and (max-width: 576px) {
   .carousel-container {
-    .carousel-box{
+    .carousel-box {
       min-width: 200px;
       height: 150px;
       top: calc(50% - 75px);

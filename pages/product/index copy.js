@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
 import { Drawer, Button } from 'antd'
 import styles from './product.module.css'
+import Accordion from '@/components/product/accordion'
 import AsideFilter from '@/components/product/AsideFilter'
+import PaginationComponent from '@/components/common/PaginationComponent'
+import ProductFetcher from './ProductFetcher'
+import Card from '@/components/product/Card'
 
 // <div className="container">
 // <div className={styles['banner']}>
@@ -16,15 +20,33 @@ export async function getStaticProps() {
 }
 
 export default function ProductIndex() {
-  const [open, setOpen] = useState(false)
+  const [data, setData] = useState([])
+  console.log(data)
+  const handleProductFetched = (fetchedData) => {
+    setData(fetchedData)
+  }
 
+  // Drawer相關
+  const [open, setOpen] = useState(false)
   const showDrawer = () => {
     setOpen(true)
   }
-
   const onClose = () => {
     setOpen(false)
   }
+
+  // 分頁相關
+  const PageSize = 12
+  const totalPageCount = data.length
+  const [currentPage, setCurrentPage] = useState(1)
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage)
+  }
+  // 計算目前頁面應該顯示的Card數組片段
+  const startIndex = (currentPage - 1) * PageSize
+  const endIndex = startIndex + PageSize
+  const currentPageData = data.slice(startIndex, endIndex)
+
   return (
     <>
       <div className={styles.banner}>
@@ -35,18 +57,19 @@ export default function ProductIndex() {
             alt="banner"
           />
         </div>
-        <h1 className={`text-primary ${styles['display1']}`}>團購商品</h1>
+        <h1 className={`text-primary ${styles['display1']}`}>全部商品</h1>
       </div>
       <div className="container pt-md-5 ps-4 pe-4 p-sm-0">
         <div className="row">
           <div className="d-none d-sm-block col-12 col-sm-3 pe-md-5 pe-1">
-            <div className="border border-1 border-primary pt-4">
-              <AsideFilter />
-            </div>
+            <Accordion />
+            <hr className="text-primary opacity-100"></hr>
+            <AsideFilter />
           </div>
 
           {/* sort btn & card group */}
           <div className="col-12 col-sm-9">
+            {/* sort btn */}
             <div className="d-sm-flex d-none justify-content-end align-items-center mb-3">
               <div className={`bg-primary-subtle ${styles['sortBtn']}`}>
                 <p className="fs-6">排序</p>
@@ -60,6 +83,11 @@ export default function ProductIndex() {
                     預設
                   </button>
                   <ul className="dropdown-menu">
+                    <li>
+                      <a className="dropdown-item" href="#">
+                        有貨優先
+                      </a>
+                    </li>
                     <li>
                       <a className="dropdown-item" href="#">
                         價錢：由低到高
@@ -109,18 +137,41 @@ export default function ProductIndex() {
               onClose={onClose}
               open={open}
             >
+              <Accordion />
+              <hr className="text-primary opacity-100"></hr>
               <AsideFilter />
             </Drawer>
 
-            {/* product list & card group  */}
+            {/* card group  */}
+            <div className="d-flex row row-cols-2 row-cols-md-3 g-4 mb-sm-0 mb-4">
+              {currentPageData.map((v, i) => (
+                <div className="col" key={i}>
+                  <div className="col">
+                    <Card
+                      title={v.name}
+                      brand={v.brand}
+                      price={v.price}
+                      image={v.images ? JSON.parse(v.images)[0] : null}
+                      stock={v.stock}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* pagination */}
-      <div className="text-center mb-3">
-        <h1 className="text-primary">&lt; 1...4 5 6...10 &gt;</h1>
+      {/* 分頁頁碼 */}
+      <div className="m-5">
+        <PaginationComponent
+          totalItems={totalPageCount}
+          pageSize={PageSize}
+          onPageChange={handlePageChange}
+        ></PaginationComponent>
       </div>
+
+      <ProductFetcher onProductFetched={handleProductFetched} />
     </>
   )
 }

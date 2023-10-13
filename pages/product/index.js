@@ -1,14 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Drawer, Button } from 'antd'
 import styles from './product.module.css'
 import Accordion from '@/components/product/accordion'
 import AsideFilter from '@/components/product/AsideFilter'
-import CardHover from '@/components/CardHover'
 import PaginationComponent from '@/components/common/PaginationComponent'
-
-// <div className="container">
-// <div className={styles['banner']}>
-// <h1 className={`text-primary ${styles['display1']}`}>鍵盤套件</h1>
+import Card from '@/components/product/Card'
+import axios from 'axios'
+import { useRouter } from 'next/router'
 
 // 將 title 傳給 app.js
 export async function getStaticProps() {
@@ -19,14 +17,50 @@ export async function getStaticProps() {
 }
 
 export default function ProductIndex() {
+  // Drawer相關
   const [open, setOpen] = useState(false)
-
   const showDrawer = () => {
     setOpen(true)
   }
-
   const onClose = () => {
     setOpen(false)
+  }
+
+  // 路由相關
+  const router = useRouter()
+
+  const [cateProducts, setCateProducts] = useState([])
+  useEffect(() => {
+    if (router.isReady) {
+      axios
+        .get(`http://localhost:3005/api/products/qs`)
+        .then((res) => {
+          setCateProducts(res.data)
+          console.log(res.data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  }, [router.isReady])
+  //   console.log(cateProducts)
+  //   console.log(cateProducts.data)
+
+  // 分頁相關
+  const PageSize = 12
+  const totalPageCount = cateProducts.total
+  const [currentPage, setCurrentPage] = useState(1)
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage)
+    // 創建新的 Axios 請求，包含分頁頁碼
+    axios
+      .get(`http://localhost:3005/api/products/qs?page=${newPage}`)
+      .then((res) => {
+        setCateProducts(res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   return (
@@ -51,6 +85,7 @@ export default function ProductIndex() {
 
           {/* sort btn & card group */}
           <div className="col-12 col-sm-9">
+            {/* sort btn */}
             <div className="d-sm-flex d-none justify-content-end align-items-center mb-3">
               <div className={`bg-primary-subtle ${styles['sortBtn']}`}>
                 <p className="fs-6">排序</p>
@@ -64,6 +99,11 @@ export default function ProductIndex() {
                     預設
                   </button>
                   <ul className="dropdown-menu">
+                    <li>
+                      <a className="dropdown-item" href="#">
+                        有貨優先
+                      </a>
+                    </li>
                     <li>
                       <a className="dropdown-item" href="#">
                         價錢：由低到高
@@ -118,17 +158,37 @@ export default function ProductIndex() {
               <AsideFilter />
             </Drawer>
 
-            {/* product list & card group  */}
-            <CardHover></CardHover>
+            {/* card group  */}
+            <div className="d-flex row row-cols-2 row-cols-md-3 g-4 mb-sm-0 mb-4">
+              {cateProducts.data && cateProducts.data.length > 0 ? (
+                cateProducts.data.map((v, i) => (
+                  <div className="col" key={i}>
+                    <div className="col">
+                      <Card
+                        title={v.name}
+                        brand={v.brand}
+                        price={v.price}
+                        image={v.images ? JSON.parse(v.images)[0] : null}
+                        stock={v.stock}
+                      />
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>商品準備中</p>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* pagination */}
-      <div className="m-3">
+      {/* 分頁頁碼 */}
+      <div className="m-5">
         <PaginationComponent
-          totalItems={120}
-          pageSize={12}
+          currentPage={currentPage}
+          totalItems={totalPageCount}
+          pageSize={PageSize}
+          onPageChange={handlePageChange}
         ></PaginationComponent>
       </div>
     </>

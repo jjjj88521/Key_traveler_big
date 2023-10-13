@@ -1,5 +1,6 @@
 import React from 'react'
 import { Rate, Avatar } from 'antd'
+import { UserOutlined } from '@ant-design/icons'
 
 export default function CommentItem({
   user_account,
@@ -7,20 +8,36 @@ export default function CommentItem({
   star,
   created_time,
   comment,
+  style,
 }) {
+  style = JSON.parse(style)
   return (
-    <div className="d-flex py-3">
-      <Avatar src={avatar_img} />
-      <div className="ms-3 vstack gap-3">
-        <div className="vstack gap-2">
-          <div className="fw-bold text-primary fs-5">
-            {/* // 只保留 account 第一個與最後一個字母，中間每個字母替換成 *，有幾個字母就替換幾次 */}
-            {user_account.slice(0, 1) + '*****' + user_account.slice(-1)}
+    <div className="py-2 row w-100">
+      <div className="col-auto">
+        <Avatar src={avatar_img} icon={<UserOutlined />} />
+      </div>
+      <div className="col d-flex flex-column gap-4">
+        <div className="d-flex justify-content-between w-100">
+          <div className="vstack gap-2">
+            <h5 className="fw-bold text-primary mb-0">
+              {/* // 只保留 account 第一個與最後一個字母，中間每個字母替換成 *，有幾個字母就替換幾次 */}
+              {user_account.slice(0, 1) + '*****' + user_account.slice(-1)}
+            </h5>
+            <Rate value={star} disabled style={{ fontSize: '14px' }} />
+            <div className="d-flex gap-2 text-secondary">
+              {style.map((style, index) => (
+                <span key={index}>{style}</span>
+              ))}
+            </div>
           </div>
-          <Rate value={star} disabled />
           <h6 className="text-secondary">{created_time}</h6>
         </div>
-        <div className="text-dark fs-5">{comment}</div>
+        <div
+          className="text-dark fs-6 fw-semibold lh-base"
+          style={{ wordBreak: 'break-all' }}
+        >
+          {comment}
+        </div>
       </div>
     </div>
   )
