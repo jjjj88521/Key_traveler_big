@@ -21,7 +21,7 @@ export default function ListCardHistory({ hisTab, hisData }) {
           <List.Item key={item.key + 1}>
             <Card
               className={
-                hisTab === '1'
+                hisTab === 'Expired'
                   ? `${style['expiredCoupon']}`
                   : `${style['usedCoupon']}`
               }
@@ -29,19 +29,21 @@ export default function ListCardHistory({ hisTab, hisData }) {
               <div
                 className={`d-flex align-items-center`}
                 id={
-                  hisTab === '1'
+                  hisTab === 'Expired'
                     ? 'expired_' + (item.key + 1)
                     : 'used_' + (item.key + 1)
                 }
               >
-                {/* <div> */}
                 <img width={100} alt="logo" src="/images/coupon_notUse.png" />
-                {/* </div> */}
                 <div className={`ms-2 text-secondary`}>
                   <h5>{item.title}</h5>
                   <h6 style={{ maxWidth: '300px' }}>{item.description}</h6>
-                  <p className="m-0">低消 ${item.threshold} 起</p>
-                  <p className="m-0">有效日期：{item.endTime}</p>
+                  <p className={`m-0`}>
+                    {item.threshold === 0
+                      ? '無消費門檻'
+                      : `低消 $${item.threshold} 起`}
+                  </p>
+                  <p className="m-0">有效日期：{item.end_date}</p>
                 </div>
               </div>
             </Card>

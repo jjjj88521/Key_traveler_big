@@ -33,31 +33,73 @@ export default function ListCardForCoupon({ data, type }) {
                     src="/images/coupon_pic.jpg"
                   />
                 </div>
-                <div className="ms-2">
+                <div
+                  className="ms-2 position-relative"
+                  style={{ height: '120px' }}
+                >
                   <h5 className="text-primary">
                     {item.coupon_name || item.coupon_code}
                   </h5>
-                  <h6 className={`${style['couponDesription']}`}>
+                  <h6 className={`${style['couponDesription']} mb-0 mt-2`}>
                     <div>{item.description}</div>
                   </h6>
-                  <p
-                    className={`m-0 ${
-                      item.threshold === 0 ? 'text-danger' : ''
-                    }`}
-                  >
-                    {item.threshold === 0
-                      ? '無消費門檻'
-                      : `低消 $${item.threshold} 起`}
-                  </p>
-                  <p>
-                    有效日期：
+                  <div className={`d-sm-block d-none  ${style['cardEnd']}`}>
+                    <p
+                      className={`mt-4 mb-0 ${
+                        item.threshold === 0 ? 'text-primary' : ''
+                      }`}
+                    >
+                      {item.threshold === 0
+                        ? '無消費門檻'
+                        : `低消 $${item.threshold} 起`}
+                    </p>
+
                     {type === 'All' ? (
-                      item.end_date
+                      <div>
+                        <p>
+                          有效日期：{item.end_date ? item.end_date : '無限期'}
+                        </p>
+                      </div>
                     ) : (
-                      <div className="text-danger">
+                      <div className="text-danger d-flex align-items-center">
                         <i className="fa-solid fa-clock me-1"></i>
                         {item.end_date}
-                        <br></br>
+                        <p className="mb-0 ms-2">
+                          (剩餘{' '}
+                          {Math.floor(
+                            (moment(item.end_date) - moment()) /
+                              millisecondsInADay
+                          )}{' '}
+                          天{' '}
+                          {Math.floor(
+                            ((moment(item.end_date) - moment()) %
+                              millisecondsInADay) /
+                              (1000 * 60 * 60)
+                          )}{' '}
+                          小時)
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                  <div className="d-sm-none" style={{ fontSize: '0.9rem' }}>
+                    <p
+                      className={`m-0 ${
+                        item.threshold === 0 ? 'text-primary' : ''
+                      }`}
+                    >
+                      {item.threshold === 0
+                        ? '無消費門檻'
+                        : `低消 $${item.threshold} 起`}
+                    </p>
+                    {type === 'All' ? (
+                      <div>
+                        <p>有效日期：</p>
+                        {item.end_date}
+                      </div>
+                    ) : (
+                      <div className="text-danger d-sm-none ">
+                        <i className="fa-solid fa-clock me-1"></i>
+                        {item.end_date}
                         <p className="mb-0 ms-3">
                           (剩餘{' '}
                           {Math.floor(
@@ -74,7 +116,7 @@ export default function ListCardForCoupon({ data, type }) {
                         </p>
                       </div>
                     )}
-                  </p>
+                  </div>
                 </div>
               </div>
             </Card>

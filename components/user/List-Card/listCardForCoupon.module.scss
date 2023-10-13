@@ -2,6 +2,7 @@
 
 .cardStyle {
   max-height: '170px';
+  border-color: #dc9329;
   @media screen and (max-width: $maxWidth) {
     max-height: '200px';
   }
@@ -19,6 +20,10 @@
     }
   }
 }
+.cardEnd {
+  position: absolute;
+  top: 50px;
+}
 
 //歷史紀錄頁面
 .usedCoupon {
@@ -31,13 +36,13 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('/images/coupon_stamp2-2.png');
+    background-image: url('/images/coupon_stamp2.png');
     background-color: rgba(0, 0, 0, 0.2);
     background-repeat: no-repeat;
     background-position: 0% 50%;
     background-size: auto 55%;
     @media screen and (max-width: $maxWidth) {
-      background-image: url('/images/coupon_stamp2-2.png');
+      background-image: url('/images/coupon_stamp2.png');
       background-position: 5% 50%;
       background-size: 45% 40%;
     }
@@ -61,13 +66,14 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('/images/coupon_stamp2.png');
+    border-radius: 8px;
+    background-image: url('/images/coupon_stamp.png');
     background-color: rgba(0, 0, 0, 0.2);
     background-repeat: no-repeat;
     background-position: -1% 50%;
     background-size: auto 45%;
     @media screen and (max-width: $maxWidth) {
-      background-image: url('/images/coupon_stamp2.png');
+      background-image: url('/images/coupon_stamp.png');
       background-position: 5% 50%;
       background-size: auto 40%;
     }
