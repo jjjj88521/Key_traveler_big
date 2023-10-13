@@ -357,13 +357,16 @@ export default function ArticleFilter() {
               )
               .slice(startIndex, endIndex)
               .map((item, index) => {
+                const parsedImg = JSON.parse(item.img)
+
+                console.log('item.img:', parsedImg)
                 return (
                   <div className="col mb-4" key={item.id}>
                     <div className={`${art_list_style['list_card']} card`}>
                       {/* 路由名稱 */}
                       <Link href={`/article/${item.id}`}>
                         <img
-                          src={item.img}
+                          src={`/images/article/${parsedImg[0]}`}
                           className="card-img-top"
                           alt="..."
                         />
@@ -400,6 +403,8 @@ export default function ArticleFilter() {
             </div>
           </div>
         </div>
+        {/* 圖片上傳格式 */}
+        {/* <img src={`/images/article/1685846717544631361.jpg`}></img> */}
       </div>
     </>
   )
