@@ -21,15 +21,15 @@ const userSideBarLinks = [
     children: [
       {
         name: '一般商品',
-        link: '/user/order/category/1',
+        link: '/user/order/1',
       },
       {
         name: '團購商品',
-        link: '/user/order/category/2',
+        link: '/user/order/2',
       },
       {
         name: '租用商品',
-        link: '/user/order/category/3',
+        link: '/user/order/3',
       },
     ],
   },

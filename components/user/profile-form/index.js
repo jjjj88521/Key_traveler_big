@@ -1,5 +1,5 @@
 import React from 'react'
-
+import Cookies from 'js-cookie'
 import dayjs from 'dayjs'
 import { DatePicker } from 'antd'
 import { useState, useRef, useEffect } from 'react'
@@ -7,14 +7,36 @@ import { useAuth } from '@/hooks/useAuth'
 import jwtDecode from 'jwt-decode'
 import Router from 'next/router'
 import axios from 'axios'
+import Swal from 'sweetalert2'
+
 const disabledDate = (current) => {
   return current && current > new Date()
 }
 
 export default function ProfileForm() {
   const { auth, setAuth } = useAuth()
-  console.log(auth)
-  //登出
+  useEffect(() => {
+    setformData({ ...auth.user })
+  }, [])
+  // 更新會員資料
+  const updateUser = (userId, user) => {
+    // 更新會員資料
+    axios
+      .put('http://localhost:3005/api/users/update', user)
+      .then((response) => {
+        if (response.data.message === 'success') {
+          console.log(response)
+          console.log('成功更新1')
+        } else {
+          console.log('更新失敗1')
+          console.log(response)
+        }
+      })
+      .catch((error) => {
+        console.error('更新失敗:', error)
+        console.log('更新發生錯誤')
+      })
+  }
 
   // 重新整理後驗證登入狀態
   // useEffect(() => {
@@ -47,7 +69,17 @@ export default function ProfileForm() {
     setErrMesage({ ...errMesage, [e.target.name]: mes })
   }
   function handleSetformData(e, mes) {
-    setformData({ ...formData, [e.target.name]: e.target.value })
+    setformData({
+      isAuth: auth.isAuth,
+      user: { ...auth.user, [e.target.name]: e.target.value },
+    })
+    // setformData((prevData) => ({
+    //   ...prevData,
+    //   user: {
+    //     ...prevData.user,
+    //     [e.target.name]: e.target.value,
+    //   },
+    // }))
   }
   return (
     <>
@@ -60,7 +92,7 @@ export default function ProfileForm() {
           id="name"
           name="name"
           className="form-control"
-          defaultValue={formData.last_name + formData.first_name}
+          defaultValue={auth.user.card_name}
           onChange={(e) => {
             if (e.target.value.length === 0) {
               let mes = '請填入姓名'
@@ -78,8 +110,8 @@ export default function ProfileForm() {
             }
           }}
         />
-
-        <label htmlFor="gender" className="col-form-label mt-3">
+        {/*性別理論上不會隨意更改  */}
+        {/* <label htmlFor="gender" className="col-form-label mt-3">
           性別
         </label>
         <select
@@ -88,10 +120,13 @@ export default function ProfileForm() {
           name="gender"
           className="form-select"
           defaultValue={formData.gender}
+          onChange={(e) => {
+            handleSetformData(e)
+          }}
         >
           <option value="1">男</option>
           <option value="0">女</option>
-        </select>
+        </select> */}
 
         <label htmlFor="address" className="col-form-label mt-3">
           地址
@@ -101,7 +136,7 @@ export default function ProfileForm() {
           id="address"
           name="address"
           className="form-control"
-          defaultValue={formData.address}
+          defaultValue={auth.user.address}
           onChange={(e) => {
             if (e.target.value.length === 0) {
               let mes = '請填入地址'
@@ -122,7 +157,7 @@ export default function ProfileForm() {
           id="phone"
           name="phone"
           className="form-control"
-          defaultValue={formData.phone}
+          defaultValue={auth.user.phone}
           onChange={(e) => {
             let phoneReg = /^09\d{8}$/
             if (phoneReg.test(e.target.value)) {
@@ -164,7 +199,24 @@ export default function ProfileForm() {
               errMesage.phone
             }
 
-            console.log(error)
+            // console.log(formData.user)
+            delete formData.exp
+            delete formData.iat
+            console.log('123123123')
+            console.log(formData)
+            console.log(auth)
+            let id = formData.user.id
+            console.log('AAA')
+            console.log(id)
+            updateUser(id, formData.user)
+            if (id) {
+              Swal.fire({
+                icon: 'success',
+                title: '修改成功',
+                showConfirmButton: false,
+                timer: 1500,
+              })
+            }
           }}
         >
           儲存

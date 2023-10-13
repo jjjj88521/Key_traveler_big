@@ -22,7 +22,7 @@ export function AuthProvider({ children }) {
       confirmPassword: '',
       cardNumber: '',
       cardName: '',
-      expiry: '',
+      exp: '',
     },
   })
 
@@ -191,6 +191,7 @@ export function AuthProvider({ children }) {
             user: response.data.user,
           })
           getCoupon()
+          // checkLogin()
         })
         .catch((error) => {
           if (
@@ -212,7 +213,42 @@ export function AuthProvider({ children }) {
       console.log(error)
     }
   }
+  // 重新讀取資料庫S
+  async function checkLogin() {
+    try {
+      const res = await axios.get(
+        'http://localhost:3005/api/auth-jwt/check-login',
+        {
+          withCredentials: true,
+        }
+      )
+      console.log(`checklogoin:`)
+      console.log(res)
+      const id = res.data.user.id
+      console.log('id')
+      console.log(id)
 
+      const userRes = await axios.get(`http://localhost:3005/api/users/${id}`)
+      console.log('123123123123')
+      console.log(userRes.data.user)
+
+      setAuth({
+        isAuth: true,
+        user: userRes.data.user,
+      })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  // 重新讀取資料庫E
+  useEffect(() => {
+    checkLogin()
+  }, [router.isReady, asPath])
+  useEffect(() => {
+    console.log('result')
+    console.log(auth)
+  }, [auth])
   // 登入
   const login = async (account, password) => {
     // 取得原頁面，登入成功跳轉到原頁面
@@ -342,6 +378,8 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     if (router.isReady && !auth.isAuth) {
       checkAuth()
+
+      console.log(auth)
     }
   }, [router.isReady, asPath])
 

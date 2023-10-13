@@ -28,7 +28,7 @@ export default function Login() {
     }
   }, [])
   return (
-    <UserLayout title={'登入'} isLoginPage={true}>
+    <UserLayout title={''} isLoginPage={true}>
       <LoginForm />
     </UserLayout>
   )

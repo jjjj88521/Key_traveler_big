@@ -43,3 +43,15 @@
   line-height: 0px;
   margin: 0px 8px;
 }
+@media (min-width: 576px) {
+  .w-sm-50 {
+    width: 393px !important;
+  }
+}
+
+/* .bg-image {
+  background-image: url('../../public/images/login-bg.svg') !important; 
+  background-size: cover; 
+  background-repeat: no-repeat; 
+  background-attachment: fixed; 
+} */

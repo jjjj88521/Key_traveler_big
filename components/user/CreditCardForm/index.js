@@ -5,8 +5,24 @@ import style from '@/styles/user/register.module.scss'
 import { useAuth } from '@/hooks/useAuth'
 import jwtDecode from 'jwt-decode'
 import Router from 'next/router'
-
+import axios from 'axios'
 export default function CreditCardForm() {
+  const updateUser = (userId, user) => {
+    // 更新會員資料
+    axios
+      .put('http://localhost:3005/api/users/update', user)
+      .then((response) => {
+        if (response.data.message === 'success') {
+          console.log('成功更新')
+        } else {
+          console.log('更新失敗')
+        }
+      })
+      .catch((error) => {
+        console.error('更新失敗:', error)
+        console.log('更新發生錯誤')
+      })
+  }
   const [cardData, setCardData] = useState({
     cvc: '',
     expiry: '',
@@ -14,13 +30,7 @@ export default function CreditCardForm() {
     name: '',
     number: '',
   })
-  const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setCardData({
-      ...cardData,
-      [name]: value,
-    })
-  }
+
   const { auth, setAuth } = useAuth()
   // 重新整理後驗證登入狀態
   // useEffect(() => {
@@ -34,6 +44,15 @@ export default function CreditCardForm() {
   //     Router.push('/user/login')
   //   }
   // }, [])
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setCardData({
+      ...cardData,
+      [name]: value,
+    })
+    setAuth({ ...auth, user: { ...auth.user, [name]: value } })
+    // console.log(auth.user.card_number)
+  }
   return (
     <>
       <form className="col-sm-6 col-12">
@@ -43,14 +62,14 @@ export default function CreditCardForm() {
           </label>{' '}
           <input
             type="text"
-            name="cardNumber"
+            name="card_number"
             pattern="^[0-9]*$"
             maxLength="16"
             defaultValue={auth.user.card_number}
             className={`${style['hide-arrow']} col-8 col-sm-8 col-12 form-control`}
             placeholder="Card Number"
             onChange={handleInputChange}
-            onFocus={(e) => setCardData({ ...cardData, focus: e.target.name })}
+            // onFocus={(e) => setCardData({ ...cardData, focus: e.target.name })}
           />
         </section>
         <section className="mb-3">
@@ -60,11 +79,11 @@ export default function CreditCardForm() {
           <input
             className="col-sm-8 col-12 form-control"
             type="text"
-            name="cardName"
+            name="card_name"
             defaultValue={auth.user.card_name}
             placeholder="Card Holder Name"
             onChange={handleInputChange}
-            onFocus={(e) => setCardData({ ...cardData, focus: e.target.name })}
+            // onFocus={(e) => setCardData({ ...cardData, focus: e.target.name })}
           />
         </section>
         {/* <section className="mb-3">
@@ -87,7 +106,10 @@ export default function CreditCardForm() {
           type="button"
           className="btn btn-primary text-white my-5 col-4 offset-8 d-sm-block d-none"
           onClick={() => {
+            delete auth.user.exp
+            delete auth.user.iat
             console.log(auth)
+            updateUser(auth.user.id, auth.user)
           }}
         >
           儲存
