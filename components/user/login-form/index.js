@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styles from '@/styles/user/member.module.css'
 import axios from 'axios'
 import jwtDecode from 'jwt-decode'
@@ -49,6 +49,13 @@ export default function LoginForm() {
   }
 
   //google第三方登入用E
+  //enter登入
+  const loginButtonRef = useRef(null)
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      loginButtonRef.current.click()
+    }
+  }
 
   //存login 資料
   const [inputAuth, setInputAuth] = useState({
@@ -190,6 +197,7 @@ export default function LoginForm() {
               onBlur={(e) => {
                 setInputAuth({ ...inputAuth, [e.target.name]: e.target.value })
               }}
+              onKeyDown={handleKeyPress}
             />
           </div>
           <button
@@ -198,6 +206,14 @@ export default function LoginForm() {
             onClick={() => {
               login(inputAuth.account, inputAuth.password)
             }}
+            onKeyDown={(e) => {
+              console.log(e)
+              if (e.key === 'Enter') {
+                login(inputAuth.account, inputAuth.password)
+                console.log(e.key)
+              }
+            }}
+            ref={loginButtonRef}
           >
             登入
           </button>
