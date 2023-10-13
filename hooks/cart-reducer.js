@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import Swal from 'sweetalert2'
 // 初始化狀態
 // isEmpty, totalItems, cartTotal為最後計算得出
 export const initialState = {
@@ -21,12 +22,6 @@ const moment = require('moment')
 //   spec: '',
 // }
 
-//全選
-// const toggleCheckAll = (state, action) => {
-//   return state.items.map((item) => {
-//     return { ...item, check: action.payload }
-//   })
-// }
 /**
  * addItem 加入項目於state中
  * @param  {} state
@@ -63,6 +58,35 @@ const removeItem = (state, action) => {
   return state.items.filter((item) => item.id !== action.payload.id)
 }
 
+const styleSelect = (state, action) => {
+  // 尋找是否有已存在的索引值
+  const existingItemIndex = state.items.findIndex(
+    (item) => item.id === action.payload.id
+  )
+  const changeKey = action.payload.key
+  const changeValue = action.payload.value
+  // 如果有存在，改變style的值
+  if (existingItemIndex > -1) {
+    const item = state.items[existingItemIndex]
+    const id = item.id
+
+    const newStyleData = item.specData.map((style) => {
+      if (style.key === changeKey) {
+        return { key: changeKey, value: changeValue }
+      } else {
+        return style
+      }
+    })
+    const action = {
+      type: 'STYLE_SELECT',
+      payload: { id, specData: newStyleData },
+    }
+
+    return updateItem(state, action)
+  }
+  return [...state.items, action.payload]
+}
+
 const checkItem = (state, action) => {
   // 尋找是否有已存在的索引值
   const existingItemIndex = state.items.findIndex(
@@ -73,7 +97,6 @@ const checkItem = (state, action) => {
   if (existingItemIndex > -1) {
     const item = state.items[existingItemIndex]
     const id = item.id
-    // console.log(item.check);
     const check = !item.check
 
     const action = {
@@ -92,7 +115,6 @@ const checkAllItem = (state, action) => {
 
   const newState = [...state.items]
   newState.map((i) => {
-    // console.log(i.id)
     i.check = isChecked
   })
   return newState
@@ -117,7 +139,6 @@ const updateItem = (state, action) => {
       ...newState[existingItemIndex],
       ...action.payload,
     }
-    // console.log(newState);
     return newState
   }
 
@@ -132,7 +153,6 @@ const plusItemQuantityOnce = (state, action) => {
   )
 
   if (existingItemIndex > -1) {
-    //const newState = [...state.items]
     const item = state.items[existingItemIndex]
     const id = item.id
     const quantity = item.quantity + 1
@@ -179,7 +199,6 @@ const startDateChange = (state, action) => {
   )
   const newStartDate = action.payload.newStartDate
   if (existingItemIndex > -1) {
-    //const newState = [...state.items]
     const item = state.items[existingItemIndex]
     const id = item.id
     const oldStartDate = item.startDate
@@ -187,7 +206,13 @@ const startDateChange = (state, action) => {
     const startDate =
       moment(newStartDate) < moment(oldEndDate) ? newStartDate : oldStartDate
     if (moment(newStartDate) > moment(oldEndDate)) {
-      alert('日期輸入錯誤')
+      Swal.fire({
+        icon: 'error',
+        title: '請重新選擇日期',
+        text: '開始日期須小於結束日期',
+        showConfirmButton: false,
+        timer: 1500,
+      })
     }
     const action = {
       type: 'UPDATE_RENT_ITEM',
@@ -207,7 +232,6 @@ const endDateChange = (state, action) => {
   )
   const newEndDate = action.payload.newEndDate
   if (existingItemIndex > -1) {
-    //const newState = [...state.items]
     const item = state.items[existingItemIndex]
     const id = item.id
     const oldStartDate = item.startDate
@@ -215,7 +239,13 @@ const endDateChange = (state, action) => {
     const endDate =
       moment(oldStartDate) < moment(newEndDate) ? newEndDate : oldEndDate
     if (moment(oldStartDate) > moment(newEndDate)) {
-      alert('日期輸入錯誤')
+      Swal.fire({
+        icon: 'error',
+        title: '請重新選擇日期',
+        text: '開始日期須小於結束日期',
+        showConfirmButton: false,
+        timer: 1500,
+      })
     }
     const action = {
       type: 'UPDATE_RENT_ITEM',
@@ -284,9 +314,6 @@ const calculateRentSelectItems = (items) => {
   return total
 }
 
-// const calculateAllCartsTotal = (items) => {
-//   calculateTotal(items) + calculateRentTotal(items)
-// }
 const calculateTotalItems = (items) =>
   items.reduce((sum, item) => sum + item.quantity, 0)
 
@@ -294,8 +321,7 @@ const calculateTotalItems = (items) =>
 const generateCartState = (state, items) => {
   // isEmpty為布林值
   const isEmpty = items.length === 0
-  // console.log('generateCartState')
-  // console.log(items)
+
   return {
     ...initialState,
     ...state,
@@ -309,8 +335,7 @@ const generateCartState = (state, items) => {
 const generateRentCartState = (state, items) => {
   // isEmpty為布林值
   const isEmpty = items.length === 0
-  // console.log('generateRentCartState')
-  // console.log(items)
+
   return {
     ...initialState,
     ...state,
@@ -324,13 +349,15 @@ const generateRentCartState = (state, items) => {
 
 // for useReducer init use
 export const init = (items) => {
-  console.log('init')
+  return generateCartState({}, items)
+}
+export const initGroup = (items) => {
   return generateCartState({}, items)
 }
 export const initRent = (items) => {
-  // console.log('initRent')
   return generateRentCartState({}, items)
 }
+
 export const reducer = (state, action) => {
   switch (action.type) {
     case 'ADD_ITEM':
@@ -355,12 +382,12 @@ export const reducer = (state, action) => {
       return generateCartState(state, plusItemQuantityOnce(state, action))
     case 'MINUS_ONE':
       return generateCartState(state, minusItemQuantityOnce(state, action))
-    // case 'Toggle_Check_All':
-    //   return generateCartState(state, toggleCheckAll(state, action))
     case 'Start_Date_Change':
       return generateRentCartState(state, startDateChange(state, action))
     case 'End_Date_Change':
       return generateRentCartState(state, endDateChange(state, action))
+    case 'STYLE_SELECT':
+      return generateCartState(state, styleSelect(state, action))
     case 'CLEAR_CART':
       return initialState
 

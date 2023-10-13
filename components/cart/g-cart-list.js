@@ -5,11 +5,9 @@ import {
   faCircleChevronDown,
   faTrashCan,
 } from '@fortawesome/free-solid-svg-icons'
-// import { useCartContext } from '@/context/cart'
-import { useThirdCart } from '@/hooks/useThirdCart'
-export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
-  // const { priceData, setPrice } = useCartContext()
-  // 使用hooks 解出所需的狀態與函式(自context)
+import { useGroupCart } from '@/hooks/useGroupCart'
+
+export default function GCartList() {
   const {
     cart,
     items,
@@ -18,30 +16,9 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
     removeItem,
     checkItem,
     checkAllItem,
-    cartTotalG,
-  } = useThirdCart()
+    styleSelect,
+  } = useGroupCart()
 
-  // const initialProducts = [
-  //   {
-  //     id: 1,
-  //     check: false,
-  //     img: '/images/1669370674683000804.jpg',
-  //     price: 3000,
-  //     quantity: 1,
-  //   },
-  //   {
-  //     id: 2,
-  //     check: false,
-  //     img: '/images/1669370674683000804.jpg',
-  //     price: 1000,
-  //     quantity: 2,
-  //   },
-  // ]
-
-  // const [products, setProducts] = useState(items)
-  // const [checkAll, setCheckAll] = useState(false)
-  // const [orderTotal, setOrderTotal] = useState(0) // 總金額的狀態變數
-  // const [orderAmount, setOrderAmount] = useState(0) //總件數的狀態變數
   const [checkAll, setCheckAll] = useState(false)
   const [checkedItems, setCheckedItems] = useState({})
 
@@ -70,98 +47,6 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
       items.length > 0 && items.every((item) => checkedItems[item.id])
     setCheckAll(allChecked)
   }, [items, checkedItems])
-
-  // console.log('g-cart : ' + priceData)
-  //G總金額
-  //   useEffect(() => {
-  //     let orderTotal = 0
-  //     let orderAmount = 0
-  //     products.map((v) => {
-  //       if (v.check) {
-  //         const sum = v.price * v.quantity
-  //         orderTotal += sum
-  //         orderAmount++
-  //       }
-  //     })
-  //     // setPrice(priceData + orderTotal)
-  //     setOrderTotal(orderTotal)
-  //     setOrderAmount(orderAmount)
-  //     setOrderTotalG(orderTotal)
-  //     setOrderAmountG(orderAmount)
-  //     // console.log(orderTotal)
-  //     // console.log(orderAmount)
-  //   }, [products])
-
-  //   // G全選
-  //   const toggleCheckAll = (products, isCheckedAll) => {
-  //     return products.map((v) => {
-  //       return { ...v, check: isCheckedAll }
-  //     })
-  //   }
-  //   //G單選
-  //   const toggleCheck = (products, id) => {
-  //     return products.map((v) => {
-  //       if (v.id === id) return { ...v, check: !v.check }
-  //       else return { ...v }
-  //     })
-  //   }
-  //   // 增減數量
-  //   const upDateQuantity = (products, id, value) => {
-  //     return products.map((v) => {
-  //       if (v.id === id) return { ...v, quantity: v.quantity + value }
-  //       else return { ...v }
-  //     })
-  //   }
-  //   // G移除購物車商品
-  //   const removeProduct = (products, id) => {
-  //     return products.filter((v) => v.id !== id)
-  //   }
-  //   // G總計
-  //   const calculateTotalPrice = (products) => {
-  //     let totalPrice = 0
-  //     for (const v of products) {
-  //       totalPrice += v.price * v.quantity
-  //     }
-  //     return totalPrice
-  //   }
-  //   const totalPrice = calculateTotalPrice(products)
-  //   // G全選
-  //   const handleToggleCheckAll = (isCheckedAll) => {
-  //     setProducts(toggleCheckAll(products, isCheckedAll))
-  //   }
-  //   // G單選
-  //   const handleToggleCheck = (id) => {
-  //     const updateProducts = toggleCheck(products, id)
-  //     setProducts(updateProducts)
-  //     const updateCheckAllRent = updateProducts.every((v) => v.check)
-  //     setCheckAll(updateCheckAllRent)
-  //   }
-  //   // 增減數量
-  //   const handleIncrement = (id) => {
-  //     setProducts(upDateQuantity(products, id, 1))
-  //   }
-  //   const handleDecrement = (id) => {
-  //     setProducts(upDateQuantity(products, id, -1))
-  //   }
-
-  //   // G移除購物車商品
-  //   const handleRemove = (id) => {
-  //     setProducts(removeProduct(products, id))
-  //   }
-  const [selectedValues, setSelectedValues] = useState([])
-
-  // 处理每个<select>的值变化
-  const handleSelectChange = (key, value, id) => {
-    console.log('id:' + id)
-    setSelectedValues((prevValues) => ({
-      id: id,
-      ...prevValues,
-      [key]: value,
-    }))
-  }
-  useEffect(() => {
-    console.log(selectedValues)
-  }, [selectedValues])
 
   return (
     <>
@@ -197,10 +82,6 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
                   handleToggleCheckAll()
                   checkAllItem(checkAll)
                 }}
-                // onChange={(e) => {
-                //   // setCheckAll(e.target.checked)
-                //   // handleToggleCheckAll(e.target.checked)
-                // }}
               />
             </th>
             <th className="bg-primary text-white ps-3" style={{ width: '40%' }}>
@@ -220,39 +101,39 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
           </tr>
         </thead>
         <tbody className="accordion-collapse collapse show" id="collapseThree">
-          {items.map((v, i) => (
-            <tr key={i}>
+          {items.map((item, index) => (
+            <tr key={index}>
               <td className="text-center align-middle">
                 <input
                   type="checkbox"
-                  // checked={v.check}
-                  checked={checkedItems[v.id] || false}
+                  checked={checkedItems[item.id] || false}
                   onChange={() => {
-                    handleToggleCheck(v.id)
-                    checkItem(v.id)
+                    handleToggleCheck(item.id)
+                    checkItem(item.id)
                   }}
                 />
               </td>
               <td className="d-flex">
                 <div className="p-2">
-                  <Image src={v.img} width={100} height={100} alt="" />
+                  <Image src={item.img} width={100} height={100} alt="" />
                 </div>
                 <div className="p-2">
-                  <div>{v.brand}</div>
-                  <div>{v.name}</div>
+                  <div>{item.brand}</div>
+                  <div>{item.name}</div>
                   <div className="pt-1">
-                    {Object.keys(v.spec).map((key) => (
+                    {Object.keys(item.spec).map((key) => (
                       <select
                         key={key}
                         className="form-select form-select-sm mb-1"
                         style={{ width: 140 }}
-                        value={selectedValues[key] || ''}
-                        onChange={(e) =>
-                          handleSelectChange(key, e.target.value, v.id)
+                        value={
+                          item.specData.find((spec) => spec.key === key)?.value
                         }
-                        // disabled
+                        onChange={(e) =>
+                          styleSelect(item.id, key, e.target.value)
+                        }
                       >
-                        {v.spec[key].map((option, optionIndex) => (
+                        {item.spec[key].map((option, optionIndex) => (
                           <option key={optionIndex} value={option}>
                             {option}
                           </option>
@@ -262,7 +143,7 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
                   </div>
                 </div>
               </td>
-              <td className="align-middle">${v.price}</td>
+              <td className="align-middle">${item.price}</td>
               <td className="align-middle ps-4">
                 <div className="input-group">
                   <span className="input-group-text p-0">
@@ -270,10 +151,10 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
                       className="btn"
                       type="button"
                       onClick={() => {
-                        if (v.quantity === 1) {
-                          removeItem(v.id)
+                        if (item.quantity === 1) {
+                          removeItem(item.id)
                         } else {
-                          minusOne(v.id)
+                          minusOne(item.id)
                         }
                       }}
                     >
@@ -283,14 +164,14 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
                   <input
                     type="text"
                     className="form-control text-center"
-                    value={v.quantity}
+                    value={item.quantity}
                   />
                   <span className="input-group-text p-0">
                     <button
                       className="btn"
                       type="button"
                       onClick={() => {
-                        plusOne(v.id)
+                        plusOne(item.id)
                       }}
                     >
                       +
@@ -299,14 +180,14 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
                 </div>
               </td>
               <td className="align-middle text-center">
-                ${v.price * v.quantity}
+                ${item.price * item.quantity}
               </td>
               <td className="align-middle text-center">
                 <button
                   className="btn border-white"
                   type="button"
                   onClick={() => {
-                    removeItem(v.id)
+                    removeItem(item.id)
                   }}
                 >
                   <FontAwesomeIcon icon={faTrashCan} className="text-primary" />
@@ -337,10 +218,6 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
                   handleToggleCheckAll()
                   checkAllItem(checkAll)
                 }}
-                // onChange={(e) => {
-                //   // setCheckAll(e.target.checked)
-                //   // handleToggleCheckAll(e.target.checked)
-                // }}
               />
             </th>
             <th className="bg-primary text-white" colSpan={3}>
@@ -361,39 +238,39 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
           </tr>
         </thead>
         <tbody className="accordion-collapse collapse show" id="collapseThree">
-          {items.map((v, i) => (
-            <tr key={i}>
+          {items.map((item, index) => (
+            <tr key={index}>
               <td className="text-center align-middle px-1">
                 <input
                   type="checkbox"
-                  // checked={v.check}
-                  checked={checkedItems[v.id] || false}
+                  checked={checkedItems[item.id] || false}
                   onChange={() => {
-                    handleToggleCheck(v.id)
-                    checkItem(v.id)
+                    handleToggleCheck(item.id)
+                    checkItem(item.id)
                   }}
                 />
               </td>
               <td className="d-flex px-1">
                 <div className="pe-2 pt-2">
-                  <Image src={v.img} width={100} height={100} alt="" />
+                  <Image src={item.img} width={100} height={100} alt="" />
                 </div>
                 <div>
-                  <div>{v.brand}</div>
-                  <div>{v.name}</div>
+                  <div>{item.brand}</div>
+                  <div>{item.name}</div>
                   <div className="pt-1">
-                    {Object.keys(v.spec).map((key) => (
+                    {Object.keys(item.spec).map((key) => (
                       <select
                         key={key}
                         className="form-select form-select-sm mb-1"
                         style={{ width: 140 }}
-                        value={selectedValues[key] || ''}
-                        onChange={(e) =>
-                          handleSelectChange(key, e.target.value, v.id)
+                        value={
+                          item.specData.find((spec) => spec.key === key)?.value
                         }
-                        // disabled
+                        onChange={(e) =>
+                          styleSelect(item.id, key, e.target.value)
+                        }
                       >
-                        {v.spec[key].map((option, optionIndex) => (
+                        {item.spec[key].map((option, optionIndex) => (
                           <option key={optionIndex} value={option}>
                             {option}
                           </option>
@@ -402,7 +279,7 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
                     ))}
                   </div>
                   <div className="d-flex pt-1">
-                    <div className="pt-2">${v.price * v.quantity}</div>
+                    <div className="pt-2">${item.price * item.quantity}</div>
                     <div
                       className="input-group ms-auto "
                       style={{ width: '50%' }}
@@ -412,10 +289,10 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
                           className="btn btn-sm"
                           type="button"
                           onClick={() => {
-                            if (v.quantity === 1) {
-                              removeItem(v.id)
+                            if (item.quantity === 1) {
+                              removeItem(item.id)
                             } else {
-                              minusOne(v.id)
+                              minusOne(item.id)
                             }
                           }}
                         >
@@ -425,14 +302,14 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
                       <input
                         type="number"
                         className="form-control py-0 text-center"
-                        value={v.quantity}
+                        value={item.quantity}
                       />
                       <span className="input-group-text p-0">
                         <button
                           className="btn btn-sm"
                           type="button"
                           onClick={() => {
-                            plusOne(v.id)
+                            plusOne(item.id)
                           }}
                         >
                           +
@@ -445,7 +322,7 @@ export default function GCartList({ setOrderTotalG, setOrderAmountG }) {
                   className="btn border-white ps-1 pe-2"
                   type="button"
                   onClick={() => {
-                    removeItem(v.id)
+                    removeItem(item.id)
                   }}
                   style={{ height: 20 }}
                 >

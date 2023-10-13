@@ -14,7 +14,6 @@ export default function Cart() {
   useEffect(() => {
     getCoupon()
   }, [])
-  console.log(coupon)
   const [currentStep, setCurrentStep] = useState(1)
 
   const handleStepChange = (step) => {
@@ -33,49 +32,17 @@ export default function Cart() {
     },
   ]
 
-  const [orderTotalP, setOrderTotalP] = useState() // P總金額的狀態變數
-  const [orderAmountP, setOrderAmountP] = useState() // P總件數的狀態變數
-  const [orderTotalG, setOrderTotalG] = useState() // P總金額的狀態變數
-  const [orderAmountG, setOrderAmountG] = useState() // P總件數的狀態變數
-  const [orderTotalR, setOrderTotalR] = useState() // R總金額的狀態變數
-  const [orderAmountR, setOrderAmountR] = useState() // R總件數的狀態變數
-  const [orderTotalAll, setOrderTotalAll] = useState() // 欲結帳總金額的狀態變數
-  const [orderAmountAll, setOrderAmountAll] = useState() // 欲結帳總件數的狀態變數
-
-  useEffect(() => {
-    setOrderTotalAll(orderTotalP + orderTotalG + orderTotalR)
-    setOrderAmountAll(orderAmountP + orderAmountG + orderAmountR)
-  }, [
-    orderTotalP,
-    orderAmountP,
-    orderTotalG,
-    orderAmountG,
-    orderTotalR,
-    orderAmountR,
-  ])
-
   return (
     <>
       <CartStep currentStep={currentStep - 1} itemsStep={items} />
       {currentStep === 1 && (
         <div className="container">
           <h1 className="text-primary fs-3 pt-5 pb-3">購物車清單</h1>
-          <PCartList
-            setOrderTotalP={setOrderTotalP}
-            setOrderAmountP={setOrderAmountP}
-          />
-          <GCartList
-            setOrderTotalG={setOrderTotalG}
-            setOrderAmountG={setOrderAmountG}
-          />
-          <RCartList
-            setOrderTotalR={setOrderTotalR}
-            setOrderAmountR={setOrderAmountR}
-          />
+          <PCartList />
+          <GCartList />
+          <RCartList />
           {/* 去結帳 */}
           <ProceedToCheckout
-            orderTotalAll={orderTotalAll}
-            orderAmountAll={orderAmountAll}
             onCheckout={() => {
               handleStepChange(2)
             }}

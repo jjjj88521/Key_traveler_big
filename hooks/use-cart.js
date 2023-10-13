@@ -24,6 +24,7 @@ const CartContext = createContext(null)
 //   price: 0,
 //   quantity: 0,
 //   spec: '',
+//   specData:{},
 // }
 
 export const CartProvider = ({
@@ -51,16 +52,30 @@ export const CartProvider = ({
       price: 1000,
       quantity: 1,
       spec: {
-        外殼: ['EE 耀夜黑', 'EE 細花白'],
-        '配重/旋鈕': ['電泳 白', '陽極 黑'],
+        外殼: ['EE 耀夜黑', 'EE 細花白', 'EE 細花黃', 'EE 細花成', 'EE 細花紅'],
+        '配重/旋鈕': ['陽極 黑', '電泳 白'],
       },
     },
   ], //初始化購物車的加入項目
 }) => {
   let items = initialProducts
 
+  // updatedItems之後會撈db，預設就不會是第一個值
+  const updatedItems = items.map((item) => {
+    // 在每個item中建立一個新屬性 specData
+    const specData = Object.keys(item.spec).map((key) => ({
+      key,
+      value: item.spec[key][0], // 預設為第一個值
+    }))
+
+    return {
+      ...item, // 複製原始的item物件的屬性
+      specData, // 新增新的屬性 specData
+    }
+  })
+
   // init state, init來自cartReducer中
-  const [state, dispatch] = useReducer(reducer, items, init)
+  const [state, dispatch] = useReducer(reducer, updatedItems, init)
   const [cartTotalP, setCartTotalP] = useState(0)
   const [totalItemsP, setTotalItemsP] = useState(0)
   const [selectItemsP, setSelectItemsP] = useState(0)
@@ -171,24 +186,16 @@ export const CartProvider = ({
     })
   }
 
-  useEffect(() => {}, [])
-
-  // const handleCartTotal = () => {}
-  // const [allCartsTotal, setAllCartsTotal] = useState(0)
-
-  // useEffect(() => {
-  //   setAllCartsTotal(state.allCartsTotal)
-  //   console.log(typeof state.allCartsTotal)
-  // }, [state.cartTotal])
-
-  // const handleToggleCheckAll = (checkAll) => {
-  //   return dispatch({
-  //     type: 'Toggle_Check_All',
-  //     payload: {
-  //       checkAll,
-  //     },
-  //   })
-  // }
+  const styleSelect = (id, key, value) => {
+    return dispatch({
+      type: 'STYLE_SELECT',
+      payload: {
+        id,
+        key,
+        value,
+      },
+    })
+  }
 
   return (
     <CartContext.Provider
@@ -207,6 +214,7 @@ export const CartProvider = ({
         cartTotalP,
         totalItemsP,
         selectItemsP,
+        styleSelect,
       }}
     >
       {children}

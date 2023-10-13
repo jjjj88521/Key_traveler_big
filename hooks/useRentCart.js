@@ -7,9 +7,9 @@ import React, {
 } from 'react'
 import { reducer, initRent } from './cart-reducer'
 
-const SecondCartContext = createContext(null)
+const RentCartContext = createContext(null)
 
-export const SecondCartProvider = ({
+export const RentCartProvider = ({
   children,
   initialRentProducts = [
     {
@@ -155,7 +155,7 @@ export const SecondCartProvider = ({
     })
   }
   return (
-    <SecondCartContext.Provider
+    <RentCartContext.Provider
       value={{
         cart: state,
         items: state.items,
@@ -177,8 +177,8 @@ export const SecondCartProvider = ({
       }}
     >
       {children}
-    </SecondCartContext.Provider>
+    </RentCartContext.Provider>
   )
 }
 
-export const useSecondCart = () => useContext(SecondCartContext)
+export const useRentCart = () => useContext(RentCartContext)

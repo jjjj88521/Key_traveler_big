@@ -5,9 +5,9 @@ import React, {
   useEffect,
   useState,
 } from 'react'
-import { reducer, init } from './cart-reducer'
+import { reducer, initGroup } from './cart-reducer'
 
-const ThirdCartContext = createContext(null)
+const GroupCartContext = createContext(null)
 
 // initialState = {
 //   items: [],
@@ -24,9 +24,10 @@ const ThirdCartContext = createContext(null)
 //   price: 0,
 //   quantity: 0,
 //   spec: '',
+//   specData:{},
 // }
 
-export const ThirdCartProvider = ({
+export const GroupCartProvider = ({
   children,
   initialProducts = [
     {
@@ -41,10 +42,6 @@ export const ThirdCartProvider = ({
         外殼: ['EE 耀夜黑', 'EE 細花白'],
         '配重/旋鈕': ['電泳 白', '陽極 黑'],
       },
-      styleSelect: {
-        外殼: 'EE 耀夜黑',
-        '配重/旋鈕': '電泳 白',
-      },
     },
     {
       id: 2,
@@ -58,17 +55,27 @@ export const ThirdCartProvider = ({
         外殼: ['EE 耀夜黑', 'EE 細花黑'],
         '配重/旋鈕': ['電泳 綠', '陽極 紅'],
       },
-      styleSelect: {
-        外殼: ['EE 耀夜黑'],
-        '配重/旋鈕': ['電泳 白'],
-      },
     },
   ], //初始化購物車的加入項目
 }) => {
   let items = initialProducts
 
+  // updatedItems之後會撈db，預設就不會是第一個值
+  const updatedItems = items.map((item) => {
+    // 在每個item中建立一個新屬性 specData
+    const specData = Object.keys(item.spec).map((key) => ({
+      key,
+      value: item.spec[key][0], // 預設為第一個值
+    }))
+
+    return {
+      ...item, // 複製原始的item物件的屬性
+      specData, // 新增新的屬性 specData
+    }
+  })
+
   // init state, init來自cartReducer中
-  const [state, dispatch] = useReducer(reducer, items, init)
+  const [state, dispatch] = useReducer(reducer, updatedItems, initGroup)
   const [cartTotalG, setCartTotalG] = useState(0)
   const [totalItemsG, setTotalItemsG] = useState(0)
   const [selectItemsG, setSelectItemsG] = useState(0)
@@ -178,8 +185,19 @@ export const ThirdCartProvider = ({
     })
   }
 
+  const styleSelect = (id, key, value) => {
+    return dispatch({
+      type: 'STYLE_SELECT',
+      payload: {
+        id,
+        key,
+        value,
+      },
+    })
+  }
+
   return (
-    <ThirdCartContext.Provider
+    <GroupCartContext.Provider
       value={{
         cart: state,
         items: state.items,
@@ -195,11 +213,12 @@ export const ThirdCartProvider = ({
         cartTotalG,
         totalItemsG,
         selectItemsG,
+        styleSelect,
       }}
     >
       {children}
-    </ThirdCartContext.Provider>
+    </GroupCartContext.Provider>
   )
 }
 
-export const useThirdCart = () => useContext(ThirdCartContext)
+export const useGroupCart = () => useContext(GroupCartContext)

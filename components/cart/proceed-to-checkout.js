@@ -1,50 +1,65 @@
 import React, { useState, useEffect } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 import { useCart } from '@/hooks/use-cart'
-import { useThirdCart } from '@/hooks/useThirdCart'
-import { useSecondCart } from '@/hooks/useSecondCart'
+import { useGroupCart } from '@/hooks/useGroupCart'
+import { useRentCart } from '@/hooks/useRentCart'
 
-export default function ProceedToCheckout({
-  orderTotalAll,
-  orderAmountAll,
-  onCheckout,
-}) {
-  // const { priceData, setPrice } = useCartContext()
+const moment = require('moment')
+function filterData(data) {
+  const millisecondsInADay = 1000 * 60 * 60 * 24
+  // 保留start_date與目前時間相差2天以內的元素
+  const filteredData = data.filter((item) => {
+    return (
+      !(
+        Math.floor((moment(item.start_date) - moment()) / millisecondsInADay) >
+        2
+      ) || item.end_date == undefined
+    )
+  })
+  return filteredData
+}
+
+export default function ProceedToCheckout({ onCheckout }) {
   const { coupon, getCoupon } = useAuth()
   useEffect(() => {
     getCoupon()
   }, [])
-  console.log(coupon)
-  const initialCoupons = [
-    {
-      id: 1,
-      name: '全站9折',
-      percent: 0.9,
-    },
-    {
-      id: 2,
-      name: '全站85折',
-      percent: 0.85,
-    },
-    {
-      id: 3,
-      name: '全站8折',
-      percent: 0.8,
-    },
-  ]
-  const [coupons, setcoupons] = useState(initialCoupons)
-  const [selectedCoupon, setSelectedCoupon] = useState('')
 
+  const [coupons, setcoupons] = useState([])
+
+  useEffect(() => {
+    if (Array.isArray(coupon) && coupon.length > 0) {
+      const fData = filterData(coupon)
+      setcoupons(fData)
+    } else {
+      setcoupons([])
+    }
+  }, [coupon])
+  const [selectedCoupon, setSelectedCoupon] = useState('')
   const { cartTotalP: totalPriceP, selectItemsP: totalItemsP } = useCart()
-  const { cartTotalG: totalPriceG, selectItemsG: totalItemsG } = useThirdCart()
-  const { cartTotalR: totalPriceR, selectItemsR: totalItemsR } = useSecondCart()
+  const { cartTotalG: totalPriceG, selectItemsG: totalItemsG } = useGroupCart()
+  const { cartTotalR: totalPriceR, selectItemsR: totalItemsR } = useRentCart()
 
   const handleCouponDeselect = () => {
     setSelectedCoupon('')
   }
-  const handleCouponSelect = (couponName) => {
+
+  const [pdTotalPrice, setPdTotalPrice] = useState(totalPriceP)
+  useEffect(() => {
+    setPdTotalPrice(totalPriceP)
+  }, [totalPriceP])
+
+  const handleCouponSelect = (couponName, couponDiscount) => {
     setSelectedCoupon(couponName)
+    if (pdTotalPrice) {
+      const resultDiscount =
+        couponDiscount > 1
+          ? pdTotalPrice - couponDiscount
+          : pdTotalPrice * couponDiscount
+      setPdTotalPrice(resultDiscount)
+    }
   }
+
   return (
     <>
       {/* 去結帳 */}
@@ -54,7 +69,7 @@ export default function ProceedToCheckout({
             使用優惠券(限一般商品):
             <span
               className="ps-3"
-              style={{ width: '90px', display: 'inline-block' }}
+              style={{ width: '110px', display: 'inline-block' }}
               id="coupon"
             >
               {selectedCoupon}
@@ -85,10 +100,15 @@ export default function ProceedToCheckout({
                   <button
                     className="btn dropdown-item"
                     onClick={() => {
-                      handleCouponSelect(v.name)
+                      handleCouponSelect(
+                        v.coupon_name || v.coupon_code,
+                        v.discount_value === 0
+                          ? v.discount_percent
+                          : v.discount_value
+                      )
                     }}
                   >
-                    {v.name}
+                    {v.coupon_name || v.coupon_code}
                   </button>
                 </li>
               ))}
@@ -106,9 +126,7 @@ export default function ProceedToCheckout({
             </span>
             件商品, 總金額: $
             <span className="orderTotal">
-              {totalPriceP + totalPriceG + totalPriceR}
-              {/* {priceData} */}
-              {/* {allCartsTotal} */}
+              {pdTotalPrice + totalPriceG + totalPriceR}
             </span>
           </span>
           <a

@@ -8,8 +8,8 @@ import Swal from 'sweetalert2'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useCart } from '@/hooks/use-cart'
-import { useThirdCart } from '@/hooks/useThirdCart'
-import { useSecondCart } from '@/hooks/useSecondCart'
+import { useGroupCart } from '@/hooks/useGroupCart'
+import { useRentCart } from '@/hooks/useRentCart'
 
 // 導航欄位
 const navItems = [
@@ -99,8 +99,8 @@ const navItems = [
 
 export default function Navbar() {
   const { totalItemsP: pdTotalItems } = useCart()
-  const { totalItemsG: gbTotalItems } = useThirdCart()
-  const { totalItemsR: rTotalItems } = useSecondCart()
+  const { totalItemsG: gbTotalItems } = useGroupCart()
+  const { totalItemsR: rTotalItems } = useRentCart()
   const router = useRouter()
   // === 手機版滑入選單 ===
   const [open, setOpen] = useState(false)
