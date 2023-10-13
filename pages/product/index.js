@@ -1,15 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Drawer, Button } from 'antd'
 import styles from './product.module.css'
 import Accordion from '@/components/product/accordion'
 import AsideFilter from '@/components/product/AsideFilter'
 import PaginationComponent from '@/components/common/PaginationComponent'
-import ProductFetcher from './ProductFetcher'
 import Card from '@/components/product/Card'
-
-// <div className="container">
-// <div className={styles['banner']}>
-// <h1 className={`text-primary ${styles['display1']}`}>鍵盤套件</h1>
+import axios from 'axios'
+import { useRouter } from 'next/router'
 
 // 將 title 傳給 app.js
 export async function getStaticProps() {
@@ -20,12 +17,6 @@ export async function getStaticProps() {
 }
 
 export default function ProductIndex() {
-  const [data, setData] = useState([])
-  console.log(data)
-  const handleProductFetched = (fetchedData) => {
-    setData(fetchedData)
-  }
-
   // Drawer相關
   const [open, setOpen] = useState(false)
   const showDrawer = () => {
@@ -35,17 +26,42 @@ export default function ProductIndex() {
     setOpen(false)
   }
 
+  // 路由相關
+  const router = useRouter()
+
+  const [cateProducts, setCateProducts] = useState([])
+  useEffect(() => {
+    if (router.isReady) {
+      axios
+        .get(`http://localhost:3005/api/products/qs`)
+        .then((res) => {
+          setCateProducts(res.data)
+          console.log(res.data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  }, [router.isReady])
+  //   console.log(cateProducts)
+  //   console.log(cateProducts.data)
+
   // 分頁相關
   const PageSize = 12
-  const totalPageCount = data.length
+  const totalPageCount = cateProducts.total
   const [currentPage, setCurrentPage] = useState(1)
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage)
+    // 創建新的 Axios 請求，包含分頁頁碼
+    axios
+      .get(`http://localhost:3005/api/products/qs?page=${newPage}`)
+      .then((res) => {
+        setCateProducts(res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
-  // 計算目前頁面應該顯示的Card數組片段
-  const startIndex = (currentPage - 1) * PageSize
-  const endIndex = startIndex + PageSize
-  const currentPageData = data.slice(startIndex, endIndex)
 
   return (
     <>
@@ -144,19 +160,23 @@ export default function ProductIndex() {
 
             {/* card group  */}
             <div className="d-flex row row-cols-2 row-cols-md-3 g-4 mb-sm-0 mb-4">
-              {currentPageData.map((v, i) => (
-                <div className="col" key={i}>
-                  <div className="col">
-                    <Card
-                      title={v.name}
-                      brand={v.brand}
-                      price={v.price}
-                      image={v.images ? JSON.parse(v.images)[0] : null}
-                      stock={v.stock}
-                    />
+              {cateProducts.data && cateProducts.data.length > 0 ? (
+                cateProducts.data.map((v, i) => (
+                  <div className="col" key={i}>
+                    <div className="col">
+                      <Card
+                        title={v.name}
+                        brand={v.brand}
+                        price={v.price}
+                        image={v.images ? JSON.parse(v.images)[0] : null}
+                        stock={v.stock}
+                      />
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <p>商品準備中</p>
+              )}
             </div>
           </div>
         </div>
@@ -165,13 +185,12 @@ export default function ProductIndex() {
       {/* 分頁頁碼 */}
       <div className="m-5">
         <PaginationComponent
+          currentPage={currentPage}
           totalItems={totalPageCount}
           pageSize={PageSize}
           onPageChange={handlePageChange}
         ></PaginationComponent>
       </div>
-
-      <ProductFetcher onProductFetched={handleProductFetched} />
     </>
   )
 }

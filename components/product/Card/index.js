@@ -8,9 +8,8 @@ export default function Card({ title, brand, price, image, stock }) {
         className={`card h-auto border border-1 ${styles['card']} overflow-hidden`}
       >
         <img
-          //   src={`/images/product/${image}`}
           src={`/images/product/${image}`}
-          className={`card-img-top ${styles.cardImg}`}
+          className={`${styles.cardImg} card-img-top`}
           alt="Product"
         />
 
