@@ -4,7 +4,7 @@ import { Tag } from 'antd'
 import art_list_style from '@/styles/article/art_list_style.module.scss'
 import Link from 'next/link'
 import PaginationComponent from '@/components/common/PaginationComponent'
-
+import axios from 'axios'
 export default function ArticleFilter() {
   // 設定路由
   const router = useRouter()
@@ -48,6 +48,9 @@ export default function ArticleFilter() {
         default:
           break
       }
+      // if (selectValue !== cat_id) {
+      //   setCurrentPage(1)
+      // }
     }
   }, [isReady, cat_id])
   //   console.log(selectedCategory)
@@ -55,94 +58,105 @@ export default function ArticleFilter() {
   const [searchCard, setSearchCard] = useState('')
   const handleSearch = (e) => {
     // console.log('搜尋關鍵字：', e.target.value)
+    console.log(e)
     setSearchCard(e.target.value)
   }
-  const data = [
-    {
-      id: '1',
-      title: 'Card Post',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
-      date: '2023-09-21',
-    },
-    {
-      id: '2',
-      title: 'Card Post',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
-      date: '2023-09-21',
-    },
-    {
-      id: '3',
-      title: 'Card Post',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
-      date: '2023-09-21',
-    },
-    {
-      id: '4',
-      title: 'Card Title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
-      date: '2023-09-21',
-    },
-    {
-      id: '5',
-      title: 'Card Title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
-      date: '2023-09-21',
-    },
-    {
-      id: '6',
-      title: 'Card Unboxing',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '開箱文',
-      date: '2023-09-21',
-    },
-    {
-      id: '7',
-      title: 'Card Unboxing',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '開箱文',
-      date: '2023-09-21',
-    },
-    {
-      id: '8',
-      title: 'Card Unboxing',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '開箱文',
-      date: '2023-09-21',
-    },
-    {
-      id: '9',
-      title: 'Card Title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '開箱文',
-      date: '2023-09-21',
-    },
-    {
-      id: '10',
-      title: 'Card Teach',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '組裝教學',
-      date: '2023-09-21',
-    },
-    {
-      id: '11',
-      title: 'Card Act',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '活動',
-      date: '2023-09-21',
-    },
-    {
-      id: '12',
-      title: 'Card Title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '活動',
-      date: '2023-09-21',
-    },
-  ]
+  const [searchResult, setSearchResult] = useState('')
+  const [data, setData] = useState([])
+  useEffect(() => {
+    axios.get('http://localhost:3005/api/article/').then((response) => {
+      console.log('response.data.articles')
+      console.log(response.data.articles)
+      setData(response.data.articles)
+    })
+  }, [])
+
+  // const data = [
+  //   {
+  //     id: '1',
+  //     title: 'Card Post',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     cate: '公告',
+  //     date: '2023-09-21',
+  //   },
+  //   {
+  //     id: '2',
+  //     title: 'Card Post',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     cate: '公告',
+  //     date: '2023-09-21',
+  //   },
+  //   {
+  //     id: '3',
+  //     title: 'Card Post',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     cate: '公告',
+  //     date: '2023-09-21',
+  //   },
+  //   {
+  //     id: '4',
+  //     title: 'Card Title',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     cate: '公告',
+  //     date: '2023-09-21',
+  //   },
+  //   {
+  //     id: '5',
+  //     title: 'Card Title',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     cate: '公告',
+  //     date: '2023-09-21',
+  //   },
+  //   {
+  //     id: '6',
+  //     title: 'Card Unboxing',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     cate: '開箱文',
+  //     date: '2023-09-21',
+  //   },
+  //   {
+  //     id: '7',
+  //     title: 'Card Unboxing',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     cate: '開箱文',
+  //     date: '2023-09-21',
+  //   },
+  //   {
+  //     id: '8',
+  //     title: 'Card Unboxing',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     cate: '開箱文',
+  //     date: '2023-09-21',
+  //   },
+  //   {
+  //     id: '9',
+  //     title: 'Card Title',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     cate: '開箱文',
+  //     date: '2023-09-21',
+  //   },
+  //   {
+  //     id: '10',
+  //     title: 'Card Teach',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     cate: '組裝教學',
+  //     date: '2023-09-21',
+  //   },
+  //   {
+  //     id: '11',
+  //     title: 'Card Act',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     cate: '活動',
+  //     date: '2023-09-21',
+  //   },
+  //   {
+  //     id: '12',
+  //     title: 'Card Title',
+  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
+  //     cate: '活動',
+  //     date: '2023-09-21',
+  //   },
+  // ]
   //   分頁設定
   const PageSize = 9
   const totalItemsForCategory = data.filter(
@@ -221,9 +235,19 @@ export default function ArticleFilter() {
                     placeholder="Search"
                     aria-label="Search"
                     value={searchCard}
-                    onChange={handleSearch}
+                    onChange={(e) => {
+                      // console.log('搜尋關鍵字：', e.target.value)
+                      console.log(e)
+                      setSearchCard(e.target.value)
+                    }}
                   />
-                  <button className="btn btn-outline-secondary" type="submit">
+                  <button
+                    onClick={() => {
+                      setSearchResult(searchCard)
+                    }}
+                    className="btn btn-outline-secondary"
+                    type="button"
+                  >
                     <i className="fa-solid fa-magnifying-glass"></i>
                   </button>
                 </form>
@@ -333,22 +357,28 @@ export default function ArticleFilter() {
               )
               .slice(startIndex, endIndex)
               .map((item, index) => {
+                const parsedImg = JSON.parse(item.img)
+
+                console.log('item.img:', parsedImg)
                 return (
                   <div className="col mb-4" key={item.id}>
                     <div className={`${art_list_style['list_card']} card`}>
                       {/* 路由名稱 */}
                       <Link href={`/article/${item.id}`}>
                         <img
-                          src={item.img}
+                          src={`/images/article/${parsedImg[0]}`}
                           className="card-img-top"
                           alt="..."
                         />
                       </Link>
 
                       <div className="card-body">
-                        <h3 className="card-title mb-3">
-                          {item.title + item.id}
-                        </h3>
+                        <h4 className="card-title mb-3">
+                          {item.title.length > 14
+                            ? `${item.title.slice(0, 14)}...`
+                            : item.title}
+                          {/* {item.title + item.id} */}
+                        </h4>
 
                         <Link href={'#'}>
                           <Tag className="bg-primary text-white fw-bolder mb-3">
@@ -373,6 +403,8 @@ export default function ArticleFilter() {
             </div>
           </div>
         </div>
+        {/* 圖片上傳格式 */}
+        {/* <img src={`/images/article/1685846717544631361.jpg`}></img> */}
       </div>
     </>
   )

@@ -1,226 +1,83 @@
 import Link from 'next/link'
-import React from 'react'
-import { Divider, Space, Tag } from 'antd'
-import UserSideBar from './user-side-bar'
-import UserSideBarMobile from '../../components/user/user-side-bar-mobile'
+import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import { Divider, Radio, Space, Tag } from 'antd'
+import axios from 'axios'
+import PaginationComponent from '@/components/common/PaginationComponent'
+// import UserDropdown from '@/components/user/user-dropdown'
+// import UserSideBar from './user-side-bar'
+// import UserSideBarMobile from '../../components/user/user-side-bar-mobile'
+import UserLayout from '@/components/layout/user-layout'
+import {
+  ArticleLikeContainer,
+  ArticleLikeItem,
+} from '@/components/user/article-like'
+import { number } from 'prop-types'
+
 export default function Article() {
-  let data = [
-    {
-      title: 'Card Title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
-      date: '2023-09-21',
-    },
-    {
-      title: 'Card Title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
-      date: '2023-09-21',
-    },
-    {
-      title: 'Card Title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
-      date: '2023-09-21',
-    },
-    {
-      title: 'Card Title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
-      date: '2023-09-21',
-    },
-    {
-      title: 'Card Title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
-      date: '2023-09-21',
-    },
-    {
-      title: 'Card Title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
-      date: '2023-09-21',
-    },
-    {
-      title: 'Card Title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
-      date: '2023-09-21',
-    },
-    {
-      title: 'Card Title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
-      date: '2023-09-21',
-    },
-    {
-      title: 'Card Title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
-      date: '2023-09-21',
-    },
-    {
-      title: 'Card Title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
-      date: '2023-09-21',
-    },
-    {
-      title: 'Card Title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
-      date: '2023-09-21',
-    },
-    {
-      title: 'Card Title',
-      img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-      cate: '公告',
-      date: '2023-09-21',
-    },
-  ]
+  const [total, setTotal] = useState(0)
+  const [cate, setCate] = useState('all')
+  const [page, setPage] = useState(1)
+  const [like, setLike] = useState([])
+  const articleLike = async (page) => {
+    await axios
+      .get(`http://localhost:3005/api/article/like-list?page=${page}`, {
+        withCredentials: true, // 跨域獲取cookie
+      })
+      .then((response) => {
+        console.log('response.data.article')
+        console.log(response.data)
+        setLike(response.data.article)
+        setTotal(response.data.total)
+        setPage(response.data.page)
+      })
+  }
+  const handlePageChange = (page) => {
+    articleLike(page)
+  }
+  const router = useRouter()
+  const { isReady, query } = router
+  useEffect(() => {
+    if (!isReady) return
+    articleLike(1)
+  }, [isReady])
+  // articleLike()
   return (
     <>
-      <div className="container">
-        <h2 className="mb-4 mb-sm-5 fw-bolder text-start ms-2 ms-sm-0  col-5 ">
-          收藏文章
-        </h2>
-        <div className="row ">
-          <div className="col-sm-3 col-12 px-0 mx-0">
-            <div className="d-sm-block d-none">
-              <UserSideBar />
-            </div>
-            <div className="d-sm-none d-block col-12">
-              <UserSideBarMobile className="col-12 w-100" />
-            </div>
-          </div>
-
-          <div className="col-sm-9 col-12 row  mx-0">
-            <nav className="col-12 d-flex justify-content-evenly my-sm-3 mb-sm-5 my-3 ">
-              <h3 className="pb-0 mb-0">公告</h3>
-              <h3 className="pb-0 mb-0">開箱文</h3>
-              <h3 className="pb-0 mb-0">組裝教學</h3>
-              <h3 className="pb-0 mb-0">活動</h3>
-            </nav>
-            <div className="col-sm-4 col-6 mb-4 ">
-              <div className="card ">
-                <Link href="#">
-                  <img
-                    src="https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg"
-                    className="card-img-top"
-                    alt="..."
-                  />
-                </Link>
-
-                <div className="card-body bg-light">
-                  <h3 className="card-title mb-3">Card Title</h3>
-
-                  <Link href={'#'}>
-                    <Tag className="bg-primary text-white fw-bolder mb-3">
-                      公告
-                    </Tag>
-                  </Link>
-
-                  <p className="card-date">發布日期:2023-09-21</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-4 col-6 mb-4">
-              <div className="card">
-                <Link href="#">
-                  <img
-                    src="https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg"
-                    className="card-img-top"
-                    alt="..."
-                  />
-                </Link>
-
-                <div className="card-body bg-light">
-                  <h3 className="card-title mb-3">Card Title</h3>
-
-                  <Link href={'#'}>
-                    <Tag className="bg-primary text-white fw-bolder mb-3">
-                      公告
-                    </Tag>
-                  </Link>
-
-                  <p className="card-date">發布日期:2023-09-21</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-4 col-6 mb-4">
-              <div className="card">
-                <Link href="#">
-                  <img
-                    src="https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg"
-                    className="card-img-top"
-                    alt="..."
-                  />
-                </Link>
-
-                <div className="card-body bg-light">
-                  <h3 className="card-title mb-3">Card Title</h3>
-
-                  <Link href={'#'}>
-                    <Tag className="bg-primary text-white fw-bolder mb-3">
-                      公告
-                    </Tag>
-                  </Link>
-
-                  <p className="card-date">發布日期:2023-09-21</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-4 col-6 mb-4">
-              <div className="card">
-                <Link href="#">
-                  <img
-                    src="https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg"
-                    className="card-img-top"
-                    alt="..."
-                  />
-                </Link>
-
-                <div className="card-body bg-light">
-                  <h3 className="card-title mb-3">Card Title</h3>
-
-                  <Link href={'#'}>
-                    <Tag className="bg-primary text-white fw-bolder mb-3">
-                      公告
-                    </Tag>
-                  </Link>
-
-                  <p className="card-date">發布日期:2023-09-21</p>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-4 col-6 mb-4">
-              <div className="card">
-                <Link href="#">
-                  <img
-                    src="https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg"
-                    className="card-img-top"
-                    alt="..."
-                  />
-                </Link>
-
-                <div className="card-body bg-light">
-                  <h3 className="card-title mb-3">Card Title</h3>
-
-                  <Link href={'#'}>
-                    <Tag className="bg-primary text-white fw-bolder mb-3">
-                      公告
-                    </Tag>
-                  </Link>
-
-                  <p className="card-date">發布日期:2023-09-21</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="my-3 text-center mb-5">我是頁簽</div>
-          </div>
-        </div>
-      </div>
+      <UserLayout title={'文章收藏'}>
+        <Radio.Group
+          // onChange={}
+          // value={pdCate}
+          style={{
+            marginBottom: 8,
+          }}
+        >
+          <Radio.Button value="all">全部</Radio.Button>
+          <Radio.Button value="公告">公告</Radio.Button>
+          <Radio.Button value="組裝教學">組裝教學</Radio.Button>
+          <Radio.Button value="開箱文">開箱文</Radio.Button>
+          <Radio.Button value="活動">活動</Radio.Button>
+        </Radio.Group>
+        <ArticleLikeContainer>
+          {like.map((item, index) => {
+            return (
+              <ArticleLikeItem
+                key={index}
+                title={item.title}
+                cate={item.cate}
+                link={`/article/${item.id}`}
+              />
+            )
+          })}
+          {/* <ArticleLikeItem name={'test'} price={100} link={'#'} /> */}
+        </ArticleLikeContainer>
+        <PaginationComponent
+          totalItems={total}
+          pageSize={5}
+          currentPage={Number(page)}
+          onPageChange={handlePageChange}
+        />
+      </UserLayout>
     </>
   )
 }
