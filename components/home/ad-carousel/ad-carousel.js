@@ -130,8 +130,8 @@ export default function AdCarousel() {
     })
   }
   return (
-    <section className="home-sec1 bg-dark pt-3 pb-sm-5 pb-3">
-      <div className="container">
+    <section className="home-sec1 bg-dark">
+      <div className="">
         <div
           ref={mouseTriggerRef}
           className={`${style['mouse-trigger']}`}

@@ -17,6 +17,23 @@ const fetchProduct = async (pid) => {
   }
 }
 
+// 取得該商品的你可能會喜歡的商品
+const fetchMaybeLike = async (pid) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:3005/api/products/${pid}/maybe-like`
+    )
+    if (response.status !== 200) {
+      throw new Error('發生錯誤')
+    }
+    // console.log(response)
+    return response.data
+  } catch (error) {
+    // 處理其他錯誤
+    console.error('發生錯誤:', error)
+  }
+}
+
 // 取得單一商品評論資料
 const fetchProductComment = async (pid, ...qs) => {
   const [star, page] = qs
@@ -33,6 +50,20 @@ const fetchProductComment = async (pid, ...qs) => {
     return commentData
   } catch (error) {
     // 處理其他錯誤
+    console.error('發生錯誤:', error)
+  }
+}
+
+// 取得該商品的評論數量資料
+const fetchPdCommentCount = async (pid) => {
+  const url = `http://localhost:3005/api/comment/product/${pid}/count`
+  try {
+    const response = await axios.get(url)
+    if (response.status !== 200) {
+      throw new Error('發生錯誤')
+    }
+    return response.data
+  } catch (error) {
     console.error('發生錯誤:', error)
   }
 }
@@ -88,13 +119,19 @@ const deleteProductLike = async (cate, pid) => {
     console.log(error)
   }
 }
-
+/**
+ * @param {number} currentPage
+ * @param {string} cate
+ * @param {array} orderby
+ * @returns {object}
+ */
 // 用戶獲取所有收藏的商品
-const fetchProductLikeList = async (currentPage, cate) => {
+const fetchProductLikeList = async (currentPage, cate, orderby) => {
   try {
     const response = await axios.get(
-      `http://localhost:3005/api/product-like/like-list?page=${currentPage || 1}
-      ${cate ? `&cate=${cate}` : ''}`,
+      `http://localhost:3005/api/product-like/like-list?page=${currentPage}${
+        cate ? `&cate=${cate}` : ''
+      }${orderby ? `&orderby=${orderby.join(',')}` : ''}`,
       {
         withCredentials: true, // 跨域獲取cookie
       }
@@ -115,4 +152,6 @@ export {
   addProductLike,
   deleteProductLike,
   fetchProductLikeList,
+  fetchPdCommentCount,
+  fetchMaybeLike,
 }

@@ -7,7 +7,7 @@ import HomeLayout from '@/components/layout/home-layout'
 import { AuthProvider } from '@/hooks/useAuth'
 import HydrationFix from './_hydration-fix'
 import UserLayout from '@/components/layout/user-layout'
-import { ProductDataProvider } from '@/context/product'
+import { ProductDataProvider } from '@/context/use-product'
 
 export default function MyApp({ Component, pageProps }) {
   // Use the layout defined at the page level, if available

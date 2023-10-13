@@ -38,7 +38,7 @@ export default function ProductHead({
         <div className="row px-sm-5 px-0 py-sm-5 py-3">
           {/* 左邊圖片 */}
           <div className="col-sm-7 col-12 left-info pe-sm-5 position-relative">
-            <div className="position-sticky" style={{ top: '1rem' }}>
+            <div className="position-sticky" style={{ top: '100px' }}>
               <GallerySwiper images={images} path="/images/product/" />
             </div>
           </div>
