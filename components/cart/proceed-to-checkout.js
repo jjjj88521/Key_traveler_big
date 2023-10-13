@@ -108,6 +108,7 @@ export default function ProceedToCheckout({
             <span className="orderTotal">
               {totalPriceP + totalPriceG + totalPriceR}
               {/* {priceData} */}
+              {/* {allCartsTotal} */}
             </span>
           </span>
           <a

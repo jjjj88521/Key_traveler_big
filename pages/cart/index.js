@@ -82,7 +82,6 @@ export default function Cart() {
           />
         </div>
       )}
-
       {currentStep === 2 && (
         <CartStep2
           ongotoPage1={() => {
