@@ -64,7 +64,11 @@ export default function MyBreadcrumb() {
               )
             }
             // 將商品名稱加進麵包屑
-            if (productName && index === pathsDecoded.length - 1) {
+            if (
+              productName &&
+              asPath.startsWith('/product') &&
+              index === pathsDecoded.length - 1
+            ) {
               return (
                 <MyBreadcrumbItem
                   key={index}

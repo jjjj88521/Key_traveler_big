@@ -7,6 +7,10 @@ export const pathsLocaleMap = [
     name: '首頁',
     path: '/',
   },
+  {
+    name: '購物車',
+    path: '/cart',
+  },
   // ===== 會員中心 =====
   {
     name: '會員中心',
