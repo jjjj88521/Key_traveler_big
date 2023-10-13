@@ -64,7 +64,8 @@ const UploadAvatar = () => {
     }
   }
   const onPreview = async (file) => {
-    let src = file.url
+    let src = file.url || URL.createObjectURL(file.originFileObj)
+
     if (!src) {
       src = await new Promise((resolve) => {
         const reader = new FileReader()
@@ -72,10 +73,11 @@ const UploadAvatar = () => {
         reader.onload = () => resolve(reader.result)
       })
     }
-    const image = new Image()
-    image.src = src
+
     const imgWindow = window.open(src)
-    imgWindow?.document.write(image.outerHTML)
+    if (imgWindow) {
+      imgWindow.document.write(`<img src="${src}" alt="Preview" />`)
+    }
   }
 
   useEffect(() => {
