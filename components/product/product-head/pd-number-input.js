@@ -43,7 +43,7 @@ export default function PdNumInput() {
   const [state, dispatch] = useReducer(reducer, initialState)
   return (
     <div className="d-flex justify-content-center d-sm-block">
-      <div className={`${style['number-input-group']}`}>
+      <div className={`${style['number-input-group']} bg-white`}>
         <button
           className="btn btn-outline-secondary border-0"
           onClick={() => {
@@ -54,7 +54,7 @@ export default function PdNumInput() {
         </button>
         <input
           type="text"
-          className="form-control border-0 text-center w-100 p-0"
+          className="form-control border-0 text-center w-100 p-0 bg-transparent"
           value={state.quantity}
           onChange={(e) => {
             dispatch({ type: 'change', payload: e.target.value })

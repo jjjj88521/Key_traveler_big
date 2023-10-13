@@ -7,7 +7,8 @@ import {
 import useStyleSelect from '@/hooks/useStyleSelect'
 import PdNumInput from './pd-number-input'
 import { PdInfoBox, PdBrand, PdName, PdPrice, PdRating } from './pd-info-box'
-import { AddCartBtn, BuyBtn, LikeBtn } from './pd-btns'
+import { AddCartBtn, BuyBtn, LikeBtn, OutOfStockBtn } from './pd-btns'
+import { useProductData } from '@/context/use-product'
 
 export default function ProductHead({
   name,
@@ -20,6 +21,8 @@ export default function ProductHead({
   onToggleLike,
   StyleSelectItems,
 }) {
+  // 獲取商品 context
+  const { productData } = useProductData()
   // 使用樣式選擇 hook
   const initStyleSelect = StyleSelectItems
     ? Object.keys(StyleSelectItems).map((key) => ({
@@ -64,8 +67,14 @@ export default function ProductHead({
             <PdNumInput />
             {/* 加入購物車按鈕、直接購買按鈕，各一半 */}
             <div className="hstack gap-3">
-              <AddCartBtn />
-              <BuyBtn />
+              {productData.stock > 0 ? (
+                <>
+                  <AddCartBtn />
+                  <BuyBtn />
+                </>
+              ) : (
+                <OutOfStockBtn />
+              )}
             </div>
             {/* 喜歡按鈕 */}
             <div className="d-flex justify-content-center">

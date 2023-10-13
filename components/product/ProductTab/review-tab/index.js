@@ -199,6 +199,7 @@ export default function ReviewTab() {
                 <List
                   size="large"
                   dataSource={commentData.data}
+                  split={false}
                   renderItem={(item) => (
                     <List.Item key={item.key}>
                       <CommentItem {...item} />

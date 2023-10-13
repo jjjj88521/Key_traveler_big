@@ -50,9 +50,7 @@ export default function ProductDetail() {
   // const [isLiked, setIsLiked] = useState(false)
 
   // 存是否正在載入
-  const [isLoading, setIsLoading] = useLoading(
-    Object.keys(productData).length > 0
-  )
+  const [isLoading, setIsLoading] = useLoading(productData)
   const handleToggleLike = async () => {
     try {
       const response = isLiked
@@ -86,25 +84,30 @@ export default function ProductDetail() {
       })
     }
   }
-  console.log('maybeLike', maybeLike)
+  // console.log('maybeLike', maybeLike)
+
+  // 獲取資料
   useEffect(() => {
-    if (isReady) {
-      ;(async () => {
-        await fetchProduct(pid).then((product) => {
-          setProductData(product)
-        })
-        await fetchPdCommentCount(pid).then((data) => {
-          setCommentCount(data)
-        })
-        await fetchProductLike('pd', pid).then((like) => {
-          setIsLiked(like)
-        })
-        await fetchMaybeLike(pid).then((products) => {
-          setMaybeLike(products)
-        })
-      })()
+    const fetchData = async () => {
+      // 每次獲取資料前都先重設載入中狀態
+      setIsLoading(true)
+      await fetchProduct(pid).then((product) => {
+        setProductData(product)
+      })
+      await fetchPdCommentCount(pid).then((data) => {
+        setCommentCount(data)
+      })
+      await fetchProductLike('pd', pid).then((like) => {
+        setIsLiked(like)
+      })
+      await fetchMaybeLike(pid).then((products) => {
+        setMaybeLike(products)
+      })
     }
-  }, [isReady])
+    if (isReady) {
+      fetchData()
+    }
+  }, [isReady, pid])
 
   // 最近瀏覽商品 hooks，傳入 type: 'product'，代表是一般商品
   const [recentlyViewed, addToRecentlyViewed] = useRecentlyViewed({
@@ -148,8 +151,8 @@ export default function ProductDetail() {
           />
           {/* 喜歡商品 */}
           <section className="">
-            <div className="container border-top border-2 py-4">
-              <h2 className="fs-3 text-center text-secondary">
+            <div className="container border-top border-2 py-5">
+              <h2 className="fs-3 text-center text-secondary pb-4">
                 你可能喜歡的商品
               </h2>
               <div className="px-4">
@@ -167,10 +170,24 @@ export default function ProductDetail() {
                     delay: 2500,
                     disableOnInteraction: false,
                   }}
-                  navigation={true}
+                  navigation={{
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                    hiddenClass: 'swiper-button-hidden',
+                  }}
                   modules={[Autoplay, Navigation]}
                   className="mySwiper"
                 >
+                  <SwiperPrevBtn
+                    className={`swiper-button-hidden btn btn-lg bg-white rounded-circle position-absolute start-0 ms-2 top-50 translate-middle-y z-1 d-none d-sm-block shadow`}
+                  >
+                    <i className="fa-solid fa-chevron-left text-primary"></i>
+                  </SwiperPrevBtn>
+                  <SwiperNextBtn
+                    className={`btn btn-lg bg-white rounded-circle position-absolute end-0 me-2 top-50 translate-middle-y z-1 d-none d-sm-block shadow`}
+                  >
+                    <i className="fa-solid fa-chevron-right text-primary"></i>
+                  </SwiperNextBtn>
                   {maybeLike.map((product, index) => {
                     const images = JSON.parse(product.images)
                     return (
@@ -192,8 +209,8 @@ export default function ProductDetail() {
           </section>
           {/* 瀏覽過商品 */}
           <section className="">
-            <div className="container border-top border-2 py-4">
-              <h2 className="fs-3 text-center text-secondary py-3">
+            <div className="container border-top border-2 py-5">
+              <h2 className="fs-3 text-center text-secondary pb-4">
                 瀏覽過的商品
               </h2>
               <div className="px-4">

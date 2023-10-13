@@ -7,10 +7,10 @@ export default function IntroTab({ feature, featureImgs }) {
     <div className="py-4">
       {/* 文字 */}
       {feature.split('\n').map((text, index) => (
-        <React.Fragment key={index}>
+        <p key={index}>
           {text}
-          <br />
-        </React.Fragment>
+          {/* <br /> */}
+        </p>
       ))}
       {/* 圖片 */}
       <div className="d-flex justify-content-center">
