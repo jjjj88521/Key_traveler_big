@@ -1,7 +1,8 @@
 import React from 'react'
 import styles from './card.module.scss'
+import Link from 'next/link'
 
-export default function Card({ title, brand, price, image, stock }) {
+export default function Card({ title, brand, price, image, stock, link }) {
   return (
     <>
       <div
@@ -46,9 +47,9 @@ export default function Card({ title, brand, price, image, stock }) {
           <button className={styles['infoBtn2']}>
             <i className="fa-regular fa-heart"></i> Like
           </button>
-          <button className={styles['infoBtn3']}>
+          <Link className={styles['infoBtn3']} href={link}>
             <i className="fa-solid fa-angles-right"></i> Learn More
-          </button>
+          </Link>
         </div>
       </div>
     </>

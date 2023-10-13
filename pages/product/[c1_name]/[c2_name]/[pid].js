@@ -19,6 +19,18 @@ import {
   fetchMaybeLike,
 } from '@/libs/productFetcher'
 
+// swiper
+// swiper
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/scss'
+import { Navigation, Autoplay } from 'swiper/modules'
+
+import 'swiper/scss/pagination'
+import 'swiper/scss/navigation'
+
+import { SwiperPrevBtn, SwiperNextBtn } from '@/components/home/swiper-btns'
+import Card from '@/components/product/Card'
+
 export default function ProductDetail() {
   const router = useRouter()
   const { pid } = router.query
@@ -136,41 +148,82 @@ export default function ProductDetail() {
           />
           {/* 喜歡商品 */}
           <section className="">
-            <div className="container border-top border-2 py-5">
-              <h2 className="fs-2 text-center">你可能喜歡的商品</h2>
-              <div className="row row-cols-sm-4 row-cols-2 py-3">
-                <div className="col">
-                  <div className="card">card預留</div>
-                </div>
-                <div className="col">
-                  <div className="card">card預留</div>
-                </div>
-                <div className="col">
-                  <div className="card">card預留</div>
-                </div>
-                <div className="col">
-                  <div className="card">card預留</div>
-                </div>
+            <div className="container border-top border-2 py-4">
+              <h2 className="fs-3 text-center text-secondary">
+                你可能喜歡的商品
+              </h2>
+              <div className="px-4">
+                <Swiper
+                  spaceBetween={30}
+                  slidesPerView={1.5}
+                  // centeredSlides={true}
+                  breakpoints={{
+                    576: {
+                      slidesPerView: 4,
+                      spaceBetween: 50,
+                    },
+                  }}
+                  autoplay={{
+                    delay: 2500,
+                    disableOnInteraction: false,
+                  }}
+                  navigation={true}
+                  modules={[Autoplay, Navigation]}
+                  className="mySwiper"
+                >
+                  {maybeLike.map((product, index) => {
+                    const images = JSON.parse(product.images)
+                    return (
+                      <SwiperSlide key={index}>
+                        <Card
+                          title={product.name}
+                          brand={product.brand}
+                          price={product.price}
+                          image={images[0]}
+                          link={`/product/${product.category_1}/${product.category_2}/${product.id}`}
+                          stock={product.stock}
+                        />
+                      </SwiperSlide>
+                    )
+                  })}
+                </Swiper>
               </div>
             </div>
           </section>
           {/* 瀏覽過商品 */}
           <section className="">
-            <div className="container border-top border-2 py-5">
-              <h2 className="fs-2 text-center">瀏覽過的商品</h2>
-              <div className="row row-cols-sm-4 row-cols-2 py-3">
-                <div className="col">
-                  <div className="card">card預留</div>
-                </div>
-                <div className="col">
-                  <div className="card">card預留</div>
-                </div>
-                <div className="col">
-                  <div className="card">card預留</div>
-                </div>
-                <div className="col">
-                  <div className="card">card預留</div>
-                </div>
+            <div className="container border-top border-2 py-4">
+              <h2 className="fs-3 text-center text-secondary py-3">
+                瀏覽過的商品
+              </h2>
+              <div className="px-4">
+                <Swiper
+                  spaceBetween={30}
+                  slidesPerView={1.5}
+                  breakpoints={{
+                    576: {
+                      slidesPerView: 4,
+                      spaceBetween: 50,
+                    },
+                  }}
+                  className="mySwiper"
+                >
+                  {recentlyViewed.map((product, index) => {
+                    const images = JSON.parse(product.images)
+                    return (
+                      <SwiperSlide key={index}>
+                        <Card
+                          title={product.name}
+                          brand={product.brand}
+                          price={product.price}
+                          image={images[0]}
+                          link={`/product/${product.category_1}/${product.category_2}/${product.id}`}
+                          stock={product.stock}
+                        />
+                      </SwiperSlide>
+                    )
+                  })}
+                </Swiper>
               </div>
             </div>
           </section>

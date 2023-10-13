@@ -69,7 +69,7 @@ export default function ReviewTab() {
     setIsLoading(true)
     setCurrentPage(currentPage)
   }
-  const filteredData = commentData.data
+  // const filteredData = commentData.data
 
   useEffect(() => {
     if (pid) {
@@ -198,7 +198,7 @@ export default function ReviewTab() {
               <div className="pt-3">
                 <List
                   size="large"
-                  dataSource={filteredData}
+                  dataSource={commentData.data}
                   renderItem={(item) => (
                     <List.Item key={item.key}>
                       <CommentItem {...item} />
