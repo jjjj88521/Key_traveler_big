@@ -371,7 +371,10 @@ export default function ArticleFilter() {
 
                       <div className="card-body">
                         <h4 className="card-title mb-3">
-                          {item.title + item.id}
+                          {item.title.length > 14
+                            ? `${item.title.slice(0, 14)}...`
+                            : item.title}
+                          {/* {item.title + item.id} */}
                         </h4>
 
                         <Link href={'#'}>
