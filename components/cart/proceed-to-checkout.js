@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react'
-// import { useCartContext } from '@/context/cart'
 import { useAuth } from '@/hooks/useAuth'
+import { useCart } from '@/hooks/use-cart'
+import { useThirdCart } from '@/hooks/useThirdCart'
+import { useSecondCart } from '@/hooks/useSecondCart'
+
 export default function ProceedToCheckout({
   orderTotalAll,
   orderAmountAll,
   onCheckout,
 }) {
   // const { priceData, setPrice } = useCartContext()
-  const { auth, coupon, getCoupon } = useAuth()
+  const { coupon, getCoupon } = useAuth()
   useEffect(() => {
     getCoupon()
   }, [])
@@ -31,6 +34,10 @@ export default function ProceedToCheckout({
   ]
   const [coupons, setcoupons] = useState(initialCoupons)
   const [selectedCoupon, setSelectedCoupon] = useState('')
+
+  const { cartTotalP: totalPriceP, selectItemsP: totalItemsP } = useCart()
+  const { cartTotalG: totalPriceG, selectItemsG: totalItemsG } = useThirdCart()
+  const { cartTotalR: totalPriceR, selectItemsR: totalItemsR } = useSecondCart()
 
   const handleCouponDeselect = () => {
     setSelectedCoupon('')
@@ -93,14 +100,18 @@ export default function ProceedToCheckout({
         </div>
         <div className="text-end">
           <span className="align-middle">
-            共<span className="orderAmount">{orderAmountAll}</span>
+            共
+            <span className="orderAmount">
+              {totalItemsP + totalItemsG + totalItemsR}
+            </span>
             件商品, 總金額: $
             <span className="orderTotal">
-              {orderTotalAll}
+              {totalPriceP + totalPriceG + totalPriceR}
               {/* {priceData} */}
             </span>
           </span>
           <a
+            href="#"
             className="btn btn-primary text-white ms-2 px-3 py-2"
             onClick={onCheckout}
           >

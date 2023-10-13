@@ -29,6 +29,152 @@ export function AuthProvider({ children }) {
   const router = useRouter()
   const { asPath } = router
 
+  // 讀取優惠券(user_coupon.status = 1)
+  const [coupon, setCoupon] = useState({
+    coupon: {
+      couponId: '',
+      coupon_name: '',
+      coupon_code: '',
+      description: '',
+      threshold: '',
+      discount_percent: '',
+      discount_value: '',
+      end_date: '',
+    },
+  })
+
+  const getCoupon = async () => {
+    try {
+      const response = await axios.get('http://localhost:3005/api/coupon', {
+        withCredentials: true,
+      })
+      // console.log('優惠券data')
+      // console.log(response.data)
+      if (response.data.message === 'authorized') {
+        // setCoupon(response.data.rows)
+        setCoupon(response.data.coupon)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  // 新增優惠券
+  const addCoupon = async (couponCode, userId) => {
+    const codeData = {
+      couponCode: couponCode,
+      userId: userId,
+    }
+    if (couponCode === '') {
+      return Swal.showValidationMessage(`請輸入內容`)
+    }
+    try {
+      const response = await axios.post(
+        'http://localhost:3005/api/coupon',
+        codeData,
+        {
+          withCredentials: true, // save cookie in browser
+        }
+      )
+      // console.log(response.data)
+      if (response.data.code !== '200') {
+        if (response.data.code === '400') {
+          Swal.fire({
+            icon: 'error',
+            title: '新增優惠碼失敗',
+            text: '優惠碼輸入錯誤',
+          })
+        } else if (response.data.code === '403') {
+          Swal.fire({
+            icon: 'error',
+            title: '新增優惠碼失敗',
+            text: '該優惠碼已過期',
+          })
+        } else if (response.data.code === '402') {
+          Swal.fire({
+            icon: 'error',
+            title: '新增優惠碼失敗',
+            text: '已持有該優惠碼',
+          })
+        }
+      } else {
+        Swal.fire({
+          icon: 'success',
+          title: '新增優惠碼成功',
+          showConfirmButton: false,
+          timer: 2500,
+        }).then(() => {
+          getCoupon()
+          router.push('/user/coupon')
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  // 讀取已過期優惠券(user_coupon.status = 0)
+  const [couponExpired, setCouponExpired] = useState({
+    couponExpired: {
+      couponId: '',
+      coupon_name: '',
+      coupon_code: '',
+      description: '',
+      threshold: '',
+      discount_percent: '',
+      discount_value: '',
+      end_date: '',
+    },
+  })
+  const getCouponExpired = async () => {
+    try {
+      const response = await axios.get(
+        'http://localhost:3005/api/coupon/couponExpired',
+        {
+          withCredentials: true,
+        }
+      )
+      // console.log('已過期優惠券data')
+      // console.log(response.data)
+      if (response.data.message === 'authorized') {
+        // setCoupon(response.data.rows)
+        setCouponExpired(response.data.couponExpired)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  // 讀取已使用優惠券(user_coupon.status =2)
+  const [couponUsed, setCouponUsed] = useState({
+    couponUsed: {
+      couponId: '',
+      coupon_name: '',
+      coupon_code: '',
+      description: '',
+      threshold: '',
+      discount_percent: '',
+      discount_value: '',
+      end_date: '',
+    },
+  })
+  const getCouponUsed = async () => {
+    try {
+      const response = await axios.get(
+        'http://localhost:3005/api/coupon/couponUsed',
+        {
+          withCredentials: true,
+        }
+      )
+      // console.log('已使用優惠券data')
+      // console.log(response.data)
+      if (response.data.message === 'authorized') {
+        // setCoupon(response.data.rows)
+        setCouponUsed(response.data.couponUsed)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   // 檢查會員證證用
   const checkAuth = async () => {
     try {
@@ -44,6 +190,7 @@ export function AuthProvider({ children }) {
             isAuth: true,
             user: response.data.user,
           })
+          getCoupon()
         })
         .catch((error) => {
           if (
@@ -96,6 +243,7 @@ export function AuthProvider({ children }) {
         isAuth: true,
         user: jwtDecode(response.data.accessToken),
       })
+      getCoupon()
       // setLoginToken(response.data.accessToken)
       Swal.fire({
         icon: 'success',
@@ -155,6 +303,19 @@ export function AuthProvider({ children }) {
                   expiry: '',
                 },
               })
+              setCoupon({
+                coupon: {
+                  couponId: '',
+                  coupon_name: '',
+                  coupon_code: '',
+                  description: '',
+                  threshold: '',
+                  discount_percent: '',
+                  discount_value: '',
+                  end_date: '',
+                },
+              })
+
               Swal.fire({
                 icon: 'success',
                 title: '登出成功',
@@ -186,7 +347,24 @@ export function AuthProvider({ children }) {
 
   return (
     <>
-      <AuthContext.Provider value={{ auth, setAuth, login, logout }}>
+      <AuthContext.Provider
+        value={{
+          auth,
+          setAuth,
+          login,
+          logout,
+          coupon,
+          getCoupon,
+          setCoupon,
+          addCoupon,
+          couponExpired,
+          setCouponExpired,
+          getCouponExpired,
+          couponUsed,
+          setCouponUsed,
+          getCouponUsed,
+        }}
+      >
         {children}
       </AuthContext.Provider>
     </>

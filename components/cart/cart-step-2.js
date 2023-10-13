@@ -3,9 +3,10 @@ import style from './cart2.module.scss'
 import { Divider } from 'antd'
 import { Radio, List } from 'antd'
 import { useAuth } from '@/hooks/useAuth'
+import { useCoupon } from '@/hooks/useCoupon'
 
 export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
-  const { auth, coupon, getCoupon } = useAuth()
+  const { auth, setAuth, coupon, getCoupon } = useAuth()
   useEffect(() => {
     getCoupon()
   }, [])
