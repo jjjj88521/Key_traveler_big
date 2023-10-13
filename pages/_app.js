@@ -7,7 +7,10 @@ import HomeLayout from '@/components/layout/home-layout'
 import { AuthProvider } from '@/hooks/useAuth'
 import HydrationFix from './_hydration-fix'
 import UserLayout from '@/components/layout/user-layout'
-import { ProductDataProvider } from '@/context/use-product'
+import { ProductDataProvider } from '@/context/product'
+import { CartProvider } from '@/hooks/use-cart'
+import { SecondCartProvider } from '@/hooks/useSecondCart'
+import { ThirdCartProvider } from '@/hooks/useThirdCart'
 
 export default function MyApp({ Component, pageProps }) {
   // Use the layout defined at the page level, if available
@@ -45,9 +48,15 @@ export default function MyApp({ Component, pageProps }) {
         // 會員登入
         <AuthProvider>
           <ProductDataProvider>
-            <HydrationFix>
-              <AntdConfigProvider>{layoutComponent}</AntdConfigProvider>
-            </HydrationFix>
+            <CartProvider>
+              <SecondCartProvider>
+                <ThirdCartProvider>
+                  <HydrationFix>
+                    <AntdConfigProvider>{layoutComponent}</AntdConfigProvider>
+                  </HydrationFix>
+                </ThirdCartProvider>
+              </SecondCartProvider>
+            </CartProvider>
           </ProductDataProvider>
         </AuthProvider>
       )

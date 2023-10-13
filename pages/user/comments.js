@@ -1,8 +1,10 @@
 import { React, useState } from 'react'
 import Link from 'next/link'
-import { Tabs, Avatar, List, Rate, Drawer } from 'antd'
+import { Avatar, List, Rate, Drawer } from 'antd'
 import style from './comments.module.scss'
 import UserLayout from '@/components/layout/user-layout'
+import TabButtonForUser from '@/components/user/coupon-tabs'
+
 const moment = require('moment')
 
 const commentsData = [
@@ -261,17 +263,9 @@ export default function Comments() {
   const hasMoreData = updateYetData.length > visibleItemCount
 
   return (
-    <UserLayout title={'商品評價'}>
-      <div className="col-10 offset-1 col-sm-9">
-        <div>
-          <Tabs
-            defaultActiveKey="1"
-            items={items}
-            onChange={tabsOnChange}
-            type="card"
-            style={{ margin: '0 -15px' }}
-          />
-        </div>
+    <>
+      <UserLayout title={'我的評價'}>
+        <TabButtonForUser tabItems={items} tabsChange={tabsOnChange} />
         <div>
           {tabkey === '1' ? (
             allItemsAreComment ? (
@@ -293,7 +287,7 @@ export default function Comments() {
                               onClick={() => showDrawer(item)} // 传递当前 List.Item 作为参数
                             >
                               去評價
-                              <i class="fa-regular fa-hand-point-left ms-2"></i>
+                              <i className="fa-regular fa-hand-point-left ms-2"></i>
                             </a>
                             <a
                               href="#"
@@ -496,7 +490,7 @@ export default function Comments() {
             />
           )}
         </div>
-      </div>
-    </UserLayout>
+      </UserLayout>
+    </>
   )
 }

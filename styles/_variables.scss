@@ -1,7 +1,7 @@
 // 檔案位置: styles/global.scss
 // 變數覆蓋用 (Variable overrides)
 // 全站配色 colors
-$primary: #DC9329; // 這裡改成 figma 金色
+$primary: #dc9329; // 這裡改成 figma 金色
 $secondary: #9f9f9f;
 $success: #198754; //改回bootstarp的預設
 $danger: #ff4136;
@@ -20,3 +20,6 @@ $border-radius-lg: 0.2em;
 // https://getbootstrap.com/docs/5.3/components/card/#grid-cards
 $card-height: 100%;
 $card-border-radius: 1rem;
+
+// 設置@media screen
+$maxWidth: 576px;

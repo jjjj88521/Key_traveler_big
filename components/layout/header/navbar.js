@@ -7,6 +7,9 @@ import { useAuth } from '@/hooks/useAuth'
 import Swal from 'sweetalert2'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import { useCart } from '@/hooks/use-cart'
+import { useThirdCart } from '@/hooks/useThirdCart'
+import { useSecondCart } from '@/hooks/useSecondCart'
 
 // 導航欄位
 const navItems = [
@@ -95,6 +98,9 @@ const navItems = [
 ]
 
 export default function Navbar() {
+  const { totalItemsP: pdTotalItems } = useCart()
+  const { totalItemsG: gbTotalItems } = useThirdCart()
+  const { totalItemsR: rTotalItems } = useSecondCart()
   const router = useRouter()
   // === 手機版滑入選單 ===
   const [open, setOpen] = useState(false)
@@ -239,7 +245,10 @@ export default function Navbar() {
               {/* 購物車按鈕 */}
               <div className="align-items-center d-flex">
                 <Link href="/cart">
-                  <Badge count={2} color="#DC9329">
+                  <Badge
+                    count={pdTotalItems + gbTotalItems + rTotalItems}
+                    color="#DC9329"
+                  >
                     <i className="fa-solid fa-cart-shopping text-primary fs-5"></i>
                   </Badge>
                 </Link>

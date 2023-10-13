@@ -17,6 +17,7 @@ export default function NewCouponPage({
   const handlePageChange = (page) => {
     setInternalCurrentPage(page)
     onPageChange(page)
+    window.scrollTo({ top: 0, behavior: 'auto' })
   }
 
   const itemRender = (page, type, originalElement) => {
