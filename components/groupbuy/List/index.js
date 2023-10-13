@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './index.module.css'
 import { Progress } from 'antd'
 
-export default function CardGroup() {
+export default function List() {
   return (
     <>
       <div className="d-flex justify-content-end row row-cols-2 row-cols-md-3 g-4 mb-sm-0 mb-4">
