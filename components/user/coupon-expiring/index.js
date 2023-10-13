@@ -9,10 +9,6 @@ const moment = require('moment')
 
 function filterExpiringData(data) {
   const millisecondsInADay = 1000 * 60 * 60 * 24
-  // 保留endTime與目前時間相差2天以內的元素
-  data.map((i) => {
-    console.log(i.end_date)
-  })
   const filteredData = data.filter((item) => {
     return (
       Math.floor((moment(item.end_date) - moment()) / millisecondsInADay) <=
