@@ -9,6 +9,11 @@ import { useProductData } from '@/context/use-product.js'
 export default function TabContainer({ children }) {
   const [tab, setTab] = useState('intro')
 
+  // 取得該放哪個資料夾的檔案
+  const pdCate = Children.map(children, (child) => {
+    return child.props.pdCate
+  })
+
   // tab 切換，滾動到該位置
   const TabRef = useRef(null)
   const handleScroll = () => {
@@ -19,7 +24,7 @@ export default function TabContainer({ children }) {
 
   // 使用 productDataContext 取得商品資料
   const { productData } = useProductData()
-  let { feature, feature_img: featureImgs, specTable } = productData
+  let { feature = '', feature_img: featureImgs, specTable } = productData
   featureImgs =
     Object.keys(productData).length > 0
       ? JSON.parse(productData.feature_img)
@@ -52,7 +57,11 @@ export default function TabContainer({ children }) {
             }`}
           >
             {tab === 'intro' && (
-              <IntroTab feature={feature} featureImgs={featureImgs} />
+              <IntroTab
+                pdCate={pdCate}
+                feature={feature}
+                featureImgs={featureImgs}
+              />
             )}
           </div>
           <div

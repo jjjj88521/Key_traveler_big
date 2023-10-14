@@ -30,8 +30,10 @@ import 'swiper/scss/navigation'
 
 import { SwiperPrevBtn, SwiperNextBtn } from '@/components/home/swiper-btns'
 import Card from '@/components/product/Card'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function ProductDetail() {
+  const { auth } = useAuth()
   const router = useRouter()
   const { pid } = router.query
   const { isReady } = router
@@ -44,46 +46,12 @@ export default function ProductDetail() {
     setMaybeLike,
     commentCount,
     setCommentCount,
-    isLiked,
     setIsLiked,
   } = useProductData()
   // const [isLiked, setIsLiked] = useState(false)
 
   // 存是否正在載入
   const [isLoading, setIsLoading] = useLoading(productData)
-  const handleToggleLike = async () => {
-    try {
-      const response = isLiked
-        ? await deleteProductLike('pd', pid)
-        : await addProductLike('pd', pid)
-
-      console.log(response)
-
-      if (response.code === '200') {
-        setIsLiked(!isLiked)
-        const successMessage = response.message
-        Swal.fire({
-          icon: 'success',
-          title: successMessage,
-          showConfirmButton: false,
-          timer: 1500,
-        })
-      } else {
-        throw new Error('發生錯誤')
-      }
-    } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: '請先登入',
-        showConfirmButton: false,
-        timer: 1500,
-      }).then(() => {
-        // 存入登入前的頁面，登入成功就跳轉回來
-        localStorage.setItem('redirect', router.asPath)
-        router.push('/user/login')
-      })
-    }
-  }
   // console.log('maybeLike', maybeLike)
 
   // 獲取資料
@@ -97,9 +65,13 @@ export default function ProductDetail() {
       await fetchPdCommentCount(pid).then((data) => {
         setCommentCount(data)
       })
-      await fetchProductLike('pd', pid).then((like) => {
-        setIsLiked(like)
-      })
+      await fetchProductLike('pd', pid)
+        .then((like) => {
+          setIsLiked(like)
+        })
+        .catch((error) => {
+          setIsLiked(false)
+        })
       await fetchMaybeLike(pid).then((products) => {
         setMaybeLike(products)
       })
@@ -107,7 +79,7 @@ export default function ProductDetail() {
     if (isReady) {
       fetchData()
     }
-  }, [isReady, pid])
+  }, [isReady, pid, auth]) // 登出之後也會再觸發重新整理
 
   // 最近瀏覽商品 hooks，傳入 type: 'product'，代表是一般商品
   const [recentlyViewed, addToRecentlyViewed] = useRecentlyViewed({
@@ -119,14 +91,8 @@ export default function ProductDetail() {
     }
   }, [productData])
 
-  // 商品資料解構，以及將一些數據轉換成物件或陣列
-  const { name = '', brand = '', price = '' } = productData
-  const style_select =
-    Object.keys(productData).length > 0
-      ? JSON.parse(productData.style_select)
-      : []
-  const images =
-    Object.keys(productData).length > 0 ? JSON.parse(productData.images) : []
+  // 商品名
+  const { name = '' } = productData
 
   return (
     <>
@@ -138,17 +104,7 @@ export default function ProductDetail() {
       ) : (
         <>
           {/* 商品詳細 head */}
-          <ProductHead
-            name={name}
-            brand={brand}
-            price={price}
-            images={images}
-            rating={commentCount.avgStar}
-            commentCount={commentCount.total}
-            isLiked={isLiked}
-            onToggleLike={handleToggleLike}
-            StyleSelectItems={style_select}
-          />
+          <ProductHead />
           {/* 喜歡商品 */}
           <section className="">
             <div className="container border-top border-2 py-5">
@@ -169,11 +125,6 @@ export default function ProductDetail() {
                   autoplay={{
                     delay: 2500,
                     disableOnInteraction: false,
-                  }}
-                  navigation={{
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                    hiddenClass: 'swiper-button-hidden',
                   }}
                   modules={[Autoplay, Navigation]}
                   className="mySwiper"
@@ -246,7 +197,9 @@ export default function ProductDetail() {
           </section>
           {/* 商品詳細 tab 切換資訊、規格表、評論 */}
           <TabContainer>
-            <TabButton tabName="intro">商品介紹</TabButton>
+            <TabButton tabName="intro" pdCate={'product'}>
+              商品介紹
+            </TabButton>
             <TabButton tabName="spec">商品規格</TabButton>
             <TabButton tabName="review">
               商品評價[{commentCount.total}]

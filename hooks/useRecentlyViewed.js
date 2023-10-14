@@ -1,4 +1,3 @@
-import { set } from 'lodash'
 import { useState, useEffect } from 'react'
 
 export default function useRecentlyViewed({ type }) {

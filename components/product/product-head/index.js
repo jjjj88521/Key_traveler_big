@@ -9,32 +9,62 @@ import PdNumInput from './pd-number-input'
 import { PdInfoBox, PdBrand, PdName, PdPrice, PdRating } from './pd-info-box'
 import { AddCartBtn, BuyBtn, LikeBtn, OutOfStockBtn } from './pd-btns'
 import { useProductData } from '@/context/use-product'
+import { addProductLike, deleteProductLike } from '@/libs/productFetcher'
+import Swal from 'sweetalert2'
+import { useRouter } from 'next/router'
 
-export default function ProductHead({
-  name,
-  brand,
-  price,
-  images,
-  rating,
-  commentCount,
-  isLiked = false,
-  onToggleLike,
-  StyleSelectItems,
-}) {
+export default function ProductHead() {
+  const router = useRouter()
   // 獲取商品 context
-  const { productData } = useProductData()
+  const { productData, isLiked, setIsLiked, commentCount } = useProductData()
+  const { name, brand, price } = productData
+  const { avgStar, total } = commentCount
+  const images = JSON.parse(productData.images)
+  const style_select = JSON.parse(productData.style_select)
   // 使用樣式選擇 hook
-  const initStyleSelect = StyleSelectItems
-    ? Object.keys(StyleSelectItems).map((key) => ({
+  const initStyleSelect = style_select
+    ? Object.keys(style_select).map((key) => ({
         key,
-        value: StyleSelectItems[key][0], // 預設為第一個
+        value: style_select[key][0], // 預設為第一個
       }))
     : []
   const [selectedStyles, handleStyleSelect] = useStyleSelect(initStyleSelect)
 
-  useEffect(() => {
-    console.log(selectedStyles)
-  }, [selectedStyles])
+  // 收藏商品
+  const handleToggleLike = async () => {
+    try {
+      const response = isLiked
+        ? await deleteProductLike('pd', productData.id)
+        : await addProductLike('pd', productData.id)
+
+      console.log(response)
+
+      if (response.code === '200') {
+        setIsLiked(!isLiked)
+        const successMessage = response.message
+        Swal.fire({
+          icon: 'success',
+          title: successMessage,
+          showConfirmButton: false,
+          timer: 1500,
+        })
+      } else {
+        throw new Error('發生錯誤')
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: '請先登入',
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(() => {
+        // 存入登入前的頁面，登入成功就跳轉回來
+        localStorage.setItem('redirect', router.asPath)
+        router.push('/user/login')
+      })
+    }
+  }
+
   return (
     <section className="">
       <div className="container">
@@ -52,13 +82,13 @@ export default function ProductHead({
               <PdBrand brand={brand} />
               <PdName name={name} />
               <PdPrice price={price} />
-              <PdRating rating={rating} commentCount={commentCount} />
+              <PdRating rating={avgStar} commentCount={total} />
             </PdInfoBox>
             {/* 產品樣式選擇 */}
-            {StyleSelectItems &&
-              Object.keys(StyleSelectItems).map((key, index) => (
+            {style_select &&
+              Object.keys(style_select).map((key, index) => (
                 <StyleSelect key={key} title={key} onSelect={handleStyleSelect}>
-                  {StyleSelectItems[key].map((value, index) => (
+                  {style_select[key].map((value, index) => (
                     <Item key={key + index}>{value}</Item>
                   ))}
                 </StyleSelect>
@@ -78,7 +108,7 @@ export default function ProductHead({
             </div>
             {/* 喜歡按鈕 */}
             <div className="d-flex justify-content-center">
-              <LikeBtn isLiked={isLiked} onToggleLike={onToggleLike} />
+              <LikeBtn isLiked={isLiked} onToggleLike={handleToggleLike} />
             </div>
           </div>
         </div>
