@@ -6,6 +6,8 @@ import { useAuth } from '@/hooks/useAuth'
 import jwtDecode from 'jwt-decode'
 import Router from 'next/router'
 import axios from 'axios'
+import useLoading from '@/hooks/useLoading'
+import LoadingPage from '@/components/common/loadingPage'
 export default function CreditCardForm() {
   const updateUser = (userId, user) => {
     // 更新會員資料
@@ -53,7 +55,10 @@ export default function CreditCardForm() {
     setAuth({ ...auth, user: { ...auth.user, [name]: value } })
     // console.log(auth.user.card_number)
   }
-  return (
+  const [isLoading, setIsLoading] = useLoading(auth.user)
+  return isLoading ? (
+    <LoadingPage />
+  ) : (
     <>
       <form className="col-sm-6 col-12">
         <section className="mb-3">

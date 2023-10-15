@@ -55,3 +55,11 @@
   background-repeat: no-repeat; 
   background-attachment: fixed; 
 } */
+.custom-placeholder::placeholder {
+  color: #000 !important; /* 你希望的占位符文本颜色 */
+  font-size: 24px;
+}
+.ant-picker .ant-picker-input > input {
+  color: #000 !important; /* 你希望的占位符文本颜色 */
+  font-size: 24px;
+}

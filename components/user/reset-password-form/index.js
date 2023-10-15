@@ -6,6 +6,9 @@ import UserLayout from '@/components/layout/user-layout'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
+import useLoading from '@/hooks/useLoading'
+import LoadingPage from '@/components/common/loadingPage'
+
 export default function ForgetPassword() {
   const router = useRouter()
   const [email, setEmail] = useState({ email: '' })
@@ -73,6 +76,7 @@ export default function ForgetPassword() {
         console.log('寄送發生錯誤2')
       })
   }
+
   return (
     <div className="container">
       <div className="row">

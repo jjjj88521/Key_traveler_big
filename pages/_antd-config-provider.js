@@ -9,6 +9,9 @@ export default function AntdConfigProvider({ children }) {
         token: {
           colorPrimary: '#DC9329',
           colorSecondary: '#9F9F9F',
+          fontSize: '16px',
+          fontFamily: 'Noto Sans TC',
+          // fontWeightStrong: '900',
         },
         components: {
           // antd 麵包屑樣式

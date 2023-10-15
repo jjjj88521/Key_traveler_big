@@ -1,6 +1,5 @@
 import React from 'react'
 import ProfileForm from '@/components/user/profile-form'
-import UserDropdown from '@/components/user/user-dropdown'
 import UserAvatar from '@/components/user/user-avatar'
 import UserAvatarMobile from '@/components/user/user-avatar-mobile'
 import UserLayout from '@/components/layout/user-layout'
