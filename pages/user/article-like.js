@@ -63,6 +63,7 @@ export default function Article() {
             return (
               <ArticleLikeItem
                 key={index}
+                image={item.img}
                 title={item.title}
                 cate={item.cate}
                 link={`/article/${item.id}`}

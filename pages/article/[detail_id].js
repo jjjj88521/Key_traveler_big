@@ -57,233 +57,11 @@ export default function DetailFilter() {
   //對應路由 文章篩選
   const filterArticle = ArticleContent.find((item) => item.id == detail_id)
   console.log(filterArticle)
+  // console.log(filterArticle.img)
+
   // 收藏按鈕功能
   const [like, setLike] = useState(false)
 
-  // 感興趣列表物件
-  const interesrData = [
-    {
-      title: 'interest title',
-      img: 'https://keebsforall.com/cdn/shop/products/DSC00941.jpg?v=1689791499&width=1000',
-      user: 'by.user_id',
-    },
-    {
-      title: 'interest title',
-      img: 'https://keebsforall.com/cdn/shop/products/DSC00941.jpg?v=1689791499&width=1000',
-      user: 'by.user_id',
-    },
-    {
-      title: 'interest title',
-      img: 'https://keebsforall.com/cdn/shop/products/DSC00941.jpg?v=1689791499&width=1000',
-      user: 'by.user_id',
-    },
-    {
-      title: 'interest title',
-      img: 'https://keebsforall.com/cdn/shop/products/DSC00941.jpg?v=1689791499&width=1000',
-      user: 'by.user_id',
-    },
-    {
-      title: 'interest title',
-      img: 'https://keebsforall.com/cdn/shop/products/DSC00941.jpg?v=1689791499&width=1000',
-      user: 'by.user_id',
-    },
-  ]
-  // 留言列表物件
-  // const formattedDateTime = moment().format('DD/MM/YYYY HH:mm:ss A')
-  const formattedDateTime = moment().format('YYYY-MM-DD HH:mm:ss')
-
-  //  留言顯示功能
-  //   {
-  //     user_id: 'Ant Design Title 1',
-  //     create_at: '2023',
-  //     comment: '輸入內容',
-  //   },
-  //   {
-  //     user_id: 'Ant Design Title 2',
-  //     create_at: '2023',
-  //     comment: '輸入內容',
-  //   },
-  //   {
-  //     user_id: 'Ant Design Title 3',
-  //     create_at: '2023',
-  //     comment: '輸入內容',
-  //   },
-  //   {
-  //     user_id: 'Ant Design Title 4',
-  //     create_at: '2023',
-  //     comment: '輸入內容',
-  //   },
-  //   {
-  //     user_id: 'Ant Design Title 5',
-  //     create_at: '2023',
-  //     comment: '輸入內容',
-  //   },
-  //   {
-  //     user_id: 'Ant Design Title 6',
-  //     create_at: '2023',
-  //     comment: '輸入內容',
-  //   },
-  //   {
-  //     user_id: 'Ant Design Title 7',
-  //     create_at: '2023',
-  //     comment: '輸入內容',
-  //   },
-  // ]
-  // const artComment = {
-  //   1: [
-  //     {
-  //       title: 'Route1 Title 1',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //     {
-  //       title: 'Route1 Title 2',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //     {
-  //       title: 'Route1 Title 3',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //     {
-  //       title: 'Route1 Title 4',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //     {
-  //       title: 'Route1 Title 5',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //     {
-  //       title: 'Route1 Title 6',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //     {
-  //       title: 'Route1 Title 7',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //   ],
-  //   2: [
-  //     {
-  //       title: 'Route2 Title 1',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //     {
-  //       title: 'Route2 Title 2',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //     {
-  //       title: 'Route2 Title 3',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //     {
-  //       title: 'Route2 Title 4',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //     {
-  //       title: 'Route2 Title 5',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //     {
-  //       title: 'Route2 Title 6',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //     {
-  //       title: 'Route2 Title 7',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //   ],
-  //   3: [
-  //     {
-  //       title: 'Route3 Title 1',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //     {
-  //       title: 'Route3 Title 2',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //     {
-  //       title: 'Route3 Title 3',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //     {
-  //       title: 'Route3 Title 4',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //     {
-  //       title: 'Route3 Title 5',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //     {
-  //       title: 'Route3 Title 6',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //     {
-  //       title: 'Route3 Title 7',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //   ],
-  //   4: [
-  //     {
-  //       title: 'Route4 Title 1',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //     {
-  //       title: 'Route4 Title 2',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //     {
-  //       title: 'Route4 Title 3',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //     {
-  //       title: 'Route4 Title 4',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //     {
-  //       title: 'Route4 Title 5',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //     {
-  //       title: 'Route4 Title 6',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //     {
-  //       title: 'Route4 Title 7',
-  //       date: '2023',
-  //       description: '輸入內容',
-  //     },
-  //   ],
-  // }
-  //   console.log(artComment[1])
-
-  // const articleData = artComment[detail_id] || []
-  //   console.log(articleData)
-  // console.log(artComment[detail_id])
   //留言顯示功能
   const [displayItemCount, setDisplayItemCount] = useState(3)
   const ShowMore = () => {
@@ -580,14 +358,21 @@ export default function DetailFilter() {
                 </Link>
               </div>
               {/* 感興趣列表 */}
-              <div className="border-bottom border-2 border-dark mt-5 mb-5">
+              <div className="border-bottom border-2 border-dark mt-5 mb-4">
                 <h4 className="fw-bold">你可能感興趣的文章</h4>
               </div>
               {/* 卡片與map函式 */}
-              {interesrData.map((item, index) => {
+              {ArticleContent.filter(
+                (item) => parseInt(item.id) >= 24 && parseInt(item.id) <= 28
+              ).map((item, index) => {
+                const parsedImg = JSON.parse(item.img)
+
                 return (
                   <>
-                    <Link href="#" className="text-decoration-none">
+                    <Link
+                      href={`/article/${item.id}`}
+                      className="text-decoration-none"
+                    >
                       <div
                         className={`${art_detail_style['interest_card']} row py-2 border-bottom border-2 border-dark`}
                         key={index}
@@ -601,12 +386,12 @@ export default function DetailFilter() {
                             }}
                           >
                             <img
-                              src={item.img}
+                              src={`/article/${parsedImg[0]}`}
                               className="ArticleImg"
                               alt="..."
                               style={{
-                                width: '100%',
-                                height: '100%',
+                                width: '100px',
+                                height: '100px',
                                 objectFit: 'cover',
                               }}
                             />
@@ -618,7 +403,11 @@ export default function DetailFilter() {
                             style={{ backgroundColor: 'transparent' }}
                           >
                             <div className="card-body">
-                              <h5 className="card-title">{item.title}</h5>
+                              <h5 className="card-title">
+                                {item.title.length > 14
+                                  ? `${item.title.slice(0, 14)}...`
+                                  : item.title}
+                              </h5>
                               <p className="card-text text-secondary">
                                 {item.user}
                               </p>

@@ -46,12 +46,18 @@ const ArticleLikeItem = ({
   pid,
   cate,
 }) => {
+  const parsedImg = JSON.parse(image)
   return (
     <tr>
       <td>
         <div className="row">
           <div className="col-auto">
-            <Image src={image} width={100} height={100} alt="" />
+            <Image
+              src={`/article/${parsedImg[0]}`}
+              width={100}
+              height={100}
+              alt=""
+            />
           </div>
           <div className="col d-flex align-items-center gap-1 flex-column flex-sm-row">
             <Link href={link}>{title}</Link>

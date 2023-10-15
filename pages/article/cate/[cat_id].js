@@ -53,6 +53,7 @@ export default function ArticleFilter() {
       // }
     }
   }, [isReady, cat_id])
+  console.log(selectValue)
   //   console.log(selectedCategory)
 
   const [searchCard, setSearchCard] = useState('')
@@ -71,92 +72,6 @@ export default function ArticleFilter() {
     })
   }, [])
 
-  // const data = [
-  //   {
-  //     id: '1',
-  //     title: 'Card Post',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     cate: '公告',
-  //     date: '2023-09-21',
-  //   },
-  //   {
-  //     id: '2',
-  //     title: 'Card Post',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     cate: '公告',
-  //     date: '2023-09-21',
-  //   },
-  //   {
-  //     id: '3',
-  //     title: 'Card Post',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     cate: '公告',
-  //     date: '2023-09-21',
-  //   },
-  //   {
-  //     id: '4',
-  //     title: 'Card Title',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     cate: '公告',
-  //     date: '2023-09-21',
-  //   },
-  //   {
-  //     id: '5',
-  //     title: 'Card Title',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     cate: '公告',
-  //     date: '2023-09-21',
-  //   },
-  //   {
-  //     id: '6',
-  //     title: 'Card Unboxing',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     cate: '開箱文',
-  //     date: '2023-09-21',
-  //   },
-  //   {
-  //     id: '7',
-  //     title: 'Card Unboxing',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     cate: '開箱文',
-  //     date: '2023-09-21',
-  //   },
-  //   {
-  //     id: '8',
-  //     title: 'Card Unboxing',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     cate: '開箱文',
-  //     date: '2023-09-21',
-  //   },
-  //   {
-  //     id: '9',
-  //     title: 'Card Title',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     cate: '開箱文',
-  //     date: '2023-09-21',
-  //   },
-  //   {
-  //     id: '10',
-  //     title: 'Card Teach',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     cate: '組裝教學',
-  //     date: '2023-09-21',
-  //   },
-  //   {
-  //     id: '11',
-  //     title: 'Card Act',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     cate: '活動',
-  //     date: '2023-09-21',
-  //   },
-  //   {
-  //     id: '12',
-  //     title: 'Card Title',
-  //     img: 'https://www.inpad.com.tw/data/news/cover/1694604979854924778.jpg',
-  //     cate: '活動',
-  //     date: '2023-09-21',
-  //   },
-  // ]
   //   分頁設定
   const PageSize = 9
   const totalItemsForCategory = data.filter(
@@ -380,8 +295,14 @@ export default function ArticleFilter() {
                           {/* {item.title + item.id} */}
                         </h4>
 
-                        <Link href={'#'}>
-                          <Tag className="bg-primary text-white fw-bolder mb-3">
+                        <Link href="">
+                          <Tag
+                            className="bg-primary text-white fw-bolder mb-3"
+                            // 將連結無效
+                            onClick={(e) => {
+                              e.preventDefault()
+                            }}
+                          >
                             {item.cate}
                           </Tag>
                         </Link>
