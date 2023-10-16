@@ -23,6 +23,7 @@ export function AuthProvider({ children }) {
       cardNumber: '',
       cardName: '',
       exp: '',
+      vip: '',
     },
   })
 
