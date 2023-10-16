@@ -56,10 +56,8 @@ export default function GroupbuyDetail() {
           {/* 團購詳細 head */}
           <GbHead />
           {/* 商品詳細 tab 切換資訊、規格表、團購說明 */}
-          <TabContainer>
-            <TabButton tabName="intro" pdCate={'groupbuy'}>
-              商品介紹
-            </TabButton>
+          <TabContainer pdCate={'groupbuy'}>
+            <TabButton tabName="intro">商品介紹</TabButton>
             <TabButton tabName="spec">商品規格</TabButton>
             <TabButton tabName="gb-desc">團購說明</TabButton>
           </TabContainer>

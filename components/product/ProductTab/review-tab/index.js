@@ -4,7 +4,7 @@ import {
   StyleSelect,
 } from '@/components/common/style-select/style-select'
 import useStyleSelect from '@/hooks/useStyleSelect'
-import { Dropdown, List, Progress, Rate, Space, Typography } from 'antd'
+import { Dropdown, List, Progress, Rate, Select, Space, Typography } from 'antd'
 import { useRef, useState, useEffect } from 'react'
 import CommentItem from './comment-item'
 import axios from 'axios'
@@ -14,8 +14,39 @@ import { useProductData } from '@/context/use-product'
 import { useRouter } from 'next/router'
 import { fetchProductComment } from '@/libs/productFetcher'
 import { DownOutlined } from '@ant-design/icons'
+import useMobile from '@/hooks/useMobile'
+
+// 星數篩選對照
+const starMap = [
+  {
+    key: '全部',
+    value: 6,
+  },
+  {
+    key: '五星',
+    value: 5,
+  },
+  {
+    key: '四星',
+    value: 4,
+  },
+  {
+    key: '三星',
+    value: 3,
+  },
+  {
+    key: '二星',
+    value: 2,
+  },
+  {
+    key: '一星',
+    value: 1,
+  },
+]
 
 export default function ReviewTab() {
+  // 判斷手機版
+  const [isMobile, setIsMobile] = useMobile()
   const { productData, commentData, setCommentData, commentCount } =
     useProductData()
   const pid = productData.id
@@ -69,7 +100,6 @@ export default function ReviewTab() {
     setIsLoading(true)
     setCurrentPage(currentPage)
   }
-  // const filteredData = commentData.data
 
   useEffect(() => {
     if (pid) {
@@ -87,7 +117,11 @@ export default function ReviewTab() {
 
   return (
     <>
-      <div className="comment-list py-3" ref={commentListRef}>
+      <div
+        className="comment-list py-3"
+        ref={commentListRef}
+        style={{ minHeight: '1000px' }}
+      >
         {/* 上方選單區 */}
         <div className="row pb-3">
           <div className="col-sm-4 col-12 d-flex flex-column gap-3">
@@ -136,60 +170,49 @@ export default function ReviewTab() {
           <div className="col-sm-8 col-12">
             <div className="d-flex justify-content-between">
               {/* 篩選 */}
-              <StyleSelect
-                title="星數"
-                onSelect={handleStarSelect}
-                hasTitle={false}
-              >
-                <Item key={6} value={6}>
-                  全部
-                </Item>
-                <Item key={5} value={5}>
-                  五星
-                </Item>
-                <Item key={4} value={4}>
-                  四星
-                </Item>
-                <Item key={3} value={3}>
-                  三星
-                </Item>
-                <Item key={2} value={2}>
-                  二星
-                </Item>
-                <Item key={1} value={1}>
-                  一星
-                </Item>
-              </StyleSelect>
-              <div className="d-flex">
-                {/* 時間排序 */}
-                <Dropdown
-                  trigger={['click']}
-                  menu={{
-                    items: [
-                      {
-                        key: '1',
-                        label: '預設排序',
-                      },
-                      {
-                        key: '2',
-                        label: '時間由新到舊',
-                      },
-                      {
-                        key: '3',
-                        label: '時間由舊到新',
-                      },
-                    ],
-                    // onClick: handleChangeOrderby,
+              {isMobile ? (
+                <Select
+                  className="fw-bold"
+                  defaultValue={starSelected[0].value}
+                  options={starMap.map((item) => ({
+                    label: item.key,
+                    value: item.value,
+                  }))}
+                  onSelect={(value) => {
+                    handleStarSelect(starSelected[0].key, value)
                   }}
+                  // bordered={false}
+                />
+              ) : (
+                <StyleSelect
+                  title="星數"
+                  onSelect={handleStarSelect}
+                  hasTitle={false}
+                  selectedValue={starSelected[0].value}
                 >
-                  <Typography.Link>
-                    <Space className="fs-6 text-dark fw-bold">
-                      排序
-                      <DownOutlined />
-                    </Space>
-                  </Typography.Link>
-                </Dropdown>
-              </div>
+                  {starMap.map((item) => {
+                    return (
+                      <Item key={item.key} value={item.value}>
+                        {item.key}
+                      </Item>
+                    )
+                  })}
+                </StyleSelect>
+              )}
+              {/* 排序 */}
+              <Select
+                className="fw-bold"
+                options={[
+                  {
+                    label: '最新',
+                    value: 'desc',
+                  },
+                  {
+                    label: '最舊',
+                    value: 'asc',
+                  },
+                ]}
+              />
             </div>
             {/* 評論列表 */}
             {isloading ? (
@@ -197,7 +220,7 @@ export default function ReviewTab() {
             ) : (
               <div className="pt-3">
                 <List
-                  size="large"
+                  // size="large"
                   dataSource={commentData.data}
                   split={false}
                   renderItem={(item) => (

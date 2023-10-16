@@ -38,7 +38,6 @@ export default function ProductDetail() {
   const { pid } = router.query
   const { isReady } = router
   // 接一般商品 api，後端路由 http://localhost:3005/api/products/[pid]
-  // const [productData, setProductData] = useState({})
   const {
     productData,
     setProductData,
@@ -48,11 +47,9 @@ export default function ProductDetail() {
     setCommentCount,
     setIsLiked,
   } = useProductData()
-  // const [isLiked, setIsLiked] = useState(false)
 
   // 存是否正在載入
   const [isLoading, setIsLoading] = useLoading(productData)
-  // console.log('maybeLike', maybeLike)
 
   // 獲取資料
   useEffect(() => {
@@ -92,7 +89,7 @@ export default function ProductDetail() {
   }, [productData])
 
   // 商品名
-  const { name = '' } = productData
+  const { name = '商品詳細' } = productData
 
   return (
     <>
@@ -196,10 +193,8 @@ export default function ProductDetail() {
             </div>
           </section>
           {/* 商品詳細 tab 切換資訊、規格表、評論 */}
-          <TabContainer>
-            <TabButton tabName="intro" pdCate={'product'}>
-              商品介紹
-            </TabButton>
+          <TabContainer pdCate={'product'}>
+            <TabButton tabName="intro">商品介紹</TabButton>
             <TabButton tabName="spec">商品規格</TabButton>
             <TabButton tabName="review">
               商品評價[{commentCount.total}]

@@ -1,10 +1,10 @@
+import useMobile from '@/hooks/useMobile'
+import Image from 'next/image'
 import React from 'react'
 export default function IntroTab({ pdCate, feature, featureImgs }) {
-  // // 使用正則表達式替換多個連續的 \n 為單個 \n
-  // const cleanedFeature = feature.replace(/\\n+/g, '\\n')
-  // console.log(cleanedFeature)
+  const [isMobile] = useMobile()
   return (
-    <div className="py-4 px-5 bg-white">
+    <div className="p-sm-5 p-3 bg-white">
       {/* 文字 */}
       {feature.split('\n').map((text, index) => (
         <p key={index}>
@@ -14,13 +14,16 @@ export default function IntroTab({ pdCate, feature, featureImgs }) {
       ))}
       {/* 圖片 */}
       <div className="d-flex justify-content-center">
-        <div className="text-center w-75">
+        <div className={`text-center ${isMobile ? 'w-100' : 'w-75'}`}>
           {featureImgs.map((img, index) => (
-            <img
+            <Image
               key={index}
               src={`/images/${pdCate}/${img}`}
-              className="w-100"
               alt={img}
+              className="w-100 h-auto"
+              width={0}
+              height={0}
+              sizes="100vw"
             />
           ))}
         </div>

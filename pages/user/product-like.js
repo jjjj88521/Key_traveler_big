@@ -6,7 +6,6 @@ import {
   ProductLikeContainer,
   ProductLikeItem,
 } from '@/components/user/product-like'
-import axios from 'axios'
 import LoadingPage from '@/components/common/loadingPage'
 import useLoading from '@/hooks/useLoading'
 import Swal from 'sweetalert2'

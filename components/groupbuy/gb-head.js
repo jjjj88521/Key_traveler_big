@@ -15,15 +15,22 @@ import {
 import {
   AddCartBtn,
   BuyBtn,
+  EndGbBtn,
   LikeBtn,
+  WaitingStartGbBtn,
 } from '@/components/product/product-head/pd-btns'
 import GbProgressBox from './gb-progress'
 import { useProductData } from '@/context/use-product'
 import { useRouter } from 'next/router'
 import { addProductLike, deleteProductLike } from '@/libs/productFetcher'
 import Swal from 'sweetalert2'
+import useMobile from '@/hooks/useMobile'
+import { Select } from 'antd'
+import dayjs from 'dayjs'
 
 export default function GbHead({}) {
+  // 判斷手機版
+  const [isMobile] = useMobile()
   const router = useRouter()
 
   const { productData, isLiked, setIsLiked } = useProductData()
@@ -76,9 +83,12 @@ export default function GbHead({}) {
     }
   }
 
-  useEffect(() => {
-    console.log(selectedStyles)
-  }, [selectedStyles])
+  // 日期使用 dayjs format
+  const dayNow = dayjs().format('YYYY/MM/DD')
+  const startDate = dayjs(start).format('YYYY/MM/DD')
+  const endDate = dayjs(end).format('YYYY/MM/DD')
+  const dateRange = dayjs(end).diff(dayNow, 'd') // 還有幾天結束
+  const daysLeft = dayjs(start).diff(dayjs(), 'd') // 還有幾天開始
 
   return (
     <section className="">
@@ -102,24 +112,59 @@ export default function GbHead({}) {
             <GbProgressBox
               current_people={current_people}
               target_people={target_people}
-              start={start}
-              end={end}
+              start={startDate}
+              end={endDate}
+              dateRange={dateRange}
+              daysLeft={daysLeft}
             />
             {/* 產品樣式選擇 */}
             {style_select &&
-              Object.keys(style_select).map((key, index) => (
-                <StyleSelect key={key} title={key} onSelect={handleStyleSelect}>
-                  {style_select[key].map((value, index) => (
-                    <Item key={key + index}>{value}</Item>
-                  ))}
-                </StyleSelect>
-              ))}
+              Object.keys(style_select).map((key, index) =>
+                isMobile ? (
+                  <div
+                    key={key}
+                    className="d-flex align-items-center flex-column"
+                  >
+                    <h5 className="text-secondary">{key}</h5>
+                    <Select
+                      className="w-100"
+                      defaultValue={selectedStyles[index].value}
+                      options={style_select[key].map((item, index) => ({
+                        key: index,
+                        label: item,
+                        value: item,
+                      }))}
+                      onSelect={(value) => handleStyleSelect(key, value)}
+                      size={'large'}
+                    />
+                  </div>
+                ) : (
+                  <StyleSelect
+                    key={key}
+                    title={key}
+                    onSelect={handleStyleSelect}
+                    selectedValue={selectedStyles[index].value}
+                  >
+                    {style_select[key].map((value, index) => (
+                      <Item key={index}>{value}</Item>
+                    ))}
+                  </StyleSelect>
+                )
+              )}
             {/* 數量選擇，輸入框，有加減數量按鈕 */}
-            <PdNumInput />
+            {daysLeft < 0 && dateRange > 0 && <PdNumInput />}
             {/* 加入購物車按鈕、直接購買按鈕，各一半 */}
             <div className="hstack gap-3">
-              <AddCartBtn />
-              <BuyBtn />
+              {daysLeft > 0 ? (
+                <WaitingStartGbBtn />
+              ) : dateRange > 0 ? (
+                <>
+                  <AddCartBtn />
+                  <BuyBtn />
+                </>
+              ) : (
+                <EndGbBtn />
+              )}
             </div>
             {/* 喜歡按鈕 */}
             <div className="d-flex justify-content-center">

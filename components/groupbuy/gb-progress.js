@@ -1,19 +1,19 @@
 import React from 'react'
 import { Progress } from 'antd'
 import { FieldTimeOutlined, UserOutlined } from '@ant-design/icons'
+import { useProductData } from '@/context/use-product'
 import dayjs from 'dayjs'
 
 export default function GbProgressBox({
-  current_people,
-  target_people,
+  // current_people,
+  // target_people,
   start,
   end,
+  dateRange,
+  daysLeft,
 }) {
-  // 日期使用 dayjs format
-  const startDate = dayjs(start).format('YYYY/MM/DD')
-  const endDate = dayjs(end).format('YYYY/MM/DD')
-  const dateRange = dayjs(end).diff(dayjs(start), 'd')
-
+  const { productData } = useProductData()
+  const { current_people, target_people, arrival } = productData
   // 人數比例
   const peopleRatio = (current_people / target_people) * 100
   return (
@@ -30,7 +30,7 @@ export default function GbProgressBox({
         <div className="text-secondary">
           <p className="mb-0 fs-5">目標人數：{target_people} 人</p>
           <p className="mb-0 fs-5">
-            開團日期：{startDate} ~ {endDate}
+            開團日期：{start} ~ {end}
           </p>
         </div>
         <div className="d-flex gap-4 justify-content-center justify-content-sm-start">
@@ -44,13 +44,18 @@ export default function GbProgressBox({
             <span className="fs-2">
               <FieldTimeOutlined />
             </span>
-            {dateRange > 0 ? (
+            {daysLeft > 0 ? (
+              <span>{daysLeft} 天開始</span>
+            ) : dateRange > 0 ? (
               <span>{dateRange} 天</span>
             ) : (
               <span className="text-secondary">已結束</span>
             )}
           </div>
         </div>
+        <p className="mt-3 text-primary">
+          預計到貨日期：{dayjs(arrival).format('YYYY/MM')}
+        </p>
       </div>
     </div>
   )

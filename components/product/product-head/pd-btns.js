@@ -50,4 +50,33 @@ const OutOfStockBtn = () => {
   )
 }
 
-export { AddCartBtn, BuyBtn, LikeBtn, OutOfStockBtn }
+const EndGbBtn = () => {
+  return (
+    <button
+      className="btn btn-secondary w-100 py-3 rounded-4 fw-semibold"
+      disabled
+    >
+      團購結束，請等待下次開團
+    </button>
+  )
+}
+
+const WaitingStartGbBtn = () => {
+  return (
+    <button
+      className="btn btn-success w-100 py-3 rounded-4 fw-semibold"
+      disabled
+    >
+      等待開團
+    </button>
+  )
+}
+
+export {
+  AddCartBtn,
+  BuyBtn,
+  LikeBtn,
+  OutOfStockBtn,
+  EndGbBtn,
+  WaitingStartGbBtn,
+}

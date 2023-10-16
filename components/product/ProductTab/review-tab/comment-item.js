@@ -12,7 +12,7 @@ export default function CommentItem({
 }) {
   style = JSON.parse(style)
   return (
-    <div className="py-2 row w-100 bg-white">
+    <div className="py-2 row w-100 bg-white mx-0">
       <div className="col-auto">
         <Avatar src={avatar_img} icon={<UserOutlined />} />
       </div>

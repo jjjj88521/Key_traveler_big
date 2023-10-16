@@ -12,8 +12,12 @@ import { useProductData } from '@/context/use-product'
 import { addProductLike, deleteProductLike } from '@/libs/productFetcher'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
+import { Select } from 'antd'
+import useMobile from '@/hooks/useMobile'
 
 export default function ProductHead() {
+  // 判斷手機版
+  const [isMobile, setIsMobile] = useMobile()
   const router = useRouter()
   // 獲取商品 context
   const { productData, isLiked, setIsLiked, commentCount } = useProductData()
@@ -86,15 +90,40 @@ export default function ProductHead() {
             </PdInfoBox>
             {/* 產品樣式選擇 */}
             {style_select &&
-              Object.keys(style_select).map((key, index) => (
-                <StyleSelect key={key} title={key} onSelect={handleStyleSelect}>
-                  {style_select[key].map((value, index) => (
-                    <Item key={key + index}>{value}</Item>
-                  ))}
-                </StyleSelect>
-              ))}
+              Object.keys(style_select).map((key, index) =>
+                isMobile ? (
+                  <div
+                    key={key}
+                    className="d-flex align-items-center flex-column"
+                  >
+                    <h5 className="text-secondary">{key}</h5>
+                    <Select
+                      className="w-100"
+                      defaultValue={selectedStyles[index].value}
+                      options={style_select[key].map((item, index) => ({
+                        key: index,
+                        label: item,
+                        value: item,
+                      }))}
+                      onSelect={(value) => handleStyleSelect(key, value)}
+                      size={'large'}
+                    />
+                  </div>
+                ) : (
+                  <StyleSelect
+                    key={key}
+                    title={key}
+                    onSelect={handleStyleSelect}
+                    selectedValue={selectedStyles[index].value}
+                  >
+                    {style_select[key].map((value, index) => (
+                      <Item key={index}>{value}</Item>
+                    ))}
+                  </StyleSelect>
+                )
+              )}
             {/* 數量選擇，輸入框，有加減數量按鈕 */}
-            <PdNumInput />
+            {productData.stock > 0 && <PdNumInput />}
             {/* 加入購物車按鈕、直接購買按鈕，各一半 */}
             <div className="hstack gap-3">
               {productData.stock > 0 ? (
