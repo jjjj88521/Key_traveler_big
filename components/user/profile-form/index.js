@@ -90,7 +90,7 @@ export default function ProfileForm() {
             id="name"
             name="name"
             className="form-control"
-            defaultValue={auth.user.card_name}
+            defaultValue={auth.user.name}
             onChange={(e) => {
               if (e.target.value.length === 0) {
                 let mes = '請填入姓名'

@@ -8,6 +8,7 @@ import Router from 'next/router'
 import axios from 'axios'
 import useLoading from '@/hooks/useLoading'
 import LoadingPage from '@/components/common/loadingPage'
+import Swal from 'sweetalert2'
 export default function CreditCardForm() {
   const updateUser = (userId, user) => {
     // 更新會員資料
@@ -115,6 +116,14 @@ export default function CreditCardForm() {
             delete auth.user.iat
             console.log(auth)
             updateUser(auth.user.id, auth.user)
+            if (auth.user.card_name) {
+              Swal.fire({
+                icon: 'success',
+                title: '修改成功',
+                showConfirmButton: false,
+                timer: 1500,
+              })
+            }
           }}
         >
           儲存

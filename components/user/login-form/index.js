@@ -249,7 +249,7 @@ export default function LoginForm() {
               立刻註冊
             </Link>
           </p>
-          <Link href="/user/forget-password" className="text-primary">
+          <Link href="/forget-password" className="text-primary">
             忘記密碼
           </Link>
         </div>
