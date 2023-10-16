@@ -4,6 +4,8 @@ import { useRouter } from 'next/router'
 import { Divider, Radio, Space, Tag } from 'antd'
 import axios from 'axios'
 import PaginationComponent from '@/components/common/PaginationComponent'
+import useLoading from '@/hooks/useLoading'
+import LoadingPage from '@/components/common/loadingPage'
 // import UserDropdown from '@/components/user/user-dropdown'
 // import UserSideBar from './user-side-bar'
 // import UserSideBarMobile from '../../components/user/user-side-bar-mobile'
@@ -42,43 +44,51 @@ export default function Article() {
     articleLike(1)
   }, [isReady])
   // articleLike()
+
+  // 頁面載入loading設定
+  const [isLoading, setIsLoading] = useLoading(like)
+
   return (
     <>
-      <UserLayout title={'文章收藏'}>
-        <Radio.Group
-          // onChange={}
-          // value={pdCate}
-          style={{
-            marginBottom: 8,
-          }}
-        >
-          <Radio.Button value="all">全部</Radio.Button>
-          <Radio.Button value="公告">公告</Radio.Button>
-          <Radio.Button value="組裝教學">組裝教學</Radio.Button>
-          <Radio.Button value="開箱文">開箱文</Radio.Button>
-          <Radio.Button value="活動">活動</Radio.Button>
-        </Radio.Group>
-        <ArticleLikeContainer>
-          {like.map((item, index) => {
-            return (
-              <ArticleLikeItem
-                key={index}
-                image={item.img}
-                title={item.title}
-                cate={item.cate}
-                link={`/article/${item.id}`}
-              />
-            )
-          })}
-          {/* <ArticleLikeItem name={'test'} price={100} link={'#'} /> */}
-        </ArticleLikeContainer>
-        <PaginationComponent
-          totalItems={total}
-          pageSize={5}
-          currentPage={Number(page)}
-          onPageChange={handlePageChange}
-        />
-      </UserLayout>
+      {isLoading ? (
+        <LoadingPage />
+      ) : (
+        <UserLayout title={'文章收藏'}>
+          <Radio.Group
+            // onChange={}
+            // value={pdCate}
+            style={{
+              marginBottom: 8,
+            }}
+          >
+            <Radio.Button value="all">全部</Radio.Button>
+            <Radio.Button value="公告">公告</Radio.Button>
+            <Radio.Button value="組裝教學">組裝教學</Radio.Button>
+            <Radio.Button value="開箱文">開箱文</Radio.Button>
+            <Radio.Button value="活動">活動</Radio.Button>
+          </Radio.Group>
+          <ArticleLikeContainer>
+            {like.map((item, index) => {
+              return (
+                <ArticleLikeItem
+                  key={index}
+                  image={item.img}
+                  title={item.title}
+                  cate={item.cate}
+                  link={`/article/${item.id}`}
+                />
+              )
+            })}
+            {/* <ArticleLikeItem name={'test'} price={100} link={'#'} /> */}
+          </ArticleLikeContainer>
+          <PaginationComponent
+            totalItems={total}
+            pageSize={5}
+            currentPage={Number(page)}
+            onPageChange={handlePageChange}
+          />
+        </UserLayout>
+      )}
     </>
   )
 }

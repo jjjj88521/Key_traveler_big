@@ -10,6 +10,7 @@ import axios from 'axios'
 import useLoading from '@/hooks/useLoading'
 import LoadingPage from '@/components/common/loadingPage'
 import Swal from 'sweetalert2'
+import Image from 'next/image'
 
 export default function DetailFilter() {
   // 設定路由
@@ -57,8 +58,20 @@ export default function DetailFilter() {
   //對應路由 文章篩選
   const filterArticle = ArticleContent.find((item) => item.id == detail_id)
   console.log(filterArticle)
-  // console.log(filterArticle.img)
+  // console.log(filterArticle.article)
 
+  const formatArticle = (article = '') => {
+    if (article) {
+      const textFormat = article.split('\n').map((v, i) => {
+        return <p key={i}>{v}</p>
+      })
+
+      return textFormat
+    }
+
+    return []
+  }
+  // console.log(changeFormat)
   // 收藏按鈕功能
   const [like, setLike] = useState(false)
 
@@ -132,7 +145,6 @@ export default function DetailFilter() {
   //     )
   //     setCateCount(personalCateCount)
   //   }, [])
-
   return (
     <>
       {/* 手機版分類 */}
@@ -155,9 +167,10 @@ export default function DetailFilter() {
               >
                 {/* 收藏按鈕 */}
                 <Link
-                  href="#"
+                  href=""
                   // type="button"
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault()
                     like ? setLike(false) : setLike(true)
                   }}
                 >
@@ -183,17 +196,50 @@ export default function DetailFilter() {
                       {filterArticle.date}
                     </h5>
                     <p className="">
-                      {filterArticle.article}
-                      <img
+                      {formatArticle(filterArticle.article)}
+                      {/* {changeFormat.map((v) => (
+                        <p>{v}</p>
+                      ))} */}
+
+                      {/* {filterArticle.img &&
+                        filterArticle.img.length > 0 &&
+                        JSON.parse(filterArticle.img).map((img, index) => (
+                          <img
+                            key={index}
+                            src={`/article/${img}`}
+                            alt={`Image ${index + 1}`}
+                            style={{
+                              width: '200px',
+                              height: '100%',
+                              objectFit: 'fill',
+                            }}
+                          />
+                        ))} */}
+
+                      {filterArticle.img &&
+                        filterArticle.img.length > 0 &&
+                        JSON.parse(filterArticle.img).map((img, index) => (
+                          <span key={index} className="image-container p-2">
+                            <Image
+                              src={`/article/${img}`}
+                              alt={`Image ${index + 1}`}
+                              width={200}
+                              height={150}
+                              objectFit="cover"
+                            />
+                          </span>
+                        ))}
+
+                      {/* <img
                         className=""
-                        src={filterArticle.img}
+                        src={`/article/${JSON.parse(filterArticle.img)[0]}`}
                         alt="..."
                         style={{
-                          width: '100%',
+                          width: '200px',
                           height: '100%',
                           objectFit: 'cover',
                         }}
-                      />
+                      /> */}
                     </p>
                   </>
                 ) : (
