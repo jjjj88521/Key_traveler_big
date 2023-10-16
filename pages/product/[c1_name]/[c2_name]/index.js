@@ -32,9 +32,9 @@ export default function ProductCate2() {
 
       // 抓此類別的名稱，以顯示在banner的文字
       axios
-        .get(`http://localhost:3005/api/category/`)
+        .get(`http://localhost:3005/api/category/${c1_name}/${c2_name}`)
         .then((res) => {
-          setcateName(res.data.rows)
+          setcateName(res.data.name)
         })
         .catch((err) => {
           console.log(err)
@@ -44,17 +44,6 @@ export default function ProductCate2() {
   //   console.log(cateProducts)
   //   console.log(cateProducts.data)
   console.log(cateName)
-
-  // 創建一個變數來保存匹配的名稱
-  let targetName = ''
-  if (c2_name && cateName.length > 0) {
-    const matchedCategory = cateName.find(
-      (category) => category.id === parseInt(c2_name)
-    )
-    if (matchedCategory) {
-      targetName = matchedCategory.name
-    }
-  }
 
   // 分頁相關
   const PageSize = 12
@@ -94,7 +83,7 @@ export default function ProductCate2() {
             alt="banner"
           />
         </div>
-        <h1 className={`text-primary ${styles['display1']}`}>{targetName}</h1>
+        <h1 className={`text-primary ${styles['display1']}`}>{cateName}</h1>
       </div>
       <div className="container pt-md-5 ps-4 pe-4 p-sm-0">
         <div className="row">

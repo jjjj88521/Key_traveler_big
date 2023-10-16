@@ -15,6 +15,7 @@ export default function ProductCate1() {
 
   // 抓取DB相關
   const [cateProducts, setCateProducts] = useState([])
+  const [cateName, setcateName] = useState([])
   useEffect(() => {
     if (router.isReady) {
       axios
@@ -25,10 +26,22 @@ export default function ProductCate1() {
         .catch((err) => {
           console.log(err)
         })
+
+      // 抓此類別的名稱，以顯示在banner的文字
+      axios
+        .get(`http://localhost:3005/api/category/${c1_name}`)
+        .then((res) => {
+          setcateName(res.data.name)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
   }, [router.isReady, c1_name])
   //   console.log(cateProducts)
   //   console.log(cateProducts.data)
+  //   console.log(cateName)
+  //   console.log(c1_name)
 
   // 分頁相關
   const PageSize = 12
@@ -68,7 +81,7 @@ export default function ProductCate1() {
             alt="banner"
           />
         </div>
-        <h1 className={`text-primary ${styles['display1']}`}>全部商品</h1>
+        <h1 className={`text-primary ${styles['display1']}`}>{cateName}</h1>
       </div>
       <div className="container pt-md-5 ps-4 pe-4 p-sm-0">
         <div className="row">

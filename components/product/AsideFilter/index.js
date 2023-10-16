@@ -15,7 +15,7 @@ export default function AsideFilter() {
               value=""
               id="flexCheckDefault"
             />
-            鍵盤
+            有貨
           </div>
           <div className="form-check">
             <input
@@ -24,34 +24,7 @@ export default function AsideFilter() {
               value=""
               id="flexCheckDefault"
             />
-            鍵帽
-          </div>
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              value=""
-              id="flexCheckDefault"
-            />
-            套件
-          </div>
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              value=""
-              id="flexCheckDefault"
-            />
-            周邊
-          </div>
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              value=""
-              id="flexCheckDefault"
-            />
-            軸體
+            品牌
           </div>
           <hr className="opacity-75"></hr>
           <div className="mb-2 fs-5">
@@ -62,7 +35,11 @@ export default function AsideFilter() {
             <div className="col-2 fs-4 d-flex justify-content-center">~</div>
             <input type="number" className="col-5" min="0"></input>
           </div>
-          <button type="button" className="btn btn-primary">
+          <button
+            type="button"
+            className="btn btn-primary"
+            style={{ width: '60%', margin: 'auto' }}
+          >
             套用
           </button>
         </div>
