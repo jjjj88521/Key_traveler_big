@@ -3,28 +3,55 @@ import style from '@/styles/order.module.scss'
 import UserDropdown from '@/components/user/user-dropdown'
 import PaginationComponent from '@/components/common/PaginationComponent'
 import Link from 'next/link'
+import { useAuth } from '@/hooks/useAuth'
+import axios from 'axios'
 
 export default function OrderList() {
-  const orders = [
-    {
-      id: 1,
-      orderId: 'P00001',
-      date: '2023-08-15',
-      totalPrice: 1800,
-    },
-    {
-      id: 2,
-      orderId: 'G00002',
-      date: '2023-08-16',
-      totalPrice: 800,
-    },
-    {
-      id: 3,
-      orderId: 'R00003',
-      date: '2023-08-17',
-      totalPrice: 1000,
-    },
-  ]
+  const { auth, setAuth } = useAuth()
+  const userId = auth.user.id
+  console.log(userId)
+
+  const [data, setData] = useState({})
+  const getOrderList = async () => {
+    // 设置API的URL
+    const apiUrl = 'http://localhost:3005/api/order/' // 将API的URL替换为实际的URL
+    // const userId = { userId: 1 }
+    // console.log(userId)
+    // 发出POST请求
+    await axios
+      .post(apiUrl, userId)
+      .then((res) => {
+        console.log('成功获取数据：', res.data)
+        setData(res.data)
+        // 在这里处理从API返回的数据
+        console.log(res.data)
+      })
+      .catch((error) => {
+        console.error('获取数据时出错：', error)
+        // 在这里处理错误
+      })
+  }
+  const orders = [data]
+  // const orders = [
+  //   {
+  //     id: 1,
+  //     orderId: 'P00001',
+  //     date: '2023-08-15',
+  //     totalPrice: 1800,
+  //   },
+  //   {
+  //     id: 2,
+  //     orderId: 'G00002',
+  //     date: '2023-08-16',
+  //     totalPrice: 800,
+  //   },
+  //   {
+  //     id: 3,
+  //     orderId: 'R00003',
+  //     date: '2023-08-17',
+  //     totalPrice: 1000,
+  //   },
+  // ]
   const [selectedFilter, setSelectedFilter] = useState('全部')
 
   const filteredOrders = orders.filter((v) => {

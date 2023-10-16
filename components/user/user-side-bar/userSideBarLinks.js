@@ -20,16 +20,8 @@ const userSideBarLinks = [
     name: '歷史訂單',
     children: [
       {
-        name: '一般商品',
-        link: '/user/order/1',
-      },
-      {
-        name: '團購商品',
-        link: '/user/order/2',
-      },
-      {
-        name: '租用商品',
-        link: '/user/order/3',
+        name: '歷史訂單',
+        link: '/user/order',
       },
     ],
   },
