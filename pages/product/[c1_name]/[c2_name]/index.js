@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Drawer, Button } from 'antd'
+import { Drawer, Button, Spin } from 'antd'
 import styles from '@/pages/product/product.module.css'
 import Accordion from '@/components/product/accordion'
 import AsideFilter from '@/components/product/AsideFilter'
@@ -7,6 +7,7 @@ import PaginationComponent from '@/components/common/PaginationComponent'
 import Card from '@/components/product/Card'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import useLoading from '@/hooks/useLoading'
 
 export default function ProductCate2() {
   // 路由相關
@@ -43,7 +44,12 @@ export default function ProductCate2() {
   }, [router.isReady, c1_name, c2_name])
   //   console.log(cateProducts)
   //   console.log(cateProducts.data)
-  console.log(cateName)
+  //   console.log(cateName)
+
+  // 存是否正在載入
+  const [isLoading, setIsLoading] = useLoading(
+    Object.keys(cateProducts).length > 0
+  )
 
   // 分頁相關
   const PageSize = 12
@@ -157,6 +163,7 @@ export default function ProductCate2() {
                 篩選
               </Button>
             </div>
+            {/* 手機版彈出右邊欄 */}
             <Drawer
               title="Basic Drawer"
               placement="right"
@@ -170,7 +177,9 @@ export default function ProductCate2() {
 
             {/* card group  */}
             <div className="d-flex row row-cols-2 row-cols-md-3 g-4 mb-sm-0 mb-4">
-              {cateProducts.data && cateProducts.data.length > 0 ? (
+              {cateProducts.data &&
+              cateProducts.data.length > 0 &&
+              !isLoading ? (
                 cateProducts.data.map((v, i) => (
                   <div className="col" key={i}>
                     <div className="col">
@@ -186,7 +195,11 @@ export default function ProductCate2() {
                   </div>
                 ))
               ) : (
-                <p>商品準備中</p>
+                <div className="m-auto mt-5">
+                  <Spin tip="Loading" size="large">
+                    <div className="content" />
+                  </Spin>
+                </div>
               )}
             </div>
           </div>
@@ -195,12 +208,16 @@ export default function ProductCate2() {
 
       {/* 分頁頁碼 */}
       <div className="m-5">
-        <PaginationComponent
-          currentPage={currentPage}
-          totalItems={totalPageCount}
-          pageSize={PageSize}
-          onPageChange={handlePageChange}
-        ></PaginationComponent>
+        {totalPageCount < PageSize ? (
+          ''
+        ) : (
+          <PaginationComponent
+            currentPage={currentPage}
+            totalItems={totalPageCount}
+            pageSize={PageSize}
+            onPageChange={handlePageChange}
+          ></PaginationComponent>
+        )}
       </div>
     </>
   )

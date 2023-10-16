@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Drawer, Button } from 'antd'
+import { Drawer, Button, Spin } from 'antd'
 import styles from './product.module.css'
 import Accordion from '@/components/product/accordion'
 import AsideFilter from '@/components/product/AsideFilter'
@@ -7,6 +7,7 @@ import PaginationComponent from '@/components/common/PaginationComponent'
 import Card from '@/components/product/Card'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import useLoading from '@/hooks/useLoading'
 
 // 將 title 傳給 app.js
 export async function getStaticProps() {
@@ -45,6 +46,11 @@ export default function ProductIndex() {
   }, [router.isReady])
   //   console.log(cateProducts)
   //   console.log(cateProducts.data)
+
+  // 存是否正在載入
+  const [isLoading, setIsLoading] = useLoading(
+    Object.keys(cateProducts).length > 0
+  )
 
   // 分頁相關
   const PageSize = 12
@@ -160,7 +166,9 @@ export default function ProductIndex() {
 
             {/* card group  */}
             <div className="d-flex row row-cols-2 row-cols-md-3 g-4 mb-sm-0 mb-4">
-              {cateProducts.data && cateProducts.data.length > 0 ? (
+              {cateProducts.data &&
+              cateProducts.data.length > 0 &&
+              !isLoading ? (
                 cateProducts.data.map((v, i) => (
                   <div className="col" key={i}>
                     <div className="col">
@@ -176,7 +184,11 @@ export default function ProductIndex() {
                   </div>
                 ))
               ) : (
-                <p>商品準備中</p>
+                <div className="m-auto mt-5">
+                  <Spin tip="Loading" size="large">
+                    <div className="content" />
+                  </Spin>
+                </div>
               )}
             </div>
           </div>
