@@ -1,4 +1,4 @@
-import { React, useState } from 'react'
+import { React, useState, useEffect } from 'react'
 import style from '@/styles/order.module.scss'
 import UserDropdown from '@/components/user/user-dropdown'
 import PaginationComponent from '@/components/common/PaginationComponent'
@@ -9,13 +9,12 @@ import axios from 'axios'
 export default function OrderList() {
   const { auth, setAuth } = useAuth()
   const userId = auth.user.id
-  console.log(userId)
+  // console.log(userId)
 
   const [data, setData] = useState({})
   const getOrderList = async () => {
     // 设置API的URL
     const apiUrl = 'http://localhost:3005/api/order/' // 将API的URL替换为实际的URL
-    // const userId = { userId: 1 }
     // console.log(userId)
     // 发出POST请求
     await axios
@@ -31,7 +30,19 @@ export default function OrderList() {
         // 在这里处理错误
       })
   }
+  useEffect(() => {
+    getOrderList()
+  }, [])
+
   const orders = [data]
+  // [
+  //   {
+  //     id: 'G023',
+  //     user_id: 1,
+  //     order_date: '2023-06-25 11:54:03',
+  //     status: '已送達'
+  //   }
+  // ]
   // const orders = [
   //   {
   //     id: 1,
