@@ -11,20 +11,25 @@ import useLoading from '@/hooks/useLoading'
 import LoadingPage from '@/components/common/loadingPage'
 import Swal from 'sweetalert2'
 import Image from 'next/image'
+import { useAuth } from '@/hooks/useAuth'
+import Head from 'next/head'
 
 export default function DetailFilter() {
   // 設定路由
+  const { auth } = useAuth()
   const router = useRouter()
   const { isReady, query } = router
   const detail_id = query.detail_id
   console.log(router.query.detail_id)
 
-  const [ArticleContent, setArticleContent] = useState([])
+  const [articleContent, setArticleContent] = useState([])
   const [CountCate, setCountCate] = useState([])
-  const [isLoading, setIsLoading] = useLoading(ArticleContent)
+  const [isLoading, setIsLoading] = useLoading(articleContent)
 
   // const [artComment, setArtComment] = useState([])
   const [comment, setComment] = useState([])
+  const [like, setLike] = useState(false)
+
   // console.log(comment)
   const getComment = async () => {
     await axios
@@ -34,6 +39,14 @@ export default function DetailFilter() {
         console.log(response.data.comments)
         // setArtComment(response.data.comments)
         setComment(response.data.comments)
+      })
+    await axios
+      .get(`http://localhost:3005/api/article/like/${detail_id}`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        // console.log('islike', res)
+        setLike(res.data.is_liked)
       })
   }
   useEffect(() => {
@@ -52,11 +65,12 @@ export default function DetailFilter() {
         console.log(response.data.cates)
         setCountCate(response.data.cates)
       })
+
     getComment()
-  }, [isReady])
+  }, [isReady, auth])
 
   //對應路由 文章篩選
-  const filterArticle = ArticleContent.find((item) => item.id == detail_id)
+  const filterArticle = articleContent.find((item) => item.id == detail_id)
   console.log(filterArticle)
   // console.log(filterArticle.article)
 
@@ -72,8 +86,6 @@ export default function DetailFilter() {
     return []
   }
   // console.log(changeFormat)
-  // 收藏按鈕功能
-  const [like, setLike] = useState(false)
 
   //留言顯示功能
   const [displayItemCount, setDisplayItemCount] = useState(3)
@@ -138,15 +150,106 @@ export default function DetailFilter() {
       })
   }
 
-  //   const [cateCount, setCateCount] = useState(0)
-  //   useEffect(() => {
-  //     const personalCateCount = ArticleFilter.filter(
-  //       (item) => item.cate === '公告'
-  //     )
-  //     setCateCount(personalCateCount)
-  //   }, [])
+  // 收藏按鈕功能
+
+  const handleAddLike = async () => {
+    try {
+      const response = await axios.post(
+        `http://localhost:3005/api/article/like/${detail_id}`,
+        {},
+        { withCredentials: true } // 确保跨域请求时携带凭证信息
+      )
+      console.log('add', response)
+      if (response.data.code === '200') {
+        setLike(true)
+        Swal.fire({
+          icon: 'success',
+          title: '成功收藏文章',
+          showConfirmButton: false,
+          timer: 1500,
+        })
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: '添加失败',
+          showConfirmButton: false,
+          timer: 1500,
+        })
+      }
+    } catch (error) {
+      console.error('Error adding like:', error)
+      Swal.fire({
+        icon: 'error',
+        title: '请先登入再收藏',
+        showConfirmButton: false,
+        timer: 1500,
+      })
+    }
+  }
+  const handleRemoveLike = async () => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:3005/api/article/like/${detail_id}`,
+        { withCredentials: true } // 确保跨域请求时携带凭证信息
+      )
+
+      if (response.data.code === '200') {
+        setLike(false)
+        Swal.fire({
+          icon: 'success',
+          title: '成功移除收藏',
+          showConfirmButton: false,
+          timer: 1500,
+        })
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: '移除失败',
+          showConfirmButton: false,
+          timer: 1500,
+        })
+      }
+    } catch (error) {
+      console.error('Error adding like:', error)
+      Swal.fire({
+        icon: 'error',
+        title: '请先登入再移除',
+        showConfirmButton: false,
+        timer: 1500,
+      })
+    }
+  }
+  const handleLikeButtonClick = async () => {
+    if (!auth.isAuth) {
+      Swal.fire({
+        icon: 'warning',
+        title: '請先登入',
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(() => {
+        router.push('/user/login')
+      })
+      return
+    }
+
+    // 判斷是否已收藏
+    if (like) {
+      // 如果已經收藏，呼叫刪除收藏的函式
+      await handleRemoveLike(detail_id)
+    } else {
+      // 如果尚未收藏，呼叫新增收藏的函式
+      await handleAddLike(detail_id)
+    }
+
+    // 切換按讚狀態
+    // setLike((prevLike) => !prevLike)
+  }
+
   return (
     <>
+      <Head>
+        <title>{filterArticle ? filterArticle.title : '文章'}</title>
+      </Head>
       {/* 手機版分類 */}
       <DetailCat />
 
@@ -166,13 +269,10 @@ export default function DetailFilter() {
                 }}
               >
                 {/* 收藏按鈕 */}
-                <Link
-                  href=""
+                <button
                   // type="button"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    like ? setLike(false) : setLike(true)
-                  }}
+                  onClick={handleLikeButtonClick}
+                  className="btn border-0"
                 >
                   {like ? (
                     <i
@@ -185,7 +285,7 @@ export default function DetailFilter() {
                       style={{ top: '20px', right: '10px' }}
                     ></i>
                   )}
-                </Link>
+                </button>
 
                 {/* 路由對應文章內容 */}
                 {filterArticle ? (
@@ -408,63 +508,65 @@ export default function DetailFilter() {
                 <h4 className="fw-bold">你可能感興趣的文章</h4>
               </div>
               {/* 卡片與map函式 */}
-              {ArticleContent.filter(
-                (item) => parseInt(item.id) >= 24 && parseInt(item.id) <= 28
-              ).map((item, index) => {
-                const parsedImg = JSON.parse(item.img)
+              {articleContent
+                .filter(
+                  (item) => parseInt(item.id) >= 24 && parseInt(item.id) <= 28
+                )
+                .map((item, index) => {
+                  const parsedImg = JSON.parse(item.img)
 
-                return (
-                  <>
-                    <Link
-                      href={`/article/${item.id}`}
-                      className="text-decoration-none"
-                    >
-                      <div
-                        className={`${art_detail_style['interest_card']} row py-2 border-bottom border-2 border-dark`}
-                        key={index}
+                  return (
+                    <>
+                      <Link
+                        href={`/article/${item.id}`}
+                        className="text-decoration-none"
                       >
-                        <div className="col-4 px-0">
-                          <div
-                            style={{
-                              width: '100%',
-                              height: '100%',
-                              overflow: 'hidden',
-                            }}
-                          >
-                            <img
-                              src={`/article/${parsedImg[0]}`}
-                              className="ArticleImg"
-                              alt="..."
+                        <div
+                          className={`${art_detail_style['interest_card']} row py-2 border-bottom border-2 border-dark`}
+                          key={index}
+                        >
+                          <div className="col-4 px-0">
+                            <div
                               style={{
-                                width: '100px',
-                                height: '100px',
-                                objectFit: 'cover',
+                                width: '100%',
+                                height: '100%',
+                                overflow: 'hidden',
                               }}
-                            />
+                            >
+                              <img
+                                src={`/article/${parsedImg[0]}`}
+                                className="ArticleImg"
+                                alt="..."
+                                style={{
+                                  width: '100px',
+                                  height: '100px',
+                                  objectFit: 'cover',
+                                }}
+                              />
+                            </div>
                           </div>
-                        </div>
-                        <div className="col-8">
-                          <div
-                            className="card border-0"
-                            style={{ backgroundColor: 'transparent' }}
-                          >
-                            <div className="card-body">
-                              <h5 className="card-title">
-                                {item.title.length > 14
-                                  ? `${item.title.slice(0, 14)}...`
-                                  : item.title}
-                              </h5>
-                              <p className="card-text text-secondary">
-                                {item.user}
-                              </p>
+                          <div className="col-8">
+                            <div
+                              className="card border-0"
+                              style={{ backgroundColor: 'transparent' }}
+                            >
+                              <div className="card-body">
+                                <h5 className="card-title">
+                                  {item.title.length > 14
+                                    ? `${item.title.slice(0, 14)}...`
+                                    : item.title}
+                                </h5>
+                                <p className="card-text text-secondary">
+                                  {item.user}
+                                </p>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </Link>
-                  </>
-                )
-              })}
+                      </Link>
+                    </>
+                  )
+                })}
             </div>
           </div>
         </div>

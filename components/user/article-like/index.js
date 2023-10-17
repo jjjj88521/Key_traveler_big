@@ -43,7 +43,7 @@ const ArticleLikeItem = ({
   title,
   link,
   handleDeleteLike,
-  pid,
+  aid,
   cate,
 }) => {
   const parsedImg = JSON.parse(image)
@@ -70,7 +70,7 @@ const ArticleLikeItem = ({
         </Tag>
       </td>
       <td className="text-center align-middle">
-        <button className="btn border-0" onClick={() => handleDeleteLike(pid)}>
+        <button className="btn border-0" onClick={() => handleDeleteLike(aid)}>
           <i className="fa-solid fa-trash"></i>
         </button>
       </td>
