@@ -26,13 +26,6 @@ export default function CreditCardForm() {
         console.log('更新發生錯誤')
       })
   }
-  const [cardData, setCardData] = useState({
-    cvc: '',
-    expiry: '',
-    focus: '',
-    name: '',
-    number: '',
-  })
 
   const { auth, setAuth } = useAuth()
   // 重新整理後驗證登入狀態
@@ -47,6 +40,14 @@ export default function CreditCardForm() {
   //     Router.push('/user/login')
   //   }
   // }, [])
+  const [cardData, setCardData] = useState({
+    cvc: '',
+    expiry: '',
+    focus: '',
+    name: `${auth.user.card_name}`,
+    number: `${auth.user.card_number}`,
+  })
+
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setCardData({
