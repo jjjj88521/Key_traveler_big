@@ -37,6 +37,14 @@ export default function ProductCate1() {
         .catch((err) => {
           console.log(err)
         })
+      axios
+        .get(`http://localhost:3005/api/category/${c1_name}`)
+        .then((res) => {
+          setcateName(res.data.name)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
   }, [router.isReady, c1_name])
   //   console.log(cateProducts)

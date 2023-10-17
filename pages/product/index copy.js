@@ -35,6 +35,9 @@ export default function ProductIndex() {
   const [itemTotal, setItemTotal] = useState(0)
   const [items, setItems] = useState([])
 
+  // 儲存從篩選子元件AsideFilter(component)傳值過來
+  //   const [filterProduct, setFilterProduct] = useState(0)
+
   // 路由相關
   const router = useRouter()
 
@@ -45,40 +48,20 @@ export default function ProductIndex() {
         .get(`http://localhost:3005/api/products/qs`)
         .then((res) => {
           setCateProducts(res.data)
+          //   setFilterProduct(res.data)
         })
         .catch((err) => {
           console.log(err)
         })
-
-      // 從router.query得到所有查詢字串參數
-      const { page, keyword, cat_ids, orderby, perpage, price_range } =
-        router.query
-      console.log(router.query)
-
-      // 設定回所有狀態(注意資料類型，所有從查詢字串來都是字串類型)
-      //   setPage(Number(page) || 1)
-      //   setKeyword(keyword || '')
-      //   setCatIds(cat_ids ? cat_ids.split(',').map((v) => Number(v)) : [])
-      //   setOrderby(orderby || 'id,asc')
-      //   setPerpage(Number(perpage) || 10)
-      setPriceRange(
-        price_range
-          ? {
-              min: Number(price_range.split(',')[0]),
-              max: Number(price_range.split(',')[1]),
-            }
-          : {
-              min: 10,
-              max: 30000,
-            }
-      )
-
-      // 載入資料
-      getProductsQs(router.query)
     }
   }, [router.isReady])
   //   console.log(cateProducts)
   //   console.log(cateProducts.data)
+
+  //   useEffect(() => {
+  //     setCateProducts(filterProduct)
+  //   }, [filterProduct])
+  // console.log(filterProduct)
 
   // 存是否正在載入
   const [isLoading, setIsLoading] = useLoading(
@@ -112,16 +95,48 @@ export default function ProductIndex() {
     // 用URLSearchParams產生查詢字串
     const searchParams = new URLSearchParams(params)
     const url = `http://localhost:3005/api/products/qs?${searchParams.toString()}`
-
     const res = await axios.get(url)
 
-    if (Array.isArray(res.data.data)) {
-      // 設定獲取頁數總合
-      setItemTotal(res.data.total)
-      // 設定獲取項目
-      setItems(res.data.data)
-    }
+    // if (Array.isArray(res.data.data)) {
+    //   // 設定獲取頁數總合
+    //   setItemTotal(res.data.total)
+    //   // 設定獲取項目
+    //   setItems(res.data)
+    //   //   console.log('res.data這是啥', res.data)
+    //   setFilterProduct(items)
+    // }
   }
+
+  useEffect(() => {
+    if (router.isReady) {
+      // 從router.query得到所有查詢字串參數
+      const { page, keyword, cat_ids, orderby, perpage, price_range } =
+        router.query
+
+      //   console.log(router.query)
+
+      // 設定回所有狀態(注意資料類型，所有從查詢字串來都是字串類型)
+      //   setPage(Number(page) || 1)
+      //   setKeyword(keyword || '')
+      //   setCatIds(cat_ids ? cat_ids.split(',').map((v) => Number(v)) : [])
+      //   setOrderby(orderby || 'id,asc')
+      //   setPerpage(Number(perpage) || 10)
+      setPriceRange(
+        price_range
+          ? {
+              min: Number(price_range.split(',')[0]),
+              max: Number(price_range.split(',')[1]),
+            }
+          : {
+              min: 10,
+              max: 30000,
+            }
+      )
+
+      // 載入資料
+      getProductsQs(router.query)
+    }
+  }, [router.query])
 
   // Drawer相關
   const [open, setOpen] = useState(false)
@@ -148,6 +163,10 @@ export default function ProductIndex() {
           <div className="d-none d-sm-block col-12 col-sm-3 pe-md-5 pe-1">
             <Accordion />
             <hr className="text-primary opacity-100"></hr>
+            {/* <AsideFilter
+              filterProduct={filterProduct}
+              setFilterProduct={setFilterProduct}
+            /> */}
             {/* AsideFilter，篩選 */}
             <div className="p-4 pt-0">
               <div className="mb-2 fs-5">
@@ -224,6 +243,7 @@ export default function ProductIndex() {
                       query: params,
                     })
                     getProductsQs(params)
+                    console.log(priceRange)
                   }}
                 >
                   套用
