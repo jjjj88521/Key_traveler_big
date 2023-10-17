@@ -18,6 +18,9 @@ export async function getStaticProps() {
 }
 
 export default function ProductIndex() {
+  // 從篩選子元件AsideFilter(component)傳值過來
+  const [filterProduct, setFilterProduct] = useState(0)
+
   // Drawer相關
   const [open, setOpen] = useState(false)
   const showDrawer = () => {
@@ -37,7 +40,7 @@ export default function ProductIndex() {
         .get(`http://localhost:3005/api/products/qs`)
         .then((res) => {
           setCateProducts(res.data)
-          console.log(res.data)
+          setFilterProduct(res.data)
         })
         .catch((err) => {
           console.log(err)
@@ -46,6 +49,11 @@ export default function ProductIndex() {
   }, [router.isReady])
   //   console.log(cateProducts)
   //   console.log(cateProducts.data)
+
+  useEffect(() => {
+    setCateProducts(filterProduct)
+  }, [filterProduct])
+  // console.log(filterProduct)
 
   // 存是否正在載入
   const [isLoading, setIsLoading] = useLoading(
@@ -71,6 +79,7 @@ export default function ProductIndex() {
 
   return (
     <>
+      {/* <h1>{JSON.stringify(filterProduct)}</h1> */}
       <div className={styles.banner}>
         <div className="w-100 h-100 p-4 p-sm-0">
           <img
@@ -86,12 +95,15 @@ export default function ProductIndex() {
           <div className="d-none d-sm-block col-12 col-sm-3 pe-md-5 pe-1">
             <Accordion />
             <hr className="text-primary opacity-100"></hr>
-            <AsideFilter />
+            <AsideFilter
+              filterProduct={filterProduct}
+              setFilterProduct={setFilterProduct}
+            />
           </div>
 
-          {/* sort btn & card group */}
+          {/* 排序 & card group */}
           <div className="col-12 col-sm-9">
-            {/* sort btn */}
+            {/* 排序dropdown */}
             <div className="d-sm-flex d-none justify-content-end align-items-center mb-3">
               <div className={`bg-primary-subtle ${styles['sortBtn']}`}>
                 <p className="fs-6">排序</p>

@@ -1,16 +1,12 @@
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 
-export default function AsideFilter() {
+export default function AsideFilter({ setFilterProduct }) {
   // 各選項的state
   const [keyword, setKeyword] = useState('')
-  const [catIds, setCatIds] = useState([]) // 數字陣列
-  const [tags, setTags] = useState([]) // 數字陣列
-  const [colors, setColors] = useState([]) // 數字陣列
-  const [sizes, setSizes] = useState([]) // 數字陣列
-  const [priceRange, setPriceRange] = useState({ min: 1500, max: 10000 }) //數字物件
+  const [catIds, setCatIds] = useState([])
+  const [priceRange, setPriceRange] = useState({ min: 10, max: 30000 }) //數字物件
 
   // 排序(前面為排序欄位，後面參數asc為從小到大，desc為從大到小排序)
   const [orderby, setOrderby] = useState('id,asc')
@@ -23,9 +19,6 @@ export default function AsideFilter() {
   const [itemTotal, setItemTotal] = useState(0)
   const [items, setItems] = useState([])
 
-  // 載入指示動畫用
-  const [loading, setLoading] = useState(false)
-
   const getProductsQs = async (params, toFirstPage = false) => {
     // 跳至第一頁
     // 當重新過濾或重置選項，因重新載入資料需要跳至第一頁
@@ -33,32 +26,57 @@ export default function AsideFilter() {
       setPage(1)
     }
 
-    // 要送至伺服器的query string參數
-    // const params = {
-    //   page: toFirstPage ? 1 : page, // 跳至第一頁
-    //   keyword,
-    //   cat_ids: catIds.join(','),
-    //   tags,
-    //   colors,
-    //   sizes,
-    //   orderby,
-    //   perpage,
-    //   price_range: Object.values(priceRange).join(','),
-    // }
-
     // 用URLSearchParams產生查詢字串
     const searchParams = new URLSearchParams(params)
     const url = `http://localhost:3005/api/products/qs?${searchParams.toString()}`
-
     const res = await axios.get(url)
 
     if (Array.isArray(res.data.data)) {
       // 設定獲取頁數總合
       setItemTotal(res.data.total)
       // 設定獲取項目
-      setItems(res.data.data)
+      setItems(res.data)
+      //   console.log('res.data這是啥', res.data)
+      setFilterProduct(items)
     }
   }
+  const router = useRouter()
+
+  useEffect(() => {
+    if (router.isReady) {
+      // 從router.query得到所有查詢字串參數
+      const { page, keyword, cat_ids, orderby, perpage, price_range } =
+        router.query
+
+      //   console.log(router.query)
+
+      // 設定回所有狀態(注意資料類型，所有從查詢字串來都是字串類型)
+      setPage(Number(page) || 1)
+      setKeyword(keyword || '')
+      setCatIds(cat_ids ? cat_ids.split(',').map((v) => Number(v)) : [])
+      setOrderby(orderby || 'id,asc')
+      setPerpage(Number(perpage) || 10)
+      setPriceRange(
+        price_range
+          ? {
+              min: Number(price_range.split(',')[0]),
+              max: Number(price_range.split(',')[1]),
+            }
+          : {
+              min: 10,
+              max: 30000,
+            }
+      )
+
+      // 載入指示動畫
+      //   setLoading(true)
+      // 載入資料
+      getProductsQs(router.query)
+    }
+
+    // 下面省略eslint多餘檢查
+    // eslint-disable-next-line
+  }, [router.query])
 
   return (
     <>
@@ -87,17 +105,50 @@ export default function AsideFilter() {
           </div>
           <hr className="opacity-75"></hr>
           <div className="mb-2 fs-5">
-            <i className="fa-solid fa-dollar-sign"></i> 價錢篩選
+            <i className="fa-solid fa-dollar-sign"></i> 價錢範圍
           </div>
           <div className="mb-3 d-flex justify-content-center align-items-center">
-            <input type="number" className="col-5" min="0"></input>
+            <input
+              type="number"
+              className="col-5"
+              min="0"
+              value={priceRange.min}
+              onChange={(e) => {
+                setPriceRange({ ...priceRange, min: Number(e.target.value) })
+              }}
+            ></input>
             <div className="col-2 fs-4 d-flex justify-content-center">~</div>
-            <input type="number" className="col-5" min="0"></input>
+            <input
+              type="number"
+              className="col-5"
+              min="0"
+              value={priceRange.max}
+              onChange={(e) => {
+                setPriceRange({ ...priceRange, max: Number(e.target.value) })
+              }}
+            ></input>
           </div>
           <button
             type="button"
             className="btn btn-primary"
             style={{ width: '60%', margin: 'auto' }}
+            onClick={() => {
+              const params = {
+                page: 1, // 跳至第一頁
+                keyword,
+                cat_ids: catIds.join(','),
+                orderby,
+                perpage,
+                price_range: Object.values(priceRange).join(','),
+              }
+
+              router.push({
+                pathname: router.pathname,
+                query: params,
+              })
+              getProductsQs(params)
+              console.log(priceRange)
+            }}
           >
             套用
           </button>
