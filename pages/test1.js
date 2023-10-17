@@ -5,13 +5,18 @@ import UserAvatar from '@/components/user/user-avatar'
 import UserAvatarMobile from '@/components/user/user-avatar-mobile'
 import UserLayout from '@/components/layout/user-layout'
 import axios from 'axios'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function Profile() {
+  const { auth, setAuth } = useAuth()
+  const id = auth.user.id
+  console.log(id)
   const [data, setData] = useState({})
   const getList = async () => {
     // 设置API的URL
-    const apiUrl = 'http://localhost:3005/api/test1/userId' // 将API的URL替换为实际的URL
-    const userId = { userId: 1 }
+    const apiUrl = 'http://localhost:3005/api/test1' // 将API的URL替换为实际的URL
+    const userId = { userId: id }
+    console.log(userId)
     // 发出GET请求
     await axios
       .post(apiUrl, userId)

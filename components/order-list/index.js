@@ -8,33 +8,92 @@ import axios from 'axios'
 
 export default function OrderList() {
   const { auth, setAuth } = useAuth()
-  const userId = auth.user.id
-  // console.log(userId)
+  const id = auth.user.id
+  console.log(id)
 
-  const [data, setData] = useState({})
+  const [orderData, setOrderData] = useState([])
+  const [groupOrderData, setGroupOrderData] = useState([])
+  const [rentOrderData, setRentOrderData] = useState([])
+
   const getOrderList = async () => {
+    // 設置API的URL
+    const apiUrl = 'http://localhost:3005/api/order/user_order' // 將API的URL替換為實際的URL
+    const userId = { userId: id }
+    console.log(userId)
+    // 發出POST請求
+    await axios
+      .post(apiUrl, userId)
+      .then((res) => {
+        console.log('成功獲取數據：', res.data)
+        console.log(res)
+        setOrderData(res.data.data)
+        // 在這裡處理從API返回的數據
+        console.log(res.data)
+        console.log(res.data.data)
+      })
+      .catch((error) => {
+        console.error('獲取數據時出錯：', error)
+        // 在這裡處理錯誤
+      })
+  }
+  const getGroupOrderList = async () => {
     // 设置API的URL
-    const apiUrl = 'http://localhost:3005/api/order/' // 将API的URL替换为实际的URL
-    // console.log(userId)
+    const apiUrl = 'http://localhost:3005/api/order/group_order' // 将API的URL替换为实际的URL
+    const userId = { userId: id }
+    console.log(userId)
     // 发出POST请求
     await axios
       .post(apiUrl, userId)
       .then((res) => {
         console.log('成功获取数据：', res.data)
-        setData(res.data)
+        console.log(res)
+        setGroupOrderData(res.data.data)
         // 在这里处理从API返回的数据
         console.log(res.data)
+        console.log(res.data.data)
       })
       .catch((error) => {
         console.error('获取数据时出错：', error)
         // 在这里处理错误
       })
   }
+  const getRentOrderList = async () => {
+    // 設置API的URL
+    const apiUrl = 'http://localhost:3005/api/order/rent_order' // 将API的URL替换为实际的URL
+    const userId = { userId: id }
+    console.log(userId)
+    // 發出POST請求
+    await axios
+      .post(apiUrl, userId)
+      .then((res) => {
+        console.log('成功獲取數據：', res.data)
+        console.log(res)
+        setRentOrderData(res.data.data)
+        // 在這裡處理從API返回的數據
+        console.log(res.data)
+        console.log(res.data.data)
+      })
+      .catch((error) => {
+        console.error('獲取數據時出錯：', error)
+        // 在這裡處理錯誤
+      })
+  }
   useEffect(() => {
     getOrderList()
-  }, [])
+    getGroupOrderList()
+    getRentOrderList()
+  }, [auth])
 
-  const orders = [data]
+  // 將三個數據合併到一個數組中，並添加一個"type"字段來區分它們
+  const allOrders = [
+    ...orderData.map((order) => ({ ...order, type: 'user_order' })),
+    ...groupOrderData.map((order) => ({ ...order, type: 'group_order' })),
+    ...rentOrderData.map((order) => ({ ...order, type: 'rent_order' })),
+  ]
+
+  // 根據order_date字段降序排序
+  allOrders.sort((a, b) => new Date(b.order_date) - new Date(a.order_date))
+
   // [
   //   {
   //     id: 'G023',
@@ -45,34 +104,35 @@ export default function OrderList() {
   // ]
   // const orders = [
   //   {
-  //     id: 1,
-  //     orderId: 'P00001',
-  //     date: '2023-08-15',
-  //     totalPrice: 1800,
+  //     id: 'P001',
+  //     user_id: 1,
+  //     order_date: '2023-08-15',
+  //     status: '已送達',
   //   },
   //   {
-  //     id: 2,
-  //     orderId: 'G00002',
-  //     date: '2023-08-16',
-  //     totalPrice: 800,
+  //     id: 'G002',
+  //     user_id: 2,
+  //     order_date: '2023-08-16',
+  //     status: '已取貨',
   //   },
   //   {
-  //     id: 3,
-  //     orderId: 'R00003',
-  //     date: '2023-08-17',
-  //     totalPrice: 1000,
+  //     id: 'R003',
+  //     user_id: 3,
+  //     order_date: '2023-08-17',
+  //     status: '配送中',
   //   },
   // ]
+
   const [selectedFilter, setSelectedFilter] = useState('全部')
 
-  const filteredOrders = orders.filter((v) => {
+  const filteredOrders = allOrders.filter((v) => {
     if (selectedFilter === '全部') {
       // 顯示所有訂單
       return true
     } else {
       const filterKey =
         selectedFilter === '一般' ? 'P' : selectedFilter === '團購' ? 'G' : 'R'
-      return v.orderId.startsWith(filterKey)
+      return v.id.startsWith(filterKey)
     }
   })
   const handleFilterChange = (value) => {
@@ -82,7 +142,7 @@ export default function OrderList() {
 
   const [currentPage, setCurrentPage] = useState(1)
   // 每頁顯示的項目數量
-  const pageSize = 2
+  const pageSize = 3
 
   // 處理頁碼變更事件
   const handlePageChange = (page) => {
@@ -97,14 +157,14 @@ export default function OrderList() {
   const currentOrders = filteredOrders.slice(startIndex, endIndex)
 
   // 依篩選出的訂單數量標示序號
-  const calculateOrderNumber = () => {
-    let count = 0
-    return () => {
-      count++
-      return count
-    }
-  }
-  const getOrderNumber = calculateOrderNumber()
+  // const calculateOrderNumber = () => {
+  //   let count = 0
+  //   return () => {
+  //     count++
+  //     return count
+  //   }
+  // }
+  // const getOrderNumber = calculateOrderNumber()
   return (
     <>
       <div className="container">
@@ -193,23 +253,23 @@ export default function OrderList() {
             <table className={`table d-none d-sm-table`}>
               <thead className="">
                 <tr className="">
-                  <th className="bg-primary"></th>
+                  {/* <th className="bg-primary"></th> */}
                   <th className="bg-primary text-white ps-5">訂單編號</th>
                   <th className="bg-primary text-white ps-5">訂單日期</th>
-                  <th className="bg-primary text-white ps-5">訂單金額</th>
+                  <th className="bg-primary text-white ps-5">訂單狀態</th>
                   <th className="bg-primary text-white"></th>
                 </tr>
               </thead>
               <tbody>
                 {currentOrders.map((v, i) => (
-                  <tr className="" key={v.id}>
-                    <td className="text-center">{i + 1}</td>
-                    <td className="ps-5">{v.orderId}</td>
-                    <td className="ps-5">{v.date}</td>
-                    <td className="ps-5">{v.totalPrice}</td>
+                  <tr className="" key={i}>
+                    {/* <td className="text-center">{i + 1}</td> */}
+                    <td className="ps-5">{v.id}</td>
+                    <td className="ps-5">{v.order_date}</td>
+                    <td className="ps-5">{v.status}</td>
                     <td className="ps-5">
                       <Link
-                        href={`http://localhost:3000/user/order/${v.orderId}`}
+                        href={`http://localhost:3000/user/order/${v.id}`}
                         className="btn btn-primary text-light"
                       >
                         查看
@@ -225,30 +285,30 @@ export default function OrderList() {
             {currentOrders.map((v, i) => (
               <table
                 className={`table table-bordered d-table d-sm-none`}
-                key={v.id}
+                key={i}
               >
                 <tbody>
-                  <tr>
+                  {/* <tr>
                     <th className="ps-3">{i + 1}</th>
                     <td></td>
-                  </tr>
+                  </tr> */}
                   <tr>
                     <th>訂單編號</th>
-                    <td>{v.orderId}</td>
+                    <td>{v.id}</td>
                   </tr>
                   <tr>
                     <th>訂單日期</th>
-                    <td>{v.date}</td>
+                    <td>{v.order_date}</td>
                   </tr>
                   <tr>
-                    <th>訂單金額</th>
-                    <td>{v.totalPrice}</td>
+                    <th>訂單狀態</th>
+                    <td>{v.status}</td>
                   </tr>
                   <tr>
                     <td className="text-center" colSpan={2}>
                       <Link
                         className="btn btn-primary text-light"
-                        href={`http://localhost:3000/user/order/${v.orderId}`}
+                        href={`http://localhost:3000/user/order/${v.id}`}
                       >
                         查看
                       </Link>
