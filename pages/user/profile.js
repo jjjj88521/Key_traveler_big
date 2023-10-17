@@ -9,8 +9,12 @@ export default function Profile() {
     <>
       <UserLayout title={'個人資料'}>
         {/* 手機板的avator */}
-        <UserAvatarMobile />
-        <div className="d-flex">
+        <div className=" d-block d-sm-none">
+          <UserAvatarMobile />
+          <ProfileForm />
+        </div>
+
+        <div className="d-sm-flex d-none">
           {/* form表單 */}
           <ProfileForm />
           {/* 電腦版的avator */}

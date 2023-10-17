@@ -27,13 +27,22 @@ const UploadAvatar = () => {
         console.log('更新發生錯誤')
       })
   }
-
+  //判斷大頭貼是從google 來的還是從資料庫來的
+  let picture = ''
+  if (auth.user.avatar === null) {
+    picture = auth.user.photo_url
+    console.log('SSSS')
+    console.log(picture)
+  } else {
+    picture = `http://localhost:3005/${auth.user.avatar}`
+  }
+  //判斷大頭貼是從google 來的還是從資料庫來的
   const [fileList, setFileList] = useState([
     {
       uid: '1',
       name: 'file-1.jpg',
       status: 'done',
-      url: `http://localhost:3005/${auth.user.avatar}`, // 之前上传的文件的URL
+      url: `${picture}`, // 之前上传的文件的URL
     },
   ])
   const uploadApi = async () => {
@@ -90,7 +99,7 @@ const UploadAvatar = () => {
         uid: '1',
         name: 'file-1.jpg',
         status: 'done',
-        url: `http://localhost:3005/${auth.user.avatar}`, // 之前上传的文件的URL
+        url: `${picture}`, // 之前上传的文件的URL
       },
     ])
   }, [auth])
@@ -102,7 +111,7 @@ const UploadAvatar = () => {
           uid: '1',
           name: 'file-1.jpg',
           status: 'done',
-          url: `http://localhost:3005/${auth.user.avatar}`,
+          url: `${picture}`,
         },
       ])
     }
@@ -123,54 +132,69 @@ const UploadAvatar = () => {
   return (
     <>
       {/* d-flex flex-sm-column gap-3 justify-content-center */}
-      <div className="align-self-center">
-        {' '}
-        <ImgCrop rotationSlider cropShape="round" className="">
-          <Upload
-            name="avatar"
-            action="http://localhost:3005/api/users/upload"
-            method="post"
-            listType="picture-circle"
-            thumbUrl={'http://localhost:3005/4d689ecd80f51e8ddc9fcda8b6eef8e3'}
-            withCredentials={true}
-            fileList={fileList}
-            onChange={onChange}
-            maxCount={1}
-            // onRemove={() => {
-            //   // setData({
-            //   //   ...auth.user,
-            //   //   avatar: '',
-            //   // })
-            // }}
-            beforeUpload={(file) => {
-              // 清除之前的文件，只保留当前上传的文件
-              setFileList([file])
-              return false // 阻止默认上传行为
-            }}
-            onPreview={onPreview}
-          >
-            {fileList.length === 1 ? null : '+ Upload'}
-          </Upload>
-        </ImgCrop>
-      </div>
+      <div className="flex-sm-column d-flex justify-content-sm-start justify-content-evenly">
+        <div className="align-self-center ">
+          {' '}
+          <ImgCrop rotationSlider cropShape="round" className="">
+            <Upload
+              name="avatar"
+              action="http://localhost:3005/api/users/upload"
+              method="post"
+              listType="picture-circle"
+              withCredentials={true}
+              fileList={fileList}
+              onChange={onChange}
+              maxCount={1}
+              // onRemove={() => {
+              //   // setData({
+              //   //   ...auth.user,
+              //   //   avatar: '',
+              //   // })
+              // }}
+              beforeUpload={(file) => {
+                // 清除之前的文件，只保留当前上传的文件
+                setFileList([file])
+                return false // 阻止默认上传行为
+              }}
+              onPreview={onPreview}
+            >
+              {fileList.length === 1 ? null : '+ Upload'}
+            </Upload>
+          </ImgCrop>
+        </div>
 
-      <button
-        onClick={() => {
-          uploadApi()
-          Swal.fire({
-            icon: 'success',
-            title: '圖片上傳成功',
-            showConfirmButton: false,
-            timer: 1500,
-          })
-        }}
-        className="btn btn-primary py-1 mt-3 "
-      >
-        上傳
-      </button>
-      <div className="text-group align-self-center my-3">
-        <p className="ps-3 mb-0 align-self-start text-black-50">檔案大小1MB</p>
-        <p className="ps-3 align-self-start text-black-50">檔案限制: JPEG</p>
+        <button
+          onClick={() => {
+            uploadApi()
+            Swal.fire({
+              icon: 'success',
+              title: '圖片上傳成功',
+              showConfirmButton: false,
+              timer: 1500,
+            })
+          }}
+          className="btn btn-primary py-sm-1 mt-sm-3 d-sm-block d-none"
+        >
+          上傳
+        </button>
+        <div className="text-group align-self-center my-3">
+          <button
+            onClick={() => {
+              uploadApi()
+              Swal.fire({
+                icon: 'success',
+                title: '圖片上傳成功',
+                showConfirmButton: false,
+                timer: 1500,
+              })
+            }}
+            className="btn btn-primary py-sm-1 mt-sm-3 d-sm-none d-block mb-3"
+          >
+            上傳
+          </button>
+          <p className="mb-0 align-self-start text-black-50">檔案大小1MB</p>
+          <p className=" align-self-start text-black-50">檔案限制: JPEG</p>
+        </div>
       </div>
     </>
   )
