@@ -54,8 +54,8 @@ export default function ReviewTab() {
   const [isloading, setIsLoading] = useLoading(commentData)
   // 取得商品評論資料
   const getComment = async (pid, ...qs) => {
-    const [star, page] = qs
-    const comment = await fetchProductComment(pid, star, page)
+    const [star, page, orderby] = qs
+    const comment = await fetchProductComment(pid, star, page, orderby)
     setCommentData(comment)
   }
 
@@ -69,6 +69,8 @@ export default function ReviewTab() {
 
   // 當前頁數
   const [currentPage, setCurrentPage] = useState(1)
+  // 排序
+  const [orderBy, setOrderBy] = useState('created_time,desc')
   // 每頁顯示的項目數量
   const pageSize = 5
 
@@ -98,7 +100,20 @@ export default function ReviewTab() {
   const handleDisplayedData = () => {
     getComment(pid, starSelected[0].value === 6 ? null : starSelected[0].value)
     setIsLoading(true)
-    setCurrentPage(currentPage)
+    setCurrentPage(1)
+    setOrderBy('created_time,desc')
+  }
+
+  const handleOrderBy = (value) => {
+    getComment(
+      pid,
+      starSelected[0].value === 6 ? null : starSelected[0].value,
+      1,
+      value
+    )
+    setIsLoading(true)
+    setCurrentPage(1)
+    setOrderBy(value)
   }
 
   useEffect(() => {
@@ -202,16 +217,18 @@ export default function ReviewTab() {
               {/* 排序 */}
               <Select
                 className="fw-bold"
+                value={orderBy}
                 options={[
                   {
                     label: '最新',
-                    value: 'desc',
+                    value: 'created_time,desc',
                   },
                   {
                     label: '最舊',
-                    value: 'asc',
+                    value: 'created_time,asc',
                   },
                 ]}
+                onSelect={handleOrderBy}
               />
             </div>
             {/* 評論列表 */}

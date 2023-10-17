@@ -18,14 +18,11 @@ export default function TabContainer({ children, pdCate }) {
 
   // 使用 productDataContext 取得商品資料
   const { productData } = useProductData()
-  console.log(productData.spec)
   let { feature = '', feature_img: featureImgs, specTable } = productData
-  featureImgs =
-    Object.keys(productData).length > 0
-      ? JSON.parse(productData.feature_img)
-      : []
-  specTable =
-    Object.keys(productData).length > 0 ? JSON.parse(productData.spec) : []
+  featureImgs = productData.feature_img
+    ? JSON.parse(productData.feature_img)
+    : []
+  specTable = productData.spec > 0 ? JSON.parse(productData.spec) : []
 
   // useEffect(() => {
   //   if (canScroll) {

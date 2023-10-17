@@ -5,7 +5,7 @@ import { Empty, Tag } from 'antd'
 
 const ProductLikeContainer = ({ children }) => {
   return (
-    <div style={{ minHeight: '700px' }}>
+    <div style={{ minHeight: '650px' }}>
       {children && children.length > 0 ? (
         <table className="table table-hover">
           <thead>

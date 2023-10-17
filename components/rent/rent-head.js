@@ -19,22 +19,20 @@ import {
 } from '@/components/product/product-head/pd-btns'
 
 import dayjs from 'dayjs'
-import { DatePicker } from 'antd'
+import { DatePicker, Select } from 'antd'
 import { CaretRightOutlined } from '@ant-design/icons'
+import { useProductData } from '@/context/use-product'
+import useMobile from '@/hooks/useMobile'
 
-export default function RentHead({
-  name,
-  brand,
-  price,
-  images,
-  isLiked = false,
-  StyleSelectItems,
-}) {
+export default function RentHead() {
+  const [isMobile] = useMobile()
+  const { productData, isLiked, setIsLiked } = useProductData()
+  const { name, brand, price, images, style_select } = productData
   // 使用樣式選擇 hook
-  const initStyleSelect = StyleSelectItems
-    ? Object.keys(StyleSelectItems).map((key) => ({
+  const initStyleSelect = style_select
+    ? Object.keys(style_select).map((key) => ({
         key,
-        value: StyleSelectItems[key][0], // 預設為第一個
+        value: style_select[key][0], // 預設為第一個
       }))
     : []
   const [selectedStyles, handleStyleSelect] = useStyleSelect(initStyleSelect)
@@ -80,14 +78,39 @@ export default function RentHead({
               <PdPrice price={price} />
             </PdInfoBox>
             {/* 產品樣式選擇 */}
-            {StyleSelectItems &&
-              Object.keys(StyleSelectItems).map((key, index) => (
-                <StyleSelect key={key} title={key} onSelect={handleStyleSelect}>
-                  {StyleSelectItems[key].map((value, index) => (
-                    <Item key={key + index}>{value}</Item>
-                  ))}
-                </StyleSelect>
-              ))}
+            {style_select &&
+              Object.keys(style_select).map((key, index) =>
+                isMobile ? (
+                  <div
+                    key={key}
+                    className="d-flex align-items-center flex-column"
+                  >
+                    <h5 className="text-secondary">{key}</h5>
+                    <Select
+                      className="w-100"
+                      defaultValue={selectedStyles[index].value}
+                      options={style_select[key].map((item, index) => ({
+                        key: index,
+                        label: item,
+                        value: item,
+                      }))}
+                      onSelect={(value) => handleStyleSelect(key, value)}
+                      size={'large'}
+                    />
+                  </div>
+                ) : (
+                  <StyleSelect
+                    key={key}
+                    title={key}
+                    onSelect={handleStyleSelect}
+                    selectedValue={selectedStyles[index].value}
+                  >
+                    {style_select[key].map((value, index) => (
+                      <Item key={index}>{value}</Item>
+                    ))}
+                  </StyleSelect>
+                )
+              )}
             {/* 數量選擇，輸入框，有加減數量按鈕 */}
             <PdNumInput />
             <div

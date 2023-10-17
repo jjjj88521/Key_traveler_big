@@ -33,6 +33,19 @@ const fetchGB = async (pid) => {
   }
 }
 
+const fetchRT = async (pid) => {
+  try {
+    const response = await axios.get(`http://localhost:3005/api/rent/${pid}`)
+    if (response.status !== 200) {
+      throw new Error('發生錯誤')
+    }
+    return response.data
+  } catch (error) {
+    // 處理其他錯誤
+    console.error('發生錯誤:', error)
+  }
+}
+
 // 取得該商品的你可能會喜歡的商品
 const fetchMaybeLike = async (pid) => {
   try {
@@ -52,10 +65,10 @@ const fetchMaybeLike = async (pid) => {
 
 // 取得單一商品評論資料
 const fetchProductComment = async (pid, ...qs) => {
-  const [star, page] = qs
+  const [star, page, orderby] = qs
   const url = `http://localhost:3005/api/comment/product/${pid}`
   try {
-    const response = await axios.get(url, { params: { page, star } })
+    const response = await axios.get(url, { params: { page, star, orderby } })
     if (response.status !== 200) {
       throw new Error('發生錯誤')
     }
@@ -143,7 +156,7 @@ const fetchProductLikeList = async (currentPage, cate, orderby) => {
   const queryParams = {
     page: currentPage,
     ...(cate ? { cate } : {}), // 如果 cate 存在，則新增 cate 到物件中
-    ...(orderby ? { orderby: orderby.join(',') } : {}), // 如果 orderby 存在，則新增 orderby 到物件中
+    ...(orderby ? { orderby } : {}), // 如果 orderby 存在，則新增 orderby 到物件中
   }
   try {
     const response = await axios.get(
@@ -154,7 +167,7 @@ const fetchProductLikeList = async (currentPage, cate, orderby) => {
       }
     )
     if (response.status === 200) {
-      console.log(response.data)
+      // console.log(response.data)
       return response.data
     }
   } catch (error) {
@@ -165,6 +178,7 @@ const fetchProductLikeList = async (currentPage, cate, orderby) => {
 export {
   fetchProduct,
   fetchGB,
+  fetchRT,
   fetchProductComment,
   fetchProductLike,
   addProductLike,

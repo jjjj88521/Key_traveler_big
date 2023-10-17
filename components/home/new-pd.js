@@ -32,7 +32,7 @@ export default function NewPd() {
                     title={product.name}
                     brand={product.brand}
                     price={product.price}
-                    image={images[0]}
+                    image={`/images/product/${images[0]}`}
                     link={`/product/${product.category_1}/${product.category_2}/${product.id}`}
                     stock={product.stock}
                   />

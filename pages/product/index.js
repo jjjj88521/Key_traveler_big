@@ -143,7 +143,7 @@ export default function ProductIndex() {
                 <i
                   class="fa-solid fa-sliders"
                   style={{ marginRight: '10px' }}
-                ></i>{' '}
+                ></i>
                 篩選
               </Button>
             </div>
@@ -168,7 +168,11 @@ export default function ProductIndex() {
                         title={v.name}
                         brand={v.brand}
                         price={v.price}
-                        image={v.images ? JSON.parse(v.images)[0] : null}
+                        image={
+                          v.images
+                            ? `/images/product/${JSON.parse(v.images)[0]}`
+                            : null
+                        }
                         stock={v.stock}
                         link={`/product/${v.category_1}/${v.category_2}/${v.id}`}
                       />

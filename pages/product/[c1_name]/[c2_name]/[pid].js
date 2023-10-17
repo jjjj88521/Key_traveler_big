@@ -155,6 +155,15 @@ export default function ProductDetail() {
               </div>
             </div>
           </section>
+
+          {/* 商品詳細 tab 切換資訊、規格表、評論 */}
+          <TabContainer pdCate={'product'}>
+            <TabButton tabName="intro">商品介紹</TabButton>
+            <TabButton tabName="spec">商品規格</TabButton>
+            <TabButton tabName="review">
+              商品評價[{commentCount.total}]
+            </TabButton>
+          </TabContainer>
           {/* 瀏覽過商品 */}
           <section className="">
             <div className="container border-top border-2 py-5">
@@ -192,14 +201,6 @@ export default function ProductDetail() {
               </div>
             </div>
           </section>
-          {/* 商品詳細 tab 切換資訊、規格表、評論 */}
-          <TabContainer pdCate={'product'}>
-            <TabButton tabName="intro">商品介紹</TabButton>
-            <TabButton tabName="spec">商品規格</TabButton>
-            <TabButton tabName="review">
-              商品評價[{commentCount.total}]
-            </TabButton>
-          </TabContainer>
         </>
       )}
     </>

@@ -25,7 +25,7 @@ const CateSelect = () => {
           </h5>
         </div>
         <Swiper
-          spaceBetween={20}
+          spaceBetween={40}
           keyboard={true}
           className={`h-100 position-relative ${style['swiper']}`}
           slidesPerView={1.5}
@@ -70,14 +70,14 @@ const CateSelect = () => {
           <SwiperSlide>
             <CateCard
               name={'成品鍵盤'}
-              img={'/images/home-cate/cate1.png'}
+              img={'/images/home-cate/cate4.png'}
               link={'/product/4'}
             />
           </SwiperSlide>
           <SwiperSlide>
             <CateCard
               name={'鍵盤零件 & 工具'}
-              img={'/images/home-cate/cate1.png'}
+              img={'/images/home-cate/cate5.png'}
               link={'/product/5'}
             />
           </SwiperSlide>

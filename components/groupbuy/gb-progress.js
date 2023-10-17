@@ -3,17 +3,16 @@ import { Progress } from 'antd'
 import { FieldTimeOutlined, UserOutlined } from '@ant-design/icons'
 import { useProductData } from '@/context/use-product'
 import dayjs from 'dayjs'
+import { Statistic } from 'antd'
+import useMobile from '@/hooks/useMobile'
 
-export default function GbProgressBox({
-  // current_people,
-  // target_people,
-  start,
-  end,
-  dateRange,
-  daysLeft,
-}) {
+export default function GbProgressBox() {
+  const { Countdown } = Statistic
   const { productData } = useProductData()
-  const { current_people, target_people, arrival } = productData
+  const { current_people, target_people, arrival, start, end } = productData
+  const dayNow = dayjs()
+  const startDate = dayjs(start)
+  const endDate = dayjs(end)
   // 人數比例
   const peopleRatio = (current_people / target_people) * 100
   return (
@@ -38,19 +37,32 @@ export default function GbProgressBox({
             <span className="fs-2">
               <UserOutlined />
             </span>
-            <span>{current_people} 人</span>
+            <Statistic
+              value={current_people}
+              formatter={(value) => `${value} 人`}
+            />
           </div>
           <div className="fs-4 d-flex gap-3 align-items-center">
             <span className="fs-2">
               <FieldTimeOutlined />
             </span>
-            {daysLeft > 0 ? (
-              <span>{daysLeft} 天開始</span>
-            ) : dateRange > 0 ? (
-              <span>{dateRange} 天</span>
-            ) : (
-              <span className="text-secondary">已結束</span>
+            {dayNow < startDate && (
+              <Countdown
+                value={startDate}
+                format={`${
+                  startDate.format('DD') > 1 ? 'D 天開始' : 'HH:mm:ss 開始'
+                }`}
+              />
             )}
+            {dayNow > startDate && dayNow < endDate && (
+              <Countdown
+                value={endDate}
+                format={`${
+                  endDate.format('DD') > 1 ? 'D 天結束' : 'HH:mm:ss 結束'
+                }`}
+              />
+            )}
+            {dayNow > endDate && <span className="text-secondary">已結束</span>}
           </div>
         </div>
         <p className="mt-3 text-primary">

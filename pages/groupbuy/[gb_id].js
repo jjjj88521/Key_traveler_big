@@ -9,8 +9,18 @@ import { fetchGB, fetchProductLike } from '@/libs/productFetcher'
 import useLoading from '@/hooks/useLoading'
 import useRecentlyViewed from '@/hooks/useRecentlyViewed'
 import PdLoading from '@/components/product/pd-loading'
+import { useAuth } from '@/hooks/useAuth'
+import Card from '@/components/product/Card'
+// swiper
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/scss'
+import { Navigation, Autoplay } from 'swiper/modules'
+
+import 'swiper/scss/pagination'
+import 'swiper/scss/navigation'
 
 export default function GroupbuyDetail() {
+  const { auth } = useAuth()
   const router = useRouter()
   const { gb_id } = router.query
   const { isReady } = router
@@ -32,7 +42,7 @@ export default function GroupbuyDetail() {
     if (isReady) {
       fetchData()
     }
-  }, [isReady, gb_id])
+  }, [isReady, gb_id, auth])
 
   // 最近瀏覽商品 hooks，傳入 type: 'product'，代表是一般商品
   const [recentlyViewed, addToRecentlyViewed] = useRecentlyViewed({
@@ -61,6 +71,43 @@ export default function GroupbuyDetail() {
             <TabButton tabName="spec">商品規格</TabButton>
             <TabButton tabName="gb-desc">團購說明</TabButton>
           </TabContainer>
+          {/* 瀏覽過商品 */}
+          <section className="">
+            <div className="container border-top border-2 py-5">
+              <h2 className="fs-3 text-center text-secondary pb-4">
+                瀏覽過的商品
+              </h2>
+              <div className="px-4">
+                <Swiper
+                  spaceBetween={30}
+                  slidesPerView={1.5}
+                  breakpoints={{
+                    576: {
+                      slidesPerView: 4,
+                      spaceBetween: 50,
+                    },
+                  }}
+                  className="mySwiper"
+                >
+                  {recentlyViewed.map((product, index) => {
+                    const images = JSON.parse(product.images)
+                    return (
+                      <SwiperSlide key={index}>
+                        <Card
+                          title={product.name}
+                          brand={product.brand}
+                          price={product.price}
+                          image={`/images/groupbuy/${images[0]}`}
+                          link={`/groupbuy/${product.id}`}
+                          // stock={product.stock}
+                        />
+                      </SwiperSlide>
+                    )
+                  })}
+                </Swiper>
+              </div>
+            </div>
+          </section>
         </>
       )}
     </>

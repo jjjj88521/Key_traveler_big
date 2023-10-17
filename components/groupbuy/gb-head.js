@@ -28,16 +28,15 @@ import useMobile from '@/hooks/useMobile'
 import { Select } from 'antd'
 import dayjs from 'dayjs'
 
-export default function GbHead({}) {
+export default function GbHead() {
   // 判斷手機版
   const [isMobile] = useMobile()
   const router = useRouter()
 
   const { productData, isLiked, setIsLiked } = useProductData()
-  const { name, brand, price, current_people, target_people, start, end } =
-    productData
-  const images = JSON.parse(productData.images)
-  const style_select = JSON.parse(productData.style_select)
+  const { name, brand, price, status } = productData
+  const images = JSON.parse(productData.images) || []
+  const style_select = JSON.parse(productData.style_select) || {}
 
   // 使用樣式選擇 hook
   const initStyleSelect = style_select
@@ -83,13 +82,6 @@ export default function GbHead({}) {
     }
   }
 
-  // 日期使用 dayjs format
-  const dayNow = dayjs().format('YYYY/MM/DD')
-  const startDate = dayjs(start).format('YYYY/MM/DD')
-  const endDate = dayjs(end).format('YYYY/MM/DD')
-  const dateRange = dayjs(end).diff(dayNow, 'd') // 還有幾天結束
-  const daysLeft = dayjs(start).diff(dayjs(), 'd') // 還有幾天開始
-
   return (
     <section className="">
       <div className="container">
@@ -109,14 +101,7 @@ export default function GbHead({}) {
               <PdPrice price={price} />
             </PdInfoBox>
             {/* 團購時間 */}
-            <GbProgressBox
-              current_people={current_people}
-              target_people={target_people}
-              start={startDate}
-              end={endDate}
-              dateRange={dateRange}
-              daysLeft={daysLeft}
-            />
+            <GbProgressBox />
             {/* 產品樣式選擇 */}
             {style_select &&
               Object.keys(style_select).map((key, index) =>
@@ -152,19 +137,17 @@ export default function GbHead({}) {
                 )
               )}
             {/* 數量選擇，輸入框，有加減數量按鈕 */}
-            {daysLeft < 0 && dateRange > 0 && <PdNumInput />}
+            {status === 'running' && <PdNumInput />}
             {/* 加入購物車按鈕、直接購買按鈕，各一半 */}
             <div className="hstack gap-3">
-              {daysLeft > 0 ? (
-                <WaitingStartGbBtn />
-              ) : dateRange > 0 ? (
+              {status === 'waiting' && <WaitingStartGbBtn />}
+              {status === 'running' && (
                 <>
                   <AddCartBtn />
                   <BuyBtn />
                 </>
-              ) : (
-                <EndGbBtn />
               )}
+              {status === 'end' && <EndGbBtn />}
             </div>
             {/* 喜歡按鈕 */}
             <div className="d-flex justify-content-center">
