@@ -17,8 +17,52 @@ import {
   Upload,
 } from 'antd'
 import { useAuth } from '@/hooks/useAuth'
+import { async } from '@firebase/util'
+import axios from 'axios'
+import Swal from 'sweetalert2'
 
 export default function ArtForm() {
+  // 狀態
+  const [cateSelect, setCateSelect] = useState('')
+  //   console.log(cateSelect)
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
+
+  const dataObj = {
+    title: title,
+    content: content,
+    cateSelect: cateSelect,
+  }
+  console.log(dataObj)
+
+  const handleAddForm = async () => {
+    await axios
+      .post(`http://localhost:3005/api/article/1123`, dataObj, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log(response)
+        if (response.data.code !== '200') {
+          throw new Error('添加失敗')
+        }
+        Swal.fire({
+          icon: 'success',
+          title: '添加評論成功',
+          showConfirmButton: false,
+          timer: 1500,
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+        Swal.fire({
+          icon: 'error',
+          title: '請先登入在評論',
+          showConfirmButton: false,
+          timer: 1500,
+        })
+      })
+  }
+
   // 設定路由
   const { auth } = useAuth()
   const router = useRouter()
@@ -91,8 +135,14 @@ export default function ArtForm() {
                   ]}
                   label="文章分類"
                 >
-                  <Select>
-                    <Select.Option value="cate">開箱文</Select.Option>
+                  <Select
+                    onChange={(value) => {
+                      setCateSelect(value)
+                      console.log('Selected category:', value)
+                    }}
+                    value={cateSelect}
+                  >
+                    <Select.Option value="開箱文">開箱文</Select.Option>
                   </Select>
                 </Form.Item>
 
@@ -109,6 +159,10 @@ export default function ArtForm() {
                     placeholder="請輸入文章標題"
                     showCount
                     maxLength={30}
+                    onChange={(e) => {
+                      setTitle(e.target.value)
+                      console.log(e.target.value)
+                    }}
                   />
                 </Form.Item>
 
@@ -122,7 +176,15 @@ export default function ArtForm() {
                     },
                   ]}
                 >
-                  <TextArea rows={20} showCount maxLength={1000} />
+                  <TextArea
+                    rows={20}
+                    showCount
+                    maxLength={1000}
+                    onChange={(e) => {
+                      setContent(e.target.value)
+                      console.log(e.target.value)
+                    }}
+                  />
                 </Form.Item>
 
                 <Form.Item
@@ -130,7 +192,16 @@ export default function ArtForm() {
                   valuePropName="fileList"
                   getValueFromEvent={normFile}
                 >
-                  <Upload action="/article/form" listType="picture-card">
+                  <Upload
+                    action="/article/form"
+                    listType="picture-card"
+                    name="avatar"
+                    method="post"
+                    withCredentials={true}
+                    //   fileList={fileList}
+                    //   onChange={onChange}
+                    // maxCount={1}
+                  >
                     <div>
                       <PlusOutlined />
                       <div
@@ -147,7 +218,11 @@ export default function ArtForm() {
                   <Button>發佈</Button>
                 </Form.Item> */}
                 <div className="d-flex flex-row-reverse">
-                  <button className="btn btn-primary " type="submit">
+                  <button
+                    className="btn btn-primary "
+                    type="submit"
+                    onClick={handleAddForm}
+                  >
                     發佈
                   </button>
                 </div>
