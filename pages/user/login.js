@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import jwtDecode from 'jwt-decode'
 import UserLayout from '@/components/layout/user-layout'
-
+import LineLoginJWT from '@/components/user/line-login-jwt'
 export default function Login() {
   // 用戶直接跳轉，清掉原頁面的 localStorage，以免之後會有問題
   const router = useRouter()
@@ -28,8 +28,11 @@ export default function Login() {
     }
   }, [])
   return (
-    <UserLayout title={''} isLoginPage={true}>
-      <LoginForm />
-    </UserLayout>
+    <>
+      <UserLayout title={''} isLoginPage={true}>
+        <LoginForm />
+        <LineLoginJWT />
+      </UserLayout>
+    </>
   )
 }
