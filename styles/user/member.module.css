@@ -63,3 +63,7 @@
   color: #000 !important; /* 你希望的占位符文本颜色 */
   font-size: 24px;
 }
+
+.ant-calendar-date-panel .ant-calendar-date {
+  font-weight: bold; /* 或者你想要的字体粗细 */
+}

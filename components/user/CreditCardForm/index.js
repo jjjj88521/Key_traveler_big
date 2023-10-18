@@ -136,8 +136,8 @@ export default function CreditCardForm() {
           cvc={cardData.cvc}
           expiry={cardData.expiry}
           focused={cardData.focus}
-          name={cardData.name}
-          number={cardData.number}
+          name={auth.user.card_name}
+          number={auth.user.card_number}
         />
       </div>
     </>

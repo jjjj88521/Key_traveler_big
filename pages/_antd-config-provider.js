@@ -43,6 +43,11 @@ export default function AntdConfigProvider({ children }) {
             colorSuccess: '#DC9329',
             colorText: '#DC9329',
           },
+          DatePicker: {
+            colorTextPlaceholder: '#212529',
+            fontFamily: 'Noto Sans TC',
+            // fontWeightStrong: 900,
+          },
         },
       }}
     >

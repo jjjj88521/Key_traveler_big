@@ -3,8 +3,10 @@ import axios from 'axios'
 import { useAuth } from '@/hooks/useAuth'
 import GoogleLogo from '@/components/icons/google-logo'
 import Link from 'next/link'
-
+import { useRouter } from 'next/router'
+import Swal from 'sweetalert2'
 export default function GoogleLoginJWT() {
+  const router = useRouter()
   const { loginGoogle, logoutFirebase } = useFirebase()
   const { auth, setAuth } = useAuth()
 
@@ -34,6 +36,18 @@ export default function GoogleLoginJWT() {
       setAuth({
         isAuth: true,
         userData: parseJwt(res.data.accessToken),
+      })
+
+      Swal.fire({
+        icon: 'success',
+        title: '登入成功',
+        text: '即將回到首頁',
+        showConfirmButton: false,
+        timer: 1500,
+      }).then((res) => {
+        console.log('123456789')
+        console.log(res)
+        router.push('/')
       })
     }
   }

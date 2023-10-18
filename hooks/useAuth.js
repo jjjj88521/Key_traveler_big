@@ -24,6 +24,7 @@ export function AuthProvider({ children }) {
       cardName: '',
       exp: '',
       vip: '',
+      google_uid: '',
     },
   })
 
