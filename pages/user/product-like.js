@@ -1,47 +1,43 @@
 import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 import UserLayout from '@/components/layout/user-layout'
 import PaginationComponent from '@/components/common/PaginationComponent'
 import {
   ProductLikeContainer,
   ProductLikeItem,
 } from '@/components/user/product-like'
-import axios from 'axios'
 import LoadingPage from '@/components/common/loadingPage'
 import useLoading from '@/hooks/useLoading'
 import Swal from 'sweetalert2'
 import { deleteProductLike, fetchProductLikeList } from '@/libs/productFetcher'
 import { Dropdown, Radio, Space, Typography } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
+import useMobile from '@/hooks/useMobile'
 
 export default function ProductLike() {
+  const [isMobile] = useMobile()
   const [productLikeList, setProductLikeList] = useState({
     cate: null,
     page: 1,
     total: 0,
+    orderBy: 'idAsc',
     products: [],
   })
+
   const [total, setTotal] = useState(0)
-  // 存當前頁數
-  const [currentPage, setCurrentPage] = useState(1)
-  // 排序狀態
-  const [orderBy, setOrderBy] = useState('idAsc')
-  const orderByMap = {
-    idAsc: ['id', 'asc'],
-    priceDesc: ['price', 'desc'],
-    priceAsc: ['price', 'asc'],
-  }
-  // 切換篩選狀態
-  const [pdCate, setPdCate] = useState('all')
+  // 篩選條件
+  const [filterState, setFilterState] = useState({
+    currentPage: 1,
+    pdCate: 'all',
+    orderBy: 'id,asc',
+  })
   // isLoading hooks 用來判斷是否載入完成，裡面放條件式，當條件式為 true 時，會將 isLoading 狀態改為 false
   const [isLoading, setIsLoading] = useLoading(productLikeList.products)
-  const router = useRouter()
 
-  const getProductLikeList = async (currentPage, cate, orderBy) => {
+  const getProductLikeList = async (currentPage, pdCate, orderBy) => {
     try {
       await fetchProductLikeList(
         currentPage,
-        cate === 'all' ? null : cate,
+        pdCate === 'all' ? null : pdCate,
         orderBy
       ).then((response) => {
         setProductLikeList(response)
@@ -58,13 +54,12 @@ export default function ProductLike() {
     }
   }
   useEffect(() => {
-    getProductLikeList(currentPage)
+    getProductLikeList(1)
   }, [])
 
   const handlePageChange = (page) => {
-    const orderByArr = orderByMap[orderBy] || ['id', 'asc']
-    getProductLikeList(page, pdCate, orderByArr)
-    setCurrentPage(page)
+    setFilterState({ ...filterState, currentPage: page })
+    getProductLikeList(page, filterState.pdCate, filterState.orderBy)
     setIsLoading(true)
   }
 
@@ -78,10 +73,13 @@ export default function ProductLike() {
           showConfirmButton: false,
           timer: 1500,
         }).then(async () => {
-          const orderByArr = orderByMap[orderBy] || ['id', 'asc']
-          await getProductLikeList(currentPage, pdCate, orderByArr).then(() => {
+          await getProductLikeList(
+            filterState.currentPage,
+            filterState.pdCate,
+            filterState.orderBy
+          ).then(() => {
             if (productLikeList.products.length === 1) {
-              handlePageChange(currentPage - 1)
+              handlePageChange(filterState.currentPage - 1)
             }
           })
         })
@@ -115,11 +113,10 @@ export default function ProductLike() {
 
   // 切換篩選
   const handlePdCateChange = (e) => {
-    setPdCate(e.target.value)
+    const newPdCate = e.target.value
+    setFilterState({ pdCate: newPdCate, currentPage: 1, orderBy: 'id,asc' })
     setIsLoading(true)
-    // setCurrentPage(1)
-    getProductLikeList(1, e.target.value)
-    setOrderBy('idAsc')
+    getProductLikeList(1, newPdCate, 'id,asc')
   }
 
   // 排序選單
@@ -139,28 +136,26 @@ export default function ProductLike() {
   ]
   const handleChangeOrderby = ({ key }) => {
     // console.log(typeof key)
+    let newOrderBy = 'id,asc'
     if (key === '1') {
-      setOrderBy('idAsc')
-      getProductLikeList(1, pdCate, ['id', 'asc'])
+      newOrderBy = 'id,asc'
     } else if (key === '2') {
-      setOrderBy('priceDesc')
-      getProductLikeList(1, pdCate, ['price', 'desc'])
+      newOrderBy = 'price,desc'
     } else if (key === '3') {
-      setOrderBy('priceAsc')
-      getProductLikeList(1, pdCate, ['price', 'asc'])
+      newOrderBy = 'price,asc'
     }
+    setFilterState({ ...filterState, orderBy: newOrderBy })
     setIsLoading(true)
+    getProductLikeList(1, filterState.pdCate, newOrderBy)
   }
 
   return (
     <UserLayout title={'收藏商品'}>
-      <div className="d-flex justify-content-between">
+      <div className="d-flex justify-content-between align-items-center mb-3">
         <Radio.Group
           onChange={handlePdCateChange}
-          value={pdCate}
-          style={{
-            marginBottom: 8,
-          }}
+          value={filterState.pdCate}
+          size={`${isMobile ? 'small' : 'default'}`}
         >
           <Radio.Button value="all">全部</Radio.Button>
           <Radio.Button value="pd">一般商品</Radio.Button>
@@ -176,9 +171,11 @@ export default function ProductLike() {
         >
           <Typography.Link>
             <Space className="fs-6 text-dark fw-bold">
-              {orderBy === 'idAsc' && <span>預設排序</span>}
-              {orderBy === 'priceDesc' && <span>價錢由高至低</span>}
-              {orderBy === 'priceAsc' && <span>價錢由低至高</span>}
+              {filterState.orderBy === 'id,asc' && <span>預設排序</span>}
+              {filterState.orderBy === 'price,desc' && (
+                <span>價錢由高至低</span>
+              )}
+              {filterState.orderBy === 'price,asc' && <span>價錢由低至高</span>}
               <DownOutlined />
             </Space>
           </Typography.Link>

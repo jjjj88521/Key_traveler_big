@@ -1,14 +1,14 @@
-import { Children, cloneElement, useState, useRef } from 'react'
+import { Children, cloneElement, useState, useRef, use, useEffect } from 'react'
 import IntroTab from './IntroTab.js'
 import SpecTab from './spec-tab'
 import ReviewTab from './review-tab'
 import style from '@/styles/_fade-in-out.module.scss'
 import GbDescription from './gb-desc.js'
 import { useProductData } from '@/context/use-product.js'
+import RentDesc from './rent-desc.js'
 
 export default function TabContainer({ children }) {
   const [tab, setTab] = useState('intro')
-
   // tab 切換，滾動到該位置
   const TabRef = useRef(null)
   const handleScroll = () => {
@@ -19,18 +19,22 @@ export default function TabContainer({ children }) {
 
   // 使用 productDataContext 取得商品資料
   const { productData } = useProductData()
-  let { feature, feature_img: featureImgs, specTable } = productData
-  featureImgs =
-    Object.keys(productData).length > 0
-      ? JSON.parse(productData.feature_img)
-      : []
-  specTable =
-    Object.keys(productData).length > 0 ? JSON.parse(productData.spec) : []
+  let { feature = '', feature_img: featureImgs, specTable } = productData
+  featureImgs = productData.feature_img
+    ? JSON.parse(productData.feature_img)
+    : []
+  specTable = productData.spec ? JSON.parse(productData.spec) : []
+
+  // useEffect(() => {
+  //   if (canScroll) {
+  //     handleScroll()
+  //   }
+  // }, [tab])
 
   return (
     <section className="">
       <div className="container" ref={TabRef}>
-        <div className="px-sm-4 px-0 py-2 border-top border-2">
+        <div className="px-sm-5 px-0 py-2 border-top border-2">
           <div className="row justify-content-center py-4 gap-sm-5 gap-0">
             {Children.map(children, (child) => {
               return (
@@ -38,6 +42,9 @@ export default function TabContainer({ children }) {
                   {cloneElement(child, {
                     isActive: tab === child.props.tabName,
                     onClick: () => {
+                      // setCanScroll(true)
+                      handleScroll()
+
                       setTab(child.props.tabName)
                     },
                   })}
@@ -75,6 +82,13 @@ export default function TabContainer({ children }) {
             }`}
           >
             {tab === 'gb-desc' && <GbDescription />}
+          </div>
+          <div
+            className={`${style['fade-in-out']} ${
+              tab === 'rt-desc' ? style['active'] : ''
+            }`}
+          >
+            {tab === 'rt-desc' && <RentDesc />}
           </div>
         </div>
       </div>

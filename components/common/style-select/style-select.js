@@ -1,7 +1,13 @@
 import React, { useState } from 'react'
 import style from './_style-select.module.scss'
 
-const StyleSelect = ({ title, children, onSelect, hasTitle = true }) => {
+const StyleSelect = ({
+  title,
+  children,
+  onSelect,
+  hasTitle = true,
+  selectedValue,
+}) => {
   // 製作點擊後變色的效果，並且儲存點擊的值，預設為第一個 style-select-item
   const [active, setActive] = useState(null)
   const [selected, setSelected] = useState(
@@ -16,6 +22,8 @@ const StyleSelect = ({ title, children, onSelect, hasTitle = true }) => {
     // 在點擊時呼叫回調函數，將選擇的資料傳遞給父元件
     onSelect(title, value)
   }
+
+  // console.log(selectedValue)
 
   return (
     <div className={`${style['style-select']}`}>
@@ -33,6 +41,7 @@ const StyleSelect = ({ title, children, onSelect, hasTitle = true }) => {
               active,
               selected,
               onSelect,
+              selectedValue,
             })
           }
           return child
@@ -49,19 +58,20 @@ const Item = ({
   value = children,
   onClick,
   onSelect,
+  selectedValue,
 }) => {
   return (
-    <div
-      onSelect={() => {
-        onSelect(title, value)
-      }}
+    <button
+      // onSelect={() => {
+      //   onSelect(title, value)
+      // }}
       onClick={() => onClick(key, value)}
-      className={`${style['style-select-item']} ${
-        selected === value ? style['active'] : ''
+      className={`border-0 ${style['style-select-item']} ${
+        value === selectedValue ? style['active'] : ''
       }`}
     >
       {children}
-    </div>
+    </button>
   )
 }
 

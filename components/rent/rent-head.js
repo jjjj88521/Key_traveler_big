@@ -16,25 +16,28 @@ import {
   AddCartBtn,
   BuyBtn,
   LikeBtn,
+  OutOfStockBtn,
 } from '@/components/product/product-head/pd-btns'
 
 import dayjs from 'dayjs'
-import { DatePicker } from 'antd'
+import { DatePicker, Select } from 'antd'
 import { CaretRightOutlined } from '@ant-design/icons'
+import { useProductData } from '@/context/use-product'
+import useMobile from '@/hooks/useMobile'
 
-export default function RentHead({
-  name,
-  brand,
-  price,
-  images,
-  isLiked = false,
-  StyleSelectItems,
-}) {
+export default function RentHead() {
+  const [isMobile] = useMobile()
+  const { productData, isLiked, setIsLiked } = useProductData()
+  const { name, brand, price, stock } = productData
+  const images = productData.images ? JSON.parse(productData.images) : []
+  const style_select = productData.style_select
+    ? JSON.parse(productData.style_select)
+    : {}
   // 使用樣式選擇 hook
-  const initStyleSelect = StyleSelectItems
-    ? Object.keys(StyleSelectItems).map((key) => ({
+  const initStyleSelect = style_select
+    ? Object.keys(style_select).map((key) => ({
         key,
-        value: StyleSelectItems[key][0], // 預設為第一個
+        value: style_select[key][0], // 預設為第一個
       }))
     : []
   const [selectedStyles, handleStyleSelect] = useStyleSelect(initStyleSelect)
@@ -69,7 +72,7 @@ export default function RentHead({
         <div className="row px-sm-5 px-0 py-sm-5 py-3">
           {/* 左邊圖片 */}
           <div className="col-sm-7 col-12 left-info px-sm-5">
-            <GallerySwiper images={images} path="/images/groupbuy/" />
+            <GallerySwiper images={images} path="/images/product/" />
           </div>
           {/* 右側商品文字內容 */}
           <div className="col-sm-5 col-12 right-info vstack gap-5">
@@ -77,38 +80,74 @@ export default function RentHead({
             <PdInfoBox>
               <PdBrand brand={brand} />
               <PdName name={name} />
-              <PdPrice price={price} />
+              <PdPrice price={`${price} / 日`} />
             </PdInfoBox>
             {/* 產品樣式選擇 */}
-            {StyleSelectItems &&
-              Object.keys(StyleSelectItems).map((key, index) => (
-                <StyleSelect key={key} title={key} onSelect={handleStyleSelect}>
-                  {StyleSelectItems[key].map((value, index) => (
-                    <Item key={key + index}>{value}</Item>
-                  ))}
-                </StyleSelect>
-              ))}
+            {style_select &&
+              Object.keys(style_select).map((key, index) =>
+                isMobile ? (
+                  <div
+                    key={key}
+                    className="d-flex align-items-center flex-column"
+                  >
+                    <h5 className="text-secondary">{key}</h5>
+                    <Select
+                      className="w-100"
+                      defaultValue={selectedStyles[index].value}
+                      options={style_select[key].map((item, index) => ({
+                        key: index,
+                        label: item,
+                        value: item,
+                      }))}
+                      onSelect={(value) => handleStyleSelect(key, value)}
+                      size={'large'}
+                    />
+                  </div>
+                ) : (
+                  <StyleSelect
+                    key={key}
+                    title={key}
+                    onSelect={handleStyleSelect}
+                    selectedValue={selectedStyles[index].value}
+                  >
+                    {style_select[key].map((value, index) => (
+                      <Item key={index}>{value}</Item>
+                    ))}
+                  </StyleSelect>
+                )
+              )}
             {/* 數量選擇，輸入框，有加減數量按鈕 */}
-            <PdNumInput />
-            <div
-              className="d-flex justify-content-center d-sm-block"
-              ref={rangePickerRef}
-            >
-              <DatePicker.RangePicker
-                disabledDate={disabledDate}
-                size="large"
-                placeholder={['開始日期', '結束日期']}
-                separator={<CaretRightOutlined className="text-secondary" />}
-                onFocus={handleDateFocus}
-                placement="bottomleft"
-                className="w-100"
-              />
-            </div>
+            {/* <PdNumInput /> */}
+            {stock !== 0 && (
+              <div
+                className="d-flex justify-content-center flex-column gap-3"
+                ref={rangePickerRef}
+              >
+                <h5 className="text-secondary d-flex justify-content-center d-sm-block">
+                  選擇日期
+                </h5>
+                <DatePicker.RangePicker
+                  disabledDate={disabledDate}
+                  size="large"
+                  placeholder={['開始日期', '結束日期']}
+                  separator={<CaretRightOutlined className="text-secondary" />}
+                  onFocus={handleDateFocus}
+                  placement="bottomleft"
+                  className="w-100"
+                />
+              </div>
+            )}
 
             {/* 加入購物車按鈕、直接購買按鈕，各一半 */}
             <div className="hstack gap-3">
-              <AddCartBtn />
-              <BuyBtn />
+              {stock !== 0 ? (
+                <>
+                  <AddCartBtn />
+                  <BuyBtn />
+                </>
+              ) : (
+                <OutOfStockBtn />
+              )}
             </div>
             {/* 喜歡按鈕 */}
             <div className="d-flex justify-content-center">
