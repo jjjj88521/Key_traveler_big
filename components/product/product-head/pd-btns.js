@@ -1,11 +1,86 @@
+import { useCart } from '@/hooks/useCart'
+import { useGroupCart } from '@/hooks/useGroupCart'
+import { useRentCart } from '@/hooks/useRentCart'
 import React, { useState } from 'react'
+import Swal from 'sweetalert2'
+import axios from 'axios'
+import { useRouter } from 'next/router'
 
-const AddCartBtn = () => {
+const AddCartBtn = ({ type }) => {
+  const { addItem: addPItem } = useCart()
+  const { addItem: addGItem } = useRentCart()
+  const { addItem: addRItem } = useGroupCart()
+
+  // 獲取目前路徑
+  const router = useRouter()
+  const { isReady, asPath } = router
+  const pathname = asPath.split('?')[0]
+  console.log(pathname)
+
+  const addToCart = () => {
+    const data =
+      type === 'product'
+        ? localStorage.getItem('cartPItem')
+        : type === 'groupBuy'
+        ? localStorage.getItem('cartGItem')
+        : localStorage.getItem('cartRItem')
+
+    if (type === 'product') {
+      const addPCart = async (pData) => {
+        const newPData = JSON.parse(pData)
+        // const dataTostring = JSON.stringify(newPData.specData)
+        // console.log(dataTostring)
+        // console.log(typeof dataTostring)
+        console.log(newPData.specData)
+        // newPData.specData = JSON.stringify(newPData.specData)
+        // console.log(typeof newPData.specData)
+
+        try {
+          const response = await axios.post(
+            'http://localhost:3005/api/cart/addproduct',
+            newPData,
+            {
+              withCredentials: true, // save cookie in browser
+            }
+          )
+          console.log(response.data)
+          if (response.data.code !== '200') {
+            console.log('HERE')
+            if (response.data.code === '201') {
+              return Swal.fire({
+                icon: 'success',
+                title: '購物車已有該商品',
+                text: '數量+' + response.data.quantity,
+              })
+            }
+          } else {
+            return Swal.fire({
+              icon: 'success',
+              title: '新增購物車成功',
+              showConfirmButton: false,
+              timer: 2500,
+            })
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      addPCart(data)
+      return addPItem(JSON.parse(data))
+      // console.log(JSON.parse(data))
+    }
+    return data ? JSON.parse(data) : []
+  }
   return (
-    <button className="btn btn-outline-primary w-50 py-3 rounded-4 fw-semibold hstack gap-3 justify-content-center">
-      <i className="fa-solid fa-cart-plus"></i>
-      加入購物車
-    </button>
+    <>
+      <button
+        className="btn btn-outline-primary w-50 py-3 rounded-4 fw-semibold hstack gap-3 justify-content-center"
+        onClick={addToCart}
+      >
+        <i className="fa-solid fa-cart-plus"></i>
+        加入購物車
+      </button>
+    </>
   )
 }
 

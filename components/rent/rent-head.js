@@ -142,7 +142,7 @@ export default function RentHead() {
             <div className="hstack gap-3">
               {stock !== 0 ? (
                 <>
-                  <AddCartBtn />
+                  <AddCartBtn type={'rent'} />
                   <BuyBtn />
                 </>
               ) : (

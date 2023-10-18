@@ -143,7 +143,7 @@ export default function GbHead() {
               {status === 'waiting' && <WaitingStartGbBtn />}
               {status === 'running' && (
                 <>
-                  <AddCartBtn />
+                  <AddCartBtn type={'groupBuy'} />
                   <BuyBtn />
                 </>
               )}

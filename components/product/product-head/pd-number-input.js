@@ -1,7 +1,7 @@
-import React, { useReducer } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import style from './_pd-number-input.module.scss'
 
-export default function PdNumInput() {
+export default function PdNumInput({ item }) {
   // ===== 輸入數量狀態，按 +、- 按鈕，增減數量 =====
   const initialState = {
     quantity: 1,
@@ -41,6 +41,23 @@ export default function PdNumInput() {
     }
   }
   const [state, dispatch] = useReducer(reducer, initialState)
+
+  useEffect(() => {
+    const cartPItem = { ...item, quantity: state.quantity }
+    console.log(cartPItem)
+    localStorage.setItem('cartPItem', JSON.stringify(cartPItem))
+  }, [])
+  useEffect(() => {
+    const cartPItem = { ...item, quantity: state.quantity }
+    console.log(cartPItem)
+    localStorage.setItem('cartPItem', JSON.stringify(cartPItem))
+  }, [item])
+  useEffect(() => {
+    const cartPItem = { ...item, quantity: state.quantity }
+    console.log(cartPItem)
+    localStorage.setItem('cartPItem', JSON.stringify(cartPItem))
+  }, [state])
+
   return (
     <div className="d-flex justify-content-center d-sm-block">
       <div className={`${style['number-input-group']} bg-white`}>
