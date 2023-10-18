@@ -4,10 +4,11 @@ import { Upload } from 'antd'
 import axios from 'axios'
 import Image from 'next/image'
 import { useAuth } from '@/hooks/useAuth'
+import Swal from 'sweetalert2'
 
 const UploadAvatar = () => {
   const { auth, setAuth } = useAuth()
-  const [data, setData] = useState()
+  const [data, setData] = useState(auth)
   const updateUser = (userId, user) => {
     // 更新會員資料
     axios
@@ -26,12 +27,22 @@ const UploadAvatar = () => {
         console.log('更新發生錯誤')
       })
   }
+  //判斷大頭貼是從google 來的還是從資料庫來的
+  let picture = ''
+  if (auth.user.avatar === null) {
+    picture = auth.user.photo_url
+    console.log('SSSS')
+    console.log(picture)
+  } else {
+    picture = `http://localhost:3005/${auth.user.avatar}`
+  }
+  //判斷大頭貼是從google 來的還是從資料庫來的
   const [fileList, setFileList] = useState([
     {
       uid: '1',
       name: 'file-1.jpg',
       status: 'done',
-      url: `http://localhost:3005/${auth.user.avatar}`, // 之前上传的文件的URL
+      url: `${picture}`, // 之前上传的文件的URL
     },
   ])
   const uploadApi = async () => {
@@ -64,7 +75,8 @@ const UploadAvatar = () => {
     }
   }
   const onPreview = async (file) => {
-    let src = file.url
+    let src = file.url || URL.createObjectURL(file.originFileObj)
+
     if (!src) {
       src = await new Promise((resolve) => {
         const reader = new FileReader()
@@ -72,10 +84,11 @@ const UploadAvatar = () => {
         reader.onload = () => resolve(reader.result)
       })
     }
-    const image = new Image()
-    image.src = src
+
     const imgWindow = window.open(src)
-    imgWindow?.document.write(image.outerHTML)
+    if (imgWindow) {
+      imgWindow.document.write(`<img src="${src}" alt="Preview" />`)
+    }
   }
 
   useEffect(() => {
@@ -86,18 +99,31 @@ const UploadAvatar = () => {
         uid: '1',
         name: 'file-1.jpg',
         status: 'done',
-        url: `http://localhost:3005/${auth.user.avatar}`, // 之前上传的文件的URL
+        url: `${picture}`, // 之前上传的文件的URL
       },
     ])
   }, [auth])
+  useEffect(() => {
+    // 当 auth.user.avatar 发生变化时，更新 fileList
+    if (auth.user.avatar) {
+      setFileList([
+        {
+          uid: '1',
+          name: 'file-1.jpg',
+          status: 'done',
+          url: `${picture}`,
+        },
+      ])
+    }
+  }, [auth.user.avatar])
 
   const onChange = ({ fileList }) => {
     console.log(123)
     // 限制只保留一个文件
     setFileList(fileList.slice(-1))
-    uploadApi()
 
     console.log(data)
+    console.log(auth)
   }
   useEffect(() => {
     updateUser(auth.user.id, data)
@@ -105,27 +131,71 @@ const UploadAvatar = () => {
 
   return (
     <>
-      <ImgCrop rotationSlider cropShape="round">
-        <Upload
-          name="avatar"
-          action="http://localhost:3005/api/users/upload"
-          method="post"
-          listType="picture-circle"
-          thumbUrl={'http://localhost:3005/4d689ecd80f51e8ddc9fcda8b6eef8e3'}
-          withCredentials={true}
-          fileList={fileList}
-          onChange={onChange}
-          maxCount={1}
-          beforeUpload={(file) => {
-            // 清除之前的文件，只保留当前上传的文件
-            setFileList([file])
-            return false // 阻止默认上传行为
+      {/* d-flex flex-sm-column gap-3 justify-content-center */}
+      <div className="flex-sm-column d-flex justify-content-sm-start justify-content-evenly">
+        <div className="align-self-center ">
+          {' '}
+          <ImgCrop rotationSlider cropShape="round" className="">
+            <Upload
+              name="avatar"
+              action="http://localhost:3005/api/users/upload"
+              method="post"
+              listType="picture-circle"
+              withCredentials={true}
+              fileList={fileList}
+              onChange={onChange}
+              maxCount={1}
+              // onRemove={() => {
+              //   // setData({
+              //   //   ...auth.user,
+              //   //   avatar: '',
+              //   // })
+              // }}
+              beforeUpload={(file) => {
+                // 清除之前的文件，只保留当前上传的文件
+                setFileList([file])
+                return false // 阻止默认上传行为
+              }}
+              onPreview={onPreview}
+            >
+              {fileList.length === 1 ? null : '+ Upload'}
+            </Upload>
+          </ImgCrop>
+        </div>
+
+        <button
+          onClick={() => {
+            uploadApi()
+            Swal.fire({
+              icon: 'success',
+              title: '圖片上傳成功',
+              showConfirmButton: false,
+              timer: 1500,
+            })
           }}
-          onPreview={onPreview}
+          className="btn btn-primary py-sm-1 mt-sm-3 d-sm-block d-none"
         >
-          {fileList.length === 1 ? null : '+ Upload'}
-        </Upload>
-      </ImgCrop>
+          上傳
+        </button>
+        <div className="text-group align-self-center my-3">
+          <button
+            onClick={() => {
+              uploadApi()
+              Swal.fire({
+                icon: 'success',
+                title: '圖片上傳成功',
+                showConfirmButton: false,
+                timer: 1500,
+              })
+            }}
+            className="btn btn-primary py-sm-1 mt-sm-3 d-sm-none d-block mb-3"
+          >
+            上傳
+          </button>
+          <p className="mb-0 align-self-start text-black-50">檔案大小1MB</p>
+          <p className=" align-self-start text-black-50">檔案限制: JPEG</p>
+        </div>
+      </div>
     </>
   )
 }

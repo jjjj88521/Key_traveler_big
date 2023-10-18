@@ -9,6 +9,9 @@ export default function AntdConfigProvider({ children }) {
         token: {
           colorPrimary: '#DC9329',
           colorSecondary: '#9F9F9F',
+          fontSize: '16px',
+          fontFamily: 'Noto Sans TC',
+          // fontWeightStrong: '900',
         },
         components: {
           // antd 麵包屑樣式
@@ -39,6 +42,11 @@ export default function AntdConfigProvider({ children }) {
             defaultColor: '#DC9329',
             colorSuccess: '#DC9329',
             colorText: '#DC9329',
+          },
+          DatePicker: {
+            colorTextPlaceholder: '#212529',
+            fontFamily: 'Noto Sans TC',
+            // fontWeightStrong: 900,
           },
         },
       }}

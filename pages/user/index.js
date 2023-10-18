@@ -32,10 +32,10 @@ export default function User() {
   }, [auth, router])
 
   return (
-    <>
+    <div style={{ height: '580px' }}>
       {/* <div style={{ height: '480px' }}>頁面跳轉中...</div>
       {console.log(auth.isAuth)} */}
       <LoadingPage />
-    </>
+    </div>
   )
 }

@@ -3,7 +3,7 @@ import style from '@/styles/user/register.module.scss'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const disabledDate = (current) => {
   return current && current > new Date()
@@ -27,6 +27,16 @@ export default function RegisterForm({
   birthday,
 }) {
   const formRef = useRef(null) //重填功能
+  const welcomeMail = () => {
+    axios
+      .post(`http://localhost:3005/api/email-user/send`, formData)
+      .then((res) => {
+        console.log('歡迎信寄送成功')
+      })
+      .catch((err) => {
+        console.log('歡迎信寄送失敗')
+      })
+  }
   const router = useRouter()
   const createUser = (user) => {
     // 新增會員資料
@@ -52,6 +62,51 @@ export default function RegisterForm({
         console.log('新增發生錯誤')
       })
   }
+  //讀會員資料S
+  const [allData, setAllData] = useState([])
+  const allUserData = async () => {
+    await axios
+      .get('http://localhost:3005/api/users/')
+      .then((res) => {
+        console.log('讀取成功')
+        console.log(res.data.users)
+        setAllData(res.data.users)
+      })
+      .catch((err) => {
+        console.log('讀取失敗')
+      })
+  }
+  //讀會員資料E
+  //判斷會員資料是否存在S
+  const userExist = () => {
+    let exists = false // 假设用户不存在
+
+    allData.some((v, i) => {
+      if (formData.email === v.email || formData.account === v.account) {
+        console.log('驗證失敗')
+        exists = true // 找到匹配项，将 exists 设置为 true
+        return true // 返回 true 来退出循环
+      }
+    })
+
+    if (exists) {
+      console.log('驗證失敗')
+      Swal.fire({
+        icon: 'error',
+        title: '帳號或Email已經使用',
+        showConfirmButton: false,
+        timer: 1500,
+      })
+      return false // 用户存在
+    } else {
+      console.log('驗證成功')
+      return true // 用户不存在
+    }
+  }
+  //判斷會員資料是否存在E
+  useEffect(() => {
+    allUserData()
+  }, [])
   return (
     <>
       <form
@@ -501,6 +556,7 @@ export default function RegisterForm({
               // delete formData.confirmPassword
               // console.log(formData)
               // createUser(formData)
+              // userExist()
               if (
                 stepState.name === 'finish' &&
                 stepState.account === 'finish' &&
@@ -510,13 +566,15 @@ export default function RegisterForm({
                 stepState.birthday === 'finish' &&
                 stepState.email === 'finish' &&
                 stepState.password === 'finish' &&
-                stepState.confirmPassword === 'finish'
+                stepState.confirmPassword === 'finish' &&
+                userExist()
               ) {
                 // console.log(formData)
                 delete formData.confirmPassword
                 console.log(formData)
                 createUser(formData)
                 console.log('OK')
+                welcomeMail()
                 Swal.fire({
                   icon: 'success',
                   title: '註冊成功，請重新登入',
@@ -534,6 +592,15 @@ export default function RegisterForm({
           </button>
         </div>
       </form>
+      {/* <button
+        onClick={() => {
+          allUserData()
+
+          userExist()
+        }}
+      >
+        123456
+      </button> */}
     </>
   )
 }
