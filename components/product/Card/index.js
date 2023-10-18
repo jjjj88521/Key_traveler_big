@@ -6,13 +6,16 @@ export default function Card({ title, brand, price, image, stock, link }) {
   return (
     <>
       <div
-        className={`card h-auto border border-1 ${styles['card']} overflow-hidden`}
+        className={`card h-100 border border-1 ${styles['card']} overflow-hidden`}
       >
-        <img
-          src={image}
-          className={`${styles.cardImg} card-img-top`}
-          alt="Product"
-        />
+        <div className={`card-img-top ${styles.cardImg}`}>
+          <img
+            src={image}
+            // className={`${styles.cardImg} card-img-top`}
+            className={`object-fit-cover w-100 h-100`}
+            alt="Product"
+          />
+        </div>
 
         {/* 待完成，判斷是否為新品(ribbon) */}
         {stock === 0 ? (

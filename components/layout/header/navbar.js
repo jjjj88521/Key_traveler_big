@@ -46,24 +46,6 @@ const navItems = [
   {
     name: '團購專區',
     link: '/groupbuy',
-    children: [
-      {
-        name: '全部商品',
-        link: '/groupbuy',
-      },
-      {
-        name: '團購中',
-        link: '/groupbuy/category/1',
-      },
-      {
-        name: '即將開團',
-        link: '/groupbuy/category/2',
-      },
-      {
-        name: '團購結束',
-        link: '/groupbuy/category/3',
-      },
-    ],
   },
   {
     name: '租用鍵盤',

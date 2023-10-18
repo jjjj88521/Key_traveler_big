@@ -27,7 +27,7 @@ export default function NewPd() {
             {newProducts.map((product) => {
               const images = JSON.parse(product.images)
               return (
-                <div className="col" key={product.id}>
+                <div className="col pb-3" key={product.id}>
                   <Card
                     title={product.name}
                     brand={product.brand}
