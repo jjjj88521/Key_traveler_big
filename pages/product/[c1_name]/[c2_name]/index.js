@@ -59,6 +59,10 @@ export default function ProductCate2() {
       )
       .then((res) => {
         setCateProducts(res.data)
+        // 儲存篩選條件，給分頁功能用
+        setFilterRangeValue(range)
+        // 回歸第一頁
+        setPage(1)
       })
       .catch((err) => {
         console.log(err)
@@ -67,12 +71,21 @@ export default function ProductCate2() {
 
   // 排序
   const orderProduct = (orderby) => {
+    // 建構 Axios 請求，包含分頁頁碼以及篩選條件
+    let requestUrl = `http://localhost:3005/api/products/qs?cate_1=${c1_name}&cate_2=${c2_name}&orderby=${orderby}`
+
+    // 如果有做過"篩選"或"排序"，就要將其包含在請求中
+    if (filterRangeValue) {
+      requestUrl += `&${filterRangeValue}`
+    }
     axios
-      .get(
-        `http://localhost:3005/api/products/qs?cate_1=${c1_name}&cate_2=${c2_name}&orderby=${orderby}`
-      )
+      .get(requestUrl)
       .then((res) => {
         setCateProducts(res.data)
+        // 儲存篩選條件，給分頁功能用
+        setOrderbyValue(orderby)
+        // 回歸第一頁
+        setPage(1)
       })
       .catch((err) => {
         console.log(err)
@@ -87,14 +100,27 @@ export default function ProductCate2() {
   // 分頁相關
   const PageSize = 12
   const totalPageCount = cateProducts.total
-  const [currentPage, setCurrentPage] = useState(1)
+  const [page, setPage] = useState(1)
+  // 用以偵測有沒有"篩選價錢"或"排序"的條件存在
+  const [filterRangeValue, setFilterRangeValue] = useState(null)
+  const [orderbyValue, setOrderbyValue] = useState(null)
   const handlePageChange = (newPage) => {
-    setCurrentPage(newPage)
+    setPage(newPage)
+
+    // 建構 Axios 請求，包含分頁頁碼以及篩選條件
+    let requestUrl = `http://localhost:3005/api/products/qs?cate_1=${c1_name}&cate_2=${c2_name}&page=${newPage}`
+
+    // 如果有做過"篩選"或"排序"，就要將其包含在請求中
+    if (filterRangeValue) {
+      requestUrl += `&${filterRangeValue}`
+    }
+    if (orderbyValue) {
+      requestUrl += `&orderby=${orderbyValue}`
+    }
+
     // 創建新的 Axios 請求，包含分頁頁碼
     axios
-      .get(
-        `http://localhost:3005/api/products/qs?cate_1=${c1_name}&cate_2=${c2_name}&page=${newPage}`
-      )
+      .get(requestUrl)
       .then((res) => {
         setCateProducts(res.data)
       })
@@ -335,11 +361,12 @@ export default function ProductCate2() {
             </div>
             {/* 分頁頁碼 */}
             <div className="m-5">
+              {/* 判斷如果只有一頁，就不顯示pagination */}
               {totalPageCount < PageSize ? (
                 ''
               ) : (
                 <PaginationComponent
-                  currentPage={currentPage}
+                  currentPage={page}
                   totalItems={totalPageCount}
                   pageSize={PageSize}
                   onPageChange={handlePageChange}

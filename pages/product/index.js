@@ -18,28 +18,13 @@ export async function getStaticProps() {
 }
 
 export default function ProductIndex() {
-  // 各選項的state
-  const [keyword, setKeyword] = useState('')
-  const [cate_1, setCate_1] = useState([]) // 數字陣列
-  const [cate_2, setCate_2] = useState([]) // 數字陣列
+  // 價錢篩選用的state
   const [priceRange, setPriceRange] = useState({ min: 10, max: 30000 }) //數字物件
   const range = `price_range=${priceRange.min},${priceRange.max}`
-  // 排序(前面為排序欄位，後面參數asc為從小到大，desc為從大到小排序)
-  const [orderby, setOrderby] = useState('id,asc')
-
-  // 分頁用
-  const [page, setPage] = useState(1)
-  const [perpage, setPerpage] = useState(10)
-
-  // 最後得到的項目
-  const [itemTotal, setItemTotal] = useState(0)
-  const [items, setItems] = useState([])
 
   // 路由相關
   const router = useRouter()
-
   const [cateProducts, setCateProducts] = useState([])
-
   useEffect(() => {
     if (router.isReady) {
       axios
@@ -55,24 +40,39 @@ export default function ProductIndex() {
   //   console.log(cateProducts)
   //   console.log(cateProducts.data)
 
-  // 篩選價錢範圍
+  // 篩選功能：價錢範圍
   const filterRange = () => {
     axios
       .get(`http://localhost:3005/api/products/qs?${range}`)
       .then((res) => {
         setCateProducts(res.data)
+        // 儲存篩選條件，給分頁功能用
+        setFilterRangeValue(range)
+        // 回歸第一頁
+        setPage(1)
       })
       .catch((err) => {
         console.log(err)
       })
   }
 
-  // 排序
+  // 排序功能
   const orderProduct = (orderby) => {
+    // 建構 Axios 請求，包含分頁頁碼以及篩選條件
+    let requestUrl = `http://localhost:3005/api/products/qs?orderby=${orderby}`
+
+    // 如果有做過"篩選"或"排序"，就要將其包含在請求中
+    if (filterRangeValue) {
+      requestUrl += `&${filterRangeValue}`
+    }
     axios
-      .get(`http://localhost:3005/api/products/qs?orderby=${orderby}`)
+      .get(requestUrl)
       .then((res) => {
         setCateProducts(res.data)
+        // 儲存篩選條件，給分頁功能用
+        setOrderbyValue(orderby)
+        // 回歸第一頁
+        setPage(1)
       })
       .catch((err) => {
         console.log(err)
@@ -87,12 +87,26 @@ export default function ProductIndex() {
   // 分頁相關
   const PageSize = 12
   const totalPageCount = cateProducts.total
-  const [currentPage, setCurrentPage] = useState(1)
+  const [page, setPage] = useState(1)
+  // 用以偵測有沒有"篩選價錢"或"排序"的條件存在
+  const [filterRangeValue, setFilterRangeValue] = useState(null)
+  const [orderbyValue, setOrderbyValue] = useState(null)
   const handlePageChange = (newPage) => {
-    setCurrentPage(newPage)
-    // 創建新的 Axios 請求，包含分頁頁碼
+    setPage(newPage)
+
+    // 建構 Axios 請求，包含分頁頁碼以及篩選條件
+    let requestUrl = `http://localhost:3005/api/products/qs?page=${newPage}`
+
+    // 如果有做過"篩選"或"排序"，就要將其包含在請求中
+    if (filterRangeValue) {
+      requestUrl += `&${filterRangeValue}`
+    }
+    if (orderbyValue) {
+      requestUrl += `&orderby=${orderbyValue}`
+    }
+
     axios
-      .get(`http://localhost:3005/api/products/qs?page=${newPage}`)
+      .get(requestUrl)
       .then((res) => {
         setCateProducts(res.data)
       })
@@ -331,12 +345,16 @@ export default function ProductIndex() {
             </div>
             {/* 分頁頁碼 */}
             <div className="m-5">
-              <PaginationComponent
-                currentPage={currentPage}
-                totalItems={totalPageCount}
-                pageSize={PageSize}
-                onPageChange={handlePageChange}
-              ></PaginationComponent>
+              {totalPageCount < PageSize ? (
+                ''
+              ) : (
+                <PaginationComponent
+                  currentPage={page}
+                  totalItems={totalPageCount}
+                  pageSize={PageSize}
+                  onPageChange={handlePageChange}
+                ></PaginationComponent>
+              )}
             </div>
           </div>
         </div>
