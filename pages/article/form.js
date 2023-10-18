@@ -26,21 +26,26 @@ export default function ArtForm() {
   const detail_id = query.detail_id
   console.log(router.query.detail_id)
 
-  const onFinish = (values) => {
-    console.log('Success:', values)
-  }
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo)
-  }
-  const { RangePicker } = DatePicker
+  //   const { RangePicker } = DatePicker
   const { TextArea } = Input
+
   const normFile = (e) => {
     if (Array.isArray(e)) {
       return e
     }
     return e?.fileList
   }
-  const [componentDisabled, setComponentDisabled] = useState(true)
+  //   const [componentDisabled, setComponentDisabled] = useState(true)
+  const onFinish = (values) => {
+    console.log('Success:', values)
+  }
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo)
+  }
+  const handleFormValuesChange = (changedValues, allValues) => {
+    console.log('Changed values:', changedValues)
+    console.log('All values:', allValues)
+  }
   return (
     <>
       {/* <div className="" style={{ background: 'red', height: '100%' }}>
@@ -74,6 +79,7 @@ export default function ArtForm() {
                 }}
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
+                onValuesChange={handleFormValuesChange}
                 autoComplete="off"
               >
                 <Form.Item
@@ -124,7 +130,7 @@ export default function ArtForm() {
                   valuePropName="fileList"
                   getValueFromEvent={normFile}
                 >
-                  <Upload action="/upload.do" listType="picture-card">
+                  <Upload action="/article/form" listType="picture-card">
                     <div>
                       <PlusOutlined />
                       <div
@@ -140,12 +146,12 @@ export default function ArtForm() {
                 {/* <Form.Item label="Button">
                   <Button>發佈</Button>
                 </Form.Item> */}
+                <div className="d-flex flex-row-reverse">
+                  <button className="btn btn-primary " type="submit">
+                    發佈
+                  </button>
+                </div>
               </Form>
-              <div className="d-flex flex-row-reverse">
-                <button className="btn btn-primary " type="submit">
-                  發佈
-                </button>
-              </div>
             </div>
           </div>
         </div>

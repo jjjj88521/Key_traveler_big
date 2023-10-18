@@ -288,7 +288,7 @@ export default function ArticleFilter() {
                         {/* 路由名稱 */}
                         <Link href={`/article/${item.id}`}>
                           <img
-                            src={`/article/${parsedImg[0]}`}
+                            src={`/images/article/${parsedImg[0]}`}
                             className="card-img-top"
                             alt="..."
                           />
