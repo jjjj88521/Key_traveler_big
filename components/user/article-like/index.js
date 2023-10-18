@@ -53,7 +53,7 @@ const ArticleLikeItem = ({
         <div className="row">
           <div className="col-auto">
             <Image
-              src={`/article/${parsedImg[0]}`}
+              src={`/images/article/${parsedImg[0]}`}
               width={100}
               height={100}
               alt=""

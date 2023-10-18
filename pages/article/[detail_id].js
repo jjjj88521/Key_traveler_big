@@ -534,7 +534,7 @@ export default function DetailFilter() {
                               }}
                             >
                               <img
-                                src={`/article/${parsedImg[0]}`}
+                                src={`/images/article/${parsedImg[0]}`}
                                 className="ArticleImg"
                                 alt="..."
                                 style={{
