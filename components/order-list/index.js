@@ -167,7 +167,7 @@ export default function OrderList() {
   // const getOrderNumber = calculateOrderNumber()
   return (
     <>
-      <div className="container">
+      <div className="container" style={{ height: '700px' }}>
         <div className="row my-sm-4 my-2 ">
           <h2 className="fw-bolder text-start col-sm-3 col-12 mt-3 mb-0">
             歷史訂單

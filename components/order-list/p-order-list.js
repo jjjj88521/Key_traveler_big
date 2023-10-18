@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
+import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faCircleChevronDown,
@@ -34,6 +35,10 @@ export default function POrderList() {
   }, [orderId])
 
   console.log(orderDetails)
+  // const images =
+  //   Object.keys(orderDetails).length > 0 ? JSON.parse(orderDetails.images) : []
+  // console.log(images)
+  // const img = JSON.parse(v.images)
   // const initialOrderLists = [
   //   {
   //     id: 5,
@@ -109,14 +114,31 @@ export default function POrderList() {
           {orderDetails.map((v, i) => (
             <tr key={i}>
               <td className="d-flex ps-3">
-                <div className="p-2">
-                  <Image src={v.img} width={100} height={100} alt="" />
+                <div className="pt-2 px-2">
+                  {v.images && v.images.length > 0 ? (
+                    <Image
+                      src={'/product/' + JSON.parse(v.images)[0]} // 加上斜槓來表示相對路徑
+                      width={100}
+                      height={100}
+                      alt=""
+                    />
+                  ) : null}
                 </div>
+
                 <div className="p-2">
                   <div>{v.brand}</div>
                   <div>{v.name}</div>
-                  <div>陽極紅</div>
-                  <div>噴砂銀</div>
+                  <div>
+                    {v.spec && (
+                      <div>
+                        {Object.keys(JSON.parse(v.spec)).map((key) => (
+                          <div key={key}>
+                            {JSON.parse(v.spec)[key].join(', ')}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </td>
               <td className="align-middle text-center">${v.price}</td>
@@ -146,7 +168,7 @@ export default function POrderList() {
             <th className="bg-primary text-white" colSpan={3}>
               <div className="d-flex px-1">
                 <div>一般商品</div>
-                <div className="ps-1">(2)</div>
+                <div className="ps-1">({orderDetails.length})</div>
                 <div
                   className="ms-auto"
                   data-bs-target="#collapseOne"
@@ -161,17 +183,33 @@ export default function POrderList() {
           </tr>
         </thead>
         <tbody className="accordion-collapse collapse show" id="collapseOne">
-          {orderDetails.map((v) => (
-            <tr key={v.id}>
+          {orderDetails.map((v, i) => (
+            <tr key={i}>
               <td className="d-flex">
                 <div className="pe-2 pt-2">
-                  <Image src={v.img} width={100} height={100} alt="" />
+                  {v.images && v.images.length > 0 ? (
+                    <Image
+                      src={'/product/' + JSON.parse(v.images)[0]} // 加上斜槓來表示相對路徑
+                      width={100}
+                      height={100}
+                      alt=""
+                    />
+                  ) : null}
                 </div>
                 <div>
-                  <div>Qwertykey</div>
-                  <div>QK75鍵盤鍵盤鍵盤鍵盤</div>
-                  <div>陽極紅</div>
-                  <div>噴砂銀</div>
+                  <div>{v.brand}</div>
+                  <div>{v.name}</div>
+                  <div>
+                    {v.spec && (
+                      <div>
+                        {Object.keys(JSON.parse(v.spec)).map((key) => (
+                          <div key={key}>
+                            {JSON.parse(v.spec)[key].join(', ')}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                   <div className="d-flex">
                     <div>${v.price}</div>
                     <div
@@ -197,6 +235,22 @@ export default function POrderList() {
           </tr>
         </tbody>
       </table>
+      <div className="text-center mt-5">
+        <button
+          className="btn btn-primary mx-3"
+          onClick={() => {
+            router.push(`http://localhost:3000/user/order`)
+          }}
+        >
+          上一頁
+        </button>
+        {/* <Link
+          href={`http://localhost:3000/user/order`}
+          className="btn btn-primary text-light"
+        >
+          上一頁
+        </Link> */}
+      </div>
     </>
   )
 }
