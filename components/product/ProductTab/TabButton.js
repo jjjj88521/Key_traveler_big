@@ -6,7 +6,7 @@ export default function TabButton({ children, isActive, onClick }) {
   if (isActive) {
     return (
       <button
-        disabled
+        // disabled
         className={`fs-4 ${styles['tabBtn']}`}
         style={{ color: 'black', fontWeight: 'bold' }}
       >

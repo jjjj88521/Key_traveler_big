@@ -10,7 +10,7 @@ export default function useLoading(data) {
     if (data) {
       timer = setTimeout(() => {
         setIsLoading(false)
-      }, 500)
+      }, 300)
     }
     return () => {
       if (timer) {

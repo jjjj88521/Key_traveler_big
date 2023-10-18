@@ -24,7 +24,7 @@ const LikeBtn = ({ isLiked = false, onToggleLike }) => {
   }
   return (
     <button
-      className={`h4 bg-white border-0`}
+      className={`h4 bg-transparent border-0`}
       onClick={() => {
         handleToggleLike()
       }}
@@ -39,4 +39,44 @@ const LikeBtn = ({ isLiked = false, onToggleLike }) => {
   )
 }
 
-export { AddCartBtn, BuyBtn, LikeBtn }
+const OutOfStockBtn = () => {
+  return (
+    <button
+      className="btn btn-secondary w-100 py-3 rounded-4 fw-semibold disabled"
+      disabled
+    >
+      缺貨
+    </button>
+  )
+}
+
+const EndGbBtn = () => {
+  return (
+    <button
+      className="btn btn-secondary w-100 py-3 rounded-4 fw-semibold"
+      disabled
+    >
+      團購結束，請等待下次開團
+    </button>
+  )
+}
+
+const WaitingStartGbBtn = () => {
+  return (
+    <button
+      className="btn btn-success w-100 py-3 rounded-4 fw-semibold"
+      disabled
+    >
+      等待開團
+    </button>
+  )
+}
+
+export {
+  AddCartBtn,
+  BuyBtn,
+  LikeBtn,
+  OutOfStockBtn,
+  EndGbBtn,
+  WaitingStartGbBtn,
+}

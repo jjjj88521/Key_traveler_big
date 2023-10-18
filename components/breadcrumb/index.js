@@ -66,7 +66,9 @@ export default function MyBreadcrumb() {
             // 將商品名稱加進麵包屑
             if (
               productName &&
-              asPath.startsWith('/product') &&
+              (asPath.startsWith('/product') ||
+                asPath.startsWith('/groupbuy') ||
+                asPath.startsWith('/rent')) &&
               index === pathsDecoded.length - 1
             ) {
               return (

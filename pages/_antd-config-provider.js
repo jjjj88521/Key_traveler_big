@@ -9,6 +9,8 @@ export default function AntdConfigProvider({ children }) {
         token: {
           colorPrimary: '#DC9329',
           colorSecondary: '#9F9F9F',
+          fontFamily:
+            "'Poppins', 'Noto Sans TC', Helvetica, Arial, 'PingFang TC','苹方-繁', 'Heiti TC', '黑體-繁', 'Microsoft JhengHei','微軟正黑體',system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue', Arial,'Noto Sans','Liberation Sans',sans-serif,'Apple Color Emoji','Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'",
         },
         components: {
           // antd 麵包屑樣式
@@ -39,6 +41,9 @@ export default function AntdConfigProvider({ children }) {
             defaultColor: '#DC9329',
             colorSuccess: '#DC9329',
             colorText: '#DC9329',
+          },
+          Statistic: {
+            contentFontSize: '1.5rem',
           },
         },
       }}
