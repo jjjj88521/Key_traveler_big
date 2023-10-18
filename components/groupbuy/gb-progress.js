@@ -21,7 +21,7 @@ export default function GbProgressBox() {
         type="circle"
         percent={peopleRatio}
         format={(percent) => {
-          return percent === 100 ? '成團' : `${percent}%`
+          return percent >= 100 ? '成團' : `${percent.toFixed(0)}%`
         }}
         className="text-center"
       />

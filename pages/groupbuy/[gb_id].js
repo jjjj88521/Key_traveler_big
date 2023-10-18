@@ -25,16 +25,24 @@ export default function GroupbuyDetail() {
   const { gb_id } = router.query
   const { isReady } = router
   const { productData, setProductData, isLiked, setIsLiked } = useProductData()
-  const [isLoading, setIsLoading] = useLoading(productData)
+  const [isLoading, setIsLoading] = useLoading(productData.id)
 
   // 獲取資料
   useEffect(() => {
     const fetchData = async () => {
       // 每次獲取資料前都先重設載入中狀態
       setIsLoading(true)
-      await fetchGB(gb_id).then((product) => {
-        setProductData(product)
-      })
+      await fetchGB(gb_id)
+        .then((product) => {
+          if (Object.keys(product).length === 0) {
+            throw new Error('沒有此商品')
+          }
+          setProductData(product)
+        })
+        .catch((error) => {
+          console.log(error)
+          router.push('/404')
+        })
       await fetchProductLike('gb', gb_id).then((like) => {
         setIsLiked(like)
       })
@@ -97,7 +105,7 @@ export default function GroupbuyDetail() {
                           title={product.name}
                           brand={product.brand}
                           price={product.price}
-                          image={`/images/groupbuy/${images[0]}`}
+                          image={`/images/product/${images[0]}`}
                           link={`/groupbuy/${product.id}`}
                           // stock={product.stock}
                         />

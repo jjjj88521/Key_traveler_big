@@ -98,7 +98,7 @@ const fetchPdCommentCount = async (pid) => {
 const fetchProductLike = async (cate, pid) => {
   try {
     const response = await axios.get(
-      `http://localhost:3005/api/product-like/${cate}/${pid}`,
+      `http://localhost:3005/api/product-like/isLiked/${cate}/${pid}`,
       {
         withCredentials: true, // 跨域獲取cookie
       }

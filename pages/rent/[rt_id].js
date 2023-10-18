@@ -17,16 +17,25 @@ export default function RentDetail() {
   const { rt_id } = router.query
   const { isReady } = router
   const { productData, setProductData, isLiked, setIsLiked } = useProductData()
-  const [isLoading, setIsLoading] = useLoading(productData)
+  const [isLoading, setIsLoading] = useLoading(productData.id)
+  // console.log(productData)
 
   // 獲取資料
   useEffect(() => {
     const fetchData = async () => {
       // 每次獲取資料前都先重設載入中狀態
       setIsLoading(true)
-      await fetchRT(rt_id).then((product) => {
-        setProductData(product)
-      })
+      await fetchRT(rt_id)
+        .then((product) => {
+          if (Object.keys(product).length === 0) {
+            throw new Error('沒有此商品')
+          }
+          setProductData(product)
+        })
+        .catch((error) => {
+          console.log(error)
+          router.push('/404')
+        })
       await fetchProductLike('rt', rt_id).then((like) => {
         setIsLiked(like)
       })
@@ -38,7 +47,7 @@ export default function RentDetail() {
 
   // 最近瀏覽商品 hooks，傳入 type: 'product'，代表是一般商品
   const [recentlyViewed, addToRecentlyViewed] = useRecentlyViewed({
-    type: 'groupbuy',
+    type: 'rent',
   })
   useEffect(() => {
     if (Object.keys(productData).length > 0) {

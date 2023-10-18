@@ -49,16 +49,24 @@ export default function ProductDetail() {
   } = useProductData()
 
   // 存是否正在載入
-  const [isLoading, setIsLoading] = useLoading(productData)
+  const [isLoading, setIsLoading] = useLoading(productData.id)
 
   // 獲取資料
   useEffect(() => {
     const fetchData = async () => {
       // 每次獲取資料前都先重設載入中狀態
       setIsLoading(true)
-      await fetchProduct(pid).then((product) => {
-        setProductData(product)
-      })
+      await fetchProduct(pid)
+        .then((product) => {
+          if (Object.keys(product).length === 0) {
+            throw new Error('沒有此商品')
+          }
+          setProductData(product)
+        })
+        .catch((error) => {
+          console.log(error)
+          router.push('/404')
+        })
       await fetchPdCommentCount(pid).then((data) => {
         setCommentCount(data)
       })

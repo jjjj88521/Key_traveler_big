@@ -5,8 +5,9 @@ import ReviewTab from './review-tab'
 import style from '@/styles/_fade-in-out.module.scss'
 import GbDescription from './gb-desc.js'
 import { useProductData } from '@/context/use-product.js'
+import RentDesc from './rent-desc.js'
 
-export default function TabContainer({ children, pdCate }) {
+export default function TabContainer({ children }) {
   const [tab, setTab] = useState('intro')
   // tab 切換，滾動到該位置
   const TabRef = useRef(null)
@@ -22,7 +23,7 @@ export default function TabContainer({ children, pdCate }) {
   featureImgs = productData.feature_img
     ? JSON.parse(productData.feature_img)
     : []
-  specTable = productData.spec > 0 ? JSON.parse(productData.spec) : []
+  specTable = productData.spec ? JSON.parse(productData.spec) : []
 
   // useEffect(() => {
   //   if (canScroll) {
@@ -58,11 +59,7 @@ export default function TabContainer({ children, pdCate }) {
             }`}
           >
             {tab === 'intro' && (
-              <IntroTab
-                pdCate={pdCate}
-                feature={feature}
-                featureImgs={featureImgs}
-              />
+              <IntroTab feature={feature} featureImgs={featureImgs} />
             )}
           </div>
           <div
@@ -85,6 +82,13 @@ export default function TabContainer({ children, pdCate }) {
             }`}
           >
             {tab === 'gb-desc' && <GbDescription />}
+          </div>
+          <div
+            className={`${style['fade-in-out']} ${
+              tab === 'rt-desc' ? style['active'] : ''
+            }`}
+          >
+            {tab === 'rt-desc' && <RentDesc />}
           </div>
         </div>
       </div>
