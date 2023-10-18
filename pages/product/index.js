@@ -333,18 +333,17 @@ export default function ProductIndex() {
                 </div>
               )}
             </div>
+            {/* 分頁頁碼 */}
+            <div className="m-5">
+              <PaginationComponent
+                currentPage={currentPage}
+                totalItems={totalPageCount}
+                pageSize={PageSize}
+                onPageChange={handlePageChange}
+              ></PaginationComponent>
+            </div>
           </div>
         </div>
-      </div>
-
-      {/* 分頁頁碼 */}
-      <div className="m-5">
-        <PaginationComponent
-          currentPage={currentPage}
-          totalItems={totalPageCount}
-          pageSize={PageSize}
-          onPageChange={handlePageChange}
-        ></PaginationComponent>
       </div>
     </>
   )
