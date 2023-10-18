@@ -13,6 +13,16 @@ import anime from 'animejs'
 import style from './_ad-carousel.module.scss'
 import AdSwiperBtn from './ad-swiper-btn'
 
+const homeAdData = [
+  { title: 'QK75', image: '/images/home-ad/qk75.jpg', link: '/product/1/5/1' },
+  {
+    title: 'WS Stellar',
+    image: '/images/home-ad/ws_stellar.jpg',
+    link: '/product/3/10/104',
+  },
+  { title: 'Zoom98', image: '/images/home-ad/zoom98.jpg', link: '/groupbuy/1' },
+]
+
 export default function AdCarousel() {
   // 檢測是否為手機版，如果是手機不會有滑鼠按鈕
   const [isMobile, setIsMobile] = useState(false)
@@ -35,16 +45,16 @@ export default function AdCarousel() {
       translateY: [100, 0],
       easing: 'easeInOutQuad',
       duration: 1000,
-      delay: 200,
-    })
-    anime({
-      targets: '.carousel-container img',
-      scale: [1.05, 1],
-      opacity: [0, 1],
-      easing: 'easeInOutQuad',
-      duration: 500,
       delay: 100,
     })
+    // anime({
+    //   targets: '.carousel-container img',
+    //   scale: [1.05, 1],
+    //   opacity: [0, 1],
+    //   easing: 'easeInOutQuad',
+    //   duration: 500,
+    //   delay: 100,
+    // })
   }
 
   useEffect(() => {
@@ -148,7 +158,7 @@ export default function AdCarousel() {
             }}
             loop={true}
             effect="fade"
-            speed={400}
+            speed={500}
             modules={[Navigation, Pagination, EffectFade, Autoplay]}
             style={{
               '--swiper-pagination-color': '#DC9329',
@@ -165,12 +175,14 @@ export default function AdCarousel() {
                 arrow={mouseState.arrow}
               />
             )}
-
-            {Array.from({ length: 4 }).map((_, index) => (
+            {homeAdData.map((item, index) => (
               <SwiperSlide key={index}>
                 <CarouselContainer
                   hideMouseBall={handleMouseLeave}
                   mousePosition={mouseState.position}
+                  title={item.title}
+                  image={item.image}
+                  link={item.link}
                 />
               </SwiperSlide>
             ))}

@@ -89,7 +89,7 @@ export default function GbHead() {
           {/* 左邊圖片 */}
           <div className="col-sm-7 col-12 left-info px-sm-5">
             <div className="position-sticky" style={{ top: '100px' }}>
-              <GallerySwiper images={images} path="/images/groupbuy/" />
+              <GallerySwiper images={images} path="/images/product/" />
             </div>
           </div>
           {/* 右側商品文字內容 */}
