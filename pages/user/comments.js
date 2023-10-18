@@ -74,89 +74,90 @@ const commentsData = [
 //       category2:product.category_2,
 //       isComment: user_order_list.is_comment===false,
 //     }]
-const commentsYetData = [
-  {
-    orderId: '20231010001',
-    product: 'product1',
-    productPic:
-      'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
-    category1: '規格1',
-    category2: '規格2',
-    isComment: false,
-  },
-  {
-    orderId: '20231010001',
-    product: 'product2',
-    productPic:
-      'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
-    category1: '規格3',
-    category2: '規格4',
-    isComment: false,
-  },
-  {
-    orderId: '20231010003',
-    product: 'product3',
-    productPic:
-      'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
-    category1: '規格5',
-    category2: '規格6',
-    isComment: false,
-  },
-  {
-    orderId: '20231010003',
-    product: 'product4',
-    productPic:
-      'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
-    category1: '規格7',
-    category2: '規格8',
-    isComment: false,
-  },
-  {
-    orderId: '20231010003',
-    product: 'product5',
-    productPic:
-      'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
-    category1: '規格7',
-    category2: '規格8',
-    isComment: false,
-  },
-  {
-    orderId: '20231010003',
-    product: 'product5',
-    productPic:
-      'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
-    category1: '規格7',
-    category2: '規格8',
-    isComment: false,
-  },
-  {
-    orderId: '20231010003',
-    product: 'product5',
-    productPic:
-      'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
-    category1: '規格7',
-    category2: '規格8',
-    isComment: false,
-  },
-  {
-    orderId: '20231010003',
-    product: 'product5',
-    productPic:
-      'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
-    category1: '規格7',
-    category2: '規格8',
-    isComment: false,
-  },
-  {
-    orderId: '20231010003',
-    product: 'product5',
-    productPic:
-      'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
-    category1: '規格7',
-    category2: '規格8',
-    isComment: false,
-  },
-]
+
+// const commentsYetData = [
+//   {
+//     orderId: '20231010001',
+//     product: 'product1',
+//     productPic:
+//       'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
+//     category1: '規格1',
+//     category2: '規格2',
+//     isComment: false,
+//   },
+//   {
+//     orderId: '20231010001',
+//     product: 'product2',
+//     productPic:
+//       'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
+//     category1: '規格3',
+//     category2: '規格4',
+//     isComment: false,
+//   },
+//   {
+//     orderId: '20231010003',
+//     product: 'product3',
+//     productPic:
+//       'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
+//     category1: '規格5',
+//     category2: '規格6',
+//     isComment: false,
+//   },
+//   {
+//     orderId: '20231010003',
+//     product: 'product4',
+//     productPic:
+//       'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
+//     category1: '規格7',
+//     category2: '規格8',
+//     isComment: false,
+//   },
+//   {
+//     orderId: '20231010003',
+//     product: 'product5',
+//     productPic:
+//       'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
+//     category1: '規格7',
+//     category2: '規格8',
+//     isComment: false,
+//   },
+//   {
+//     orderId: '20231010003',
+//     product: 'product5',
+//     productPic:
+//       'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
+//     category1: '規格7',
+//     category2: '規格8',
+//     isComment: false,
+//   },
+//   {
+//     orderId: '20231010003',
+//     product: 'product5',
+//     productPic:
+//       'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
+//     category1: '規格7',
+//     category2: '規格8',
+//     isComment: false,
+//   },
+//   {
+//     orderId: '20231010003',
+//     product: 'product5',
+//     productPic:
+//       'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
+//     category1: '規格7',
+//     category2: '規格8',
+//     isComment: false,
+//   },
+//   {
+//     orderId: '20231010003',
+//     product: 'product5',
+//     productPic:
+//       'https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png',
+//     category1: '規格7',
+//     category2: '規格8',
+//     isComment: false,
+//   },
+// ]
 const items = [
   {
     key: '1',
@@ -177,15 +178,11 @@ export default function Comments() {
   const [commentData, setCommentData] = useState([])
 
   const getComment = async () => {
-    const apiUrl = 'http://localhost:3005/api/comment'
+    const apiUrl = `http://localhost:3005/api/user_comment/yet_comment/${id}`
     const userId = { userId: id } // 替换为你的userId
 
     await axios
-      .get(apiUrl, {
-        params: {
-          userId: userId,
-        },
-      })
+      .get(apiUrl)
       .then((response) => {
         console.log('成功獲取數據：', response.data)
         const data = response.data.data
@@ -200,7 +197,9 @@ export default function Comments() {
   }
   useEffect(() => {
     getComment()
-  }, [])
+  }, [auth])
+
+  const commentsYetData = commentData
 
   const [tagKey, setTagKey] = useState('1')
 
