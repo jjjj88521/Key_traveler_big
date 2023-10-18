@@ -27,6 +27,9 @@ function Accordion() {
           <div className={`accordion-body ${styles['accBody']}`}>
             <ul>
               <li>
+                <Link href="/product/1">全部套件</Link>
+              </li>
+              <li>
                 <Link href="/product/1/3">60%</Link>
               </li>
               <li>
@@ -73,6 +76,9 @@ function Accordion() {
           <div className={`accordion-body ${styles['accBody']}`}>
             <ul>
               <li>
+                <Link href="/product/2">全部軸體</Link>
+              </li>
+              <li>
                 <Link href="/product/2/1">段落有聲軸</Link>
               </li>
               <li>
@@ -112,6 +118,9 @@ function Accordion() {
         >
           <div className={`accordion-body ${styles['accBody']}`}>
             <ul>
+              <li>
+                <Link href="/product/3">全部鍵帽</Link>
+              </li>
               <li>
                 <Link href="/product/3/10">Cerry原廠高</Link>
               </li>
@@ -171,6 +180,9 @@ function Accordion() {
           <div className={`accordion-body ${styles['accBody']}`}>
             <ul>
               <li>
+                <Link href="/product/4">全部成品鍵盤</Link>
+              </li>
+              <li>
                 <Link href="/product/4/13">機械式鍵盤</Link>
               </li>
               <li>
@@ -210,6 +222,9 @@ function Accordion() {
         >
           <div className={`accordion-body ${styles['accBody']}`}>
             <ul>
+              <li>
+                <Link href="/product/5">全部周邊</Link>
+              </li>
               <li>
                 <Link href="/product/5/18">潤滑油</Link>
               </li>

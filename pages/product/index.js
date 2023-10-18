@@ -72,9 +72,7 @@ export default function ProductIndex() {
     axios
       .get(`http://localhost:3005/api/products/qs?orderby=${orderby}`)
       .then((res) => {
-        console.log('按排序後，set前', res.data)
         setCateProducts(res.data)
-        console.log('按排序後，set後', res.data)
       })
       .catch((err) => {
         console.log(err)
@@ -190,8 +188,6 @@ export default function ProductIndex() {
                   className="btn btn-primary"
                   style={{ width: '60%', margin: 'auto' }}
                   onClick={() => {
-                    console.log(priceRange)
-                    console.log(range)
                     filterRange()
                   }}
                 >

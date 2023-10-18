@@ -14,9 +14,14 @@ export default function ProductCate2() {
   const router = useRouter()
   const { c1_name, c2_name } = router.query
 
+  // 篩選用state
+  const [priceRange, setPriceRange] = useState({ min: 10, max: 30000 }) //數字物件
+  const range = `price_range=${priceRange.min},${priceRange.max}`
+
   // 抓取DB相關
   const [cateProducts, setCateProducts] = useState([])
   const [cateName, setcateName] = useState([])
+
   useEffect(() => {
     if (router.isReady) {
       // 抓此類別的所有商品
@@ -45,6 +50,34 @@ export default function ProductCate2() {
   //   console.log(cateProducts)
   //   console.log(cateProducts.data)
   //   console.log(cateName)
+
+  // 篩選價錢範圍
+  const filterRange = () => {
+    axios
+      .get(
+        `http://localhost:3005/api/products/qs?cate_1=${c1_name}&cate_2=${c2_name}&${range}`
+      )
+      .then((res) => {
+        setCateProducts(res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  // 排序
+  const orderProduct = (orderby) => {
+    axios
+      .get(
+        `http://localhost:3005/api/products/qs?cate_1=${c1_name}&cate_2=${c2_name}&orderby=${orderby}`
+      )
+      .then((res) => {
+        setCateProducts(res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 
   // 存是否正在載入
   const [isLoading, setIsLoading] = useLoading(
@@ -96,7 +129,75 @@ export default function ProductCate2() {
           <div className="d-none d-sm-block col-12 col-sm-3 pe-md-5 pe-1">
             <Accordion />
             <hr className="text-primary opacity-100"></hr>
-            <AsideFilter />
+            {/* AsideFilter，篩選 */}
+            <div className="p-4 pt-0">
+              <div className="mb-2 fs-5">
+                <i className="fa-solid fa-filter"></i> 條件篩選
+              </div>
+              <div className="d-flex flex-column gap-1">
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="flexCheckDefault"
+                  />
+                  有貨
+                </div>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="flexCheckDefault"
+                  />
+                  品牌
+                </div>
+                <hr className="opacity-75"></hr>
+                <div className="mb-2 fs-5">
+                  <i className="fa-solid fa-dollar-sign"></i> 價錢範圍
+                </div>
+                <div className="mb-3 d-flex justify-content-center align-items-center">
+                  <input
+                    type="number"
+                    className="col-5"
+                    min="0"
+                    value={priceRange.min}
+                    onChange={(e) => {
+                      setPriceRange({
+                        ...priceRange,
+                        min: Number(e.target.value),
+                      })
+                    }}
+                  ></input>
+                  <div className="col-2 fs-4 d-flex justify-content-center">
+                    ~
+                  </div>
+                  <input
+                    type="number"
+                    className="col-5"
+                    min="0"
+                    value={priceRange.max}
+                    onChange={(e) => {
+                      setPriceRange({
+                        ...priceRange,
+                        max: Number(e.target.value),
+                      })
+                    }}
+                  ></input>
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  style={{ width: '60%', margin: 'auto' }}
+                  onClick={() => {
+                    filterRange()
+                  }}
+                >
+                  套用
+                </button>
+              </div>
+            </div>
           </div>
 
           {/* sort btn & card group */}
@@ -116,29 +217,59 @@ export default function ProductCate2() {
                   </button>
                   <ul className="dropdown-menu">
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <button
+                        className="dropdown-item"
+                        onClick={() => {
+                          //   setOrderby('stock,desc')
+                          orderProduct('stock,desc')
+                        }}
+                      >
                         有貨優先
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <button
+                        className="dropdown-item"
+                        onClick={() => {
+                          //   setOrderby('price,asc')
+                          orderProduct('price,asc')
+                        }}
+                      >
                         價錢：由低到高
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <button
+                        className="dropdown-item"
+                        onClick={() => {
+                          //   setOrderby('price,desc')
+                          orderProduct('price,desc')
+                        }}
+                      >
                         價錢：由高到低
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <button
+                        className="dropdown-item"
+                        onClick={() => {
+                          //   setOrderby('created_time,desc')
+                          orderProduct('created_time,desc')
+                        }}
+                      >
                         上架日期：由新到舊
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <button
+                        className="dropdown-item"
+                        onClick={() => {
+                          //   setOrderby('created_time,asc')
+                          orderProduct('created_time,asc')
+                        }}
+                      >
                         上架日期：由舊到新
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 </div>
@@ -202,22 +333,21 @@ export default function ProductCate2() {
                 </div>
               )}
             </div>
+            {/* 分頁頁碼 */}
+            <div className="m-5">
+              {totalPageCount < PageSize ? (
+                ''
+              ) : (
+                <PaginationComponent
+                  currentPage={currentPage}
+                  totalItems={totalPageCount}
+                  pageSize={PageSize}
+                  onPageChange={handlePageChange}
+                ></PaginationComponent>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-
-      {/* 分頁頁碼 */}
-      <div className="m-5">
-        {totalPageCount < PageSize ? (
-          ''
-        ) : (
-          <PaginationComponent
-            currentPage={currentPage}
-            totalItems={totalPageCount}
-            pageSize={PageSize}
-            onPageChange={handlePageChange}
-          ></PaginationComponent>
-        )}
       </div>
     </>
   )
