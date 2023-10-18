@@ -1,9 +1,11 @@
-import { React, useState } from 'react'
+import { React, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Avatar, List, Rate, Drawer } from 'antd'
 import style from './comments.module.scss'
 import UserLayout from '@/components/layout/user-layout'
 import { Radio } from 'antd'
+import axios from 'axios'
+import { useAuth } from '@/hooks/useAuth'
 
 const moment = require('moment')
 
@@ -169,6 +171,37 @@ const items = [
 ]
 
 export default function Comments() {
+  const { auth, setAuth } = useAuth()
+  const id = auth.user.id
+  console.log(id)
+  const [commentData, setCommentData] = useState([])
+
+  const getComment = async () => {
+    const apiUrl = 'http://localhost:3005/api/comment'
+    const userId = { userId: id } // 替换为你的userId
+
+    await axios
+      .get(apiUrl, {
+        params: {
+          userId: userId,
+        },
+      })
+      .then((response) => {
+        console.log('成功獲取數據：', response.data)
+        const data = response.data.data
+        console.log(data)
+        setCommentData(data)
+        // 在这里处理从API返回的数据
+      })
+      .catch((error) => {
+        console.error('獲取數據時出錯：', error)
+        // 在这里处理错误
+      })
+  }
+  useEffect(() => {
+    getComment()
+  }, [])
+
   const [tagKey, setTagKey] = useState('1')
 
   const tagsOnChange = (e) => {
