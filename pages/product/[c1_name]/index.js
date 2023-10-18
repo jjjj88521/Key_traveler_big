@@ -14,6 +14,9 @@ export default function ProductCate1() {
   const router = useRouter()
   const { c1_name } = router.query
 
+  // dropdown選單
+  const [selectedOption, setSelectedOption] = useState('預設')
+
   // 篩選用state
   const [priceRange, setPriceRange] = useState({ min: 10, max: 30000 }) //數字物件
   const range = `price_range=${priceRange.min},${priceRange.max}`
@@ -235,15 +238,15 @@ export default function ProductCate1() {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    預設
+                    {selectedOption}
                   </button>
                   <ul className="dropdown-menu">
                     <li>
                       <button
                         className="dropdown-item"
                         onClick={() => {
-                          //   setOrderby('stock,desc')
                           orderProduct('stock,desc')
+                          setSelectedOption('有貨優先')
                         }}
                       >
                         有貨優先
@@ -253,8 +256,8 @@ export default function ProductCate1() {
                       <button
                         className="dropdown-item"
                         onClick={() => {
-                          //   setOrderby('price,asc')
                           orderProduct('price,asc')
+                          setSelectedOption('價錢：由低到高')
                         }}
                       >
                         價錢：由低到高
@@ -264,8 +267,8 @@ export default function ProductCate1() {
                       <button
                         className="dropdown-item"
                         onClick={() => {
-                          //   setOrderby('price,desc')
                           orderProduct('price,desc')
+                          setSelectedOption('價錢：由高到低')
                         }}
                       >
                         價錢：由高到低
@@ -275,8 +278,8 @@ export default function ProductCate1() {
                       <button
                         className="dropdown-item"
                         onClick={() => {
-                          //   setOrderby('created_time,desc')
                           orderProduct('created_time,desc')
+                          setSelectedOption('上架日期：由新到舊')
                         }}
                       >
                         上架日期：由新到舊
@@ -286,8 +289,8 @@ export default function ProductCate1() {
                       <button
                         className="dropdown-item"
                         onClick={() => {
-                          //   setOrderby('created_time,asc')
                           orderProduct('created_time,asc')
+                          setSelectedOption('上架日期：由舊到新')
                         }}
                       >
                         上架日期：由舊到新

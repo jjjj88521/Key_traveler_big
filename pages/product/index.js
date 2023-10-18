@@ -22,6 +22,9 @@ export default function ProductIndex() {
   const [priceRange, setPriceRange] = useState({ min: 10, max: 30000 }) //數字物件
   const range = `price_range=${priceRange.min},${priceRange.max}`
 
+  // dropdown選單
+  const [selectedOption, setSelectedOption] = useState('預設')
+
   // 路由相關
   const router = useRouter()
   const [cateProducts, setCateProducts] = useState([])
@@ -224,15 +227,15 @@ export default function ProductIndex() {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    預設
+                    {selectedOption}
                   </button>
                   <ul className="dropdown-menu">
                     <li>
                       <button
                         className="dropdown-item"
                         onClick={() => {
-                          //   setOrderby('stock,desc')
                           orderProduct('stock,desc')
+                          setSelectedOption('有貨優先')
                         }}
                       >
                         有貨優先
@@ -242,8 +245,8 @@ export default function ProductIndex() {
                       <button
                         className="dropdown-item"
                         onClick={() => {
-                          //   setOrderby('price,asc')
                           orderProduct('price,asc')
+                          setSelectedOption('價錢：由低到高')
                         }}
                       >
                         價錢：由低到高
@@ -253,8 +256,8 @@ export default function ProductIndex() {
                       <button
                         className="dropdown-item"
                         onClick={() => {
-                          //   setOrderby('price,desc')
                           orderProduct('price,desc')
+                          setSelectedOption('價錢：由高到低')
                         }}
                       >
                         價錢：由高到低
@@ -264,8 +267,8 @@ export default function ProductIndex() {
                       <button
                         className="dropdown-item"
                         onClick={() => {
-                          //   setOrderby('created_time,desc')
                           orderProduct('created_time,desc')
+                          setSelectedOption('上架日期：由新到舊')
                         }}
                       >
                         上架日期：由新到舊
@@ -275,8 +278,8 @@ export default function ProductIndex() {
                       <button
                         className="dropdown-item"
                         onClick={() => {
-                          //   setOrderby('created_time,asc')
                           orderProduct('created_time,asc')
+                          setSelectedOption('上架日期：由舊到新')
                         }}
                       >
                         上架日期：由舊到新
