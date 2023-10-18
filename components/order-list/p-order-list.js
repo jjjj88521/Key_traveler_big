@@ -1,38 +1,77 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faCircleChevronDown,
   faPencil,
 } from '@fortawesome/free-solid-svg-icons'
+import axios from 'axios'
 
 export default function POrderList() {
-  const initialOrderLists = [
-    {
-      id: 1,
-      img: '/images/1669370674683000804.jpg',
-      price: 3000,
-      amount: 1,
-    },
-    {
-      id: 2,
-      img: '/images/1669370674683000804.jpg',
-      price: 1000,
-      amount: 2,
-    },
-  ]
+  const router = useRouter()
+  const { query } = router
+  const orderId = query.oid
+  console.log(query)
+  console.log(orderId)
+  const [orderDetails, setOrderDetails] = useState([])
 
-  const [orderLists, setOrderLists] = useState(initialOrderLists)
+  useEffect(() => {
+    // 設置API的URL，替換為實際的後端API端點
+    const apiUrl = `http://localhost:3005/api/order/purchase/${orderId}`
+
+    // 發送GET請求以獲取訂單詳細資料
+    axios
+      .get(apiUrl)
+      .then((response) => {
+        const data = response.data.orderDetails
+        setOrderDetails(data)
+        console.log(data)
+      })
+      .catch((error) => {
+        console.error('獲取訂單詳細資料時出錯：', error)
+      })
+  }, [orderId])
+
+  console.log(orderDetails)
+  // const initialOrderLists = [
+  //   {
+  //     id: 5,
+  //     img: '/images/1669370674683000804.jpg',
+  //     brand: 'Meletrix',
+  //     name: 'Meletrix ZoomPad 數字鍵盤套件 SP版(左手版)',
+  //     price: 3000,
+  //     amount: 1,
+  //     spec: {
+  //       外殼: ['EE 耀夜黑', 'EE 細花白'],
+  //       '配重/旋鈕': ['電泳 白', '陽極 黑'],
+  //     },
+  //   },
+  //   {
+  //     id: 2,
+  //     img: '/images/1669370674683000804.jpg',
+  //     brand: 'Meletrix',
+  //     name: 'Meletrix ZoomPad 數字鍵盤套件 SP版(左手版)',
+  //     price: 1000,
+  //     amount: 2,
+  //     spec: {
+  //       外殼: ['EE 耀夜黑', 'EE 細花白'],
+  //       '配重/旋鈕': ['電泳 白', '陽極 黑'],
+  //     },
+  //   },
+  // ]
+
+  // const [orderLists, setOrderLists] = useState(initialOrderLists)
 
   // P總計
-  const calculateTotalPrice = (orderLists) => {
+  const calculateTotalPrice = (orderDetails) => {
     let totalPrice = 0
-    for (const orderList of orderLists) {
-      totalPrice += orderList.price * orderList.amount
+    for (const orderDetail of orderDetails) {
+      totalPrice += orderDetail.price * orderDetail.amount
     }
     return totalPrice
   }
-  const totalPrice = calculateTotalPrice(orderLists)
+  const totalPrice = calculateTotalPrice(orderDetails)
 
   return (
     <>
@@ -51,7 +90,7 @@ export default function POrderList() {
           />
         </div>
         <div>一般商品</div>
-        <div className="ps-1">(2)</div>
+        <div className="ps-1">({orderDetails.length})</div>
       </div>
       {/* 歷史訂單明細頁 電腦版 */}
       <table className={`table d-none d-sm-table`}>
@@ -67,15 +106,15 @@ export default function POrderList() {
           </tr>
         </thead>
         <tbody className="accordion-collapse collapse show" id="collapseOne">
-          {orderLists.map((v) => (
-            <tr key={v.id}>
+          {orderDetails.map((v, i) => (
+            <tr key={i}>
               <td className="d-flex ps-3">
                 <div className="p-2">
                   <Image src={v.img} width={100} height={100} alt="" />
                 </div>
                 <div className="p-2">
-                  <div>Qwertykey</div>
-                  <div>QK75鍵盤鍵盤鍵盤鍵盤</div>
+                  <div>{v.brand}</div>
+                  <div>{v.name}</div>
                   <div>陽極紅</div>
                   <div>噴砂銀</div>
                 </div>
@@ -122,7 +161,7 @@ export default function POrderList() {
           </tr>
         </thead>
         <tbody className="accordion-collapse collapse show" id="collapseOne">
-          {orderLists.map((v) => (
+          {orderDetails.map((v) => (
             <tr key={v.id}>
               <td className="d-flex">
                 <div className="pe-2 pt-2">
