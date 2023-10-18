@@ -264,8 +264,7 @@ export default function DetailFilter() {
                 className=" border border-1 border-light position-relative"
                 style={{
                   padding: '35px 30px',
-                  boxShadow:
-                    '0 0 0 5px #171717, 0 2px 8px 10px rgba(0, 0, 0, .6)',
+                  boxShadow: '0 0 0 5px #D9D9D9',
                 }}
               >
                 {/* 收藏按鈕 */}
@@ -282,7 +281,7 @@ export default function DetailFilter() {
                   ) : (
                     <i
                       className="fa-regular fa-heart fa-2xl position-absolute"
-                      style={{ top: '20px', right: '10px' }}
+                      style={{ top: '20px', right: '10px', color: '#D9D9D9' }}
                     ></i>
                   )}
                 </button>
@@ -321,7 +320,7 @@ export default function DetailFilter() {
                         JSON.parse(filterArticle.img).map((img, index) => (
                           <span key={index} className="image-container p-2">
                             <Image
-                              src={`/article/${img}`}
+                              src={`/images/article/${img}`}
                               alt={`Image ${index + 1}`}
                               width={200}
                               height={150}
