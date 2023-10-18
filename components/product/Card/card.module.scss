@@ -78,6 +78,11 @@
         display: none;
       }
     }
+    a {
+      @media (max-width: 576px) {
+        display: none;
+      }
+    }
 
     .infoBtn1 {
       background: white;
@@ -121,10 +126,10 @@
   .cartBtn {
     position: absolute;
     right: 10px;
-    top: 10px;
-    width: 45px;
-    height: 40px;
-    padding: 4px 0 0 0;
+    top: -45px;
+    width: 35px;
+    height: 35px;
+    padding: 5px 1px 0 0;
     background: #f8f8f8;
   }
 

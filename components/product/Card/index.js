@@ -8,11 +8,13 @@ export default function Card({ title, brand, price, image, stock, link }) {
       <div
         className={`card h-auto border border-1 ${styles['card']} overflow-hidden`}
       >
-        <img
-          src={`/images/product/${image}`}
-          className={`${styles.cardImg} card-img-top`}
-          alt="Product"
-        />
+        <Link className={styles['infoBtn3']} href={link}>
+          <img
+            src={`/images/product/${image}`}
+            className={`${styles.cardImg} card-img-top`}
+            alt="Product"
+          />
+        </Link>
 
         {/* 待完成，判斷是否為新品(ribbon) */}
         {stock === 0 ? (
@@ -30,7 +32,7 @@ export default function Card({ title, brand, price, image, stock, link }) {
             className={`d-sm-none d-block border border-2 border-primary rounded-circle ${styles['cartBtn']}`}
           >
             <i
-              className="fa-solid fa-cart-shopping fa-xl"
+              className="fa-solid fa-cart-shopping fa-lg"
               style={{ color: '#F1D6AB' }}
             ></i>
           </button>
