@@ -23,7 +23,7 @@ export default function ProductIndex() {
   const [cate_1, setCate_1] = useState([]) // 數字陣列
   const [cate_2, setCate_2] = useState([]) // 數字陣列
   const [priceRange, setPriceRange] = useState({ min: 10, max: 30000 }) //數字物件
-
+  const range = `price_range=${priceRange.min},${priceRange.max}`
   // 排序(前面為排序欄位，後面參數asc為從小到大，desc為從大到小排序)
   const [orderby, setOrderby] = useState('id,asc')
 
@@ -39,6 +39,7 @@ export default function ProductIndex() {
   const router = useRouter()
 
   const [cateProducts, setCateProducts] = useState([])
+
   useEffect(() => {
     if (router.isReady) {
       axios
@@ -49,36 +50,36 @@ export default function ProductIndex() {
         .catch((err) => {
           console.log(err)
         })
-
-      // 從router.query得到所有查詢字串參數
-      const { page, keyword, cat_ids, orderby, perpage, price_range } =
-        router.query
-      console.log(router.query)
-
-      // 設定回所有狀態(注意資料類型，所有從查詢字串來都是字串類型)
-      //   setPage(Number(page) || 1)
-      //   setKeyword(keyword || '')
-      //   setCatIds(cat_ids ? cat_ids.split(',').map((v) => Number(v)) : [])
-      //   setOrderby(orderby || 'id,asc')
-      //   setPerpage(Number(perpage) || 10)
-      setPriceRange(
-        price_range
-          ? {
-              min: Number(price_range.split(',')[0]),
-              max: Number(price_range.split(',')[1]),
-            }
-          : {
-              min: 10,
-              max: 30000,
-            }
-      )
-
-      // 載入資料
-      getProductsQs(router.query)
     }
   }, [router.isReady])
   //   console.log(cateProducts)
   //   console.log(cateProducts.data)
+
+  // 篩選價錢範圍
+  const filterRange = () => {
+    axios
+      .get(`http://localhost:3005/api/products/qs?${range}`)
+      .then((res) => {
+        setCateProducts(res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  // 排序
+  const orderProduct = (orderby) => {
+    axios
+      .get(`http://localhost:3005/api/products/qs?orderby=${orderby}`)
+      .then((res) => {
+        console.log('按排序後，set前', res.data)
+        setCateProducts(res.data)
+        console.log('按排序後，set後', res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 
   // 存是否正在載入
   const [isLoading, setIsLoading] = useLoading(
@@ -100,27 +101,6 @@ export default function ProductIndex() {
       .catch((err) => {
         console.log(err)
       })
-  }
-
-  const getProductsQs = async (params, toFirstPage = false) => {
-    // 跳至第一頁
-    // 當重新過濾或重置選項，因重新載入資料需要跳至第一頁
-    if (toFirstPage) {
-      setPage(1)
-    }
-
-    // 用URLSearchParams產生查詢字串
-    const searchParams = new URLSearchParams(params)
-    const url = `http://localhost:3005/api/products/qs?${searchParams.toString()}`
-
-    const res = await axios.get(url)
-
-    if (Array.isArray(res.data.data)) {
-      // 設定獲取頁數總合
-      setItemTotal(res.data.total)
-      // 設定獲取項目
-      setItems(res.data.data)
-    }
   }
 
   // Drawer相關
@@ -210,20 +190,9 @@ export default function ProductIndex() {
                   className="btn btn-primary"
                   style={{ width: '60%', margin: 'auto' }}
                   onClick={() => {
-                    const params = {
-                      page: 1, // 跳至第一頁
-                      //   keyword,
-                      //   cat_ids: catIds.join(','),
-                      //   orderby,
-                      //   perpage,
-                      price_range: Object.values(priceRange).join(','),
-                    }
-
-                    router.push({
-                      pathname: router.pathname,
-                      query: params,
-                    })
-                    getProductsQs(params)
+                    console.log(priceRange)
+                    console.log(range)
+                    filterRange()
                   }}
                 >
                   套用
@@ -249,29 +218,59 @@ export default function ProductIndex() {
                   </button>
                   <ul className="dropdown-menu">
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <button
+                        className="dropdown-item"
+                        onClick={() => {
+                          //   setOrderby('stock,desc')
+                          orderProduct('stock,desc')
+                        }}
+                      >
                         有貨優先
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <button
+                        className="dropdown-item"
+                        onClick={() => {
+                          //   setOrderby('price,asc')
+                          orderProduct('price,asc')
+                        }}
+                      >
                         價錢：由低到高
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <button
+                        className="dropdown-item"
+                        onClick={() => {
+                          //   setOrderby('price,desc')
+                          orderProduct('price,desc')
+                        }}
+                      >
                         價錢：由高到低
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <button
+                        className="dropdown-item"
+                        onClick={() => {
+                          //   setOrderby('created_time,desc')
+                          orderProduct('created_time,desc')
+                        }}
+                      >
                         上架日期：由新到舊
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <button
+                        className="dropdown-item"
+                        onClick={() => {
+                          //   setOrderby('created_time,asc')
+                          orderProduct('created_time,asc')
+                        }}
+                      >
                         上架日期：由舊到新
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 </div>
