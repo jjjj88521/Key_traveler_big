@@ -31,7 +31,7 @@ export default function Login() {
     <>
       <UserLayout title={''} isLoginPage={true}>
         <LoginForm />
-        <LineLoginJWT />
+        {/* <LineLoginJWT /> */}
       </UserLayout>
     </>
   )

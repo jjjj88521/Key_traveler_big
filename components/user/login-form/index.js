@@ -224,9 +224,9 @@ export default function LoginForm() {
           <div className={`mb-3 ${styles['hr-sect']} `}>快速登入</div>
           <div className="col-sm-12 text-start">
             <div className="d-flex justify-content-center my-3">
-              <button type="button" className="mx-3 border-0 bg-transparent">
+              {/* <button type="button" className="mx-3 border-0 bg-transparent">
                 <LineLogo />
-              </button>
+              </button> */}
               {/* <button
                 type="button"
                 className="mx-3 border-0 bg-transparent"
@@ -238,9 +238,9 @@ export default function LoginForm() {
                 <GoogleLogo />
               </button> */}
               <GoogleLoginJWT />
-              <button type="button" className="mx-3 border-0 bg-transparent">
+              {/* <button type="button" className="mx-3 border-0 bg-transparent">
                 <FacebookLogo />
-              </button>
+              </button> */}
             </div>
           </div>
         </div>

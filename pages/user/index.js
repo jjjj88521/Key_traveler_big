@@ -21,8 +21,8 @@ export default function User() {
       // setIsLoading(false)
     } else {
       Swal.fire({
-        icon: 'error',
-        title: '請先登入會員',
+        icon: 'warning',
+        title: '請登入會員',
         showConfirmButton: false,
         timer: 1000,
       }).then(() => {

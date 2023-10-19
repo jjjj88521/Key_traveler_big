@@ -93,8 +93,12 @@ export default function GoogleLoginJWT() {
     <>
       {/* <h1>google-login測試頁(jwt)</h1>
       <p>會員狀態:{auth.isAuth ? '已登入' : '未登入'}</p> */}
-      <button onClick={() => loginGoogle(callbackGoogleLogin)}>
-        <GoogleLogo /> 用google登入
+      <button
+        onClick={() => loginGoogle(callbackGoogleLogin)}
+        style={{ background: 'white' }}
+        className="p-2 border rounded px-5"
+      >
+        <GoogleLogo /> google登入
       </button>
       {/* <br />
       <button onClick={logout}>登出</button>

@@ -92,8 +92,6 @@ const UploadAvatar = () => {
   }
 
   useEffect(() => {
-    console.log('AAAA')
-
     setFileList([
       {
         uid: '1',
@@ -126,7 +124,10 @@ const UploadAvatar = () => {
     console.log(auth)
   }
   useEffect(() => {
-    updateUser(auth.user.id, data)
+    setData({
+      ...auth.user,
+      avatar: '',
+    })
   }, [data])
 
   return (
@@ -157,6 +158,7 @@ const UploadAvatar = () => {
                 return false // 阻止默认上传行为
               }}
               onPreview={onPreview}
+              onRemove={updateUser(auth.user.id, data)}
             >
               {fileList.length === 1 ? null : '+ Upload'}
             </Upload>
