@@ -9,6 +9,8 @@ import Card from '@/components/product/Card'
 import PaginationComponent from '@/components/common/PaginationComponent'
 import useLoading from '@/hooks/useLoading'
 import LoadingPage from '@/components/common/loadingPage'
+import Link from 'next/link'
+import { useAllPdLike } from '@/context/useAllPdLike'
 
 // <div className="container">
 // <div className={styles['banner']}>
@@ -54,8 +56,8 @@ const sortOptions = [
 ]
 
 export default function ProductIndex() {
+  const { allPdLike } = useAllPdLike()
   const router = useRouter()
-  // const { status, page, orderby, price_range } = router.query
   // 開關 Drawer
   const [open, setOpen] = useState(false)
 
@@ -80,12 +82,12 @@ export default function ProductIndex() {
 
   useEffect(() => {
     const params = {
-      ...filterParams,
+      ...router.query,
     }
     const fetchGroupbuyList = async () => {
       setIsLoading(true)
       await axios
-        .get(`http://localhost:3005/api/groupbuy/qs`, { params: params })
+        .get(`http://localhost:3005/api/groupbuy/qs`, { params })
         .then((res) => {
           setCateProducts(res.data)
           setFilterParams({ ...params })
@@ -121,15 +123,6 @@ export default function ProductIndex() {
   const submitFilter = (e) => {
     e.preventDefault()
 
-    // 假設價格沒有值，就給0~99999
-    if (!priceRange[0] && !priceRange[1]) {
-      setPriceRange([0, 99999])
-    } else if (!priceRange[0] && priceRange[1]) {
-      setPriceRange([0, priceRange[1]])
-    } else if (priceRange[0] && !priceRange[1]) {
-      setPriceRange([priceRange[0], 99999])
-    }
-
     // 取得篩選條件
     const queryParams = {
       status: selectedStatus.join(','),
@@ -156,6 +149,17 @@ export default function ProductIndex() {
         orderby: value,
         page: 1,
       },
+    })
+  }
+
+  // 清空篩選條件
+  const clearFilter = () => {
+    setFilterParams({})
+    setSelectedStatus([])
+    setPriceRange([])
+    router.push({
+      pathname: '/groupbuy',
+      query: {},
     })
   }
 
@@ -198,6 +202,7 @@ export default function ProductIndex() {
                       onChange={(e) => {
                         handleStatusChange(e)
                       }}
+                      checked={selectedStatus.includes('wait')}
                     />
                     即將開團
                   </div>
@@ -211,6 +216,7 @@ export default function ProductIndex() {
                       onChange={(e) => {
                         handleStatusChange(e)
                       }}
+                      checked={selectedStatus.includes('run')}
                     />
                     團購中
                   </div>
@@ -224,6 +230,7 @@ export default function ProductIndex() {
                       onChange={(e) => {
                         handleStatusChange(e)
                       }}
+                      checked={selectedStatus.includes('end')}
                     />
                     團購結束
                   </div>
@@ -267,6 +274,13 @@ export default function ProductIndex() {
                   <button type="submit" className="btn btn-primary">
                     套用
                   </button>
+                  {/* <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={clearFilter}
+                  >
+                    清空篩選
+                  </button> */}
                 </div>
               </div>
             </div>
@@ -422,6 +436,8 @@ export default function ProductIndex() {
                       <div className="col" key={i}>
                         {/* <div className="col"> */}
                         <Card
+                          id={v.id}
+                          cate={'gb'}
                           title={v.name}
                           brand={v.brand}
                           price={v.price}

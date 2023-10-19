@@ -143,7 +143,7 @@ export default function Navbar() {
   }
 
   // 判斷是否登入，登入後顯示登出按鈕
-  const { auth, setAuth, logout } = useAuth()
+  const { auth, logout } = useAuth()
   const handleLogout = () => {
     localStorage.setItem('redirect', router.asPath)
     logout()
@@ -214,7 +214,7 @@ export default function Navbar() {
             <div className="col d-sm-flex d-none align-items-center justify-content-end gap-5">
               {/* 會員中心 */}
               <div className="text-primary fs-5">
-                <Link href="/user">
+                <Link href={`${auth.isAuth ? '/user/profile' : '/user/login'}`}>
                   <i className="fa-regular fa-user"></i>
                 </Link>
               </div>

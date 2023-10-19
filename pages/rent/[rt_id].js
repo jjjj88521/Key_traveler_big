@@ -38,6 +38,7 @@ export default function RentDetail() {
         })
       await fetchProductLike('rt', rt_id).then((like) => {
         setIsLiked(like)
+        console.log(like)
       })
     }
     if (isReady) {

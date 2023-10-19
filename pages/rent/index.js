@@ -36,12 +36,12 @@ const sortOptions = [
     label: '價格低到高',
   },
   {
-    value: 'created_time,desc',
-    label: '上架時間由新到舊',
+    value: 'name,desc',
+    label: '名稱降序',
   },
   {
-    value: 'created_time,asc',
-    label: '上架時間由舊到新',
+    value: 'name,asc',
+    label: '名稱升序',
   },
 ]
 
@@ -375,6 +375,8 @@ export default function ProductIndex() {
                       <div className="col" key={i}>
                         {/* <div className="col"> */}
                         <Card
+                          id={v.id}
+                          cate={'rt'}
                           title={v.name}
                           brand={v.brand}
                           price={`${v.price} / 日`}

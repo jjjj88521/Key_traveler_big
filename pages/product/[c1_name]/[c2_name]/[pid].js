@@ -31,6 +31,8 @@ import 'swiper/scss/navigation'
 import { SwiperPrevBtn, SwiperNextBtn } from '@/components/home/swiper-btns'
 import Card from '@/components/product/Card'
 import { useAuth } from '@/hooks/useAuth'
+import anime from 'animejs'
+import useHideBtn from '@/hooks/useHideBtn'
 
 export default function ProductDetail() {
   const { auth } = useAuth()
@@ -50,6 +52,9 @@ export default function ProductDetail() {
 
   // 存是否正在載入
   const [isLoading, setIsLoading] = useLoading(productData.id)
+
+  // 按鈕是否隱藏
+  const { hideBtn, handleSwiperBtnHide } = useHideBtn()
 
   // 獲取資料
   useEffect(() => {
@@ -133,14 +138,21 @@ export default function ProductDetail() {
                   }}
                   modules={[Autoplay, Navigation]}
                   className="mySwiper"
+                  onSlideChange={handleSwiperBtnHide}
                 >
                   <SwiperPrevBtn
-                    className={`swiper-button-hidden btn btn-lg bg-white rounded-circle position-absolute start-0 ms-2 top-50 translate-middle-y z-1 d-none d-sm-block shadow`}
+                    className={`swiper-prev-btn btn btn-lg btn-light rounded-circle position-absolute start-0 ms-2 top-50 translate-middle-y z-1 d-none d-sm-block shadow ${
+                      hideBtn.prev ? 'opacity-0' : ''
+                    }`}
+                    style={{ transition: 'all 0.3s ease' }}
                   >
                     <i className="fa-solid fa-chevron-left text-primary"></i>
                   </SwiperPrevBtn>
                   <SwiperNextBtn
-                    className={`btn btn-lg bg-white rounded-circle position-absolute end-0 me-2 top-50 translate-middle-y z-1 d-none d-sm-block shadow`}
+                    className={`swiper-next-btn btn btn-lg btn-light rounded-circle position-absolute end-0 me-2 top-50 translate-middle-y z-1 d-none d-sm-block shadow ${
+                      hideBtn.next ? 'opacity-0' : ''
+                    }`}
+                    style={{ transition: 'all 0.3s ease' }}
                   >
                     <i className="fa-solid fa-chevron-right text-primary"></i>
                   </SwiperNextBtn>
@@ -149,10 +161,12 @@ export default function ProductDetail() {
                     return (
                       <SwiperSlide key={index}>
                         <Card
+                          id={product.id}
+                          cate={'pd'}
                           title={product.name}
                           brand={product.brand}
                           price={product.price}
-                          image={images[0]}
+                          image={`/images/product/${images[0]}`}
                           link={`/product/${product.category_1}/${product.category_2}/${product.id}`}
                           stock={product.stock}
                         />
@@ -163,7 +177,6 @@ export default function ProductDetail() {
               </div>
             </div>
           </section>
-
           {/* 商品詳細 tab 切換資訊、規格表、評論 */}
           <TabContainer pdCate={'product'}>
             <TabButton tabName="intro">商品介紹</TabButton>
@@ -195,10 +208,12 @@ export default function ProductDetail() {
                     return (
                       <SwiperSlide key={index}>
                         <Card
+                          id={product.id}
+                          cate={'pd'}
                           title={product.name}
                           brand={product.brand}
                           price={product.price}
-                          image={images[0]}
+                          image={`/images/product/${images[0]}`}
                           link={`/product/${product.category_1}/${product.category_2}/${product.id}`}
                           stock={product.stock}
                         />
