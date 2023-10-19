@@ -29,6 +29,8 @@ export default function NewPd() {
               return (
                 <div className="col pb-3" key={product.id}>
                   <Card
+                    id={product.id}
+                    cate={'pd'}
                     title={product.name}
                     brand={product.brand}
                     price={product.price}

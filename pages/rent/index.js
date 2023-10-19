@@ -110,9 +110,9 @@ export default function ProductIndex() {
   //   }
   // }
   // console.log(selectedStatus)
-  const handleStockSwitch = (e) => {
-    const isChecked = e.target.checked
-    setOnlyStock(isChecked)
+  const handleStockSwitch = (checked) => {
+    setOnlyStock(checked)
+    setFilterParams({ ...filterParams, stock: checked })
   }
   const submitFilter = (e) => {
     e.preventDefault()
@@ -188,7 +188,7 @@ export default function ProductIndex() {
                       min="0"
                       max="99999"
                       placeholder="0"
-                      value={priceRange[0]}
+                      // value={priceRange[0]}
                       onBlur={(e) => [
                         setPriceRange([
                           e.target.value ? e.target.value : 0,
@@ -205,7 +205,7 @@ export default function ProductIndex() {
                       min="0"
                       max="99999"
                       placeholder="99999"
-                      value={priceRange[1]}
+                      // value={priceRange[1]}
                       onBlur={(e) => [
                         setPriceRange([
                           priceRange[0],
@@ -274,51 +274,21 @@ export default function ProductIndex() {
               open={open}
               width="80%"
             >
-              <form className="col-12 pe-md-5 pe-1" onSubmit={submitFilter}>
+              <form
+                className="col-12 col-sm-3 pe-md-5 pe-1"
+                onSubmit={submitFilter}
+              >
                 <div className="border border-1 border-primary pt-4">
                   <div className="p-4 pt-0">
+                    <div className="mb-2 fs-5">
+                      <i className="fa-solid fa-filter"></i> 條件篩選
+                    </div>
                     <div className="d-flex flex-column gap-1">
-                      <h6 className="border-bottom py-2">團購狀態</h6>
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          name="status"
-                          value="wait"
-                          id="flexCheckDefault"
-                          onChange={(e) => {
-                            handleStatusChange(e)
-                          }}
-                        />
-                        即將開團
+                      <div className="d-flex align-items-center justify-content-between py-3">
+                        <h6 className="mb-0">只保留有貨</h6>
+                        <Switch onChange={handleStockSwitch} />
                       </div>
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          name="status"
-                          value="run"
-                          id="flexCheckDefault"
-                          onChange={(e) => {
-                            handleStatusChange(e)
-                          }}
-                        />
-                        團購中
-                      </div>
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          name="status"
-                          value="end"
-                          id="flexCheckDefault"
-                          onChange={(e) => {
-                            handleStatusChange(e)
-                          }}
-                        />
-                        團購結束
-                      </div>
-                      <hr className="opacity-75"></hr>
+                      <hr />
                       <div className="mb-2 fs-5">
                         <i className="fa-solid fa-dollar-sign"></i> 價錢篩選
                       </div>
@@ -329,6 +299,7 @@ export default function ProductIndex() {
                           min="0"
                           max="99999"
                           placeholder="0"
+                          // value={priceRange[0]}
                           onBlur={(e) => [
                             setPriceRange([
                               e.target.value ? e.target.value : 0,
@@ -345,6 +316,7 @@ export default function ProductIndex() {
                           min="0"
                           max="99999"
                           placeholder="99999"
+                          // value={priceRange[1]}
                           onBlur={(e) => [
                             setPriceRange([
                               priceRange[0],
@@ -353,11 +325,7 @@ export default function ProductIndex() {
                           ]}
                         ></input>
                       </div>
-                      <button
-                        type="submit"
-                        className="btn btn-primary"
-                        onClick={onClose}
-                      >
+                      <button type="submit" className="btn btn-primary">
                         套用
                       </button>
                     </div>

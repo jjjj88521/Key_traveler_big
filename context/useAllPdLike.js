@@ -29,10 +29,13 @@ export function AllPdLikeProvider({ children }) {
     }
   }
   useEffect(() => {
-    if (auth.isAuth) {
-      getAllPdLike()
+    getAllPdLike()
+    router.events.on('routeChangeStart', getAllPdLike)
+
+    return () => {
+      router.events.off('routeChangeStart', getAllPdLike)
     }
-  }, [auth, router.asPath])
+  }, [auth, router])
   return (
     <AllPdLikeContext.Provider value={{ allPdLike, setAllPdLike }}>
       {children}

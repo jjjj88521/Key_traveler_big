@@ -72,7 +72,7 @@ export default function ProductIndex() {
   // 篩選條件
   const [filterParams, setFilterParams] = useState({})
   const [selectedStatus, setSelectedStatus] = useState([])
-  const [priceRange, setPriceRange] = useState([])
+  const [priceRange, setPriceRange] = useState([0, 99999])
   // const [orderby, setOrderby] = useState('')
 
   // 取得資料
@@ -245,7 +245,7 @@ export default function ProductIndex() {
                       min="0"
                       max="99999"
                       placeholder="0"
-                      value={priceRange[0]}
+                      // value={priceRange[0]}
                       onChange={(e) => [
                         setPriceRange([
                           e.target.value ? e.target.value : 0,
@@ -262,8 +262,8 @@ export default function ProductIndex() {
                       min="0"
                       max="99999"
                       placeholder="99999"
-                      value={priceRange[1]}
-                      onBlur={(e) => [
+                      // value={priceRange[1]}
+                      onChange={(e) => [
                         setPriceRange([
                           priceRange[0],
                           e.target.value ? e.target.value : 99999,
