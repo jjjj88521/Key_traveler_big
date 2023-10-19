@@ -358,8 +358,10 @@ export default function DetailFilter() {
                   marginTop: '50px',
                   marginBottom: '25px',
                 }}
+                className=""
               >
                 <Avatar
+                  className="me-2"
                   src={
                     <img
                       src={`http://localhost:3005/${auth.user.avatar}.jpg`}
@@ -412,7 +414,7 @@ export default function DetailFilter() {
                           }}
                         >
                           <span className="fs-6">{item.account}</span>
-                          <span className="text-secondary fw-light fst-italic">
+                          <span className="text-secondary fw-light fst-italic fs-6">
                             {item.create_at}
                           </span>
                         </div>
