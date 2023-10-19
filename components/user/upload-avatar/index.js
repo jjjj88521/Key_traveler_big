@@ -37,14 +37,7 @@ const UploadAvatar = () => {
     picture = `http://localhost:3005/${auth.user.avatar}`
   }
   //判斷大頭貼是從google 來的還是從資料庫來的
-  const [fileList, setFileList] = useState([
-    {
-      uid: '1',
-      name: 'file-1.jpg',
-      status: 'done',
-      url: `${picture}`, // 之前上传的文件的URL
-    },
-  ])
+  const [fileList, setFileList] = useState([])
   const uploadApi = async () => {
     if (fileList.length === 1) {
       // 仅当有文件时才执行上传
@@ -92,20 +85,8 @@ const UploadAvatar = () => {
   }
 
   useEffect(() => {
-    console.log('AAAA')
-
-    setFileList([
-      {
-        uid: '1',
-        name: 'file-1.jpg',
-        status: 'done',
-        url: `${picture}`, // 之前上传的文件的URL
-      },
-    ])
-  }, [auth])
-  useEffect(() => {
     // 当 auth.user.avatar 发生变化时，更新 fileList
-    if (auth.user.avatar) {
+    if (auth.user.avatar || auth.user.avatar !== '') {
       setFileList([
         {
           uid: '1',
@@ -114,6 +95,8 @@ const UploadAvatar = () => {
           url: `${picture}`,
         },
       ])
+    } else {
+      setFileList([])
     }
   }, [auth.user.avatar])
 
@@ -145,12 +128,12 @@ const UploadAvatar = () => {
               fileList={fileList}
               onChange={onChange}
               maxCount={1}
-              // onRemove={() => {
-              //   // setData({
-              //   //   ...auth.user,
-              //   //   avatar: '',
-              //   // })
-              // }}
+              onRemove={() => {
+                setData({
+                  ...auth.user,
+                  avatar: '',
+                })
+              }}
               beforeUpload={(file) => {
                 // 清除之前的文件，只保留当前上传的文件
                 setFileList([file])
