@@ -5,6 +5,8 @@ import PaginationComponent from '@/components/common/PaginationComponent'
 import Link from 'next/link'
 import { useAuth } from '@/hooks/useAuth'
 import axios from 'axios'
+import UserLayout from '@/components/layout/user-layout'
+import { Radio } from 'antd'
 
 export default function OrderList() {
   const { auth, setAuth } = useAuth()
@@ -90,9 +92,21 @@ export default function OrderList() {
     ...groupOrderData.map((order) => ({ ...order, type: 'group_order' })),
     ...rentOrderData.map((order) => ({ ...order, type: 'rent_order' })),
   ]
-
+  console.log(allOrders)
   // 根據order_date字段降序排序
-  allOrders.sort((a, b) => new Date(b.order_date) - new Date(a.order_date))
+  // allOrders.sort((a, b) => new Date(b.order_date) - new Date(a.order_date))
+
+  const [selectedRadio, setSelectedRadio] = useState('1')
+
+  const radioOnChange = (e) => {
+    // console.log('radio key:' + key)
+    setSelectedRadio(e.target.value)
+  }
+  if (selectedRadio === '1') {
+    allOrders.sort((a, b) => new Date(b.order_date) - new Date(a.order_date))
+  } else if (selectedRadio === '2') {
+    allOrders.sort((a, b) => new Date(a.order_date) - new Date(b.order_date))
+  }
 
   // [
   //   {
@@ -167,167 +181,170 @@ export default function OrderList() {
   // const getOrderNumber = calculateOrderNumber()
   return (
     <>
-      <div className="container" style={{ height: '700px' }}>
-        <div className="row my-sm-4 my-2 ">
+      <UserLayout title={'歷史訂單'}>
+        <div className="container" style={{ height: '700px' }}>
+          {/* <div className="row my-sm-4 my-2 ">
           <h2 className="fw-bolder text-start col-sm-3 col-12 mt-3 mb-0">
             歷史訂單
           </h2>
-        </div>
-        <div className="row">
-          <UserDropdown />
-          {/* <div className="col-sm-3 col-12 px-0 mx-0">         
-            <div className="d-sm-block d-none">
-              <UserSideBar />
-            </div>
-            <div className="d-sm-none d-block col-12 mb-4">
-              <UserSideBarMobile className="col-12 w-100" />
-            </div>
-          </div> */}
-          <div className="col-sm-8 offset-sm-1 col-12">
-            <div className="d-flex justify-content-end mb-2">
-              <div
-                className={`bg-primary-subtle ${style['sortBtn']} py-1 px-2`}
-              >
-                <div className="me-2">篩選</div>
-                <div className="dropdown">
-                  <button
-                    className="btn btn-sm btn-light dropdown-toggle text-dark px-1 py-0"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    {selectedFilter}
-                  </button>
-                  <ul className="dropdown-menu dropdown-menu-end">
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        href=""
-                        onClick={() => {
-                          handleFilterChange('全部')
-                        }}
-                      >
-                        全部
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        href=""
-                        onClick={() => {
-                          handleFilterChange('一般')
-                        }}
-                      >
-                        一般
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        href=""
-                        onClick={() => {
-                          handleFilterChange('團購')
-                        }}
-                      >
-                        團購
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        href=""
-                        onClick={() => {
-                          handleFilterChange('租用')
-                        }}
-                      >
-                        租用
-                      </Link>
-                    </li>
-                  </ul>
+        </div> */}
+          <div className="row">
+            <div className="col-sm-10 offset-sm-1 col-12">
+              <div className="d-flex justify-content-between mb-2">
+                <Radio.Group
+                  onChange={radioOnChange}
+                  value={selectedRadio}
+                  style={
+                    {
+                      // marginBottom: 8,
+                    }
+                  }
+                >
+                  <Radio.Button value="1">最新</Radio.Button>
+                  <Radio.Button value="2">最舊</Radio.Button>
+                </Radio.Group>
+                <div className={` ${style['sortBtn']} py-1 px-2`}>
+                  {/* <div className="me-2">篩選</div> */}
+                  <div className="dropdown">
+                    <button
+                      className="btn btn-sm btn-light dropdown-toggle text-dark px-2 py-1 border border-primary"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      {selectedFilter}
+                    </button>
+                    <ul className="dropdown-menu dropdown-menu-end">
+                      <li>
+                        <Link
+                          className="dropdown-item"
+                          href=""
+                          onClick={() => {
+                            handleFilterChange('全部')
+                          }}
+                        >
+                          全部
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className="dropdown-item"
+                          href=""
+                          onClick={() => {
+                            handleFilterChange('一般')
+                          }}
+                        >
+                          一般
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className="dropdown-item"
+                          href=""
+                          onClick={() => {
+                            handleFilterChange('團購')
+                          }}
+                        >
+                          團購
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className="dropdown-item"
+                          href=""
+                          onClick={() => {
+                            handleFilterChange('租用')
+                          }}
+                        >
+                          租用
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
-            </div>
-            {/* 歷史訂單列表頁 電腦版 */}
-            {/* {`table d-none d-sm-table`} */}
-            {/* {`${style['table-desktop']} table`} */}
-            <table className={`table d-none d-sm-table`}>
-              <thead className="">
-                <tr className="">
-                  {/* <th className="bg-primary"></th> */}
-                  <th className="bg-primary text-white ps-5">訂單編號</th>
-                  <th className="bg-primary text-white ps-5">訂單日期</th>
-                  <th className="bg-primary text-white ps-5">訂單狀態</th>
-                  <th className="bg-primary text-white"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentOrders.map((v, i) => (
-                  <tr className="" key={i}>
-                    {/* <td className="text-center">{i + 1}</td> */}
-                    <td className="ps-5">{v.id}</td>
-                    <td className="ps-5">{v.order_date}</td>
-                    <td className="ps-5">{v.status}</td>
-                    <td className="ps-5">
-                      <Link
-                        href={`http://localhost:3000/user/order/${v.id}`}
-                        className="btn btn-primary text-light"
-                      >
-                        查看
-                      </Link>
-                    </td>
+              {/* 歷史訂單列表頁 電腦版 */}
+              {/* {`table d-none d-sm-table`} */}
+              {/* {`${style['table-desktop']} table`} */}
+              <table className={`table d-none d-sm-table`}>
+                <thead className="">
+                  <tr className="">
+                    {/* <th className="bg-primary"></th> */}
+                    <th className="bg-primary text-white ps-5">訂單編號</th>
+                    <th className="bg-primary text-white ps-5">訂單日期</th>
+                    <th className="bg-primary text-white ps-5">訂單狀態</th>
+                    <th className="bg-primary text-white"></th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-            {/* 歷史訂單列表頁 手機版 */}
-            {/* {`table table-bordered d-table d-sm-none`} */}
-            {/* {`${style['table-mobile']} table table-bordered`} */}
-            {currentOrders.map((v, i) => (
-              <table
-                className={`table table-bordered d-table d-sm-none`}
-                key={i}
-              >
+                </thead>
                 <tbody>
-                  {/* <tr>
+                  {currentOrders.map((v, i) => (
+                    <tr className="" key={i}>
+                      {/* <td className="text-center">{i + 1}</td> */}
+                      <td className="ps-5">{v.id}</td>
+                      <td className="ps-5">{v.order_date}</td>
+                      <td className="ps-5">{v.status}</td>
+                      <td className="ps-5">
+                        <Link
+                          href={`http://localhost:3000/user/order/${v.id}`}
+                          className="btn btn-primary text-light"
+                        >
+                          查看
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              {/* 歷史訂單列表頁 手機版 */}
+              {/* {`table table-bordered d-table d-sm-none`} */}
+              {/* {`${style['table-mobile']} table table-bordered`} */}
+              {currentOrders.map((v, i) => (
+                <table
+                  className={`table table-bordered d-table d-sm-none`}
+                  key={i}
+                >
+                  <tbody>
+                    {/* <tr>
                     <th className="ps-3">{i + 1}</th>
                     <td></td>
                   </tr> */}
-                  <tr>
-                    <th>訂單編號</th>
-                    <td>{v.id}</td>
-                  </tr>
-                  <tr>
-                    <th>訂單日期</th>
-                    <td>{v.order_date}</td>
-                  </tr>
-                  <tr>
-                    <th>訂單狀態</th>
-                    <td>{v.status}</td>
-                  </tr>
-                  <tr>
-                    <td className="text-center" colSpan={2}>
-                      <Link
-                        className="btn btn-primary text-light"
-                        href={`http://localhost:3000/user/order/${v.id}`}
-                      >
-                        查看
-                      </Link>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            ))}
-            <div className="my-4">
-              <PaginationComponent
-                totalItems={filteredOrders.length} // 總項目數量
-                pageSize={pageSize} // 每頁顯示的項目數量
-                currentPage={currentPage} // 目前頁碼
-                onPageChange={handlePageChange} // 處理頁碼變化事件的callback function
-              />
+                    <tr>
+                      <th>訂單編號</th>
+                      <td>{v.id}</td>
+                    </tr>
+                    <tr>
+                      <th>訂單日期</th>
+                      <td>{v.order_date}</td>
+                    </tr>
+                    <tr>
+                      <th>訂單狀態</th>
+                      <td>{v.status}</td>
+                    </tr>
+                    <tr>
+                      <td className="text-center" colSpan={2}>
+                        <Link
+                          className="btn btn-primary text-light"
+                          href={`http://localhost:3000/user/order/${v.id}`}
+                        >
+                          查看
+                        </Link>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              ))}
+              <div className="my-4">
+                <PaginationComponent
+                  totalItems={filteredOrders.length} // 總項目數量
+                  pageSize={pageSize} // 每頁顯示的項目數量
+                  currentPage={currentPage} // 目前頁碼
+                  onPageChange={handlePageChange} // 處理頁碼變化事件的callback function
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </UserLayout>
     </>
   )
 }
