@@ -363,19 +363,22 @@ export default function ProductCate2() {
               )}
             </div>
             {/* 分頁頁碼 */}
-            <div className="m-5">
-              {/* 判斷如果只有一頁，就不顯示pagination */}
-              {totalPageCount < PageSize ? (
-                ''
-              ) : (
-                <PaginationComponent
-                  currentPage={page}
-                  totalItems={totalPageCount}
-                  pageSize={PageSize}
-                  onPageChange={handlePageChange}
-                ></PaginationComponent>
-              )}
-            </div>
+            {!isLoading ? (
+              <div className="m-5">
+                {totalPageCount < PageSize ? (
+                  ''
+                ) : (
+                  <PaginationComponent
+                    currentPage={page}
+                    totalItems={cateProducts.total}
+                    pageSize={PageSize}
+                    onPageChange={handlePageChange}
+                  ></PaginationComponent>
+                )}
+              </div>
+            ) : (
+              <div></div>
+            )}
           </div>
         </div>
       </div>
