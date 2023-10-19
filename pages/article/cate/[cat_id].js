@@ -76,7 +76,29 @@ export default function ArticleFilter() {
   }, [])
 
   //   分頁設定
-  const PageSize = 9
+  // 根据屏幕宽度动态设置 PageSize
+  const getPageSize = () => {
+    if (window.innerWidth < 576) {
+      return 8 // 手机或小屏幕
+    } else {
+      return 9 // 大屏幕
+    }
+  }
+
+  // 在组件加载和窗口大小变化时更新 PageSize
+  const [pageSize, setPageSize] = useState(getPageSize)
+
+  useEffect(() => {
+    function handleResize() {
+      setPageSize(getPageSize)
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+  // const PageSize = 9
   const totalItemsForCategory = data.filter(
     (item) => selectedCategory === null || item.cate === selectedCategory
   )
@@ -89,10 +111,10 @@ export default function ArticleFilter() {
     setCurrentPage(page)
     console.log(page)
   }
-  const startIndex = (currentPage - 1) * PageSize
+  const startIndex = (currentPage - 1) * pageSize
   const endIndex =
-    currentPage * PageSize < totalItemsForCategory.length
-      ? currentPage * PageSize
+    currentPage * pageSize < totalItemsForCategory.length
+      ? currentPage * pageSize
       : totalItemsForCategory.length
   // console.log(startIndex)
   //   const displayedData = totalItemsForCategory.slice(startIndex, endIndex)
@@ -327,7 +349,7 @@ export default function ArticleFilter() {
               <div className="pb-3" style={{ width: '100%' }}>
                 <PaginationComponent
                   totalItems={totalPageCount}
-                  pageSize={PageSize}
+                  pageSize={pageSize}
                   currentPage={currentPage}
                   onPageChange={handlePageChange}
                 ></PaginationComponent>
