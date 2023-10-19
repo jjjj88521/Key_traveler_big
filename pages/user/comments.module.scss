@@ -23,6 +23,7 @@
 .yet {
   display: flex;
   align-items: center;
+  // justify-content: space-between;
   @media screen and (max-width: 576px) {
     display: none;
   }
@@ -32,9 +33,9 @@
   @media screen and (max-width: 576px) {
     display: flex;
     flex-direction: column;
-    margin-left: -15px;
+    // margin-left: -15px;
     .item_order {
-      max-width: 130px;
+      max-width: 80px;
       font-size: 0.8rem;
     }
   }
