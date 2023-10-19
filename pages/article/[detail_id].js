@@ -17,12 +17,14 @@ import Head from 'next/head'
 export default function DetailFilter() {
   // 設定路由
   const { auth } = useAuth()
+  console.log(auth)
   const router = useRouter()
   const { isReady, query } = router
   const detail_id = query.detail_id
   console.log(router.query.detail_id)
 
   const [articleContent, setArticleContent] = useState([])
+  console.log(articleContent)
   const [CountCate, setCountCate] = useState([])
   const [isLoading, setIsLoading] = useLoading(articleContent)
 
@@ -68,6 +70,7 @@ export default function DetailFilter() {
 
     getComment()
   }, [isReady, auth])
+  console.log(auth)
 
   //對應路由 文章篩選
   const filterArticle = articleContent.find((item) => item.id == detail_id)
@@ -291,7 +294,7 @@ export default function DetailFilter() {
                   <>
                     <h2 className="fw-bolder mt-4">{filterArticle.title}</h2>
                     <h5 className="text-secondary mb-5">
-                      <span className="pe-5">by. {filterArticle.user_id}</span>
+                      <span className="pe-5">by. {auth.user.name}</span>
                       {filterArticle.date}
                     </h5>
                     <p className="">
@@ -359,9 +362,7 @@ export default function DetailFilter() {
                 <Avatar
                   src={
                     <img
-                      src={
-                        'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
-                      }
+                      src={`http://localhost:3005/${auth.user.avatar}.jpg`}
                       alt="avatar"
                     />
                   }
@@ -399,7 +400,7 @@ export default function DetailFilter() {
                       className="mt-3"
                       avatar={
                         <Avatar
-                          src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`}
+                          src={`http://localhost:3005/${item.avatar}.jpg`}
                         />
                       }
                       title={
@@ -446,7 +447,10 @@ export default function DetailFilter() {
                     className={`${art_detail_style['category']} position-relative p-2`}
                   >
                     <p className=" m-0">公告</p>
-                    <div className="position-absolute end-0 top-50 translate-middle me-4 ">
+                    <div
+                      className="position-absolute end-0 top-50 translate-middle me-4 "
+                      style={{ width: '20px' }}
+                    >
                       {CountCate.map((item) => {
                         if (item.cate === '公告') {
                           return item.count
@@ -461,7 +465,10 @@ export default function DetailFilter() {
                     className={`${art_detail_style['category']} position-relative p-2`}
                   >
                     <p className=" m-0">開箱文</p>
-                    <div className="position-absolute end-0 top-50 translate-middle me-4 ">
+                    <div
+                      className="position-absolute end-0 top-50 translate-middle me-4 "
+                      style={{ width: '20px' }}
+                    >
                       {CountCate.map((item) => {
                         if (item.cate === '開箱文') {
                           return item.count
@@ -476,7 +483,10 @@ export default function DetailFilter() {
                     className={`${art_detail_style['category']} position-relative p-2`}
                   >
                     <p className=" m-0">組裝教學</p>
-                    <div className="position-absolute end-0 top-50 translate-middle me-4 ">
+                    <div
+                      className="position-absolute end-0 top-50 translate-middle me-4 "
+                      style={{ width: '20px' }}
+                    >
                       {CountCate.map((item) => {
                         if (item.cate === '組裝教學') {
                           return item.count
@@ -491,7 +501,10 @@ export default function DetailFilter() {
                     className={`${art_detail_style['category']} position-relative p-2`}
                   >
                     <p className=" m-0">活動</p>
-                    <div className="position-absolute end-0 top-50 translate-middle me-4 ">
+                    <div
+                      className="position-absolute end-0 top-50 translate-middle me-4 "
+                      style={{ width: '20px' }}
+                    >
                       {CountCate.map((item) => {
                         if (item.cate === '活動') {
                           return item.count
