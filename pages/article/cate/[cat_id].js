@@ -7,6 +7,7 @@ import PaginationComponent from '@/components/common/PaginationComponent'
 import useLoading from '@/hooks/useLoading'
 import LoadingPage from '@/components/common/loadingPage'
 import axios from 'axios'
+import { number } from 'prop-types'
 export default function ArticleFilter() {
   // 設定路由
   const router = useRouter()
@@ -50,26 +51,26 @@ export default function ArticleFilter() {
         default:
           break
       }
-      // if (selectValue !== cat_id) {
-      //   setCurrentPage(1)
-      // }
+      if (selectValue !== cat_id) {
+        handlePageChange(1)
+      }
     }
   }, [isReady, cat_id])
-  console.log(selectValue)
+  // console.log(selectValue)
   //   console.log(selectedCategory)
 
   const [searchCard, setSearchCard] = useState('')
   const handleSearch = (e) => {
     // console.log('搜尋關鍵字：', e.target.value)
-    console.log(e)
+    // console.log(e)
     setSearchCard(e.target.value)
   }
   const [searchResult, setSearchResult] = useState('')
   const [data, setData] = useState([])
   useEffect(() => {
     axios.get('http://localhost:3005/api/article/').then((response) => {
-      console.log('response.data.articles')
-      console.log(response.data.articles)
+      // console.log('response.data.articles')
+      // console.log(response.data.articles)
       setData(response.data.articles)
     })
   }, [])
@@ -80,7 +81,7 @@ export default function ArticleFilter() {
     (item) => selectedCategory === null || item.cate === selectedCategory
   )
   const totalPageCount = totalItemsForCategory.length
-  console.log(totalPageCount)
+  // console.log(totalPageCount)
   //   const totalPageCount = Math.ceil(totalItemsForCategory.length / PageSize)
   //   console.log(totalPageCount)
   const [currentPage, setCurrentPage] = useState(1)
@@ -93,7 +94,7 @@ export default function ArticleFilter() {
     currentPage * PageSize < totalItemsForCategory.length
       ? currentPage * PageSize
       : totalItemsForCategory.length
-  console.log(startIndex)
+  // console.log(startIndex)
   //   const displayedData = totalItemsForCategory.slice(startIndex, endIndex)
   //   console.log(displayedData)
   const [isLoading, setIsLoading] = useLoading(data)
@@ -159,7 +160,7 @@ export default function ArticleFilter() {
                       value={searchCard}
                       onChange={(e) => {
                         // console.log('搜尋關鍵字：', e.target.value)
-                        console.log(e)
+                        // console.log(e)
                         setSearchCard(e.target.value)
                       }}
                     />
@@ -281,7 +282,9 @@ export default function ArticleFilter() {
                 .map((item, index) => {
                   const parsedImg = JSON.parse(item.img)
 
-                  console.log('item.img:', parsedImg)
+                  {
+                    /* console.log('item.img:', parsedImg) */
+                  }
                   return (
                     <div className="col mb-4" key={item.id}>
                       <div className={`${art_list_style['list_card']} card`}>
@@ -325,7 +328,7 @@ export default function ArticleFilter() {
                 <PaginationComponent
                   totalItems={totalPageCount}
                   pageSize={PageSize}
-                  //   currentPage={displayedData}
+                  currentPage={currentPage}
                   onPageChange={handlePageChange}
                 ></PaginationComponent>
               </div>
