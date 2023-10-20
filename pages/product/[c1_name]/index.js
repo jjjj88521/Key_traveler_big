@@ -345,6 +345,7 @@ export default function ProductCate1() {
                         image={v.images ? JSON.parse(v.images)[0] : null}
                         stock={v.stock}
                         link={`/product/${v.category_1}/${v.category_2}/${v.id}`}
+                        created_time={v.created_time}
                       />
                     </div>
                   </div>

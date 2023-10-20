@@ -2,7 +2,17 @@ import React from 'react'
 import styles from './card.module.scss'
 import Link from 'next/link'
 
-export default function Card({ title, brand, price, image, stock, link }) {
+export default function Card({
+  title,
+  brand,
+  price,
+  image,
+  stock,
+  link,
+  created_time,
+}) {
+  const createdDate = new Date(created_time)
+  const isNew = createdDate >= new Date('2023-10-01')
   return (
     <>
       <div
@@ -19,8 +29,10 @@ export default function Card({ title, brand, price, image, stock, link }) {
         {/* 待完成，判斷是否為新品(ribbon) */}
         {stock === 0 ? (
           <div className={styles['outofstock']}></div>
-        ) : (
+        ) : isNew ? (
           <div className={styles['ribbon']}></div>
+        ) : (
+          <div></div>
         )}
         <div className="card-body w-100 position-relative bg-secondary-subtle py-4 vstack gap-2">
           <h5 className={`${styles['card-title-name']} card-title fw-bold`}>
