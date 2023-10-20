@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Drawer, Button, Select, Switch } from 'antd'
+import { Drawer, Button, Select, Switch, Empty } from 'antd'
 import styles from './product.module.css'
 import AsideFilter from '@/components/product/AsideFilter'
 import Head from 'next/head'
@@ -47,7 +47,7 @@ const sortOptions = [
 
 export default function ProductIndex() {
   const router = useRouter()
-  // const { status, page, orderby, price_range } = router.query
+  const { stock, page, orderby, price_range } = router.query
   // 開關 Drawer
   const [open, setOpen] = useState(false)
 
@@ -70,9 +70,17 @@ export default function ProductIndex() {
 
   const [isLoading, setIsLoading] = useLoading(cateProducts)
 
+  console.log(onlyStock)
+
   useEffect(() => {
+    if (stock) {
+      setOnlyStock(stock === 'true')
+    }
+    if (price_range) {
+      setPriceRange(price_range.split(','))
+    }
     const params = {
-      ...filterParams,
+      ...router.query,
     }
     const fetchRentList = async () => {
       setIsLoading(true)
@@ -146,6 +154,13 @@ export default function ProductIndex() {
     })
   }
 
+  // 清空篩選條件
+  const clearFilter = () => {
+    setFilterParams({})
+    setOnlyStock(null)
+    setPriceRange([0, 99999])
+  }
+
   return (
     <>
       <Head>
@@ -175,7 +190,10 @@ export default function ProductIndex() {
                 <div className="d-flex flex-column gap-1">
                   <div className="d-flex align-items-center justify-content-between py-3">
                     <h6 className="mb-0">只保留有貨</h6>
-                    <Switch onChange={handleStockSwitch} />
+                    <Switch
+                      onChange={handleStockSwitch}
+                      checked={onlyStock === true}
+                    />
                   </div>
                   <hr />
                   <div className="mb-2 fs-5">
@@ -188,13 +206,15 @@ export default function ProductIndex() {
                       min="0"
                       max="99999"
                       placeholder="0"
-                      // value={priceRange[0]}
-                      onBlur={(e) => [
-                        setPriceRange([
-                          e.target.value ? e.target.value : 0,
-                          priceRange[1],
-                        ]),
-                      ]}
+                      value={priceRange[0]}
+                      onClick={(e) => {
+                        e.target.select()
+                      }}
+                      onChange={(e) => {
+                        if (e.target.value) {
+                          setPriceRange([e.target.value, priceRange[1]])
+                        }
+                      }}
                     ></input>
                     <div className="col-2 fs-4 d-flex justify-content-center">
                       ~
@@ -205,17 +225,26 @@ export default function ProductIndex() {
                       min="0"
                       max="99999"
                       placeholder="99999"
-                      // value={priceRange[1]}
-                      onBlur={(e) => [
-                        setPriceRange([
-                          priceRange[0],
-                          e.target.value ? e.target.value : 99999,
-                        ]),
-                      ]}
+                      value={priceRange[1]}
+                      onClick={(e) => {
+                        e.target.select()
+                      }}
+                      onChange={(e) => {
+                        if (e.target.value) {
+                          setPriceRange([priceRange[0], e.target.value])
+                        }
+                      }}
                     ></input>
                   </div>
                   <button type="submit" className="btn btn-primary">
                     套用
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-link"
+                    onClick={clearFilter}
+                  >
+                    清除
                   </button>
                 </div>
               </div>
@@ -274,10 +303,7 @@ export default function ProductIndex() {
               open={open}
               width="80%"
             >
-              <form
-                className="col-12 col-sm-3 pe-md-5 pe-1"
-                onSubmit={submitFilter}
-              >
+              <form className="pe-md-5 pe-1" onSubmit={submitFilter}>
                 <div className="border border-1 border-primary pt-4">
                   <div className="p-4 pt-0">
                     <div className="mb-2 fs-5">
@@ -286,7 +312,10 @@ export default function ProductIndex() {
                     <div className="d-flex flex-column gap-1">
                       <div className="d-flex align-items-center justify-content-between py-3">
                         <h6 className="mb-0">只保留有貨</h6>
-                        <Switch onChange={handleStockSwitch} />
+                        <Switch
+                          onChange={handleStockSwitch}
+                          checked={onlyStock === true}
+                        />
                       </div>
                       <hr />
                       <div className="mb-2 fs-5">
@@ -299,13 +328,15 @@ export default function ProductIndex() {
                           min="0"
                           max="99999"
                           placeholder="0"
-                          // value={priceRange[0]}
-                          onBlur={(e) => [
-                            setPriceRange([
-                              e.target.value ? e.target.value : 0,
-                              priceRange[1],
-                            ]),
-                          ]}
+                          value={priceRange[0]}
+                          onClick={(e) => {
+                            e.target.select()
+                          }}
+                          onChange={(e) => {
+                            if (e.target.value) {
+                              setPriceRange([e.target.value, priceRange[1]])
+                            }
+                          }}
                         ></input>
                         <div className="col-2 fs-4 d-flex justify-content-center">
                           ~
@@ -316,17 +347,26 @@ export default function ProductIndex() {
                           min="0"
                           max="99999"
                           placeholder="99999"
-                          // value={priceRange[1]}
-                          onBlur={(e) => [
-                            setPriceRange([
-                              priceRange[0],
-                              e.target.value ? e.target.value : 99999,
-                            ]),
-                          ]}
+                          value={priceRange[1]}
+                          onClick={(e) => {
+                            e.target.select()
+                          }}
+                          onChange={(e) => {
+                            if (e.target.value) {
+                              setPriceRange([priceRange[0], e.target.value])
+                            }
+                          }}
                         ></input>
                       </div>
                       <button type="submit" className="btn btn-primary">
                         套用
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-link"
+                        onClick={clearFilter}
+                      >
+                        清除
                       </button>
                     </div>
                   </div>
@@ -334,14 +374,16 @@ export default function ProductIndex() {
               </form>
             </Drawer>
 
-            {/* product list & card group  */}
             <div className="vstack gap-4 pb-3">
-              {!isLoading ? (
+              {isLoading ? (
+                <LoadingPage />
+              ) : cateProducts.data.length === 0 ? (
+                <Empty description="暫無商品" />
+              ) : (
                 <>
                   <div className="d-flex row row-cols-2 row-cols-md-3 g-4 mb-sm-0 mb-4">
                     {cateProducts.data.map((v, i) => (
                       <div className="col" key={i}>
-                        {/* <div className="col"> */}
                         <Card
                           id={v.id}
                           cate={'rt'}
@@ -356,7 +398,6 @@ export default function ProductIndex() {
                           stock={v.stock}
                           link={`/rent/${v.id}`}
                         />
-                        {/* </div> */}
                       </div>
                     ))}
                   </div>
@@ -367,8 +408,6 @@ export default function ProductIndex() {
                     onPageChange={handlePageChange}
                   />
                 </>
-              ) : (
-                <LoadingPage />
               )}
             </div>
           </div>

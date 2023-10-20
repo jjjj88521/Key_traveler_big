@@ -133,6 +133,7 @@ export default function RentAd() {
                         brand={item.brand}
                         name={item.name}
                         img={item.image}
+                        link={item.link}
                       />
                     </div>
                   </SwiperSlide>
@@ -142,6 +143,7 @@ export default function RentAd() {
                       brand={item.brand}
                       name={item.name}
                       img={item.image}
+                      link={item.link}
                     />
                   </SwiperSlide>
                 )

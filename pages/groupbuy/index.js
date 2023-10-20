@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Drawer, Button, Select } from 'antd'
+import { Drawer, Button, Select, Empty } from 'antd'
 import styles from './product.module.css'
 import AsideFilter from '@/components/product/AsideFilter'
 import Head from 'next/head'
@@ -56,8 +56,9 @@ const sortOptions = [
 ]
 
 export default function ProductIndex() {
-  const { allPdLike } = useAllPdLike()
   const router = useRouter()
+  const { status, page, orderby, price_range } = router.query
+  console.log(typeof status)
   // 開關 Drawer
   const [open, setOpen] = useState(false)
 
@@ -70,17 +71,29 @@ export default function ProductIndex() {
   }
 
   // 篩選條件
-  const [filterParams, setFilterParams] = useState({})
+  const [filterParams, setFilterParams] = useState({
+    status,
+    page,
+    orderby,
+    price_range,
+  })
   const [selectedStatus, setSelectedStatus] = useState([])
+
   const [priceRange, setPriceRange] = useState([0, 99999])
   // const [orderby, setOrderby] = useState('')
 
   // 取得資料
-  const [cateProducts, setCateProducts] = useState()
+  const [cateProducts, setCateProducts] = useState(null)
 
   const [isLoading, setIsLoading] = useLoading(cateProducts)
 
   useEffect(() => {
+    if (status) {
+      setSelectedStatus(status.split(','))
+    }
+    if (price_range) {
+      setPriceRange(price_range.split(','))
+    }
     const params = {
       ...router.query,
     }
@@ -156,11 +169,7 @@ export default function ProductIndex() {
   const clearFilter = () => {
     setFilterParams({})
     setSelectedStatus([])
-    setPriceRange([])
-    router.push({
-      pathname: '/groupbuy',
-      query: {},
-    })
+    setPriceRange([0, 99999])
   }
 
   return (
@@ -245,13 +254,15 @@ export default function ProductIndex() {
                       min="0"
                       max="99999"
                       placeholder="0"
-                      // value={priceRange[0]}
-                      onChange={(e) => [
-                        setPriceRange([
-                          e.target.value ? e.target.value : 0,
-                          priceRange[1],
-                        ]),
-                      ]}
+                      value={priceRange[0]}
+                      onClick={(e) => {
+                        e.target.select()
+                      }}
+                      onChange={(e) => {
+                        if (e.target.value) {
+                          setPriceRange([e.target.value, priceRange[1]])
+                        }
+                      }}
                     ></input>
                     <div className="col-2 fs-4 d-flex justify-content-center">
                       ~
@@ -262,25 +273,27 @@ export default function ProductIndex() {
                       min="0"
                       max="99999"
                       placeholder="99999"
-                      // value={priceRange[1]}
-                      onChange={(e) => [
-                        setPriceRange([
-                          priceRange[0],
-                          e.target.value ? e.target.value : 99999,
-                        ]),
-                      ]}
+                      value={priceRange[1]}
+                      onClick={(e) => {
+                        e.target.select()
+                      }}
+                      onChange={(e) => {
+                        if (e.target.value) {
+                          setPriceRange([priceRange[0], e.target.value])
+                        }
+                      }}
                     ></input>
                   </div>
                   <button type="submit" className="btn btn-primary">
                     套用
                   </button>
-                  {/* <button
+                  <button
                     type="button"
-                    className="btn btn-primary"
+                    className="btn btn-link"
                     onClick={clearFilter}
                   >
-                    清空篩選
-                  </button> */}
+                    清除
+                  </button>
                 </div>
               </div>
             </div>
@@ -335,9 +348,12 @@ export default function ProductIndex() {
               open={open}
               width="80%"
             >
-              <form className="col-12 pe-md-5 pe-1" onSubmit={submitFilter}>
+              <form className="pe-md-5 pe-1" onSubmit={submitFilter}>
                 <div className="border border-1 border-primary pt-4">
                   <div className="p-4 pt-0">
+                    <div className="mb-2 fs-5">
+                      <i className="fa-solid fa-filter"></i> 條件篩選
+                    </div>
                     <div className="d-flex flex-column gap-1">
                       <h6 className="border-bottom py-2">團購狀態</h6>
                       <div className="form-check">
@@ -350,6 +366,7 @@ export default function ProductIndex() {
                           onChange={(e) => {
                             handleStatusChange(e)
                           }}
+                          checked={selectedStatus.includes('wait')}
                         />
                         即將開團
                       </div>
@@ -363,6 +380,7 @@ export default function ProductIndex() {
                           onChange={(e) => {
                             handleStatusChange(e)
                           }}
+                          checked={selectedStatus.includes('run')}
                         />
                         團購中
                       </div>
@@ -376,6 +394,7 @@ export default function ProductIndex() {
                           onChange={(e) => {
                             handleStatusChange(e)
                           }}
+                          checked={selectedStatus.includes('end')}
                         />
                         團購結束
                       </div>
@@ -390,12 +409,15 @@ export default function ProductIndex() {
                           min="0"
                           max="99999"
                           placeholder="0"
-                          onBlur={(e) => [
-                            setPriceRange([
-                              e.target.value ? e.target.value : 0,
-                              priceRange[1],
-                            ]),
-                          ]}
+                          value={priceRange[0]}
+                          onClick={(e) => {
+                            e.target.select()
+                          }}
+                          onChange={(e) => {
+                            if (e.target.value) {
+                              setPriceRange([e.target.value, priceRange[1]])
+                            }
+                          }}
                         ></input>
                         <div className="col-2 fs-4 d-flex justify-content-center">
                           ~
@@ -406,20 +428,26 @@ export default function ProductIndex() {
                           min="0"
                           max="99999"
                           placeholder="99999"
-                          onBlur={(e) => [
-                            setPriceRange([
-                              priceRange[0],
-                              e.target.value ? e.target.value : 99999,
-                            ]),
-                          ]}
+                          value={priceRange[1]}
+                          onClick={(e) => {
+                            e.target.select()
+                          }}
+                          onChange={(e) => {
+                            if (e.target.value) {
+                              setPriceRange([priceRange[0], e.target.value])
+                            }
+                          }}
                         ></input>
                       </div>
-                      <button
-                        type="submit"
-                        className="btn btn-primary"
-                        onClick={onClose}
-                      >
+                      <button type="submit" className="btn btn-primary">
                         套用
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-link"
+                        onClick={clearFilter}
+                      >
+                        清除
                       </button>
                     </div>
                   </div>
@@ -429,12 +457,15 @@ export default function ProductIndex() {
 
             {/* product list & card group  */}
             <div className="vstack gap-4 pb-3">
-              {!isLoading ? (
+              {isLoading ? (
+                <LoadingPage />
+              ) : cateProducts.data.length === 0 ? (
+                <Empty description="暫無商品" />
+              ) : (
                 <>
                   <div className="d-flex row row-cols-2 row-cols-md-3 g-4 mb-sm-0 mb-4">
                     {cateProducts.data.map((v, i) => (
                       <div className="col" key={i}>
-                        {/* <div className="col"> */}
                         <Card
                           id={v.id}
                           cate={'gb'}
@@ -448,8 +479,9 @@ export default function ProductIndex() {
                           }
                           stock={v.stock}
                           link={`/groupbuy/${v.id}`}
+                          current_people={v.current_people}
+                          target_people={v.target_people}
                         />
-                        {/* </div> */}
                       </div>
                     ))}
                   </div>
@@ -460,8 +492,6 @@ export default function ProductIndex() {
                     onPageChange={handlePageChange}
                   />
                 </>
-              ) : (
-                <LoadingPage />
               )}
             </div>
           </div>

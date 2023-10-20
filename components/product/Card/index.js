@@ -5,6 +5,7 @@ import { useAllPdLike } from '@/context/useAllPdLike'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
 import { addProductLike, deleteProductLike } from '@/libs/productFetcher'
+import { Progress } from 'antd'
 
 export default function Card({
   title,
@@ -15,6 +16,8 @@ export default function Card({
   link,
   id,
   cate,
+  current_people = 0,
+  target_people = 0,
 }) {
   const router = useRouter()
   const { allPdLike } = useAllPdLike()
@@ -79,6 +82,13 @@ export default function Card({
           </h5>
           <h6 className="card-title text-black-50">{brand}</h6>
           <h5 className="card-title">$ {price}</h5>
+          {cate === 'gb' && (
+            <Progress
+              percent={(current_people / target_people) * 100}
+              size="small"
+              format={() => `${current_people}人`}
+            />
+          )}
           <button
             className={`d-sm-none d-block border border-2 border-primary rounded-circle ${styles['cartBtn']}`}
           >

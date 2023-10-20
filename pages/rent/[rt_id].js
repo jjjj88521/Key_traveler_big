@@ -70,7 +70,7 @@ export default function RentDetail() {
           <TabContainer pdCate={'rent'}>
             <TabButton tabName="intro">商品介紹</TabButton>
             <TabButton tabName="spec">商品規格</TabButton>
-            <TabButton tabName="rt-desc">租用說明</TabButton>
+            {/* <TabButton tabName="rt-desc">租用說明</TabButton> */}
           </TabContainer>
         </>
       )}

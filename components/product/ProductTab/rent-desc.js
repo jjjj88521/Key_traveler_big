@@ -5,20 +5,18 @@ export default function RentDesc() {
   return (
     <div className="p-sm-5 p-3 bg-white">
       <Steps
-        // current={1}
+        current={-1}
         items={[
           {
-            title: 'Finished',
-            description: 'This is a description.',
+            title: '自選規格及軸體',
+            description: '',
           },
           {
-            title: 'In Progress',
-            description: 'This is a description.',
-            subTitle: 'Left 00:00:08',
+            title: '選擇你要的日期',
+            description: '',
           },
           {
-            title: 'Waiting',
-            description: 'This is a description.',
+            title: '加入購物車吧！',
           },
         ]}
       />

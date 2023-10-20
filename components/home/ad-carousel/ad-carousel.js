@@ -41,16 +41,16 @@ export default function AdCarousel() {
     anime({
       targets: '.carousel-container img',
       scale: [1.05, 1],
-      opacity: [0, 1],
+      // opacity: [0, 1],
       easing: 'easeInOutQuad',
-      duration: 500,
-      delay: 100,
+      duration: 700,
+      // delay: 100,
     })
   }
 
-  // useEffect(() => {
-  //   handleAnime()
-  // }, [])
+  useEffect(() => {
+    handleAnime()
+  }, [])
 
   // 滑鼠移到 swiper，滑鼠變成按鈕
   const mouseInitialState = {
@@ -149,8 +149,8 @@ export default function AdCarousel() {
             }}
             loop={true}
             effect="fade"
-            speed={1}
-            modules={[EffectFade, Autoplay]}
+            speed={500}
+            modules={[EffectFade, Autoplay, Pagination]}
             style={{
               '--swiper-pagination-color': '#DC9329',
               '--swiper-pagination-bullet-size': '10px',
