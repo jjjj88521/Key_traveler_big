@@ -7,7 +7,7 @@ import { useAuth } from '@/hooks/useAuth'
 import Swal from 'sweetalert2'
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import { useCart } from '@/hooks/use-cart'
+import { useCart } from '@/hooks/useCart'
 import { useGroupCart } from '@/hooks/useGroupCart'
 import { useRentCart } from '@/hooks/useRentCart'
 
@@ -245,12 +245,18 @@ export default function Navbar() {
               {/* 購物車按鈕 */}
               <div className="align-items-center d-flex">
                 <Link href="/cart">
-                  <Badge
-                    count={pdTotalItems + gbTotalItems + rTotalItems}
-                    color="#DC9329"
-                  >
-                    <i className="fa-solid fa-cart-shopping text-primary fs-5"></i>
-                  </Badge>
+                  {auth.isAuth ? (
+                    <Badge
+                      count={pdTotalItems + gbTotalItems + rTotalItems}
+                      color="#DC9329"
+                    >
+                      <i className="fa-solid fa-cart-shopping text-primary fs-5"></i>
+                    </Badge>
+                  ) : (
+                    <Badge count={0} color="#DC9329" showZero>
+                      <i className="fa-solid fa-cart-shopping text-primary fs-5"></i>
+                    </Badge>
+                  )}
                 </Link>
               </div>
               {/* 登出按鈕，只有登入才會出現 */}

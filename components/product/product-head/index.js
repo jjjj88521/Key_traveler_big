@@ -41,8 +41,6 @@ export default function ProductHead() {
         ? await deleteProductLike('pd', productData.id)
         : await addProductLike('pd', productData.id)
 
-      console.log(response)
-
       if (response.code === '200') {
         setIsLiked(!isLiked)
         const successMessage = response.message
@@ -88,15 +86,12 @@ export default function ProductHead() {
   }, [])
 
   useEffect(() => {
-    console.log(selectedStyles)
     const resultObject = selectedStyles.reduce((obj, item) => {
       obj[item.key] = item.value
       return obj
     }, {})
     setCartPItem({ ...cartPItem, specData: resultObject })
-    console.log(resultObject)
     const newStyleSelect = { ...cartPItem, specData: resultObject }
-    console.log(newStyleSelect)
     localStorage.setItem('cartPItem', JSON.stringify(newStyleSelect))
   }, [selectedStyles])
 
@@ -155,13 +150,15 @@ export default function ProductHead() {
                   )
                 )}
               {/* 數量選擇，輸入框，有加減數量按鈕 */}
-              {productData.stock > 0 && <PdNumInput item={cartPItem} />}
+              {productData.stock > 0 && (
+                <PdNumInput item={cartPItem} type={'product'} />
+              )}
               {/* 加入購物車按鈕、直接購買按鈕，各一半 */}
               <div className="hstack gap-3">
                 {productData.stock > 0 ? (
                   <>
                     <AddCartBtn type={'product'} />
-                    <BuyBtn />
+                    <BuyBtn type={'product'} />
                   </>
                 ) : (
                   <OutOfStockBtn />
