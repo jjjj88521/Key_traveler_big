@@ -364,6 +364,8 @@ export default function ProductCate1() {
                         stock={v.stock}
                         link={`/product/${v.category_1}/${v.category_2}/${v.id}`}
                         created_time={v.created_time}
+                        id={v.id}
+                        cate={'pd'}
                       />
                     </div>
                   </div>
