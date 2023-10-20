@@ -16,7 +16,6 @@ export default function History() {
   const [tabkey, setTabkey] = useState('Expired')
 
   const tabsOnChange = (e) => {
-    console.log('tab key:' + e.target.value)
     setTabkey(e.target.value)
     setCurrentPage(1)
     window.scrollTo({ top: scrollTo ? scrollTo : 0, behavior: 'auto' })

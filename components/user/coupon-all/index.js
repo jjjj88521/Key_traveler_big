@@ -10,9 +10,6 @@ const moment = require('moment')
 function filterData(data) {
   const millisecondsInADay = 1000 * 60 * 60 * 24
   // 保留start_date與目前時間相差2天以內的元素
-  data.map((i) => {
-    console.log(i.start_date)
-  })
   const filteredData = data.filter((item) => {
     return (
       !(
@@ -34,7 +31,6 @@ export default function CouponAll({ currentPage, pageSize, handlePageChange }) {
   useEffect(() => {
     if (Array.isArray(coupon) && coupon.length > 0) {
       const fData = filterData(coupon)
-      console.log(fData)
       setCouponAllData(fData)
     } else {
       setCouponAllData([])

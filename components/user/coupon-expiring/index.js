@@ -36,7 +36,6 @@ export default function CouponExpiring({
   useEffect(() => {
     if (Array.isArray(coupon) && coupon.length > 0) {
       const fData = filterExpiringData(coupon)
-      console.log(fData)
       setCouponExpiringData(fData)
     } else {
       setCouponExpiringData([])

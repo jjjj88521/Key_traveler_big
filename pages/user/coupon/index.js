@@ -12,7 +12,7 @@ export default function Coupon() {
   useEffect(() => {
     getCoupon()
   }, [])
-  console.log(coupon)
+  // console.log(coupon)
   const [isLoading, setIsLoading] = useLoading(coupon)
 
   const [currentPage, setCurrentPage] = useState(1)
