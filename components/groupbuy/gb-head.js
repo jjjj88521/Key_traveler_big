@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import GallerySwiper from '@/components/common/gallery-swiper'
 import {
   Item,
@@ -34,7 +34,7 @@ export default function GbHead() {
   const router = useRouter()
 
   const { productData, isLiked, setIsLiked } = useProductData()
-  const { name, brand, price, status } = productData
+  const { id, name, brand, price, status } = productData
   const images = JSON.parse(productData.images) || []
   const style_select = JSON.parse(productData.style_select) || {}
 
@@ -81,6 +81,32 @@ export default function GbHead() {
       })
     }
   }
+  const [cartGItem, setCartGItem] = useState({
+    id: id,
+    check: false,
+    img: '/images/' + images[0],
+    brand: brand,
+    name: name,
+    price: price,
+    quantity: 1,
+    spec: style_select,
+    specData: selectedStyles.reduce((obj, item) => {
+      obj[item.key] = item.value
+      return obj
+    }, {}),
+  })
+  useEffect(() => {
+    localStorage.setItem('cartGItem', JSON.stringify(cartGItem))
+  }, [])
+  useEffect(() => {
+    const resultObject = selectedStyles.reduce((obj, item) => {
+      obj[item.key] = item.value
+      return obj
+    }, {})
+    setCartGItem({ ...cartGItem, specData: resultObject })
+    const newStyleSelect = { ...cartGItem, specData: resultObject }
+    localStorage.setItem('cartGItem', JSON.stringify(newStyleSelect))
+  }, [selectedStyles])
 
   return (
     <section className="">
@@ -137,14 +163,16 @@ export default function GbHead() {
                 )
               )}
             {/* 數量選擇，輸入框，有加減數量按鈕 */}
-            {status === 'running' && <PdNumInput />}
+            {status === 'running' && (
+              <PdNumInput item={cartGItem} type={'groupBuy'} />
+            )}
             {/* 加入購物車按鈕、直接購買按鈕，各一半 */}
             <div className="hstack gap-3">
               {status === 'waiting' && <WaitingStartGbBtn />}
               {status === 'running' && (
                 <>
-                  <AddCartBtn />
-                  <BuyBtn />
+                  <AddCartBtn type={'groupBuy'} />
+                  <BuyBtn type={'groupBuy'} />
                 </>
               )}
               {status === 'end' && <EndGbBtn />}

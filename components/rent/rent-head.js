@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import GallerySwiper from '@/components/common/gallery-swiper'
 import {
   Item,
@@ -32,7 +32,7 @@ export default function RentHead() {
   const router = useRouter()
   const [isMobile] = useMobile()
   const { productData, isLiked, setIsLiked } = useProductData()
-  const { name, brand, price, stock } = productData
+  const { id, name, brand, price, stock } = productData
   const images = productData.images ? JSON.parse(productData.images) : []
   const style_select = productData.style_select
     ? JSON.parse(productData.style_select)
@@ -69,6 +69,57 @@ export default function RentHead() {
       })
     }
   }
+  const [cartRItem, setCartRItem] = useState({
+    id: id,
+    check: false,
+    img: '/images/' + images[0],
+    brand: brand,
+    name: name,
+    price: price,
+    startDate: '',
+    endDate: '',
+    spec: style_select,
+    specData: selectedStyles.reduce((obj, item) => {
+      obj[item.key] = item.value
+      return obj
+    }, {}),
+  })
+
+  useEffect(() => {
+    localStorage.setItem('cartRItem', JSON.stringify(cartRItem))
+  }, [])
+  useEffect(() => {
+    const resultObject = selectedStyles.reduce((obj, item) => {
+      obj[item.key] = item.value
+      return obj
+    }, {})
+    setCartRItem({ ...cartRItem, specData: resultObject })
+    const newStyleSelect = { ...cartRItem, specData: resultObject }
+    localStorage.setItem('cartRItem', JSON.stringify(newStyleSelect))
+  }, [selectedStyles])
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+
+  const setDate = (value, datestring) => {
+    setStartDate(datestring[0])
+    setEndDate(datestring[1])
+  }
+  useEffect(() => {
+    setCartRItem((cartRItem) => ({
+      ...cartRItem,
+      startDate: startDate,
+    }))
+  }, [startDate])
+
+  useEffect(() => {
+    setCartRItem((cartRItem) => ({
+      ...cartRItem,
+      endDate: endDate,
+    }))
+  }, [endDate])
+  useEffect(() => {
+    localStorage.setItem('cartRItem', JSON.stringify(cartRItem))
+  }, [cartRItem])
 
   // 收藏商品
   const handleToggleLike = async () => {
@@ -175,6 +226,9 @@ export default function RentHead() {
                   onFocus={handleDateFocus}
                   placement="bottomleft"
                   className="w-100"
+                  onChange={(date, dateString) => {
+                    setDate(date, dateString)
+                  }}
                 />
               </div>
             )}
@@ -183,8 +237,8 @@ export default function RentHead() {
             <div className="hstack gap-3">
               {stock !== 0 ? (
                 <>
-                  <AddCartBtn />
-                  <BuyBtn />
+                  <AddCartBtn type={'rent'} />
+                  <BuyBtn type={'rent'} />
                 </>
               ) : (
                 <OutOfStockBtn />

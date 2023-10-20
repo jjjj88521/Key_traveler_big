@@ -5,9 +5,10 @@ import React, {
   useEffect,
   useState,
 } from 'react'
-import { reducer, init } from './cart-reducer'
-
-const ThirdCartContext = createContext(null)
+import { reducer, initGroup } from './cart-reducer'
+import axios from 'axios'
+import { useAuth } from './useAuth'
+const GroupCartContext = createContext(null)
 
 // initialState = {
 //   items: [],
@@ -24,51 +25,40 @@ const ThirdCartContext = createContext(null)
 //   price: 0,
 //   quantity: 0,
 //   spec: '',
+//   specData:{},
 // }
 
-export const ThirdCartProvider = ({
-  children,
-  initialProducts = [
-    {
-      id: 1,
-      check: false,
-      img: '/images/1669370674683000804.jpg',
-      brand: 'Meletrix',
-      name: 'Meletrix ZoomPad 數字鍵盤套件 SP版(左手版)',
-      price: 3000,
-      quantity: 1,
-      spec: {
-        外殼: ['EE 耀夜黑', 'EE 細花白'],
-        '配重/旋鈕': ['電泳 白', '陽極 黑'],
-      },
-      styleSelect: {
-        外殼: 'EE 耀夜黑',
-        '配重/旋鈕': '電泳 白',
-      },
-    },
-    {
-      id: 2,
-      check: false,
-      img: '/images/1669370674683000804.jpg',
-      brand: 'Meletrix',
-      name: 'Meletrix ZoomPad 數字鍵盤套件 SP版(左手版)',
-      price: 1000,
-      quantity: 1,
-      spec: {
-        外殼: ['EE 耀夜黑', 'EE 細花黑'],
-        '配重/旋鈕': ['電泳 綠', '陽極 紅'],
-      },
-      styleSelect: {
-        外殼: ['EE 耀夜黑'],
-        '配重/旋鈕': ['電泳 白'],
-      },
-    },
-  ], //初始化購物車的加入項目
-}) => {
-  let items = initialProducts
+export const GroupCartProvider = ({ children }) => {
+  const { auth } = useAuth()
+  // // init state, init來自cartReducer中
+  // const [state, dispatch] = useReducer(reducer, updatedItems, initGroup)
+  const [state, dispatch] = useReducer(reducer, [], initGroup)
+  const getCartData = async () => {
+    try {
+      const response = await axios.get(
+        'http://localhost:3005/api/cart/groupbuy',
+        {
+          withCredentials: true,
+        }
+      )
+      if (response.data.message === 'authorized') {
+        // 將購物車資料設定為初始狀態
+        dispatch({ type: 'SET_CART', payload: response.data.cartG })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    if (auth.isAuth) {
+      // 只有当 auth.isAuth 为真时才执行以下操作
+      const loadingData = async () => {
+        await getCartData()
+      }
+      loadingData()
+    }
+  }, [auth.isAuth])
 
-  // init state, init來自cartReducer中
-  const [state, dispatch] = useReducer(reducer, items, init)
   const [cartTotalG, setCartTotalG] = useState(0)
   const [totalItemsG, setTotalItemsG] = useState(0)
   const [selectItemsG, setSelectItemsG] = useState(0)
@@ -95,20 +85,22 @@ export const ThirdCartProvider = ({
    * @param {string} id
    * @returns {void}
    */
-  const removeItem = (id) => {
+  const removeItem = (id, specData) => {
     dispatch({
       type: 'REMOVE_ITEM',
       payload: {
         id,
+        specData,
       },
     })
   }
 
-  const checkItem = (id) => {
+  const checkItem = (id, specData) => {
     dispatch({
       type: 'CHECK_ITEM',
       payload: {
         id,
+        specData,
       },
     })
   }
@@ -155,11 +147,12 @@ export const ThirdCartProvider = ({
    * @param {string} id
    * @returns {void}
    */
-  const plusOne = (id) => {
+  const plusOne = (id, specData) => {
     return dispatch({
       type: 'PLUS_ONE',
       payload: {
         id,
+        specData,
       },
     })
   }
@@ -169,17 +162,29 @@ export const ThirdCartProvider = ({
    * @param {string} id
    * @returns {void}
    */
-  const minusOne = (id) => {
+  const minusOne = (id, specData) => {
     return dispatch({
       type: 'MINUS_ONE',
       payload: {
         id,
+        specData,
+      },
+    })
+  }
+
+  const styleSelect = (id, key, value) => {
+    return dispatch({
+      type: 'STYLE_SELECT',
+      payload: {
+        id,
+        key,
+        value,
       },
     })
   }
 
   return (
-    <ThirdCartContext.Provider
+    <GroupCartContext.Provider
       value={{
         cart: state,
         items: state.items,
@@ -195,11 +200,12 @@ export const ThirdCartProvider = ({
         cartTotalG,
         totalItemsG,
         selectItemsG,
+        styleSelect,
       }}
     >
       {children}
-    </ThirdCartContext.Provider>
+    </GroupCartContext.Provider>
   )
 }
 
-export const useThirdCart = () => useContext(ThirdCartContext)
+export const useGroupCart = () => useContext(GroupCartContext)

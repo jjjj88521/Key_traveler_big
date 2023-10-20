@@ -97,7 +97,7 @@ export default function ListCardForCoupon({ data, type }) {
                         {item.end_date}
                       </div>
                     ) : (
-                      <div className="text-danger d-sm-none ">
+                      <div className="text-danger">
                         <i className="fa-solid fa-clock me-1"></i>
                         {item.end_date}
                         <p className="mb-0 ms-3">

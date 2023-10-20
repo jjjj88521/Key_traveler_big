@@ -4,16 +4,15 @@ import DefaultLayout from '@/components/layout/default-layout'
 import '@/styles/globals.scss'
 import AntdConfigProvider from './_antd-config-provider'
 import HomeLayout from '@/components/layout/home-layout'
-// 購物車
-import { CartProvider } from '@/hooks/use-cart'
-import { SecondCartProvider } from '@/hooks/useSecondCart'
-import { ThirdCartProvider } from '@/hooks/useThirdCart'
 import { AuthProvider } from '@/hooks/useAuth'
 import HydrationFix from './_hydration-fix'
-import UserLayout from '@/components/layout/user-layout'
 // 商品
 import { ProductDataProvider } from '@/context/use-product'
 import { AllPdLikeProvider } from '@/context/useAllPdLike'
+// 購物車
+import { CartProvider } from '@/hooks/useCart'
+import { RentCartProvider } from '@/hooks/useRentCart'
+import { GroupCartProvider } from '@/hooks/useGroupCart'
 
 export default function MyApp({ Component, pageProps }) {
   // Use the layout defined at the page level, if available
@@ -53,13 +52,13 @@ export default function MyApp({ Component, pageProps }) {
           <AllPdLikeProvider>
             <ProductDataProvider>
               <CartProvider>
-                <SecondCartProvider>
-                  <ThirdCartProvider>
+                <RentCartProvider>
+                  <GroupCartProvider>
                     <HydrationFix>
                       <AntdConfigProvider>{layoutComponent}</AntdConfigProvider>
                     </HydrationFix>
-                  </ThirdCartProvider>
-                </SecondCartProvider>
+                  </GroupCartProvider>
+                </RentCartProvider>
               </CartProvider>
             </ProductDataProvider>
           </AllPdLikeProvider>

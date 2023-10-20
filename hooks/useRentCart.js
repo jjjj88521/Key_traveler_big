@@ -6,47 +6,40 @@ import React, {
   useState,
 } from 'react'
 import { reducer, initRent } from './cart-reducer'
+import axios from 'axios'
+import { useAuth } from './useAuth'
 
-const SecondCartContext = createContext(null)
+const RentCartContext = createContext(null)
 
-export const SecondCartProvider = ({
-  children,
-  initialRentProducts = [
-    {
-      id: 1,
-      check: false,
-      img: '/images/1669370674683000804.jpg',
-      brand: 'Meletrix',
-      name: 'Meletrix ZoomPad 數字鍵盤套件 SP版(左手版)',
-      price: 300,
-      startDate: '2023-10-15',
-      endDate: '2023-10-16',
-      quantity: 1,
-      spec: {
-        外殼: ['EE 耀夜黑', 'EE 細花白'],
-        '配重/旋鈕': ['電泳 白', '陽極 黑'],
-      },
-    },
-    {
-      id: 2,
-      check: false,
-      img: '/images/1669370674683000804.jpg',
-      brand: 'Meletrix',
-      name: 'Meletrix ZoomPad 數字鍵盤套件 SP版(左手版)',
-      price: 100,
-      startDate: '2023-10-17',
-      endDate: '2023-10-18',
-      quantity: 1,
-      spec: {
-        外殼: ['EE 耀夜黑', 'EE 細花白'],
-        '配重/旋鈕': ['電泳 白', '陽極 黑'],
-      },
-    },
-  ],
-}) => {
-  let items = initialRentProducts
+export const RentCartProvider = ({ children }) => {
+  // let items = initialRentProducts
+  const { auth } = useAuth()
+  // const [state, dispatch] = useReducer(reducer, items, initRent)
+  const [state, dispatch] = useReducer(reducer, [], initRent)
+  const getCartData = async () => {
+    try {
+      const response = await axios.get('http://localhost:3005/api/cart/rent', {
+        withCredentials: true,
+      })
+      // console.log(response.data)
+      if (response.data.message === 'authorized') {
+        // 將購物車資料設定為初始狀態
+        dispatch({ type: 'SET_RENT_CART', payload: response.data.cartR })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    if (auth.isAuth) {
+      // 只有当 auth.isAuth 为真时才执行以下操作
+      const loadingData = async () => {
+        await getCartData()
+      }
+      loadingData()
+    }
+  }, [auth.isAuth])
 
-  const [state, dispatch] = useReducer(reducer, items, initRent)
   const [cartTotalR, setCartTotalR] = useState(0)
   const [totalItemsR, setTotalItemsR] = useState(0)
   const [selectItemsR, setSelectItemsR] = useState(0)
@@ -73,11 +66,12 @@ export const SecondCartProvider = ({
     })
   }
 
-  const checkItem = (id) => {
+  const checkItem = (id, specData) => {
     dispatch({
       type: 'CHECK_RENT_ITEM',
       payload: {
         id,
+        specData,
       },
     })
   }
@@ -135,27 +129,29 @@ export const SecondCartProvider = ({
     return `${year}-${month}-${day}`
   }
   //租用起日
-  const handleStartDateChange = (id, newStartDate) => {
+  const handleStartDateChange = (id, newStartDate, specData) => {
     return dispatch({
       type: 'Start_Date_Change',
       payload: {
         id,
         newStartDate,
+        specData,
       },
     })
   }
   //租用迄日
-  const handleEndDateChange = (id, newEndDate) => {
+  const handleEndDateChange = (id, newEndDate, specData) => {
     return dispatch({
       type: 'End_Date_Change',
       payload: {
         id,
+        specData,
         newEndDate,
       },
     })
   }
   return (
-    <SecondCartContext.Provider
+    <RentCartContext.Provider
       value={{
         cart: state,
         items: state.items,
@@ -177,8 +173,8 @@ export const SecondCartProvider = ({
       }}
     >
       {children}
-    </SecondCartContext.Provider>
+    </RentCartContext.Provider>
   )
 }
 
-export const useSecondCart = () => useContext(SecondCartContext)
+export const useRentCart = () => useContext(RentCartContext)

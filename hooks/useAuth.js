@@ -176,6 +176,33 @@ export function AuthProvider({ children }) {
       console.log(error)
     }
   }
+  const [cart, setCart] = useState({
+    cart: {
+      id: '',
+      check: '',
+      img: '',
+      brand: '',
+      name: '',
+      price: '',
+      quantity: '',
+      spec: '',
+      specData: '',
+    },
+  })
+  const getCart = async (type) => {
+    try {
+      const response = await axios.get('http://localhost:3005/api/cart', {
+        withCredentials: true,
+      })
+      if (type === 'product') {
+        if (response.data.message === 'authorized') {
+          setCart(response.data.cart)
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   // 檢查會員證證用
   const checkAuth = async () => {
@@ -197,7 +224,7 @@ export function AuthProvider({ children }) {
         })
         .catch((error) => {
           if (
-            asPath.startsWith('/user') &&
+            (asPath.startsWith('/user') || asPath.startsWith('/cart')) &&
             asPath !== '/user/login' &&
             asPath !== '/user/register'
           ) {
@@ -224,15 +251,15 @@ export function AuthProvider({ children }) {
           withCredentials: true,
         }
       )
-      console.log(`checklogoin:`)
-      console.log(res)
+      // console.log(`checklogoin:`)
+      // console.log(res)
       const id = res.data.user.id
-      console.log('id')
-      console.log(id)
+      // console.log('id')
+      // console.log(id)
 
       const userRes = await axios.get(`http://localhost:3005/api/users/${id}`)
-      console.log('123123123123')
-      console.log(userRes.data.user)
+      // console.log('123123123123')
+      // console.log(userRes.data.user)
 
       setAuth({
         isAuth: true,
@@ -362,7 +389,12 @@ export function AuthProvider({ children }) {
               }).then(() => {
                 // 跳轉回原頁面
                 localStorage.removeItem('redirect')
-                router.push(redirect.startsWith('/user') ? '/' : redirect)
+
+                router.push(
+                  redirect.startsWith('/user') || asPath.startsWith('/cart')
+                    ? '/'
+                    : redirect
+                )
               })
             })
         }
@@ -381,7 +413,7 @@ export function AuthProvider({ children }) {
     if (router.isReady && !auth.isAuth) {
       checkAuth()
 
-      console.log(auth)
+      // console.log(auth)
     }
   }, [router.isReady, asPath])
 
@@ -403,6 +435,9 @@ export function AuthProvider({ children }) {
           couponUsed,
           setCouponUsed,
           getCouponUsed,
+          cart,
+          setCart,
+          getCart,
         }}
       >
         {children}

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import GallerySwiper from '@/components/common/gallery-swiper'
 import {
   Item,
@@ -21,7 +21,7 @@ export default function ProductHead() {
   const router = useRouter()
   // 獲取商品 context
   const { productData, isLiked, setIsLiked, commentCount } = useProductData()
-  const { name, brand, price } = productData
+  const { id, name, brand, price } = productData
   const { avgStar, total } = commentCount
   const images = JSON.parse(productData.images)
   const style_select = JSON.parse(productData.style_select)
@@ -40,8 +40,6 @@ export default function ProductHead() {
       const response = isLiked
         ? await deleteProductLike('pd', productData.id)
         : await addProductLike('pd', productData.id)
-
-      console.log(response)
 
       if (response.code === '200') {
         setIsLiked(!isLiked)
@@ -68,80 +66,108 @@ export default function ProductHead() {
       })
     }
   }
+  const [cartPItem, setCartPItem] = useState({
+    id: id,
+    check: false,
+    img: '/images/' + images[0],
+    brand: brand,
+    name: name,
+    price: price,
+    quantity: 1,
+    spec: style_select,
+    specData: selectedStyles.reduce((obj, item) => {
+      obj[item.key] = item.value
+      return obj
+    }, {}),
+  })
+
+  useEffect(() => {
+    localStorage.setItem('cartPItem', JSON.stringify(cartPItem))
+  }, [])
+
+  useEffect(() => {
+    const resultObject = selectedStyles.reduce((obj, item) => {
+      obj[item.key] = item.value
+      return obj
+    }, {})
+    setCartPItem({ ...cartPItem, specData: resultObject })
+    const newStyleSelect = { ...cartPItem, specData: resultObject }
+    localStorage.setItem('cartPItem', JSON.stringify(newStyleSelect))
+  }, [selectedStyles])
 
   return (
-    <section className="">
-      <div className="container">
-        <div className="row px-sm-5 px-0 py-sm-5 py-3">
-          {/* 左邊圖片 */}
-          <div className="col-sm-7 col-12 left-info pe-sm-5 position-relative">
-            <div className="position-sticky" style={{ top: '100px' }}>
-              <GallerySwiper images={images} path="/images/product/" />
+    <>
+      <section className="">
+        <div className="container">
+          <div className="row px-sm-5 px-0 py-sm-5 py-3">
+            {/* 左邊圖片 */}
+            <div className="col-sm-7 col-12 left-info pe-sm-5 position-relative">
+              <div className="position-sticky" style={{ top: '100px' }}>
+                <GallerySwiper images={images} path="/images/product/" />
+              </div>
             </div>
-          </div>
-          {/* 右側商品文字內容 */}
-          <div className="col-sm-5 col-12 right-info vstack gap-5">
-            {/* 商品名稱、品牌、價格、評論數量 */}
-            <PdInfoBox>
-              <PdBrand brand={brand} />
-              <PdName name={name} />
-              <PdPrice price={price} />
-              <PdRating rating={avgStar} commentCount={total} />
-            </PdInfoBox>
-            {/* 產品樣式選擇 */}
-            {style_select &&
-              Object.keys(style_select).map((key, index) =>
-                isMobile ? (
-                  <div
-                    key={key}
-                    className="d-flex align-items-center flex-column"
-                  >
-                    <h5 className="text-secondary">{key}</h5>
-                    <Select
-                      className="w-100"
-                      defaultValue={selectedStyles[index].value}
-                      options={style_select[key].map((item, index) => ({
-                        key: index,
-                        label: item,
-                        value: item,
-                      }))}
-                      onSelect={(value) => handleStyleSelect(key, value)}
-                      size={'large'}
-                    />
-                  </div>
+            {/* 右側商品文字內容 */}
+            <div className="col-sm-5 col-12 right-info vstack gap-5">
+              {/* 商品名稱、品牌、價格、評論數量 */}
+              <PdInfoBox>
+                <PdBrand brand={brand} />
+                <PdName name={name} />
+                <PdPrice price={price} />
+                <PdRating rating={avgStar} commentCount={total} />
+              </PdInfoBox>
+              {/* 產品樣式選擇 */}
+              {style_select &&
+                Object.keys(style_select).map((key, index) =>
+                  isMobile ? (
+                    <div
+                      key={key}
+                      className="d-flex align-items-center flex-column"
+                    >
+                      <h5 className="text-secondary">{key}</h5>
+                      <Select
+                        className="w-100"
+                        defaultValue={selectedStyles[index].value}
+                        options={style_select[key].map((item, index) => ({
+                          key: index,
+                          label: item,
+                          value: item,
+                        }))}
+                        onSelect={(value) => handleStyleSelect(key, value)}
+                        size={'large'}
+                      />
+                    </div>
+                  ) : (
+                    <StyleSelect
+                      key={key}
+                      title={key}
+                      onSelect={handleStyleSelect}
+                      selectedValue={selectedStyles[index].value}
+                    >
+                      {style_select[key].map((value, index) => (
+                        <Item key={index}>{value}</Item>
+                      ))}
+                    </StyleSelect>
+                  )
+                )}
+              {/* 數量選擇，輸入框，有加減數量按鈕 */}
+              {productData.stock > 0 && (
+                <PdNumInput item={cartPItem} type={'product'} />
+              )}
+              {/* 加入購物車按鈕、直接購買按鈕，各一半 */}
+              <div className="hstack gap-3">
+                {productData.stock > 0 ? (
+                  <>
+                    <AddCartBtn type={'product'} />
+                    <BuyBtn type={'product'} />
+                  </>
                 ) : (
-                  <StyleSelect
-                    key={key}
-                    title={key}
-                    onSelect={handleStyleSelect}
-                    selectedValue={selectedStyles[index].value}
-                  >
-                    {style_select[key].map((value, index) => (
-                      <Item key={index}>{value}</Item>
-                    ))}
-                  </StyleSelect>
-                )
-              )}
-            {/* 數量選擇，輸入框，有加減數量按鈕 */}
-            {productData.stock > 0 && <PdNumInput />}
-            {/* 加入購物車按鈕、直接購買按鈕，各一半 */}
-            <div className="hstack gap-3">
-              {productData.stock > 0 ? (
-                <>
-                  <AddCartBtn />
-                  <BuyBtn />
-                </>
-              ) : (
-                <OutOfStockBtn />
-              )}
-            </div>
-            {/* 喜歡按鈕 */}
-            <div className="d-flex justify-content-center">
-              <LikeBtn isLiked={isLiked} onToggleLike={handleToggleLike} />
+                  <OutOfStockBtn />
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   )
 }

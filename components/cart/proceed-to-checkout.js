@@ -1,50 +1,85 @@
 import React, { useState, useEffect } from 'react'
 import { useAuth } from '@/hooks/useAuth'
-import { useCart } from '@/hooks/use-cart'
-import { useThirdCart } from '@/hooks/useThirdCart'
-import { useSecondCart } from '@/hooks/useSecondCart'
+import { useCart } from '@/hooks/useCart'
+import { useGroupCart } from '@/hooks/useGroupCart'
+import { useRentCart } from '@/hooks/useRentCart'
 
-export default function ProceedToCheckout({
-  orderTotalAll,
-  orderAmountAll,
-  onCheckout,
-}) {
-  // const { priceData, setPrice } = useCartContext()
+const moment = require('moment')
+function filterData(data) {
+  const millisecondsInADay = 1000 * 60 * 60 * 24
+  // 保留start_date與目前時間相差2天以內的元素
+  const filteredData = data.filter((item) => {
+    return (
+      !(
+        Math.floor((moment(item.start_date) - moment()) / millisecondsInADay) >
+        2
+      ) || item.end_date == undefined
+    )
+  })
+  return filteredData
+}
+
+export default function ProceedToCheckout({ onCheckout }) {
   const { coupon, getCoupon } = useAuth()
   useEffect(() => {
     getCoupon()
   }, [])
-  console.log(coupon)
-  const initialCoupons = [
-    {
-      id: 1,
-      name: '全站9折',
-      percent: 0.9,
-    },
-    {
-      id: 2,
-      name: '全站85折',
-      percent: 0.85,
-    },
-    {
-      id: 3,
-      name: '全站8折',
-      percent: 0.8,
-    },
-  ]
-  const [coupons, setcoupons] = useState(initialCoupons)
-  const [selectedCoupon, setSelectedCoupon] = useState('')
 
+  const [coupons, setcoupons] = useState([])
+
+  useEffect(() => {
+    if (Array.isArray(coupon) && coupon.length > 0) {
+      const fData = filterData(coupon)
+      setcoupons(fData)
+    } else {
+      setcoupons([])
+    }
+  }, [coupon])
+  const [selectedCoupon, setSelectedCoupon] = useState('')
   const { cartTotalP: totalPriceP, selectItemsP: totalItemsP } = useCart()
-  const { cartTotalG: totalPriceG, selectItemsG: totalItemsG } = useThirdCart()
-  const { cartTotalR: totalPriceR, selectItemsR: totalItemsR } = useSecondCart()
+  const { cartTotalG: totalPriceG, selectItemsG: totalItemsG } = useGroupCart()
+  const { cartTotalR: totalPriceR, selectItemsR: totalItemsR } = useRentCart()
 
   const handleCouponDeselect = () => {
     setSelectedCoupon('')
+    setSelectedCouponId(0)
   }
-  const handleCouponSelect = (couponName) => {
+
+  const [pdTotalPrice, setPdTotalPrice] = useState(totalPriceP)
+  useEffect(() => {
+    setPdTotalPrice(totalPriceP)
+  }, [totalPriceP])
+
+  const [selectedCouponId, setSelectedCouponId] = useState(0)
+  const handleCouponSelect = (couponName, couponDiscount, couponId) => {
     setSelectedCoupon(couponName)
+    if (pdTotalPrice) {
+      const resultDiscount =
+        couponDiscount > 1
+          ? pdTotalPrice - couponDiscount
+          : pdTotalPrice * couponDiscount
+      setPdTotalPrice(resultDiscount)
+      setSelectedCouponId(couponId)
+    }
   }
+
+  const [orderInfo, setOrderInfo] = useState(() => {
+    const data = localStorage.getItem('order-info')
+    return data ? JSON.parse(data) : null
+  })
+
+  const setOrderLocalStorage = () => {
+    const newData = {
+      'coupon-id': selectedCouponId,
+      'total-price': pdTotalPrice + totalPriceG + totalPriceR,
+    }
+    setOrderInfo(newData)
+  }
+  useEffect(() => {
+    console.log(orderInfo)
+    localStorage.setItem('order-info', JSON.stringify(orderInfo))
+  }, [orderInfo])
+
   return (
     <>
       {/* 去結帳 */}
@@ -54,18 +89,19 @@ export default function ProceedToCheckout({
             使用優惠券(限一般商品):
             <span
               className="ps-3"
-              style={{ width: '90px', display: 'inline-block' }}
+              style={{ width: '110px', display: 'inline-block' }}
               id="coupon"
             >
               {selectedCoupon}
             </span>
           </span>
-          <div className="btn-group ms-3 ">
+          <div className="btn-group" style={{ marginLeft: '170px' }}>
             <button
               className="btn btn-sm border-primary text-primary dropdown-toggle"
               type="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
+              disabled={totalPriceP ? false : true}
             >
               選擇優惠券
             </button>
@@ -85,19 +121,23 @@ export default function ProceedToCheckout({
                   <button
                     className="btn dropdown-item"
                     onClick={() => {
-                      handleCouponSelect(v.name)
+                      handleCouponSelect(
+                        v.coupon_name || v.coupon_code,
+                        v.discount_value === 0
+                          ? v.discount_percent
+                          : v.discount_value,
+                        v.couponId
+                      )
                     }}
                   >
-                    {v.name}
+                    {v.coupon_name || v.coupon_code}
                   </button>
                 </li>
               ))}
             </ul>
           </div>
         </div>
-        <div className="text-danger">
-          P.S.若商品種類(一般、團購、租用)相同，產品數量多且收件地址不同需分開結帳！！
-        </div>
+        <div className="text-danger">P.S.若收件地址不同需分開結帳！！</div>
         <div className="text-end">
           <span className="align-middle">
             共
@@ -106,18 +146,22 @@ export default function ProceedToCheckout({
             </span>
             件商品, 總金額: $
             <span className="orderTotal">
-              {totalPriceP + totalPriceG + totalPriceR}
-              {/* {priceData} */}
-              {/* {allCartsTotal} */}
+              {pdTotalPrice + totalPriceG + totalPriceR}
             </span>
           </span>
-          <a
+          <button
             href="#"
             className="btn btn-primary text-white ms-2 px-3 py-2"
-            onClick={onCheckout}
+            disabled={
+              pdTotalPrice + totalPriceG + totalPriceR === 0 ? true : false
+            }
+            onClick={async () => {
+              await setOrderLocalStorage()
+              onCheckout()
+            }}
           >
             去結帳
-          </a>
+          </button>
         </div>
       </div>
     </>

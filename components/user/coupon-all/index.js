@@ -5,6 +5,22 @@ import { useAuth } from '@/hooks/useAuth'
 import useLoading from '@/hooks/useLoading'
 import LoadingPage from '@/components/common/loadingPage'
 
+const moment = require('moment')
+
+function filterData(data) {
+  const millisecondsInADay = 1000 * 60 * 60 * 24
+  // 保留start_date與目前時間相差2天以內的元素
+  const filteredData = data.filter((item) => {
+    return (
+      !(
+        Math.floor((moment(item.start_date) - moment()) / millisecondsInADay) >
+        2
+      ) || item.end_date == undefined
+    )
+  })
+  return filteredData
+}
+
 export default function CouponAll({ currentPage, pageSize, handlePageChange }) {
   const [couponAllData, setCouponAllData] = useState([])
 
@@ -13,9 +29,9 @@ export default function CouponAll({ currentPage, pageSize, handlePageChange }) {
     getCoupon()
   }, [])
   useEffect(() => {
-    // 在这个useEffect中，确保coupon数据已经获取到
     if (Array.isArray(coupon) && coupon.length > 0) {
-      setCouponAllData(coupon)
+      const fData = filterData(coupon)
+      setCouponAllData(fData)
     } else {
       setCouponAllData([])
     }
