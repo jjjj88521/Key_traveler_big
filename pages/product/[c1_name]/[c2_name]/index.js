@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Drawer, Button, Spin } from 'antd'
+import { Drawer, Button, Spin, Switch } from 'antd'
 import styles from '@/pages/product/product.module.css'
 import Accordion from '@/components/product/accordion'
 import AsideFilter from '@/components/product/AsideFilter'
@@ -120,6 +120,9 @@ export default function ProductCate2() {
     if (orderbyValue) {
       requestUrl += `&orderby=${orderbyValue}`
     }
+    if (showZeroStock === 1) {
+      requestUrl += `&stock=1`
+    }
 
     // 創建新的 Axios 請求，包含分頁頁碼
     axios
@@ -130,6 +133,36 @@ export default function ProductCate2() {
       .catch((err) => {
         console.log(err)
       })
+  }
+
+  // 僅顯示有貨
+  const [showZeroStock, setShowZeroStock] = useState(0)
+  const checkStock = (checked) => {
+    if (checked) {
+      setShowZeroStock(1)
+      axios
+        .get(
+          `http://localhost:3005/api/products/qs?cate_1=${c1_name}&cate_2=${c2_name}&stock=1`
+        )
+        .then((res) => {
+          setCateProducts(res.data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    } else {
+      setShowZeroStock(0)
+      axios
+        .get(
+          `http://localhost:3005/api/products/qs?cate_1=${c1_name}&cate_2=${c2_name}`
+        )
+        .then((res) => {
+          setCateProducts(res.data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
   }
 
   // Drawer相關
@@ -157,31 +190,16 @@ export default function ProductCate2() {
         <div className="row">
           <div className="d-none d-sm-block col-12 col-sm-3 pe-md-5 pe-1">
             <Accordion />
-            <hr className="text-primary opacity-100"></hr>
-            {/* AsideFilter，篩選 */}
-            <div className="p-4 pt-0">
+            {/* AsideFilter，篩選，不使用component切開 */}
+            <div className="mt-4 p-4 border border-primary border-1">
               <div className="mb-2 fs-5">
                 <i className="fa-solid fa-filter"></i> 條件篩選
               </div>
+              <div className="py-2">
+                <h5 className="d-inline ms-2">只保留有貨 </h5>
+                <Switch onChange={checkStock} />
+              </div>
               <div className="d-flex flex-column gap-1">
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  有貨
-                </div>
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  品牌
-                </div>
                 <hr className="opacity-75"></hr>
                 <div className="mb-2 fs-5">
                   <i className="fa-solid fa-dollar-sign"></i> 價錢範圍

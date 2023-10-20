@@ -178,7 +178,7 @@ export default function ProductIndex() {
               </div>
               <div className="py-2">
                 <h5 className="d-inline ms-2">只保留有貨 </h5>
-                <Switch defaultChecked onChange={checkStock} />
+                <Switch onChange={checkStock} />
               </div>
               <div className="d-flex flex-column gap-1">
                 <hr className="opacity-75"></hr>
