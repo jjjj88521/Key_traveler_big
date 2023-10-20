@@ -89,7 +89,7 @@ export default function ProceedToCheckout({ onCheckout }) {
             使用優惠券(限一般商品):
             <span
               className="ps-3"
-              style={{ width: '110px', display: 'inline-block' }}
+              style={{ width: '180px', display: 'inline-block' }}
               id="coupon"
             >
               {selectedCoupon}

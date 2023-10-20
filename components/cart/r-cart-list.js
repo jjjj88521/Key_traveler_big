@@ -201,10 +201,10 @@ export default function RCartList() {
           <div className="mb-3 text-primary d-none d-sm-block d-sm-flex">
             <div
               className="pe-2"
-              data-bs-target="#collapseThree"
+              data-bs-target="#collapseTwo"
               data-bs-toggle="collapse"
               aria-expanded={isExpanded ? 'true' : 'false'}
-              aria-controls="collapseThree"
+              aria-controls="collapseTwo"
               onClick={() => setIsExpanded(!isExpanded)}
             >
               {isExpanded ? (

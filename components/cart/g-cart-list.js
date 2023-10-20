@@ -482,7 +482,7 @@ export default function GCartList() {
                           </span>
                           <input
                             type="number"
-                            className="form-control py-0 text-center"
+                            className="form-control py-0 text-center px-2"
                             value={item.quantity}
                           />
                           <span className="input-group-text p-0">
