@@ -18,6 +18,7 @@ export default function Card({
   cate,
   current_people = 0,
   target_people = 0,
+  created_time,
 }) {
   const router = useRouter()
   const { allPdLike } = useAllPdLike()
@@ -56,25 +57,32 @@ export default function Card({
       })
     }
   }
+
+  const createdDate = new Date(created_time)
+  const isNew = createdDate >= new Date('2023-10-01')
   return (
     <>
       <div
         className={`card h-100 border border-1 ${styles['card']} overflow-hidden`}
       >
         <div className={`card-img-top ${styles.cardImg}`}>
-          <img
-            src={image}
-            // className={`${styles.cardImg} card-img-top`}
-            className={`object-fit-cover w-100 h-100`}
-            alt="Product"
-          />
+          <Link href={link}>
+            <img
+              src={image}
+              // className={`${styles.cardImg} card-img-top`}
+              className={`object-fit-cover w-100 h-100`}
+              alt="Product"
+            />
+          </Link>
         </div>
 
         {/* 待完成，判斷是否為新品(ribbon) */}
         {stock === 0 ? (
           <div className={styles['outofstock']}></div>
-        ) : (
+        ) : isNew ? (
           <div className={styles['ribbon']}></div>
+        ) : (
+          <div></div>
         )}
         <div className="card-body w-100 position-relative bg-secondary-subtle py-4 vstack gap-2">
           <h5 className={`${styles['card-title-name']} card-title fw-bold`}>
@@ -93,7 +101,7 @@ export default function Card({
             className={`d-sm-none d-block border border-2 border-primary rounded-circle ${styles['cartBtn']}`}
           >
             <i
-              className="fa-solid fa-cart-shopping fa-xl"
+              className="fa-solid fa-cart-shopping fa-lg"
               style={{ color: '#F1D6AB' }}
             ></i>
           </button>
