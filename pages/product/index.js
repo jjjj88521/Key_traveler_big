@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Drawer, Button } from 'antd'
+import { Drawer, Button, Spin, Switch } from 'antd'
 import styles from './product.module.css'
 import Accordion from '@/components/product/accordion'
 import AsideFilter from '@/components/product/AsideFilter'
@@ -7,6 +7,7 @@ import PaginationComponent from '@/components/common/PaginationComponent'
 import Card from '@/components/product/Card'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import useLoading from '@/hooks/useLoading'
 
 // 將 title 傳給 app.js
 export async function getStaticProps() {
@@ -17,18 +18,15 @@ export async function getStaticProps() {
 }
 
 export default function ProductIndex() {
-  // Drawer相關
-  const [open, setOpen] = useState(false)
-  const showDrawer = () => {
-    setOpen(true)
-  }
-  const onClose = () => {
-    setOpen(false)
-  }
+  // 價錢篩選用的state
+  const [priceRange, setPriceRange] = useState({ min: 10, max: 30000 }) //數字物件
+  const range = `price_range=${priceRange.min},${priceRange.max}`
+
+  // dropdown選單
+  const [selectedOption, setSelectedOption] = useState('預設')
 
   // 路由相關
   const router = useRouter()
-
   const [cateProducts, setCateProducts] = useState([])
   useEffect(() => {
     if (router.isReady) {
@@ -36,7 +34,6 @@ export default function ProductIndex() {
         .get(`http://localhost:3005/api/products/qs`)
         .then((res) => {
           setCateProducts(res.data)
-          console.log(res.data)
         })
         .catch((err) => {
           console.log(err)
@@ -46,15 +43,76 @@ export default function ProductIndex() {
   //   console.log(cateProducts)
   //   console.log(cateProducts.data)
 
+  // 篩選功能：價錢範圍
+  const filterRange = () => {
+    axios
+      .get(`http://localhost:3005/api/products/qs?${range}`)
+      .then((res) => {
+        setCateProducts(res.data)
+        // 儲存篩選條件，給分頁功能用
+        setFilterRangeValue(range)
+        // 回歸第一頁
+        setPage(1)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  // 排序功能
+  const orderProduct = (orderby) => {
+    // 建構 Axios 請求，包含分頁頁碼以及篩選條件
+    let requestUrl = `http://localhost:3005/api/products/qs?orderby=${orderby}`
+
+    // 如果有做過"篩選"或"排序"，就要將其包含在請求中
+    if (filterRangeValue) {
+      requestUrl += `&${filterRangeValue}`
+    }
+    axios
+      .get(requestUrl)
+      .then((res) => {
+        setCateProducts(res.data)
+        // 儲存篩選條件，給分頁功能用
+        setOrderbyValue(orderby)
+        // 回歸第一頁
+        setPage(1)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  // 存是否正在載入
+  const [isLoading, setIsLoading] = useLoading(
+    Object.keys(cateProducts).length > 0
+  )
+
   // 分頁相關
   const PageSize = 12
   const totalPageCount = cateProducts.total
-  const [currentPage, setCurrentPage] = useState(1)
+  const [page, setPage] = useState(1)
+  // 用以偵測有沒有"篩選價錢"或"排序"的條件存在
+  const [filterRangeValue, setFilterRangeValue] = useState(null)
+  const [orderbyValue, setOrderbyValue] = useState(null)
   const handlePageChange = (newPage) => {
-    setCurrentPage(newPage)
-    // 創建新的 Axios 請求，包含分頁頁碼
+    setPage(newPage)
+
+    // 建構 Axios 請求，包含分頁頁碼以及篩選條件
+    let requestUrl = `http://localhost:3005/api/products/qs?page=${newPage}`
+
+    // 如果有做過"篩選"或"排序"，就要將其包含在請求中
+    if (filterRangeValue) {
+      requestUrl += `&${filterRangeValue}`
+    }
+    if (orderbyValue) {
+      requestUrl += `&orderby=${orderbyValue}`
+    }
+    if (showZeroStock === 1) {
+      requestUrl += `&stock=1`
+    }
+
     axios
-      .get(`http://localhost:3005/api/products/qs?page=${newPage}`)
+      .get(requestUrl)
       .then((res) => {
         setCateProducts(res.data)
       })
@@ -63,6 +121,40 @@ export default function ProductIndex() {
       })
   }
 
+  // 僅顯示有貨
+  const [showZeroStock, setShowZeroStock] = useState(0)
+  const checkStock = (checked) => {
+    if (checked) {
+      setShowZeroStock(1)
+      axios
+        .get(`http://localhost:3005/api/products/qs?stock=1`)
+        .then((res) => {
+          setCateProducts(res.data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    } else {
+      setShowZeroStock(0)
+      axios
+        .get(`http://localhost:3005/api/products/qs`)
+        .then((res) => {
+          setCateProducts(res.data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+  }
+
+  // Drawer相關
+  const [open, setOpen] = useState(false)
+  const showDrawer = () => {
+    setOpen(true)
+  }
+  const onClose = () => {
+    setOpen(false)
+  }
   return (
     <>
       <div className={styles.banner}>
@@ -79,13 +171,66 @@ export default function ProductIndex() {
         <div className="row">
           <div className="d-none d-sm-block col-12 col-sm-3 pe-md-5 pe-1">
             <Accordion />
-            <hr className="text-primary opacity-100"></hr>
-            <AsideFilter />
+            {/* AsideFilter，篩選，不使用component切開 */}
+            <div className="mt-4 p-4 border border-primary border-1">
+              <div className="mb-2 fs-5">
+                <i className="fa-solid fa-filter"></i> 條件篩選
+              </div>
+              <div className="py-2">
+                <h5 className="d-inline ms-2">只保留有貨 </h5>
+                <Switch onChange={checkStock} />
+              </div>
+              <div className="d-flex flex-column gap-1">
+                <hr className="opacity-75"></hr>
+                <div className="mb-2 fs-5">
+                  <i className="fa-solid fa-dollar-sign"></i> 價錢範圍
+                </div>
+                <div className="mb-3 d-flex justify-content-center align-items-center">
+                  <input
+                    type="number"
+                    className="col-5"
+                    min="0"
+                    value={priceRange.min}
+                    onChange={(e) => {
+                      setPriceRange({
+                        ...priceRange,
+                        min: Number(e.target.value),
+                      })
+                    }}
+                  ></input>
+                  <div className="col-2 fs-4 d-flex justify-content-center">
+                    ~
+                  </div>
+                  <input
+                    type="number"
+                    className="col-5"
+                    min="0"
+                    value={priceRange.max}
+                    onChange={(e) => {
+                      setPriceRange({
+                        ...priceRange,
+                        max: Number(e.target.value),
+                      })
+                    }}
+                  ></input>
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  style={{ width: '60%', margin: 'auto' }}
+                  onClick={() => {
+                    filterRange()
+                  }}
+                >
+                  套用
+                </button>
+              </div>
+            </div>
           </div>
 
-          {/* sort btn & card group */}
+          {/* 排序 & card group */}
           <div className="col-12 col-sm-9">
-            {/* sort btn */}
+            {/* 排序dropdown */}
             <div className="d-sm-flex d-none justify-content-end align-items-center mb-3">
               <div className={`bg-primary-subtle ${styles['sortBtn']}`}>
                 <p className="fs-6">排序</p>
@@ -96,33 +241,63 @@ export default function ProductIndex() {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    預設
+                    {selectedOption}
                   </button>
                   <ul className="dropdown-menu">
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <button
+                        className="dropdown-item"
+                        onClick={() => {
+                          orderProduct('stock,desc')
+                          setSelectedOption('有貨優先')
+                        }}
+                      >
                         有貨優先
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <button
+                        className="dropdown-item"
+                        onClick={() => {
+                          orderProduct('price,asc')
+                          setSelectedOption('價錢：由低到高')
+                        }}
+                      >
                         價錢：由低到高
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <button
+                        className="dropdown-item"
+                        onClick={() => {
+                          orderProduct('price,desc')
+                          setSelectedOption('價錢：由高到低')
+                        }}
+                      >
                         價錢：由高到低
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <button
+                        className="dropdown-item"
+                        onClick={() => {
+                          orderProduct('created_time,desc')
+                          setSelectedOption('上架日期：由新到舊')
+                        }}
+                      >
                         上架日期：由新到舊
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <button
+                        className="dropdown-item"
+                        onClick={() => {
+                          orderProduct('created_time,asc')
+                          setSelectedOption('上架日期：由舊到新')
+                        }}
+                      >
                         上架日期：由舊到新
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 </div>
@@ -160,41 +335,57 @@ export default function ProductIndex() {
 
             {/* card group  */}
             <div className="d-flex row row-cols-2 row-cols-md-3 g-4 mb-sm-0 mb-4">
-              {cateProducts.data && cateProducts.data.length > 0 ? (
+              {cateProducts.data &&
+              cateProducts.data.length > 0 &&
+              !isLoading ? (
                 cateProducts.data.map((v, i) => (
                   <div className="col" key={i}>
-                    <div className="col">
-                      <Card
-                        title={v.name}
-                        brand={v.brand}
-                        price={v.price}
-                        image={
-                          v.images
-                            ? `/images/product/${JSON.parse(v.images)[0]}`
-                            : null
-                        }
-                        stock={v.stock}
-                        link={`/product/${v.category_1}/${v.category_2}/${v.id}`}
-                      />
-                    </div>
+                    {/* <div className="col"> */}
+                    <Card
+                      title={v.name}
+                      brand={v.brand}
+                      price={v.price}
+                      image={
+                        v.images
+                          ? `/images/product/${JSON.parse(v.images)[0]}`
+                          : null
+                      }
+                      stock={v.stock}
+                      link={`/product/${v.category_1}/${v.category_2}/${v.id}`}
+                      created_time={v.created_time}
+                      id={v.id}
+                      cate={'pd'}
+                    />
+                    {/* </div> */}
                   </div>
                 ))
               ) : (
-                <p>商品準備中</p>
+                <div className="m-auto mt-5">
+                  <Spin tip="Loading" size="large">
+                    <div className="content" />
+                  </Spin>
+                </div>
               )}
             </div>
+            {/* 分頁頁碼 */}
+            {!isLoading ? (
+              <div className="m-5">
+                {totalPageCount < PageSize ? (
+                  ''
+                ) : (
+                  <PaginationComponent
+                    currentPage={page}
+                    totalItems={cateProducts.total}
+                    pageSize={PageSize}
+                    onPageChange={handlePageChange}
+                  ></PaginationComponent>
+                )}
+              </div>
+            ) : (
+              <div></div>
+            )}
           </div>
         </div>
-      </div>
-
-      {/* 分頁頁碼 */}
-      <div className="m-5">
-        <PaginationComponent
-          currentPage={currentPage}
-          totalItems={totalPageCount}
-          pageSize={PageSize}
-          onPageChange={handlePageChange}
-        ></PaginationComponent>
       </div>
     </>
   )

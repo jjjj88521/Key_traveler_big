@@ -43,15 +43,21 @@ const ArticleLikeItem = ({
   title,
   link,
   handleDeleteLike,
-  pid,
+  aid,
   cate,
 }) => {
+  const parsedImg = JSON.parse(image)
   return (
     <tr>
       <td>
         <div className="row">
           <div className="col-auto">
-            <Image src={image} width={100} height={100} alt="" />
+            <Image
+              src={`/images/article/${parsedImg[0]}`}
+              width={100}
+              height={100}
+              alt=""
+            />
           </div>
           <div className="col d-flex align-items-center gap-1 flex-column flex-sm-row">
             <Link href={link}>{title}</Link>
@@ -64,7 +70,7 @@ const ArticleLikeItem = ({
         </Tag>
       </td>
       <td className="text-center align-middle">
-        <button className="btn border-0" onClick={() => handleDeleteLike(pid)}>
+        <button className="btn border-0" onClick={() => handleDeleteLike(aid)}>
           <i className="fa-solid fa-trash"></i>
         </button>
       </td>

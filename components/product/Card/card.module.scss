@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: center;
   .card-title-name {
-    height: 45px;
+    height: 50px;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -19,14 +19,23 @@
   .cardImg {
     // width: 100%;
     // height: 300px;
-    height: 100%;
+    height: 250px;
     // object-fit: initial;
-    // object-fit: cover;
+    object-fit: cover;
     // object-fit: fill;
-    overflow: clip;
+    // overflow: clip;
 
+    @media (max-width: 1400px) {
+      height: 245px;
+    }
+    @media (max-width: 1200px) {
+      height: 210px;
+    }
+    @media (max-width: 992px) {
+      height: 150px;
+    }
     @media (max-width: 576px) {
-      height: 130px; /* 在576px以下更改高度 */
+      height: 100px; /* 在576px以下更改高度 */
     }
   }
 
@@ -78,6 +87,11 @@
         display: none;
       }
     }
+    a {
+      @media (max-width: 576px) {
+        display: none;
+      }
+    }
 
     .infoBtn1 {
       background: white;
@@ -121,10 +135,10 @@
   .cartBtn {
     position: absolute;
     right: 10px;
-    top: 10px;
-    width: 45px;
-    height: 40px;
-    padding: 4px 0 0 0;
+    top: -45px;
+    width: 35px;
+    height: 35px;
+    padding: 5px 1px 0 0;
     background: #f8f8f8;
   }
 

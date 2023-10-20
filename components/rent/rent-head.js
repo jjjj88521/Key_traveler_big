@@ -24,8 +24,12 @@ import { DatePicker, Select } from 'antd'
 import { CaretRightOutlined } from '@ant-design/icons'
 import { useProductData } from '@/context/use-product'
 import useMobile from '@/hooks/useMobile'
+import { addProductLike, deleteProductLike } from '@/libs/productFetcher'
+import Swal from 'sweetalert2'
+import { useRouter } from 'next/router'
 
 export default function RentHead() {
+  const router = useRouter()
   const [isMobile] = useMobile()
   const { productData, isLiked, setIsLiked } = useProductData()
   const { id, name, brand, price, stock } = productData
@@ -117,13 +121,50 @@ export default function RentHead() {
     localStorage.setItem('cartRItem', JSON.stringify(cartRItem))
   }, [cartRItem])
 
+  // 收藏商品
+  const handleToggleLike = async () => {
+    try {
+      const response = isLiked
+        ? await deleteProductLike('gb', productData.id)
+        : await addProductLike('gb', productData.id)
+
+      console.log(response)
+
+      if (response.code === '200') {
+        setIsLiked(!isLiked)
+        const successMessage = response.message
+        Swal.fire({
+          icon: 'success',
+          title: successMessage,
+          showConfirmButton: false,
+          timer: 1500,
+        })
+      } else {
+        throw new Error('發生錯誤')
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: '請先登入',
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(() => {
+        // 存入登入前的頁面，登入成功就跳轉回來
+        localStorage.setItem('redirect', router.asPath)
+        router.push('/user/login')
+      })
+    }
+  }
+
   return (
     <section className="">
       <div className="container">
         <div className="row px-sm-5 px-0 py-sm-5 py-3">
           {/* 左邊圖片 */}
           <div className="col-sm-7 col-12 left-info px-sm-5">
-            <GallerySwiper images={images} path="/images/product/" />
+            <div className="position-sticky" style={{ top: '100px' }}>
+              <GallerySwiper images={images} path="/images/product/" />
+            </div>
           </div>
           {/* 右側商品文字內容 */}
           <div className="col-sm-5 col-12 right-info vstack gap-5">
@@ -205,7 +246,7 @@ export default function RentHead() {
             </div>
             {/* 喜歡按鈕 */}
             <div className="d-flex justify-content-center">
-              <LikeBtn isLiked={isLiked} />
+              <LikeBtn isLiked={isLiked} onToggleLike={handleToggleLike} />
             </div>
           </div>
         </div>

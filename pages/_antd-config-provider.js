@@ -9,6 +9,9 @@ export default function AntdConfigProvider({ children }) {
         token: {
           colorPrimary: '#DC9329',
           colorSecondary: '#9F9F9F',
+          fontSize: '16px',
+          // fontFamily: 'Noto Sans TC',
+          // fontWeightStrong: '900',
           fontFamily:
             "'Poppins', 'Noto Sans TC', Helvetica, Arial, 'PingFang TC','苹方-繁', 'Heiti TC', '黑體-繁', 'Microsoft JhengHei','微軟正黑體',system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue', Arial,'Noto Sans','Liberation Sans',sans-serif,'Apple Color Emoji','Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'",
         },

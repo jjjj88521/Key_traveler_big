@@ -1,16 +1,18 @@
 import React from 'react'
-import Cookies from 'js-cookie'
-import dayjs from 'dayjs'
 import { DatePicker } from 'antd'
 import { useState, useRef, useEffect } from 'react'
 import { useAuth } from '@/hooks/useAuth'
-import jwtDecode from 'jwt-decode'
-import Router from 'next/router'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-
+import useLoading from '@/hooks/useLoading'
+import LoadingPage from '@/components/common/loadingPage'
+import styles from '@/styles/user/member.module.css'
 const disabledDate = (current) => {
   return current && current > new Date()
+}
+const customInputStyle = {
+  color: '#000',
+  fontWeight: 'bold',
 }
 
 export default function ProfileForm() {
@@ -73,14 +75,8 @@ export default function ProfileForm() {
       isAuth: auth.isAuth,
       user: { ...auth.user, [e.target.name]: e.target.value },
     })
-    // setformData((prevData) => ({
-    //   ...prevData,
-    //   user: {
-    //     ...prevData.user,
-    //     [e.target.name]: e.target.value,
-    //   },
-    // }))
   }
+  const [isLoading, setIsLoading] = useLoading(auth.isAuth)
   return (
     <>
       <form action="" className="w-100">
@@ -92,7 +88,7 @@ export default function ProfileForm() {
           id="name"
           name="name"
           className="form-control"
-          defaultValue={auth.user.card_name}
+          defaultValue={auth.user.name}
           onChange={(e) => {
             if (e.target.value.length === 0) {
               let mes = '請填入姓名'
@@ -111,7 +107,7 @@ export default function ProfileForm() {
           }}
         />
         {/*性別理論上不會隨意更改  */}
-        {/* <label htmlFor="gender" className="col-form-label mt-3">
+        <label htmlFor="gender" className="col-form-label mt-3">
           性別
         </label>
         <select
@@ -120,13 +116,20 @@ export default function ProfileForm() {
           name="gender"
           className="form-select"
           defaultValue={formData.gender}
-          onChange={(e) => {
-            handleSetformData(e)
-          }}
+          // onChange={(e) => {
+          //   handleSetformData(e)
+          // }}
+          // disabled={false}
+          // style={{
+          //   backgroundColor: '#FFF', // 设置背景颜色
+          //   color: '#CCC', // 设置文字颜色
+          //   // border: '1px solid #ccc', // 设置边框样式
+          //   cursor: 'not-allowed', // 设置光标样式为禁止符号
+          // }}
         >
           <option value="1">男</option>
           <option value="0">女</option>
-        </select> */}
+        </select>
 
         <label htmlFor="address" className="col-form-label mt-3">
           地址
@@ -170,8 +173,9 @@ export default function ProfileForm() {
             }
           }}
         />
+
         {/* 生日理論上不能改 */}
-        {/* <div className="birthday mt-3">
+        <div className="birthday mt-3">
           <label htmlFor="birthday" className="col-form-label">
             生日
           </label>
@@ -180,11 +184,20 @@ export default function ProfileForm() {
             id="birthday"
             name="birthday"
             disabledDate={disabledDate}
-            placeholder="選擇日期"
-            className="form-control"
-            defaultValue={dayjs(formData.birthday, 'YYYY-MM-DD')}
+            placeholder={auth.user.birthday}
+            className={`form-control `}
+            // defaultValue={auth.user.birthday}
+            // disabled=false
+            // style={customInputStyle}
+            // style={{ fontWeight: 700 }}
+            onChange={(date, dateString) => {
+              setformData({
+                isAuth: auth.isAuth,
+                user: { ...auth.user, birthday: dateString },
+              })
+            }}
           />
-        </div> */}
+        </div>
         <button
           type="button"
           className="btn btn-primary text-white col-sm-5 col-12 offset-sm-7 mt-5"

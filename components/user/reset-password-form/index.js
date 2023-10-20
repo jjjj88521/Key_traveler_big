@@ -6,7 +6,10 @@ import UserLayout from '@/components/layout/user-layout'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
-export default function ForgetPassword() {
+import useLoading from '@/hooks/useLoading'
+import LoadingPage from '@/components/common/loadingPage'
+
+export default function ResetPassword() {
   const router = useRouter()
   const [email, setEmail] = useState({ email: '' })
   const [resetPassword, setResetPassword] = useState({
@@ -14,33 +17,35 @@ export default function ForgetPassword() {
     token: '',
     password: '',
   })
+  const [checkPassword, setCheckPassword] = useState('')
   // 忘記密碼應該要獨立開來，不能跟本來的混再一起寫
   //  const { auth, setAuth } = useAuth()
   //   const [userData, setUserData] = useState({ ...auth.user })
   //測試用寄送
-  const sendMail = (userId, user) => {
-    // 更新會員資料
-    axios
-      .get('http://localhost:3005/api/email/send')
-      .then((response) => {
-        if (response.data.message === 'success') {
-          console.log('成功更新')
-        } else {
-          console.log('更新失敗')
-        }
-      })
-      .catch((error) => {
-        console.error('更新失敗:', error)
-        console.log('更新發生錯誤')
-      })
-  }
+  // const sendMail = (userId, user) => {
+  //   // 更新會員資料
+  //   axios
+  //     .get('http://localhost:3005/api/email/send')
+  //     .then((response) => {
+  //       if (response.data.message === 'success') {
+  //         console.log('成功更新')
+  //       } else {
+  //         console.log('更新失敗')
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error('更新失敗:', error)
+  //       console.log('更新發生錯誤')
+  //     })
+  // }
   // 寄送otp
-  const sendOTP = (email) => {
+  const sendOTP = () => {
     axios
       .post('http://localhost:3005/api/reset-password/otp', email)
       .then((response) => {
         if (response.data.code === '200') {
           console.log('成功寄送')
+          setResetPassword({ ...resetPassword, email: email.email })
           Swal.fire({
             icon: 'success',
             title: '驗證信已經出',
@@ -63,14 +68,54 @@ export default function ForgetPassword() {
       .post('http://localhost:3005/api/reset-password/reset', resetPassword)
       .then((response) => {
         if (response.data.code === '200') {
-          console.log('成功寄送')
+          console.log('更新成功1')
         } else {
-          console.log('寄送失敗1')
+          console.log('更新失敗1')
+          Swal.fire({
+            icon: 'error',
+            title: '驗證碼不一致',
+            showConfirmButton: false,
+            timer: 1500,
+          })
         }
       })
       .catch((error) => {
-        console.error('寄送失敗:', error)
-        console.log('寄送發生錯誤2')
+        console.error('更新失敗２:', error)
+        console.log('更新失敗2')
+      })
+  }
+
+  //登出
+  const { auth, setAuth } = useAuth()
+  const logout = async () => {
+    await axios
+      .post(
+        'http://localhost:3005/api/auth-jwt/logout',
+        {},
+        {
+          withCredentials: true, // save cookie in browser
+        }
+      )
+      .then((res) => {
+        localStorage.removeItem('loginToken')
+        setAuth({
+          isAuth: false,
+          user: {
+            id: 0,
+            name: '',
+            account: '',
+            gender: '',
+            address: '',
+            phone: '',
+            birthday: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+            cardNumber: '',
+            cardName: '',
+            expiry: '',
+          },
+        })
       })
   }
   return (
@@ -86,6 +131,7 @@ export default function ForgetPassword() {
             <div className="col-sm-12">
               <input
                 type="email"
+                name="email"
                 className={`form-control`}
                 placeholder="電子郵件地址"
                 onChange={(e) => {
@@ -95,6 +141,7 @@ export default function ForgetPassword() {
                     ...resetPassword,
                     email: e.target.value,
                   })
+                  console.log(resetPassword)
                 }}
                 onblur={(e) => {
                   console.log(e.target.value)
@@ -179,14 +226,12 @@ export default function ForgetPassword() {
                 className={`form-control w-100 ${styles['form-control']}  `}
                 placeholder="確認密碼"
                 onChange={(e) => {
-                  setResetPassword({
-                    ...resetPassword,
+                  setCheckPassword({
                     passwordConfirm: e.target.value,
                   })
                 }}
                 onBlur={(e) => {
-                  setResetPassword({
-                    ...resetPassword,
+                  setCheckPassword({
                     passwordConfirm: e.target.value,
                   })
                 }}
@@ -201,12 +246,13 @@ export default function ForgetPassword() {
             type="button"
             className="btn btn-primary col-sm-6 offset-sm-6 col-12 text-white"
             onClick={() => {
+              console.log(resetPassword.password)
+              console.log(checkPassword)
               if (
                 resetPassword.password !== '' &&
-                resetPassword.password === resetPassword.passwordConfirm
+                resetPassword.password === checkPassword.passwordConfirm
               ) {
                 console.log(resetPassword)
-                delete resetPassword.passwordConfirm
                 resetPasswordDb(resetPassword)
                 Swal.fire({
                   icon: 'success',
@@ -214,6 +260,7 @@ export default function ForgetPassword() {
                   showConfirmButton: false,
                   timer: 1500,
                 }).then(() => {
+                  logout()
                   router.push('/user/login')
                 })
               } else if (resetPassword.password === '') {

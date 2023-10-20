@@ -8,6 +8,7 @@ import { AuthProvider } from '@/hooks/useAuth'
 import HydrationFix from './_hydration-fix'
 // 商品
 import { ProductDataProvider } from '@/context/use-product'
+import { AllPdLikeProvider } from '@/context/useAllPdLike'
 // 購物車
 import { CartProvider } from '@/hooks/useCart'
 import { RentCartProvider } from '@/hooks/useRentCart'
@@ -48,17 +49,19 @@ export default function MyApp({ Component, pageProps }) {
       return (
         // 會員登入
         <AuthProvider>
-          <ProductDataProvider>
-            <CartProvider>
-              <RentCartProvider>
-                <GroupCartProvider>
-                  <HydrationFix>
-                    <AntdConfigProvider>{layoutComponent}</AntdConfigProvider>
-                  </HydrationFix>
-                </GroupCartProvider>
-              </RentCartProvider>
-            </CartProvider>
-          </ProductDataProvider>
+          <AllPdLikeProvider>
+            <ProductDataProvider>
+              <CartProvider>
+                <RentCartProvider>
+                  <GroupCartProvider>
+                    <HydrationFix>
+                      <AntdConfigProvider>{layoutComponent}</AntdConfigProvider>
+                    </HydrationFix>
+                  </GroupCartProvider>
+                </RentCartProvider>
+              </CartProvider>
+            </ProductDataProvider>
+          </AllPdLikeProvider>
         </AuthProvider>
       )
     })

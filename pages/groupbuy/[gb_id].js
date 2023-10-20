@@ -102,6 +102,8 @@ export default function GroupbuyDetail() {
                     return (
                       <SwiperSlide key={index}>
                         <Card
+                          id={product.id}
+                          cate={'gb'}
                           title={product.name}
                           brand={product.brand}
                           price={product.price}

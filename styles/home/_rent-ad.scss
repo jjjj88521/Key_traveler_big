@@ -26,7 +26,7 @@
         align-items: flex-end;
         .rent-ad-name {
           background-color: #ffffffbb;
-          width: 220px;
+          min-width: 220px;
           height: 130px;
           display: flex;
           flex-direction: column;
@@ -65,11 +65,11 @@
       .rent-ad-card {
         .rent-ad-name-box {
           .rent-ad-name {
-            width: 120px;
+            min-width: 120px;
             height: 75px;
             padding: 15px;
           }
-          .rent-ad-arrow{
+          .rent-ad-arrow {
             width: 30px;
             height: 30px;
           }

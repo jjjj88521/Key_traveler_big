@@ -5,6 +5,7 @@ import UserSideBar from '@/components/user/user-side-bar'
 import UserSideBarMobile from '@/components/user/user-side-bar-mobile'
 import CreditCardForm from '@/components/user/CreditCardForm'
 import UserLayout from '@/components/layout/user-layout'
+
 export default function CreditCardProfile() {
   const [cardData, setCardData] = useState({
     cvc: '',
@@ -20,9 +21,10 @@ export default function CreditCardProfile() {
       [name]: value,
     })
   }
+
   return (
     <UserLayout title={'信用卡管理'}>
-      <div className="row">
+      <div className="row" style={{ height: '431px' }}>
         <CreditCardForm />
 
         {/* 手機板的按鈕 */}

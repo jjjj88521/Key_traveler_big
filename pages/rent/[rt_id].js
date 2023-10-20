@@ -38,6 +38,7 @@ export default function RentDetail() {
         })
       await fetchProductLike('rt', rt_id).then((like) => {
         setIsLiked(like)
+        console.log(like)
       })
     }
     if (isReady) {
@@ -69,7 +70,7 @@ export default function RentDetail() {
           <TabContainer pdCate={'rent'}>
             <TabButton tabName="intro">商品介紹</TabButton>
             <TabButton tabName="spec">商品規格</TabButton>
-            <TabButton tabName="rt-desc">租用說明</TabButton>
+            {/* <TabButton tabName="rt-desc">租用說明</TabButton> */}
           </TabContainer>
         </>
       )}

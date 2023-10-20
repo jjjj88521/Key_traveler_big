@@ -50,7 +50,7 @@ export const pathsLocaleMap = [
     path: '/product',
   },
   {
-    name: '鍵盤套件',
+    name: '套件',
     path: '/product/1',
   },
   {
@@ -95,10 +95,22 @@ export const pathsLocaleMap = [
     name: '100%',
     path: '/product/1/8',
   },
+  {
+    name: 'Num Pad',
+    path: '/product/1/9',
+  },
   // 軸體
   {
-    name: '線性軸',
+    name: '段落有聲軸',
     path: '/product/2/1',
+  },
+  {
+    name: '段落無聲軸',
+    path: '/product/2/2',
+  },
+  {
+    name: '線性軸',
+    path: '/product/2/20',
   },
   {
     name: '提前段落',
@@ -184,11 +196,11 @@ export const pathsLocaleMap = [
     path: '/product/5/19',
   },
   {
-    name: '鍵盤手托',
+    name: '滑鼠墊',
     path: '/product/5/32',
   },
   {
-    name: '滑鼠墊',
+    name: '鍵盤手托',
     path: '/product/5/33',
   },
   {
