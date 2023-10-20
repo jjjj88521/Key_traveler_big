@@ -1,74 +1,79 @@
-import GbHead from '@/components/groupbuy/gb-head'
 import TabContainer from '@/components/product/ProductTab'
 import TabButton from '@/components/product/ProductTab/TabButton'
+import PdLoading from '@/components/product/pd-loading'
 import RentHead from '@/components/rent/rent-head'
+import { useProductData } from '@/context/use-product'
+import { useAuth } from '@/hooks/useAuth'
+import useLoading from '@/hooks/useLoading'
+import useRecentlyViewed from '@/hooks/useRecentlyViewed'
+import { fetchProductLike, fetchRT } from '@/libs/productFetcher'
 import Head from 'next/head'
-import React from 'react'
-
-const GbDetail = {
-  id: 1,
-  name: '商品名稱',
-  brand: '品牌',
-  price: 2000,
-  images: [
-    'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
-    'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
-  ],
-  style_select: {
-    color: ['紅色', '綠色'],
-  },
-  start: '2023-01-01',
-  end: '2023-01-20',
-  current_people: 10,
-  target_people: 50,
-  feature: '特色',
-  feature_img: [
-    'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
-    'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
-  ],
-  spec_table: {
-    規格: '規格',
-    尺寸: '尺寸',
-    重量: '重量',
-  },
-}
+import { useRouter } from 'next/router'
+import React, { useEffect } from 'react'
 
 export default function RentDetail() {
-  const {
-    name,
-    brand,
-    price,
-    images,
-    style_select,
-    feature,
-    feature_img,
-    spec_table,
-  } = GbDetail
+  const { auth } = useAuth()
+  const router = useRouter()
+  const { rt_id } = router.query
+  const { isReady } = router
+  const { productData, setProductData, isLiked, setIsLiked } = useProductData()
+  const [isLoading, setIsLoading] = useLoading(productData.id)
+  // console.log(productData)
 
+  // 獲取資料
+  useEffect(() => {
+    const fetchData = async () => {
+      // 每次獲取資料前都先重設載入中狀態
+      setIsLoading(true)
+      await fetchRT(rt_id)
+        .then((product) => {
+          if (Object.keys(product).length === 0) {
+            throw new Error('沒有此商品')
+          }
+          setProductData(product)
+        })
+        .catch((error) => {
+          console.log(error)
+          router.push('/404')
+        })
+      await fetchProductLike('rt', rt_id).then((like) => {
+        setIsLiked(like)
+        console.log(like)
+      })
+    }
+    if (isReady) {
+      fetchData()
+    }
+  }, [isReady, rt_id, auth])
+
+  // 最近瀏覽商品 hooks，傳入 type: 'product'，代表是一般商品
+  const [recentlyViewed, addToRecentlyViewed] = useRecentlyViewed({
+    type: 'rent',
+  })
+  useEffect(() => {
+    if (Object.keys(productData).length > 0) {
+      addToRecentlyViewed(productData)
+    }
+  }, [productData])
   return (
     <>
       <Head>
-        <title>{name}</title>
+        <title>{productData.name}</title>
       </Head>
-      {/* 團購詳細 head */}
-      <RentHead
-        name={name}
-        brand={brand}
-        price={price}
-        images={images}
-        isLiked={false}
-        StyleSelectItems={style_select}
-      />
-      {/* 商品詳細 tab 切換資訊、規格表、團購說明 */}
-      <TabContainer
-        feature={feature}
-        featureImgs={feature_img}
-        specTable={spec_table}
-      >
-        <TabButton tabName="intro">商品介紹</TabButton>
-        <TabButton tabName="spec">商品規格</TabButton>
-        <TabButton tabName="gb-desc">租用說明</TabButton>
-      </TabContainer>
+      {isLoading ? (
+        <PdLoading />
+      ) : (
+        <>
+          {/* 團購詳細 head */}
+          <RentHead />
+          {/* 商品詳細 tab 切換資訊、規格表、團購說明 */}
+          <TabContainer pdCate={'rent'}>
+            <TabButton tabName="intro">商品介紹</TabButton>
+            <TabButton tabName="spec">商品規格</TabButton>
+            <TabButton tabName="rt-desc">租用說明</TabButton>
+          </TabContainer>
+        </>
+      )}
     </>
   )
 }

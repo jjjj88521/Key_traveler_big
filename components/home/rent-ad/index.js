@@ -12,6 +12,33 @@ import RentAdCard from './rent-ad-card'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 
+const rentAdData = [
+  {
+    name: 'Zoom75',
+    brand: 'Metrix',
+    image: '/images/rent-ad/zoom75.jpg',
+    link: '/rent/2',
+  },
+  {
+    name: 'QK75',
+    brand: 'Qwertykeys',
+    image: '/images/rent-ad/qk75.jpg',
+    link: '/rent/1',
+  },
+  {
+    name: 'QK60 R2',
+    brand: 'Qwertykeys',
+    image: '/images/rent-ad/qk60_r2.jpg',
+    link: '/rent/7',
+  },
+  {
+    name: 'Luminkey75',
+    brand: 'createkeebs',
+    image: '/images/rent-ad/luminkey75.jpg',
+    link: '/rent/3',
+  },
+]
+
 export default function RentAd() {
   // AOS init
   useEffect(() => {
@@ -70,7 +97,7 @@ export default function RentAd() {
               }}
               modules={[Pagination]}
               slidesPerView={1}
-              spaceBetween={24}
+              spaceBetween={25}
               loop={true}
               style={{
                 '--swiper-pagination-color': '#DC9329',
@@ -80,7 +107,7 @@ export default function RentAd() {
               breakpoints={{
                 576: {
                   slidesPerView: 2,
-                  spaceBetween: 24,
+                  spaceBetween: 25,
                 },
               }}
             >
@@ -94,47 +121,31 @@ export default function RentAd() {
               >
                 <i className="fa-solid fa-chevron-right text-primary"></i>
               </SwiperNextBtn>
-              <SwiperSlide>
-                <div
-                  data-aos="fade-left"
-                  data-aos-delay="300"
-                  data-aos-once="true"
-                >
-                  <RentAdCard
-                    brand={'Metrix'}
-                    name={'Zoom75'}
-                    img={'/images/rent-ad/zoom75.png'}
-                  />
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <RentAdCard
-                  brand={'Metrix'}
-                  name={'Zoom75'}
-                  img={'/images/rent-ad/zoom75.png'}
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <RentAdCard
-                  brand={'Metrix'}
-                  name={'Zoom75'}
-                  img={'/images/rent-ad/zoom75.png'}
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <RentAdCard
-                  brand={'Metrix'}
-                  name={'Zoom75'}
-                  img={'/images/rent-ad/zoom75.png'}
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <RentAdCard
-                  brand={'Metrix'}
-                  name={'Zoom75'}
-                  img={'/images/rent-ad/zoom75.png'}
-                />
-              </SwiperSlide>
+              {rentAdData.map((item, index) =>
+                index === 0 ? (
+                  <SwiperSlide key={index}>
+                    <div
+                      data-aos="fade-left"
+                      data-aos-delay="300"
+                      data-aos-once="true"
+                    >
+                      <RentAdCard
+                        brand={item.brand}
+                        name={item.name}
+                        img={item.image}
+                      />
+                    </div>
+                  </SwiperSlide>
+                ) : (
+                  <SwiperSlide key={index}>
+                    <RentAdCard
+                      brand={item.brand}
+                      name={item.name}
+                      img={item.image}
+                    />
+                  </SwiperSlide>
+                )
+              )}
             </Swiper>
           </div>
           <div className="col justify-content-center d-flex d-sm-none">

@@ -10,8 +10,39 @@ import 'swiper/scss/navigation'
 
 import { SwiperPrevBtn, SwiperNextBtn } from '@/components/home/swiper-btns'
 import CateCard from './cate-card'
+import useHideBtn from '@/hooks/useHideBtn'
+
+const cateItems = [
+  {
+    name: '鍵盤套件',
+    img: '/images/home-cate/cate1.png',
+    link: '/product/1',
+  },
+  {
+    name: '軸體',
+    img: '/images/home-cate/cate2.png',
+    link: '/product/2',
+  },
+  {
+    name: '鍵帽',
+    img: '/images/home-cate/cate3.png',
+    link: '/product/3',
+  },
+  {
+    name: '成品鍵盤',
+    img: '/images/home-cate/cate4.png',
+    link: '/product/4',
+  },
+  {
+    name: '鍵盤配件 & 工具',
+    img: '/images/home-cate/cate5.png',
+    link: '/product/5',
+  },
+]
 
 const CateSelect = () => {
+  const { hideBtn, handleSwiperBtnHide } = useHideBtn()
+
   return (
     <section
       className={`bg-primary ${style['home-sec2']}`}
@@ -25,7 +56,7 @@ const CateSelect = () => {
           </h5>
         </div>
         <Swiper
-          spaceBetween={20}
+          spaceBetween={40}
           keyboard={true}
           className={`h-100 position-relative ${style['swiper']}`}
           slidesPerView={1.5}
@@ -35,52 +66,29 @@ const CateSelect = () => {
               spaceBetween: 20,
             },
           }}
+          onSlideChange={handleSwiperBtnHide}
         >
           <SwiperPrevBtn
-            className={`btn btn-lg bg-white rounded-circle position-absolute start-0 ms-2 top-50 translate-middle-y z-1 d-none d-sm-block`}
+            className={`btn btn-lg bg-white rounded-circle position-absolute start-0 ms-2 top-50 translate-middle-y z-1 d-none d-sm-block ${
+              hideBtn.prev ? 'opacity-0' : ''
+            }`}
+            style={{ transition: 'all 0.3s ease' }}
           >
             <i className="fa-solid fa-chevron-left text-primary"></i>
           </SwiperPrevBtn>
           <SwiperNextBtn
-            className={`btn btn-lg bg-white rounded-circle position-absolute end-0 me-2 top-50 translate-middle-y z-1 d-none d-sm-block`}
+            className={`btn btn-lg bg-white rounded-circle position-absolute end-0 me-2 top-50 translate-middle-y z-1 d-none d-sm-block ${
+              hideBtn.next ? 'opacity-0' : ''
+            }`}
+            style={{ transition: 'all 0.3s ease' }}
           >
             <i className="fa-solid fa-chevron-right text-primary"></i>
           </SwiperNextBtn>
-          <SwiperSlide className="h-100">
-            <CateCard
-              name={'鍵盤套件'}
-              img={'/images/home-cate/cate1.png'}
-              link={'/product/1'}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <CateCard
-              name={'軸體'}
-              img={'/images/home-cate/cate2.png'}
-              link={'/product/2'}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <CateCard
-              name={'鍵帽'}
-              img={'/images/home-cate/cate3.png'}
-              link={'/product/3'}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <CateCard
-              name={'成品鍵盤'}
-              img={'/images/home-cate/cate1.png'}
-              link={'/product/4'}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <CateCard
-              name={'鍵盤零件 & 工具'}
-              img={'/images/home-cate/cate1.png'}
-              link={'/product/5'}
-            />
-          </SwiperSlide>
+          {cateItems.map((item, index) => (
+            <SwiperSlide key={index}>
+              <CateCard name={item.name} img={item.img} link={item.link} />
+            </SwiperSlide>
+          ))}
         </Swiper>
       </div>
     </section>

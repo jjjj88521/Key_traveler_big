@@ -163,7 +163,11 @@ export default function ProductCate1() {
                         title={v.name}
                         brand={v.brand}
                         price={v.price}
-                        image={v.images ? JSON.parse(v.images)[0] : null}
+                        image={
+                          v.images
+                            ? `/images/product/${JSON.parse(v.images)[0]}`
+                            : null
+                        }
                         stock={v.stock}
                         link={`/product/${v.category_1}/${v.category_2}/${v.id}`}
                       />

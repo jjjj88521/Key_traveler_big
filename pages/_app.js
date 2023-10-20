@@ -13,6 +13,7 @@ import HydrationFix from './_hydration-fix'
 import UserLayout from '@/components/layout/user-layout'
 // 商品
 import { ProductDataProvider } from '@/context/use-product'
+import { AllPdLikeProvider } from '@/context/useAllPdLike'
 
 export default function MyApp({ Component, pageProps }) {
   // Use the layout defined at the page level, if available
@@ -49,17 +50,19 @@ export default function MyApp({ Component, pageProps }) {
       return (
         // 會員登入
         <AuthProvider>
-          <ProductDataProvider>
-            <CartProvider>
-              <SecondCartProvider>
-                <ThirdCartProvider>
-                  <HydrationFix>
-                    <AntdConfigProvider>{layoutComponent}</AntdConfigProvider>
-                  </HydrationFix>
-                </ThirdCartProvider>
-              </SecondCartProvider>
-            </CartProvider>
-          </ProductDataProvider>
+          <AllPdLikeProvider>
+            <ProductDataProvider>
+              <CartProvider>
+                <SecondCartProvider>
+                  <ThirdCartProvider>
+                    <HydrationFix>
+                      <AntdConfigProvider>{layoutComponent}</AntdConfigProvider>
+                    </HydrationFix>
+                  </ThirdCartProvider>
+                </SecondCartProvider>
+              </CartProvider>
+            </ProductDataProvider>
+          </AllPdLikeProvider>
         </AuthProvider>
       )
     })

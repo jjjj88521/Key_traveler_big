@@ -10,8 +10,10 @@ export default function AntdConfigProvider({ children }) {
           colorPrimary: '#DC9329',
           colorSecondary: '#9F9F9F',
           fontSize: '16px',
-          fontFamily: 'Noto Sans TC',
+          // fontFamily: 'Noto Sans TC',
           // fontWeightStrong: '900',
+          fontFamily:
+            "'Poppins', 'Noto Sans TC', Helvetica, Arial, 'PingFang TC','苹方-繁', 'Heiti TC', '黑體-繁', 'Microsoft JhengHei','微軟正黑體',system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue', Arial,'Noto Sans','Liberation Sans',sans-serif,'Apple Color Emoji','Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'",
         },
         components: {
           // antd 麵包屑樣式
@@ -43,10 +45,8 @@ export default function AntdConfigProvider({ children }) {
             colorSuccess: '#DC9329',
             colorText: '#DC9329',
           },
-          DatePicker: {
-            colorTextPlaceholder: '#212529',
-            fontFamily: 'Noto Sans TC',
-            // fontWeightStrong: 900,
+          Statistic: {
+            contentFontSize: '1.5rem',
           },
         },
       }}

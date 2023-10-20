@@ -12,20 +12,21 @@ import CarouselContainer from './carousel-container'
 import anime from 'animejs'
 import style from './_ad-carousel.module.scss'
 import AdSwiperBtn from './ad-swiper-btn'
+import useMobile from '@/hooks/useMobile'
+
+const homeAdData = [
+  { title: 'QK75', image: '/images/home-ad/qk75.jpg', link: '/product/1/5/1' },
+  {
+    title: 'WS Stellar',
+    image: '/images/home-ad/ws_stellar.jpg',
+    link: '/product/3/10/104',
+  },
+  { title: 'Zoom98', image: '/images/home-ad/zoom98.jpg', link: '/groupbuy/1' },
+]
 
 export default function AdCarousel() {
   // 檢測是否為手機版，如果是手機不會有滑鼠按鈕
-  const [isMobile, setIsMobile] = useState(false)
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 576)
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 576)
-    }
-    window.addEventListener('resize', handleResize)
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [isMobile])
+  const [isMobile] = useMobile()
 
   // 圖片及文字區塊動畫效果
   const handleAnime = () => {
@@ -35,7 +36,7 @@ export default function AdCarousel() {
       translateY: [100, 0],
       easing: 'easeInOutQuad',
       duration: 1000,
-      delay: 200,
+      delay: 500,
     })
     anime({
       targets: '.carousel-container img',
@@ -47,9 +48,9 @@ export default function AdCarousel() {
     })
   }
 
-  useEffect(() => {
-    handleAnime()
-  }, [])
+  // useEffect(() => {
+  //   handleAnime()
+  // }, [])
 
   // 滑鼠移到 swiper，滑鼠變成按鈕
   const mouseInitialState = {
@@ -148,8 +149,8 @@ export default function AdCarousel() {
             }}
             loop={true}
             effect="fade"
-            speed={400}
-            modules={[Navigation, Pagination, EffectFade, Autoplay]}
+            speed={1}
+            modules={[EffectFade, Autoplay]}
             style={{
               '--swiper-pagination-color': '#DC9329',
               '--swiper-pagination-bullet-size': '10px',
@@ -165,12 +166,14 @@ export default function AdCarousel() {
                 arrow={mouseState.arrow}
               />
             )}
-
-            {Array.from({ length: 4 }).map((_, index) => (
+            {homeAdData.map((item, index) => (
               <SwiperSlide key={index}>
                 <CarouselContainer
                   hideMouseBall={handleMouseLeave}
                   mousePosition={mouseState.position}
+                  title={item.title}
+                  image={item.image}
+                  link={item.link}
                 />
               </SwiperSlide>
             ))}

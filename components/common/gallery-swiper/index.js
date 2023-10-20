@@ -31,7 +31,7 @@ const GallerySwiper = ({ images = [], path = '', isLoading }) => {
           spaceBetween={30}
           thumbs={{ swiper: thumbsSwiper }}
           modules={[Thumbs]}
-          className={` swiper-bg`}
+          className={`swiper-bg bg-white`}
         >
           {isLoading ? (
             <SwiperSlide>
@@ -79,8 +79,10 @@ const GallerySwiper = ({ images = [], path = '', isLoading }) => {
                 <SwiperSlide key={index}>
                   <NextImage
                     src={`${path}${item}`}
-                    width={75}
-                    height={75}
+                    // className="w-100 h-auto"
+                    width={0}
+                    height={0}
+                    sizes="100vw"
                     alt={item}
                   />
                 </SwiperSlide>
