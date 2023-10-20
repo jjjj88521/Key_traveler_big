@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
+import { Switch } from 'antd'
 
 export default function AsideFilter({ setFilterProduct }) {
   // 各選項的state
@@ -42,6 +43,11 @@ export default function AsideFilter({ setFilterProduct }) {
   }
   const router = useRouter()
 
+  // 僅顯示有貨
+  const onChange = (checked) => {
+    console.log(`switch to ${checked}`)
+  }
+
   useEffect(() => {
     if (router.isReady) {
       // 從router.query得到所有查詢字串參數
@@ -81,19 +87,13 @@ export default function AsideFilter({ setFilterProduct }) {
   return (
     <>
       <div className="p-4 pt-0">
+        <div>
+          <Switch defaultChecked onChange={onChange} />
+        </div>
         <div className="mb-2 fs-5">
           <i className="fa-solid fa-filter"></i> 條件篩選
         </div>
         <div className="d-flex flex-column gap-1">
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              value=""
-              id="flexCheckDefault"
-            />
-            有貨
-          </div>
           <div className="form-check">
             <input
               className="form-check-input"

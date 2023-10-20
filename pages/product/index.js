@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Drawer, Button, Spin } from 'antd'
+import { Drawer, Button, Spin, Switch } from 'antd'
 import styles from './product.module.css'
 import Accordion from '@/components/product/accordion'
 import AsideFilter from '@/components/product/AsideFilter'
@@ -107,6 +107,9 @@ export default function ProductIndex() {
     if (orderbyValue) {
       requestUrl += `&orderby=${orderbyValue}`
     }
+    if (showZeroStock === 1) {
+      requestUrl += `&stock=1`
+    }
 
     axios
       .get(requestUrl)
@@ -116,6 +119,32 @@ export default function ProductIndex() {
       .catch((err) => {
         console.log(err)
       })
+  }
+
+  // 僅顯示有貨
+  const [showZeroStock, setShowZeroStock] = useState(0)
+  const checkStock = (checked) => {
+    if (checked) {
+      setShowZeroStock(1)
+      axios
+        .get(`http://localhost:3005/api/products/qs?stock=1`)
+        .then((res) => {
+          setCateProducts(res.data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    } else {
+      setShowZeroStock(0)
+      axios
+        .get(`http://localhost:3005/api/products/qs`)
+        .then((res) => {
+          setCateProducts(res.data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
   }
 
   // Drawer相關
@@ -143,21 +172,16 @@ export default function ProductIndex() {
           <div className="d-none d-sm-block col-12 col-sm-3 pe-md-5 pe-1">
             <Accordion />
             <hr className="text-primary opacity-100"></hr>
-            {/* AsideFilter，篩選 */}
+            {/* AsideFilter，篩選，不使用component切開 */}
             <div className="p-4 pt-0">
+              <div className="mb-2">
+                <Switch defaultChecked onChange={checkStock} />
+                <h5 className="d-inline ms-2">僅顯示有貨</h5>
+              </div>
               <div className="mb-2 fs-5">
-                <i className="fa-solid fa-filter"></i> 條件篩選
+                <i className="fa-solid fa-filter"></i> 品牌篩選
               </div>
               <div className="d-flex flex-column gap-1">
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  有貨
-                </div>
                 <div className="form-check">
                   <input
                     className="form-check-input"
