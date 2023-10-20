@@ -191,19 +191,15 @@ export default function ProductLike() {
               let { id, images, name, price, category_1, category_2, pd_cate } =
                 product
               images = JSON.parse(images)
-              let imageSrc
               let link
               switch (pd_cate) {
                 case '一般':
-                  imageSrc = `/images/product/${images[0]}`
                   link = `/product/${category_1}/${category_2}/${id}`
                   break
                 case '團購':
-                  imageSrc = `/images/groupbuy/${images[0]}`
                   link = `/groupbuy/${id}`
                   break
                 case '租用':
-                  imageSrc = `/images/rent/${images[0]}`
                   link = `/rent/${id}`
                   break
                 default:
@@ -214,7 +210,7 @@ export default function ProductLike() {
                   key={index}
                   handleDeleteLike={handleDeleteLike}
                   pid={id}
-                  image={imageSrc}
+                  image={`/images/product/${images[0]}`}
                   name={name}
                   link={link}
                   price={price}

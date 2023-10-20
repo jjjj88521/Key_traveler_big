@@ -12,6 +12,7 @@ import CarouselContainer from './carousel-container'
 import anime from 'animejs'
 import style from './_ad-carousel.module.scss'
 import AdSwiperBtn from './ad-swiper-btn'
+import useMobile from '@/hooks/useMobile'
 
 const homeAdData = [
   { title: 'QK75', image: '/images/home-ad/qk75.jpg', link: '/product/1/5/1' },
@@ -25,17 +26,7 @@ const homeAdData = [
 
 export default function AdCarousel() {
   // 檢測是否為手機版，如果是手機不會有滑鼠按鈕
-  const [isMobile, setIsMobile] = useState(false)
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 576)
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 576)
-    }
-    window.addEventListener('resize', handleResize)
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [isMobile])
+  const [isMobile] = useMobile()
 
   // 圖片及文字區塊動畫效果
   const handleAnime = () => {
@@ -45,16 +36,16 @@ export default function AdCarousel() {
       translateY: [100, 0],
       easing: 'easeInOutQuad',
       duration: 1000,
-      delay: 100,
+      delay: 500,
     })
-    // anime({
-    //   targets: '.carousel-container img',
-    //   scale: [1.05, 1],
-    //   opacity: [0, 1],
-    //   easing: 'easeInOutQuad',
-    //   duration: 500,
-    //   delay: 100,
-    // })
+    anime({
+      targets: '.carousel-container img',
+      scale: [1.05, 1],
+      // opacity: [0, 1],
+      easing: 'easeInOutQuad',
+      duration: 700,
+      // delay: 100,
+    })
   }
 
   useEffect(() => {
@@ -159,7 +150,7 @@ export default function AdCarousel() {
             loop={true}
             effect="fade"
             speed={500}
-            modules={[Navigation, Pagination, EffectFade, Autoplay]}
+            modules={[EffectFade, Autoplay, Pagination]}
             style={{
               '--swiper-pagination-color': '#DC9329',
               '--swiper-pagination-bullet-size': '10px',

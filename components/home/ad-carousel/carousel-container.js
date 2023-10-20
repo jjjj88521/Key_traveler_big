@@ -32,7 +32,7 @@ export default function CarouselContainer({
 
   return (
     <div className={`${style['carousel-container']} carousel-container`}>
-      <Image src={image} alt={title} width={0} height={0} sizes="100vw" />
+      <img src={image} alt={title} />
       <div
         ref={carouselBoxRef}
         className={`${style['carousel-box']} text-primary carousel-box`}

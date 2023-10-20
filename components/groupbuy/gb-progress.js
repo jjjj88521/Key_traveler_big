@@ -50,7 +50,9 @@ export default function GbProgressBox() {
               <Countdown
                 value={startDate}
                 format={`${
-                  startDate.format('DD') > 1 ? 'D 天開始' : 'HH:mm:ss 開始'
+                  startDate.format('DD') > 1
+                    ? '再 D 天開始'
+                    : '再 HH:mm:ss 開始'
                 }`}
               />
             )}

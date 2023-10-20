@@ -163,20 +163,20 @@ export default function ProductIndex() {
               {cateProducts.data && cateProducts.data.length > 0 ? (
                 cateProducts.data.map((v, i) => (
                   <div className="col" key={i}>
-                    <div className="col">
-                      <Card
-                        title={v.name}
-                        brand={v.brand}
-                        price={v.price}
-                        image={
-                          v.images
-                            ? `/images/product/${JSON.parse(v.images)[0]}`
-                            : null
-                        }
-                        stock={v.stock}
-                        link={`/product/${v.category_1}/${v.category_2}/${v.id}`}
-                      />
-                    </div>
+                    {/* <div className="col"> */}
+                    <Card
+                      title={v.name}
+                      brand={v.brand}
+                      price={v.price}
+                      image={
+                        v.images
+                          ? `/images/product/${JSON.parse(v.images)[0]}`
+                          : null
+                      }
+                      stock={v.stock}
+                      link={`/product/${v.category_1}/${v.category_2}/${v.id}`}
+                    />
+                    {/* </div> */}
                   </div>
                 ))
               ) : (
