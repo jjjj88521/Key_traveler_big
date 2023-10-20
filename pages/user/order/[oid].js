@@ -73,7 +73,7 @@ export default function OrderDetail() {
 
   return (
     <>
-      <div className="container py-4">
+      <div className="container mt-5 py-4" style={{ height: '527px' }}>
         {orderListComponent}
         {/* <POrderList />
         <GOrderList />
