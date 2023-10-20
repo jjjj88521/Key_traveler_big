@@ -112,3 +112,7 @@ li {
     flex-direction: column !important;
   }
 }
+
+::-webkit-input-placeholder {
+  font-weight: 500;
+}

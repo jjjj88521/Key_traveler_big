@@ -6,6 +6,9 @@ import { useAuth } from '@/hooks/useAuth'
 import jwtDecode from 'jwt-decode'
 import Router from 'next/router'
 import axios from 'axios'
+import useLoading from '@/hooks/useLoading'
+import LoadingPage from '@/components/common/loadingPage'
+import Swal from 'sweetalert2'
 export default function CreditCardForm() {
   const updateUser = (userId, user) => {
     // 更新會員資料
@@ -23,13 +26,6 @@ export default function CreditCardForm() {
         console.log('更新發生錯誤')
       })
   }
-  const [cardData, setCardData] = useState({
-    cvc: '',
-    expiry: '',
-    focus: '',
-    name: '',
-    number: '',
-  })
 
   const { auth, setAuth } = useAuth()
   // 重新整理後驗證登入狀態
@@ -44,6 +40,14 @@ export default function CreditCardForm() {
   //     Router.push('/user/login')
   //   }
   // }, [])
+  const [cardData, setCardData] = useState({
+    cvc: '',
+    expiry: '',
+    focus: '',
+    name: `${auth.user.card_name}`,
+    number: `${auth.user.card_number}`,
+  })
+
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setCardData({
@@ -53,7 +57,10 @@ export default function CreditCardForm() {
     setAuth({ ...auth, user: { ...auth.user, [name]: value } })
     // console.log(auth.user.card_number)
   }
-  return (
+  const [isLoading, setIsLoading] = useLoading(auth.user)
+  return isLoading ? (
+    <LoadingPage />
+  ) : (
     <>
       <form className="col-sm-6 col-12">
         <section className="mb-3">
@@ -110,6 +117,14 @@ export default function CreditCardForm() {
             delete auth.user.iat
             console.log(auth)
             updateUser(auth.user.id, auth.user)
+            if (auth.user.card_name) {
+              Swal.fire({
+                icon: 'success',
+                title: '修改成功',
+                showConfirmButton: false,
+                timer: 1500,
+              })
+            }
           }}
         >
           儲存
@@ -121,8 +136,8 @@ export default function CreditCardForm() {
           cvc={cardData.cvc}
           expiry={cardData.expiry}
           focused={cardData.focus}
-          name={cardData.name}
-          number={cardData.number}
+          name={auth.user.card_name}
+          number={auth.user.card_number}
         />
       </div>
     </>

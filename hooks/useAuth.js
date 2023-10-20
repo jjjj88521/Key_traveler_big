@@ -23,6 +23,8 @@ export function AuthProvider({ children }) {
       cardNumber: '',
       cardName: '',
       exp: '',
+      vip: '',
+      google_uid: '',
     },
   })
 

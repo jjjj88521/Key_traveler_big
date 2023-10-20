@@ -8,9 +8,9 @@ function UserSideBar() {
     <div className="accordion" id="userSideBar">
       {userSideBarLinks.map((item, index) => (
         <div className="accordion-item" key={index}>
-          <h2 className="accordion-header">
+          <h2 className="accordion-header ">
             <button
-              className="accordion-button bg-primary text-center text-light fw-bold fs-5 d-block text-center"
+              className="accordion-button bg-primary text-center text-light fw-bolder fs-5 d-block text-center"
               type="button"
               data-bs-toggle="collapse"
               data-bs-target={`#accordionItem${index}`}
