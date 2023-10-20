@@ -4,8 +4,6 @@ import Image from 'next/image'
 import { Dropdown, Space, Badge, Drawer, Menu, Button } from 'antd'
 import style from '@/styles/default-layout/_default-layout.module.scss'
 import { useAuth } from '@/hooks/useAuth'
-import Swal from 'sweetalert2'
-import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useCart } from '@/hooks/useCart'
 import { useGroupCart } from '@/hooks/useGroupCart'
@@ -161,7 +159,7 @@ export default function Navbar() {
   }
 
   // 判斷是否登入，登入後顯示登出按鈕
-  const { auth, setAuth, logout } = useAuth()
+  const { auth, logout } = useAuth()
   const handleLogout = () => {
     localStorage.setItem('redirect', router.asPath)
     logout()

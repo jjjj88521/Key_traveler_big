@@ -38,7 +38,7 @@ export default function CouponUsed({
         <div>
           {displayedUsedData.length !== 0 ? (
             <div>
-              <ListCardHistory hisTab={'Expired'} hisData={displayedUsedData} />
+              <ListCardHistory hisTab={'Used'} hisData={displayedUsedData} />
               {usedData.length < pageSize ? (
                 ''
               ) : (

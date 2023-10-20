@@ -2,9 +2,15 @@ import React from 'react'
 import { Badge } from 'antd'
 import { useAuth } from '@/hooks/useAuth'
 import Link from 'next/link'
+import { useCart } from '@/hooks/useCart'
+import { useGroupCart } from '@/hooks/useGroupCart'
+import { useRentCart } from '@/hooks/useRentCart'
 
 export default function MobileDock() {
-  // const { auth, setAuth, logout } = useAuth()
+  const { totalItemsP: pdTotalItems } = useCart()
+  const { totalItemsG: gbTotalItems } = useGroupCart()
+  const { totalItemsR: rTotalItems } = useRentCart()
+  const { auth } = useAuth()
   return (
     <>
       <div
@@ -30,9 +36,22 @@ export default function MobileDock() {
               </Link>
             </div>
             <div className="col text-center">
-              <Badge count={2} color="#DC9329">
-                <i className="fa-solid fa-cart-shopping text-primary fs-5"></i>
-              </Badge>
+              <Link href="/cart">
+                {auth.isAuth ? (
+                  <Badge
+                    count={pdTotalItems + gbTotalItems + rTotalItems}
+                    color="#DC9329"
+                    size="small"
+                    offset={[5, -5]}
+                  >
+                    <i className="fa-solid fa-cart-shopping text-primary fs-5"></i>
+                  </Badge>
+                ) : (
+                  <Badge count={0} color="#DC9329" showZero>
+                    <i className="fa-solid fa-cart-shopping text-primary fs-5"></i>
+                  </Badge>
+                )}
+              </Link>
             </div>
           </div>
         </div>

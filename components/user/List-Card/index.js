@@ -92,9 +92,12 @@ export default function ListCardForCoupon({ data, type }) {
                         : `低消 $${item.threshold} 起`}
                     </p>
                     {type === 'All' ? (
-                      <div>
-                        <p>有效日期：</p>
-                        {item.end_date}
+                      <div className="mt-1">
+                        <p>
+                          {item.end_date
+                            ? '有效日期：' + item.end_date
+                            : '無限期'}
+                        </p>
                       </div>
                     ) : (
                       <div className="text-danger">
