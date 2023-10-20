@@ -59,21 +59,23 @@ export default function ArticleFilter() {
   // console.log(selectValue)
   //   console.log(selectedCategory)
 
+  //搜尋設定
   const [searchCard, setSearchCard] = useState('')
-  const handleSearch = (e) => {
-    // console.log('搜尋關鍵字：', e.target.value)
-    // console.log(e)
-    setSearchCard(e.target.value)
-  }
   const [searchResult, setSearchResult] = useState('')
+
+  //撈取後端文章資料
   const [data, setData] = useState([])
   useEffect(() => {
-    axios.get('http://localhost:3005/api/article/').then((response) => {
-      // console.log('response.data.articles')
-      // console.log(response.data.articles)
-      setData(response.data.articles)
-    })
-  }, [])
+    if (cat_id) {
+      axios.get('http://localhost:3005/api/article/').then((response) => {
+        // console.log('response.data.articles')
+        // console.log(response.data.articles)
+        setIsLoading(true)
+
+        setData(response.data.articles)
+      })
+    }
+  }, [cat_id])
 
   //   分頁設定
   // 根据屏幕宽度动态设置 PageSize
@@ -106,6 +108,11 @@ export default function ArticleFilter() {
   // console.log(totalPageCount)
   //   const totalPageCount = Math.ceil(totalItemsForCategory.length / PageSize)
   //   console.log(totalPageCount)
+  const filteredData = data.filter(
+    (item) => searchResult === '' || item.title.includes(searchResult)
+  )
+  const searchCount = filteredData.length
+
   const [currentPage, setCurrentPage] = useState(1)
   const handlePageChange = (page) => {
     setCurrentPage(page)
@@ -137,9 +144,19 @@ export default function ArticleFilter() {
                   placeholder="Search"
                   aria-label="Search"
                   value={searchCard}
-                  onChange={handleSearch}
+                  onChange={(e) => {
+                    // console.log('搜尋關鍵字：', e.target.value)
+                    // console.log(e)
+                    setSearchCard(e.target.value)
+                  }}
                 />
-                <button className="btn btn-outline-secondary" type="submit">
+                <button
+                  className="btn btn-outline-secondary"
+                  type="button"
+                  onClick={() => {
+                    setSearchResult(searchCard)
+                  }}
+                >
                   <i className="fa-solid fa-magnifying-glass"></i>
                 </button>
               </form>
@@ -298,7 +315,7 @@ export default function ArticleFilter() {
                   (item) =>
                     (selectedCategory === null ||
                       item.cate === selectedCategory) &&
-                    (searchCard === '' || item.title.includes(searchCard))
+                    (searchResult === '' || item.title.includes(searchResult))
                 )
                 .slice(startIndex, endIndex)
                 .map((item, index) => {
@@ -348,7 +365,7 @@ export default function ArticleFilter() {
               {/* 放分頁 */}
               <div className="pb-3" style={{ width: '100%' }}>
                 <PaginationComponent
-                  totalItems={totalPageCount}
+                  totalItems={searchResult ? searchCount : totalPageCount}
                   pageSize={pageSize}
                   currentPage={currentPage}
                   onPageChange={handlePageChange}
