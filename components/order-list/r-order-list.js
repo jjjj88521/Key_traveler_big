@@ -27,14 +27,14 @@ export default function ROrderList() {
       .then((response) => {
         const data = response.data.orderDetails
         setRentOrderDetails(data)
-        console.log(data)
+        // console.log(data)
       })
       .catch((error) => {
         console.error('獲取訂單詳細資料時出錯：', error)
       })
   }, [orderId])
 
-  console.log(rentOrderDetails)
+  // console.log(rentOrderDetails)
 
   // const initialRentOrderLists = [
   //   {
@@ -112,7 +112,7 @@ export default function ROrderList() {
                 <div className="p-2">
                   {v.images && v.images.length > 0 ? (
                     <Image
-                      src={'/product/' + JSON.parse(v.images)[0]} // 加上斜槓來表示相對路徑
+                      src={'/images/product/' + JSON.parse(v.images)[0]} // 加上斜槓來表示相對路徑
                       width={100}
                       height={100}
                       alt=""
@@ -188,7 +188,7 @@ export default function ROrderList() {
                 <div className="pe-2 pt-2">
                   {v.images && v.images.length > 0 ? (
                     <Image
-                      src={'/product/' + JSON.parse(v.images)[0]} // 加上斜槓來表示相對路徑
+                      src={'/images/product/' + JSON.parse(v.images)[0]} // 加上斜槓來表示相對路徑
                       width={100}
                       height={100}
                       alt=""

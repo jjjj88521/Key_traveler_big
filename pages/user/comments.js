@@ -15,46 +15,46 @@ import PaginationComponent from '@/components/common/PaginationComponent'
 const moment = require('moment')
 
 const commentsData = [
-  {
-    key: 0,
-    user: 'User',
-    star: 4.2,
-    description: '很棒很好用1',
-    name: '商品名稱1',
-    category1: '規格1',
-    category2: '規格2',
-    createTime: '2023-08-27 16:06:44',
-  },
-  {
-    key: 1,
-    user: 'User',
-    star: 4.5,
-    description: '很棒很好用2',
-    name: '商品名稱2',
-    category1: '規格3',
-    category2: '規格4',
-    createTime: '2023-08-26 16:06:44',
-  },
-  {
-    key: 2,
-    user: 'User',
-    star: 4.0,
-    description: '很棒很好用3',
-    name: '商品名稱3',
-    category1: '規格5',
-    category2: '規格6',
-    createTime: '2023-08-25 16:06:44',
-  },
-  {
-    key: 3,
-    user: 'User',
-    star: 3.5,
-    description: '很棒很好用4',
-    name: '商品名稱4',
-    category1: '規格7',
-    category2: '規格8',
-    createTime: '2023-08-24 16:06:44',
-  },
+  // {
+  //   key: 0,
+  //   user: 'User',
+  //   star: 4.2,
+  //   description: '很棒很好用1',
+  //   name: '商品名稱1',
+  //   category1: '規格1',
+  //   category2: '規格2',
+  //   createTime: '2023-08-27 16:06:44',
+  // },
+  // {
+  //   key: 1,
+  //   user: 'User',
+  //   star: 4.5,
+  //   description: '很棒很好用2',
+  //   name: '商品名稱2',
+  //   category1: '規格3',
+  //   category2: '規格4',
+  //   createTime: '2023-08-26 16:06:44',
+  // },
+  // {
+  //   key: 2,
+  //   user: 'User',
+  //   star: 4.0,
+  //   description: '很棒很好用3',
+  //   name: '商品名稱3',
+  //   category1: '規格5',
+  //   category2: '規格6',
+  //   createTime: '2023-08-25 16:06:44',
+  // },
+  // {
+  //   key: 3,
+  //   user: 'User',
+  //   star: 3.5,
+  //   description: '很棒很好用4',
+  //   name: '商品名稱4',
+  //   category1: '規格7',
+  //   category2: '規格8',
+  //   createTime: '2023-08-24 16:06:44',
+  // },
 ]
 //  Database for commentsData
 // const commentsData = [{
@@ -179,34 +179,38 @@ const items = [
 export default function Comments() {
   const { auth, setAuth } = useAuth()
   const user_id = auth.user.id
-  console.log(user_id)
+  // console.log(user_id)
   const [commentData, setCommentData] = useState([]) // 獲取還沒評價的商品
   const [allComments, setAllComments] = useState({})
-  const [isLoading, setIsLoading] = useLoading(commentData)
+  const [isLoading, setIsLoading] = useLoading(commentData.data)
   const [allCommentLoading, setAllCommentLoading] = useLoading(
     allComments.comments
   )
 
-  const getComment = async () => {
+  const getComment = async (page) => {
     const apiUrl = `http://localhost:3005/api/user_comment/yet_comment`
 
     await axios
       .get(apiUrl, {
+        params: { page },
         withCredentials: true,
       })
-      .then((response) => {
-        setIsLoading(true)
-        // console.log('成功獲取數據：', response.data)
-        const data = response.data.data
-        // console.log(data)
-        setCommentData(data)
-        // 在这里处理从API返回的数据
+      .then((res) => {
+        if (res.status === 200) {
+          setIsLoading(true)
+          // console.log('成功獲取數據：', response.data)
+          const data = res.data
+          // console.log(data)
+          setCommentData(data)
+          // 在這裡處理從API返回的數據
+        }
       })
       .catch((error) => {
         console.error('獲取數據時出錯：', error)
-        // 在这里处理错误
+        // 在這裡處理错误
       })
   }
+  // console.log('還未評價', commentData.data)
 
   const getAllComments = async (page) => {
     const url = 'http://localhost:3005/api/user_comment/all-comments'
@@ -230,27 +234,28 @@ export default function Comments() {
     getAllComments()
   }, [])
 
-  const data = commentData.map((v) => {
-    console.log(v)
-    return {
-      ...v,
-      is_comment: v.is_comment === 'false' ? false : true,
-    }
-  })
+  // const data = commentData.map((v) => {
+  //   // console.log(v)
+  //   return {
+  //     ...v,
+  //     is_comment: v.is_comment === 'false' ? false : true,
+  //   }
+  // })
 
-  console.log(data)
+  // console.log(data)
 
   const [tagKey, setTagKey] = useState('1')
 
   const tagsOnChange = (e) => {
     // console.log('tab key:' + key)
     setTagKey(e.target.value)
+    getAllComments()
   }
 
   //   drawer
   const [open, setOpen] = useState(false)
   const [selectedItem, setSelectedItem] = useState(null)
-  console.log('選到的', selectedItem)
+  // console.log('選到的', selectedItem)
   const showDrawer = (item) => {
     // console.log('click item' + item.productPic)
     setSelectedItem(item)
@@ -265,52 +270,53 @@ export default function Comments() {
   //   drawer
 
   // 新增評價
-  const [updateData, setUpdateData] = useState(commentsData)
+  const [updateData, setUpdateData] = useState([])
   const [updateYetData, setUpdateYetData] = useState([])
 
-  useEffect(() => {
-    data.map((v) => {
-      if (v.is_comment === false) {
-        setUpdateYetData(data)
-        console.log(data)
-      }
-    })
-  }, [auth])
+  // useEffect(() => {
+  //   data.map((v) => {
+  //     if (v.is_comment === false) {
+  //       setUpdateYetData(data)
+  //       // console.log(data)
+  //     }
+  //   })
+  // }, [auth])
 
   // 待評價star
   const [star, setStar] = useState(0)
   const handleSetStar = (value) => {
-    console.log(value)
+    // console.log(value)
     setStar(value)
   }
   // 評論內容
   const [textareaValue, setTextareaValue] = useState('')
   const handleTextareaChange = (e) => {
-    console.log(e.target.value)
+    // console.log(e.target.value)
     setTextareaValue(e.target.value)
   }
 
   const handleAddComment = async () => {
-    console.log('textareaValue' + textareaValue)
-    console.log('star' + star)
-    console.log(selectedItem.name)
-    const style = Object.values(JSON.parse(selectedItem.spec)).map((item) => {
-      return item[0]
-    })
+    // console.log('textareaValue' + textareaValue)
+    // console.log('star' + star)
+    // console.log(selectedItem.name)
+    // console.log(Object.values(JSON.parse(selectedItem.spec)))
+    const style = selectedItem.spec
+      ? Object.values(JSON.parse(selectedItem.spec)).map((item) => item[0])
+      : null
     const newComment = {
       order_id: selectedItem.order_id,
       product_id: selectedItem.id,
       user_id: user_id,
       star: star,
       comment: textareaValue,
-      style: JSON.stringify(style),
+      style: style ? JSON.stringify(style) : '',
     }
 
-    console.log('表單', newComment)
+    // console.log('表單', newComment)
     // 將commentsData新增該筆資料
     // const newComment = {
-    //   key: updateData.length, // 为新项分配一个唯一的键
-    //   user: 'User', // 新项的标题
+    //   key: updateData.length, // 为新項分配一個唯一的鍵
+    //   user: 'User', // 新項的標題
     //   star: star,
     //   description: textareaValue,
     //   name: '商品名稱123',
@@ -336,7 +342,7 @@ export default function Comments() {
       await axios
         .post(`http://localhost:3005/api/user_comment/addComment`, newComment)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           if (response.data.code !== '200') {
             throw new Error('添加失敗')
           }
@@ -350,33 +356,33 @@ export default function Comments() {
           })
         })
         .catch((err) => {
-          console.log(err)
+          // console.log(err)
           Swal.fire({
             icon: 'error',
             title: '失敗',
             showConfirmButton: false,
             timer: 1500,
           })
-          console.log(newComment)
+          // console.log(newComment)
         })
       setUpdateData([newComment, ...updateData])
       // 將commentsYetData刪除該筆資料
       if (selectedItem) {
-        // 更新 is_comment 属性为 true
+        // 更新 is_comment 属性為 true
         const updatedData = updateYetData.map((item) =>
           item === selectedItem ? { ...item, is_comment: true } : item
         )
 
         // 刷新渲染
-        // 更新 is_comment 属性后，您可以选择重新渲染整个组件或仅更新数据源
-        // 这里演示重新渲染整个组件的方式
+        // 更新 is_comment 屬性後，您可以選擇重新渲染整個组件或僅更新數據源
+        // 這裡演示重新渲染整個组件的方式
         setUpdateYetData(updatedData)
         onClose()
       }
     }
   }
   let yetcom = 0
-  // 检查是否所有数据的 is_comment 都为 true
+  // 檢查是否所有數據的 is_comment 都為 true
   const allItemsAreComment = updateYetData.every(
     (dataItem) => dataItem.is_comment === true
   )
@@ -384,7 +390,7 @@ export default function Comments() {
     itemdata.is_comment === false ? yetcom++ : yetcom
     // console.log('yetcom=' + yetcom)
   })
-  const [visibleItemCount, setVisibleItemCount] = useState(3)
+  const [visibleItemCount, setVisibleItemCount] = useState(4)
   const handleLoadMore = () => {
     const newVisibleItemCount = visibleItemCount + 3
     setVisibleItemCount(newVisibleItemCount)
@@ -396,7 +402,6 @@ export default function Comments() {
     // setAllCommentLoading(true)
     getAllComments(page)
   }
-
   return (
     <>
       <UserLayout title={'我的評價'}>
@@ -413,7 +418,7 @@ export default function Comments() {
         {isLoading ? (
           <LoadingPage />
         ) : (
-          <div className="">
+          <div className="" style={{ height: '1100px' }}>
             <table className="table table-borderless mt-2">
               <thead>
                 <tr>
@@ -428,19 +433,16 @@ export default function Comments() {
                 <tr>
                   <td>
                     {tagKey === '1' ? (
-                      allItemsAreComment ? (
+                      commentData.data.length === 0 ? (
                         <div className="h3 text-danger">尚無待評價之商品</div>
                       ) : (
                         <div>
                           <List
-                            dataSource={updateYetData.slice(
-                              0,
-                              visibleItemCount
-                            )}
+                            dataSource={commentData.data}
                             itemLayout="vertical"
                             renderItem={(item) => {
                               const specs = JSON.parse(item.spec)
-                              return item.is_comment === false ? (
+                              return (
                                 <List.Item
                                   key={item.key}
                                   className="border-bottom border-secondary-subtle"
@@ -449,7 +451,7 @@ export default function Comments() {
                                       <a
                                         href="#"
                                         className={`${style['toComment']} text-primary py-3`}
-                                        onClick={() => showDrawer(item)} // 传递当前 List.Item 作为参数
+                                        onClick={() => showDrawer(item)} // 傳遞當前 List.Item 作為参數
                                       >
                                         去評價
                                         <i className="fa-regular fa-hand-point-left ms-2"></i>
@@ -458,7 +460,7 @@ export default function Comments() {
                                         href="#"
                                         type="button"
                                         className={`${style['toCommentMobile']} text-primary `}
-                                        onClick={() => showDrawer(item)} // 传递当前 List.Item 作为参数
+                                        onClick={() => showDrawer(item)} // 傳遞當前 List.Item 作為参數
                                       >
                                         去評價
                                       </a>
@@ -475,7 +477,8 @@ export default function Comments() {
                                         className="d-flex align-items-center px-3"
                                       >
                                         <img
-                                          height={55}
+                                          width={60}
+                                          height={60}
                                           src={`/images/product/${
                                             JSON.parse(item.images)[0]
                                           }`}
@@ -488,29 +491,32 @@ export default function Comments() {
                                         </p>
                                       </Link>
                                     )}
-                                    <div className="d-flex justify-content-center">
-                                      {Object.values(specs).map(
-                                        (item, index) => {
-                                          return (
-                                            <span
-                                              key={index}
-                                              className="text-primary pe-3"
-                                            >
-                                              {item[0]}
-                                            </span>
-                                          )
-                                        }
-                                      )}
-                                    </div>
+                                    {item.spec && (
+                                      <div className="d-flex justify-content-center">
+                                        {Object.values(specs).map(
+                                          (item, index) => {
+                                            return (
+                                              <span
+                                                key={index}
+                                                className="text-primary pe-3"
+                                              >
+                                                {item[0]}
+                                              </span>
+                                            )
+                                          }
+                                        )}
+                                      </div>
+                                    )}
                                   </div>
                                   <div className={`${style['yetMobile']}`}>
                                     {item && (
                                       <Link
                                         href="/"
-                                        className="d-flex align-items-center"
+                                        className="d-flex align-items-center ps-2"
                                       >
                                         <img
-                                          height={50}
+                                          width={65}
+                                          height={65}
                                           src={`/images/product/${
                                             JSON.parse(item.images)[0]
                                           }`}
@@ -530,20 +536,22 @@ export default function Comments() {
                                     </a>
                                     <div className="mt-3 d-flex">
                                       規格：
-                                      <div className="d-flex flex-column">
-                                        {Object.values(specs).map(
-                                          (item, index) => {
-                                            return (
-                                              <span
-                                                key={index}
-                                                className="text-secondary"
-                                              >
-                                                {item}
-                                              </span>
-                                            )
-                                          }
-                                        )}
-                                      </div>
+                                      {item.spec && (
+                                        <div className="d-flex flex-column">
+                                          {Object.values(specs).map(
+                                            (item, index) => {
+                                              return (
+                                                <span
+                                                  key={index}
+                                                  className="text-secondary"
+                                                >
+                                                  {item}
+                                                </span>
+                                              )
+                                            }
+                                          )}
+                                        </div>
+                                      )}
                                     </div>
                                   </div>
 
@@ -565,27 +573,28 @@ export default function Comments() {
                                             }`}
                                             alt=""
                                           />
-
                                           <p className="my-0 ms-2">
                                             {selectedItem.name}
                                           </p>
-                                          {/* 其他项目的渲染 */}
+                                          {/* 其他項目的渲染 */}
                                         </div>
-                                        <p className="mt-3">
-                                          規格{' '}
-                                          {Object.values(
-                                            JSON.parse(selectedItem.spec)
-                                          ).map((item, index) => {
-                                            return (
-                                              <span
-                                                key={index}
-                                                className="pe-3 text-primary"
-                                              >
-                                                {item[0]}
-                                              </span>
-                                            )
-                                          })}
-                                        </p>
+                                        {selectedItem.spec && (
+                                          <p className="mt-3">
+                                            規格{' '}
+                                            {Object.values(
+                                              JSON.parse(selectedItem.spec)
+                                            ).map((item, index) => {
+                                              return (
+                                                <span
+                                                  key={index}
+                                                  className="pe-3 text-primary"
+                                                >
+                                                  {item[0]}
+                                                </span>
+                                              )
+                                            })}
+                                          </p>
+                                        )}
                                         <div className="mt-3">
                                           <div className="d-flex align-items-center">
                                             <Rate
@@ -632,12 +641,21 @@ export default function Comments() {
                                     )}
                                   </Drawer>
                                 </List.Item>
-                              ) : (
-                                ''
                               )
                             }}
                           />
-                          {hasMoreData ? (
+                          <div className="mt-3">
+                            <PaginationComponent
+                              totalItems={commentData.total}
+                              currentPage={Number(commentData.page)}
+                              onPageChange={(page) => {
+                                getComment(page)
+                              }}
+                              pageSize={5}
+                            />
+                          </div>
+
+                          {/* {hasMoreData ? (
                             <div className="d-flex justify-content-center">
                               <button
                                 className="btn btn-primary px-5 mt-3"
@@ -647,10 +665,10 @@ export default function Comments() {
                               </button>
                             </div>
                           ) : (
-                            <div className="text-primary w-100 text-center">
+                            <div className="text-primary w-100 text-center p-3">
                               已經到底了!
                             </div>
-                          )}
+                          )} */}
                         </div>
                       )
                     ) : allCommentLoading ? (

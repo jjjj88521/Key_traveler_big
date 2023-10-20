@@ -24,14 +24,14 @@ export default function GOrderList() {
       .then((response) => {
         const data = response.data.orderDetails
         setGroupOrderDetails(data)
-        console.log(data)
+        // console.log(data)
       })
       .catch((error) => {
         console.error('獲取訂單詳細資料時出錯：', error)
       })
   }, [orderId])
 
-  console.log(groupOrderDetails)
+  // console.log(groupOrderDetails)
 
   // const initialOrderLists = [
   //   {
@@ -98,7 +98,7 @@ export default function GOrderList() {
                 <div className="p-2">
                   {v.images && v.images.length > 0 ? (
                     <Image
-                      src={'/product/' + JSON.parse(v.images)[0]} // 加上斜槓來表示相對路徑
+                      src={'/images/product/' + JSON.parse(v.images)[0]} // 加上斜槓來表示相對路徑
                       width={100}
                       height={100}
                       alt=""
@@ -164,7 +164,7 @@ export default function GOrderList() {
                 <div className="pe-2 pt-2">
                   {v.images && v.images.length > 0 ? (
                     <Image
-                      src={'/product/' + JSON.parse(v.images)[0]} // 加上斜槓來表示相對路徑
+                      src={'/images/product/' + JSON.parse(v.images)[0]} // 加上斜槓來表示相對路徑
                       width={100}
                       height={100}
                       alt=""

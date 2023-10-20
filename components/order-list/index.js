@@ -11,7 +11,7 @@ import { Radio } from 'antd'
 export default function OrderList() {
   const { auth, setAuth } = useAuth()
   const id = auth.user.id
-  console.log(id)
+  // console.log(id)
 
   const [orderData, setOrderData] = useState([])
   const [groupOrderData, setGroupOrderData] = useState([])
@@ -21,17 +21,17 @@ export default function OrderList() {
     // 設置API的URL
     const apiUrl = 'http://localhost:3005/api/order/user_order' // 將API的URL替換為實際的URL
     const userId = { userId: id }
-    console.log(userId)
+    // console.log(userId)
     // 發出POST請求
     await axios
       .post(apiUrl, userId)
       .then((res) => {
-        console.log('成功獲取數據：', res.data)
-        console.log(res)
+        // console.log('成功獲取數據：', res.data)
+        // console.log(res)
         setOrderData(res.data.data)
         // 在這裡處理從API返回的數據
-        console.log(res.data)
-        console.log(res.data.data)
+        // console.log(res.data)
+        // console.log(res.data.data)
       })
       .catch((error) => {
         console.error('獲取數據時出錯：', error)
@@ -42,20 +42,20 @@ export default function OrderList() {
     // 设置API的URL
     const apiUrl = 'http://localhost:3005/api/order/group_order' // 将API的URL替换为实际的URL
     const userId = { userId: id }
-    console.log(userId)
+    // console.log(userId)
     // 发出POST请求
     await axios
       .post(apiUrl, userId)
       .then((res) => {
-        console.log('成功获取数据：', res.data)
-        console.log(res)
+        // console.log('成功获取数据：', res.data)
+        // console.log(res)
         setGroupOrderData(res.data.data)
         // 在这里处理从API返回的数据
-        console.log(res.data)
-        console.log(res.data.data)
+        // console.log(res.data)
+        // console.log(res.data.data)
       })
       .catch((error) => {
-        console.error('获取数据时出错：', error)
+        console.error('獲取數據時出錯：', error)
         // 在这里处理错误
       })
   }
@@ -63,17 +63,17 @@ export default function OrderList() {
     // 設置API的URL
     const apiUrl = 'http://localhost:3005/api/order/rent_order' // 将API的URL替换为实际的URL
     const userId = { userId: id }
-    console.log(userId)
+    // console.log(userId)
     // 發出POST請求
     await axios
       .post(apiUrl, userId)
       .then((res) => {
-        console.log('成功獲取數據：', res.data)
-        console.log(res)
+        // console.log('成功獲取數據：', res.data)
+        // console.log(res)
         setRentOrderData(res.data.data)
         // 在這裡處理從API返回的數據
-        console.log(res.data)
-        console.log(res.data.data)
+        // console.log(res.data)
+        // console.log(res.data.data)
       })
       .catch((error) => {
         console.error('獲取數據時出錯：', error)
@@ -92,7 +92,7 @@ export default function OrderList() {
     ...groupOrderData.map((order) => ({ ...order, type: 'group_order' })),
     ...rentOrderData.map((order) => ({ ...order, type: 'rent_order' })),
   ]
-  console.log(allOrders)
+  // console.log(allOrders)
   // 根據order_date字段降序排序
   // allOrders.sort((a, b) => new Date(b.order_date) - new Date(a.order_date))
 
@@ -156,7 +156,7 @@ export default function OrderList() {
 
   const [currentPage, setCurrentPage] = useState(1)
   // 每頁顯示的項目數量
-  const pageSize = 3
+  const pageSize = 5
 
   // 處理頁碼變更事件
   const handlePageChange = (page) => {
@@ -182,14 +182,14 @@ export default function OrderList() {
   return (
     <>
       <UserLayout title={'歷史訂單'}>
-        <div className="container" style={{ height: '700px' }}>
+        <div className="container" style={{ height: '950px' }}>
           {/* <div className="row my-sm-4 my-2 ">
           <h2 className="fw-bolder text-start col-sm-3 col-12 mt-3 mb-0">
             歷史訂單
           </h2>
         </div> */}
           <div className="row">
-            <div className="col-sm-10 offset-sm-1 col-12">
+            <div className="col-sm-12 col-12">
               <div className="d-flex justify-content-between mb-2">
                 <Radio.Group
                   onChange={radioOnChange}
@@ -207,7 +207,7 @@ export default function OrderList() {
                   {/* <div className="me-2">篩選</div> */}
                   <div className="dropdown">
                     <button
-                      className="btn btn-sm btn-light dropdown-toggle text-dark px-2 py-1 border border-primary"
+                      className="btn  btn-light dropdown-toggle text-dark px-2 py-1 border border-primary"
                       type="button"
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
