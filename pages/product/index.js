@@ -171,26 +171,16 @@ export default function ProductIndex() {
         <div className="row">
           <div className="d-none d-sm-block col-12 col-sm-3 pe-md-5 pe-1">
             <Accordion />
-            <hr className="text-primary opacity-100"></hr>
             {/* AsideFilter，篩選，不使用component切開 */}
-            <div className="p-4 pt-0">
-              <div className="mb-2">
-                <Switch defaultChecked onChange={checkStock} />
-                <h5 className="d-inline ms-2">僅顯示有貨</h5>
-              </div>
+            <div className="mt-4 p-4 border border-primary border-1">
               <div className="mb-2 fs-5">
-                <i className="fa-solid fa-filter"></i> 品牌篩選
+                <i className="fa-solid fa-filter"></i> 條件篩選
+              </div>
+              <div className="py-2">
+                <h5 className="d-inline ms-2">只保留有貨 </h5>
+                <Switch defaultChecked onChange={checkStock} />
               </div>
               <div className="d-flex flex-column gap-1">
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  品牌
-                </div>
                 <hr className="opacity-75"></hr>
                 <div className="mb-2 fs-5">
                   <i className="fa-solid fa-dollar-sign"></i> 價錢範圍
