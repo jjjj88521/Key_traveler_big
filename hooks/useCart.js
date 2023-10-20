@@ -6,8 +6,10 @@ import React, {
   useState,
 } from 'react'
 import { reducer, init } from './cart-reducer'
-
+import axios from 'axios'
+import { useRouter } from 'next/router'
 const CartContext = createContext(null)
+import { useAuth } from './useAuth'
 
 // initialState = {
 //   items: [],
@@ -18,6 +20,7 @@ const CartContext = createContext(null)
 
 // item = {
 //   id: '',
+//   check:false
 //   img: '',
 //   brand: '',
 //   name: '',
@@ -27,59 +30,41 @@ const CartContext = createContext(null)
 //   specData:{},
 // }
 
-export const CartProvider = ({
-  children,
-  initialProducts = [
-    {
-      id: 5,
-      check: false,
-      img: '/images/1669370674683000804.jpg',
-      brand: 'Meletrix',
-      name: 'Meletrix ZoomPad 數字鍵盤套件 SP版(左手版)',
-      price: 3000,
-      quantity: 1,
-      spec: {
-        外殼: ['EE 耀夜黑', 'EE 細花白'],
-        '配重/旋鈕': ['電泳 白', '陽極 黑'],
-      },
-    },
-    {
-      id: 2,
-      check: false,
-      img: '/images/1669370674683000804.jpg',
-      brand: 'Meletrix',
-      name: 'Meletrix ZoomPad 數字鍵盤套件 SP版(左手版)',
-      price: 1000,
-      quantity: 1,
-      spec: {
-        外殼: ['EE 耀夜黑', 'EE 細花白', 'EE 細花黃', 'EE 細花成', 'EE 細花紅'],
-        '配重/旋鈕': ['陽極 黑', '電泳 白'],
-      },
-    },
-  ], //初始化購物車的加入項目
-}) => {
-  let items = initialProducts
-
-  // updatedItems之後會撈db，預設就不會是第一個值
-  const updatedItems = items.map((item) => {
-    // 在每個item中建立一個新屬性 specData
-    const specData = Object.keys(item.spec).map((key) => ({
-      key,
-      value: item.spec[key][0], // 預設為第一個值
-    }))
-
-    return {
-      ...item, // 複製原始的item物件的屬性
-      specData, // 新增新的屬性 specData
-    }
-  })
-
+export const CartProvider = ({ children }) => {
+  const router = useRouter()
+  const { auth } = useAuth()
   // init state, init來自cartReducer中
-  const [state, dispatch] = useReducer(reducer, updatedItems, init)
+  // const [state, dispatch] = useReducer(reducer, items, init)
+  const [state, dispatch] = useReducer(reducer, [], init)
+  const getCartData = async () => {
+    // console.log('useCart')
+    try {
+      const response = await axios.get(
+        'http://localhost:3005/api/cart/product',
+        {
+          withCredentials: true,
+        }
+      )
+      if (response.data.message === 'authorized') {
+        // 將購物車資料設定為初始狀態
+        dispatch({ type: 'SET_CART', payload: response.data.cartP })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    if (auth.isAuth) {
+      const loadingData = async () => {
+        await getCartData()
+      }
+      loadingData()
+    }
+  }, [auth.isAuth])
+
   const [cartTotalP, setCartTotalP] = useState(0)
   const [totalItemsP, setTotalItemsP] = useState(0)
   const [selectItemsP, setSelectItemsP] = useState(0)
-
   useEffect(() => {
     setCartTotalP(state.cartTotal)
     setTotalItemsP(state.totalItems)
@@ -103,20 +88,22 @@ export const CartProvider = ({
    * @param {string} id
    * @returns {void}
    */
-  const removeItem = (id) => {
+  const removeItem = (id, specData) => {
     dispatch({
       type: 'REMOVE_ITEM',
       payload: {
         id,
+        specData,
       },
     })
   }
 
-  const checkItem = (id) => {
+  const checkItem = (id, specData) => {
     dispatch({
       type: 'CHECK_ITEM',
       payload: {
         id,
+        specData,
       },
     })
   }
@@ -163,11 +150,12 @@ export const CartProvider = ({
    * @param {string} id
    * @returns {void}
    */
-  const plusOne = (id) => {
+  const plusOne = (id, specData) => {
     return dispatch({
       type: 'PLUS_ONE',
       payload: {
         id,
+        specData,
       },
     })
   }
@@ -177,22 +165,28 @@ export const CartProvider = ({
    * @param {string} id
    * @returns {void}
    */
-  const minusOne = (id) => {
+  const minusOne = (id, specData) => {
     return dispatch({
       type: 'MINUS_ONE',
       payload: {
         id,
+        specData,
       },
     })
   }
-
-  const styleSelect = (id, key, value) => {
+  /**
+   * 給定一id值，有尋找到商品時，設定quantity: quantity - 1，但 quantity 最小值為1
+   * @param {string} id
+   * @returns {void}
+   */
+  const styleSelect = (id, key, value, specData) => {
     return dispatch({
       type: 'STYLE_SELECT',
       payload: {
         id,
         key,
         value,
+        specData,
       },
     })
   }
@@ -215,6 +209,7 @@ export const CartProvider = ({
         totalItemsP,
         selectItemsP,
         styleSelect,
+        getCartData,
       }}
     >
       {children}

@@ -9,6 +9,8 @@ export const initialState = {
   cartTotal: 0, //總計
   selectItems: 0, //選取數量
 }
+import axios from 'axios'
+
 const moment = require('moment')
 // 置於上述items陣列中的每個項目的物件模型
 // id, quantity, price為必要屬性
@@ -22,6 +24,12 @@ const moment = require('moment')
 //   spec: '',
 // }
 
+const setCartItem = (state, action) => {
+  let newState = [...state.items]
+  newState = [...newState, ...action.payload]
+  return newState
+}
+
 /**
  * addItem 加入項目於state中
  * @param  {} state
@@ -32,7 +40,6 @@ const addItem = (state, action) => {
   const existingItemIndex = state.items.findIndex(
     (item) => item.id === action.payload.id
   )
-
   const payloadQuantity = action.payload.quantity
 
   // 如果有存在，加入項目(以給定的quantity，或沒給定時quantity+1)
@@ -55,34 +62,50 @@ const addItem = (state, action) => {
 }
 
 const removeItem = (state, action) => {
-  return state.items.filter((item) => item.id !== action.payload.id)
+  return state.items.filter(
+    (item) =>
+      item.id !== action.payload.id ||
+      JSON.stringify(item.specData) !== JSON.stringify(action.payload.specData)
+  )
 }
 
 const styleSelect = (state, action) => {
   // 尋找是否有已存在的索引值
+
+  const changeKey = action.payload.key
+  const changeValue = action.payload.value
+  const existingItemStyle = state.items.findIndex(
+    (item) =>
+      item.id === action.payload.id &&
+      JSON.stringify(item.specData) === JSON.stringify(action.payload.specData)
+  )
+  // console.log(existingItemStyle)
+  // console.log(action.payload.specData)
   const existingItemIndex = state.items.findIndex(
     (item) => item.id === action.payload.id
   )
-  const changeKey = action.payload.key
-  const changeValue = action.payload.value
+
   // 如果有存在，改變style的值
-  if (existingItemIndex > -1) {
-    const item = state.items[existingItemIndex]
+  if (existingItemStyle > -1) {
+    const item = state.items[existingItemStyle]
     const id = item.id
+    // console.log(item.specData)
+    // console.log(typeof item.specData)
 
-    const newStyleData = item.specData.map((style) => {
-      if (style.key === changeKey) {
-        return { key: changeKey, value: changeValue }
+    const newStyleData = Object.keys(item.specData).reduce((acc, style) => {
+      if (style === changeKey) {
+        acc[changeKey] = changeValue
       } else {
-        return style
+        acc[style] = item.specData[style]
       }
-    })
-    const action = {
-      type: 'STYLE_SELECT',
-      payload: { id, specData: newStyleData },
-    }
+      return acc
+    }, {})
 
-    return updateItem(state, action)
+    const newState = [...state.items]
+    newState.map((i) => {
+      i.specData = newStyleData
+    })
+    return newState
   }
   return [...state.items, action.payload]
 }
@@ -92,16 +115,23 @@ const checkItem = (state, action) => {
   const existingItemIndex = state.items.findIndex(
     (item) => item.id === action.payload.id
   )
+  const existingItemStyle = state.items.findIndex((item) => {
+    return (
+      item.id === action.payload.id &&
+      JSON.stringify(item.specData) === JSON.stringify(action.payload.specData)
+    )
+  })
 
   // 如果有存在，改變check的值
-  if (existingItemIndex > -1) {
-    const item = state.items[existingItemIndex]
+  if (existingItemStyle > -1) {
+    const item = state.items[existingItemStyle]
     const id = item.id
-    const check = !item.check
 
+    const check = item.check ? 0 : 1
+    const specData = item.specData
     const action = {
-      type: 'CHECK_ITEM',
-      payload: { id, check },
+      type: 'UPDATE_ITEM',
+      payload: { id, check, specData },
     }
 
     return updateItem(state, action)
@@ -111,8 +141,7 @@ const checkItem = (state, action) => {
 
 const checkAllItem = (state, action) => {
   // 獲取要設置的狀態（true 或 false）
-  const isChecked = !action.payload.checkall
-
+  const isChecked = action.payload.checkall ? 1 : 0
   const newState = [...state.items]
   newState.map((i) => {
     i.check = isChecked
@@ -132,11 +161,17 @@ const updateItem = (state, action) => {
   const existingItemIndex = state.items.findIndex(
     (item) => item.id === action.payload.id
   )
+  const existingItemStyle = state.items.findIndex((item) => {
+    return (
+      item.id === action.payload.id &&
+      JSON.stringify(item.specData) === JSON.stringify(action.payload.specData)
+    )
+  })
 
-  if (existingItemIndex > -1) {
+  if (existingItemStyle > -1) {
     const newState = [...state.items]
-    newState[existingItemIndex] = {
-      ...newState[existingItemIndex],
+    newState[existingItemStyle] = {
+      ...newState[existingItemStyle],
       ...action.payload,
     }
     return newState
@@ -151,15 +186,20 @@ const plusItemQuantityOnce = (state, action) => {
   const existingItemIndex = state.items.findIndex(
     (item) => item.id === action.payload.id
   )
-
-  if (existingItemIndex > -1) {
-    const item = state.items[existingItemIndex]
+  const existingItemStyle = state.items.findIndex((item) => {
+    return (
+      item.id === action.payload.id &&
+      JSON.stringify(item.specData) === JSON.stringify(action.payload.specData)
+    )
+  })
+  if (existingItemStyle > -1) {
+    const item = state.items[existingItemStyle]
     const id = item.id
     const quantity = item.quantity + 1
-
+    const specData = item.specData
     const action = {
       type: 'UPDATE_ITEM',
-      payload: { id, quantity },
+      payload: { id, quantity, specData },
     }
 
     return updateItem(state, action)
@@ -174,15 +214,21 @@ const minusItemQuantityOnce = (state, action) => {
   const existingItemIndex = state.items.findIndex(
     (item) => item.id === action.payload.id
   )
-
-  if (existingItemIndex > -1) {
-    const item = state.items[existingItemIndex]
+  const existingItemStyle = state.items.findIndex((item) => {
+    return (
+      item.id === action.payload.id &&
+      JSON.stringify(item.specData) === JSON.stringify(action.payload.specData)
+    )
+  })
+  if (existingItemStyle > -1) {
+    const item = state.items[existingItemStyle]
     const id = item.id
     const quantity = item.quantity > 1 ? item.quantity - 1 : 1
+    const specData = item.specData
 
     const action = {
       type: 'UPDATE_ITEM',
-      payload: { id, quantity },
+      payload: { id, quantity, specData },
     }
 
     return updateItem(state, action)
@@ -197,10 +243,18 @@ const startDateChange = (state, action) => {
   const existingItemIndex = state.items.findIndex(
     (item) => item.id === action.payload.id
   )
+  const existingItemStyle = state.items.findIndex((item) => {
+    return (
+      item.id === action.payload.id &&
+      JSON.stringify(item.specData) === JSON.stringify(action.payload.specData)
+    )
+  })
   const newStartDate = action.payload.newStartDate
-  if (existingItemIndex > -1) {
-    const item = state.items[existingItemIndex]
+  if (existingItemStyle > -1) {
+    const item = state.items[existingItemStyle]
     const id = item.id
+    const specData = item.specData
+
     const oldStartDate = item.startDate
     const oldEndDate = item.endDate
     const startDate =
@@ -216,7 +270,7 @@ const startDateChange = (state, action) => {
     }
     const action = {
       type: 'UPDATE_RENT_ITEM',
-      payload: { id, startDate },
+      payload: { id, startDate, specData },
     }
 
     return updateItem(state, action)
@@ -230,10 +284,18 @@ const endDateChange = (state, action) => {
   const existingItemIndex = state.items.findIndex(
     (item) => item.id === action.payload.id
   )
+
+  const existingItemStyle = state.items.findIndex((item) => {
+    return (
+      item.id === action.payload.id &&
+      JSON.stringify(item.specData) === JSON.stringify(action.payload.specData)
+    )
+  })
   const newEndDate = action.payload.newEndDate
-  if (existingItemIndex > -1) {
-    const item = state.items[existingItemIndex]
+  if (existingItemStyle > -1) {
+    const item = state.items[existingItemStyle]
     const id = item.id
+    const specData = item.specData
     const oldStartDate = item.startDate
     const oldEndDate = item.endDate
     const endDate =
@@ -249,7 +311,7 @@ const endDateChange = (state, action) => {
     }
     const action = {
       type: 'UPDATE_RENT_ITEM',
-      payload: { id, endDate },
+      payload: { id, endDate, specData },
     }
 
     return updateItem(state, action)
@@ -321,7 +383,6 @@ const calculateTotalItems = (items) =>
 const generateCartState = (state, items) => {
   // isEmpty為布林值
   const isEmpty = items.length === 0
-
   return {
     ...initialState,
     ...state,
@@ -388,6 +449,10 @@ export const reducer = (state, action) => {
       return generateRentCartState(state, endDateChange(state, action))
     case 'STYLE_SELECT':
       return generateCartState(state, styleSelect(state, action))
+    case 'SET_CART':
+      return generateCartState(state, setCartItem(state, action))
+    case 'SET_RENT_CART':
+      return generateRentCartState(state, setCartItem(state, action))
     case 'CLEAR_CART':
       return initialState
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useAuth } from '@/hooks/useAuth'
-import { useCart } from '@/hooks/use-cart'
+import { useCart } from '@/hooks/useCart'
 import { useGroupCart } from '@/hooks/useGroupCart'
 import { useRentCart } from '@/hooks/useRentCart'
 
@@ -42,6 +42,7 @@ export default function ProceedToCheckout({ onCheckout }) {
 
   const handleCouponDeselect = () => {
     setSelectedCoupon('')
+    setSelectedCouponId(0)
   }
 
   const [pdTotalPrice, setPdTotalPrice] = useState(totalPriceP)
@@ -49,7 +50,8 @@ export default function ProceedToCheckout({ onCheckout }) {
     setPdTotalPrice(totalPriceP)
   }, [totalPriceP])
 
-  const handleCouponSelect = (couponName, couponDiscount) => {
+  const [selectedCouponId, setSelectedCouponId] = useState(0)
+  const handleCouponSelect = (couponName, couponDiscount, couponId) => {
     setSelectedCoupon(couponName)
     if (pdTotalPrice) {
       const resultDiscount =
@@ -57,8 +59,26 @@ export default function ProceedToCheckout({ onCheckout }) {
           ? pdTotalPrice - couponDiscount
           : pdTotalPrice * couponDiscount
       setPdTotalPrice(resultDiscount)
+      setSelectedCouponId(couponId)
     }
   }
+
+  const [orderInfo, setOrderInfo] = useState(() => {
+    const data = localStorage.getItem('order-info')
+    return data ? JSON.parse(data) : null
+  })
+
+  const setOrderLocalStorage = () => {
+    const newData = {
+      'coupon-id': selectedCouponId,
+      'total-price': pdTotalPrice + totalPriceG + totalPriceR,
+    }
+    setOrderInfo(newData)
+  }
+  useEffect(() => {
+    console.log(orderInfo)
+    localStorage.setItem('order-info', JSON.stringify(orderInfo))
+  }, [orderInfo])
 
   return (
     <>
@@ -75,12 +95,13 @@ export default function ProceedToCheckout({ onCheckout }) {
               {selectedCoupon}
             </span>
           </span>
-          <div className="btn-group ms-3 ">
+          <div className="btn-group" style={{ marginLeft: '170px' }}>
             <button
               className="btn btn-sm border-primary text-primary dropdown-toggle"
               type="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
+              disabled={totalPriceP ? false : true}
             >
               選擇優惠券
             </button>
@@ -104,7 +125,8 @@ export default function ProceedToCheckout({ onCheckout }) {
                         v.coupon_name || v.coupon_code,
                         v.discount_value === 0
                           ? v.discount_percent
-                          : v.discount_value
+                          : v.discount_value,
+                        v.couponId
                       )
                     }}
                   >
@@ -115,9 +137,7 @@ export default function ProceedToCheckout({ onCheckout }) {
             </ul>
           </div>
         </div>
-        <div className="text-danger">
-          P.S.若商品種類(一般、團購、租用)相同，產品數量多且收件地址不同需分開結帳！！
-        </div>
+        <div className="text-danger">P.S.若收件地址不同需分開結帳！！</div>
         <div className="text-end">
           <span className="align-middle">
             共
@@ -129,13 +149,19 @@ export default function ProceedToCheckout({ onCheckout }) {
               {pdTotalPrice + totalPriceG + totalPriceR}
             </span>
           </span>
-          <a
+          <button
             href="#"
             className="btn btn-primary text-white ms-2 px-3 py-2"
-            onClick={onCheckout}
+            disabled={
+              pdTotalPrice + totalPriceG + totalPriceR === 0 ? true : false
+            }
+            onClick={async () => {
+              await setOrderLocalStorage()
+              onCheckout()
+            }}
           >
             去結帳
-          </a>
+          </button>
         </div>
       </div>
     </>

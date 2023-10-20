@@ -9,7 +9,7 @@ import HydrationFix from './_hydration-fix'
 // 商品
 import { ProductDataProvider } from '@/context/use-product'
 // 購物車
-import { CartProvider } from '@/hooks/use-cart'
+import { CartProvider } from '@/hooks/useCart'
 import { RentCartProvider } from '@/hooks/useRentCart'
 import { GroupCartProvider } from '@/hooks/useGroupCart'
 

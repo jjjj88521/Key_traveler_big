@@ -6,8 +6,12 @@ import {
   faTrashCan,
   faCaretDown,
   faCaretRight,
+  faCircleChevronUp,
 } from '@fortawesome/free-solid-svg-icons'
 import { useRentCart } from '@/hooks/useRentCart'
+import axios from 'axios'
+import useLoading from '@/hooks/useLoading'
+import LoadingPage from '@/components/common/loadingPage'
 
 export default function RCartList() {
   const {
@@ -25,11 +29,11 @@ export default function RCartList() {
   const [checkedItems, setCheckedItems] = useState({})
 
   // 單選
-  const handleToggleCheck = (id) => {
-    const updatedCheckedItems = { ...checkedItems }
-    updatedCheckedItems[id] = !updatedCheckedItems[id]
-    setCheckedItems(updatedCheckedItems)
-  }
+  // const handleToggleCheck = (id) => {
+  //   const updatedCheckedItems = { ...checkedItems }
+  //   updatedCheckedItems[id] = !updatedCheckedItems[id]
+  //   setCheckedItems(updatedCheckedItems)
+  // }
 
   // 全選
   const handleToggleCheckAll = () => {
@@ -49,256 +53,426 @@ export default function RCartList() {
     setCheckAll(allChecked)
   }, [items, checkedItems])
 
+  // 後端
+  // 更改起日
+  const dateCart = async (id, startDate, endDate, specData) => {
+    const rCart = {
+      id,
+      startDate,
+      endDate,
+      specData: JSON.stringify(specData),
+    }
+
+    try {
+      const response = await axios.post(
+        'http://localhost:3005/api/cart/rentdate',
+        rCart,
+        {
+          withCredentials: true, // save cookie in browser
+        }
+      )
+
+      if (response.data.message === 'success') {
+        console.log('更新成功')
+        handleStartDateChange(id, startDate, specData)
+        handleEndDateChange(id, endDate, specData)
+      } else {
+        console.log('更新失敗')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  // 更改訖日
+  // 勾選
+  const checkRcart = async (id, specData) => {
+    const rCart = {
+      id: id,
+      specData: JSON.stringify(specData),
+    }
+
+    try {
+      const response = await axios.post(
+        'http://localhost:3005/api/cart/checkrent',
+        rCart,
+        {
+          withCredentials: true, // save cookie in browser
+        }
+      )
+
+      if (response.data.message === 'success' && response.data.code === '200') {
+        console.log('勾選成功')
+        checkItem(id, specData)
+      } else {
+        console.log('勾選失敗')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  // 勾選全部
+  const checkAllRcart = async (checkAll) => {
+    const rCart = {
+      checkAll: checkAll,
+    }
+
+    try {
+      const response = await axios.post(
+        'http://localhost:3005/api/cart/checkallrent',
+        rCart,
+        {
+          withCredentials: true, // save cookie in browser
+        }
+      )
+
+      if (response.data.message === 'success' && response.data.code === '200') {
+        console.log('勾選全部成功')
+
+        checkAllItem(checkAll)
+      } else {
+        console.log('勾選全部失敗')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const [isExpanded, setIsExpanded] = useState(false)
+  const [isLoading, setIsLoading] = useLoading(items)
+  useEffect(() => {
+    checkAllRcart(checkAll)
+    if (localStorage.getItem('BuyBtnType')) {
+      if (localStorage.getItem('BuyBtnType') === 'rent') {
+        const data = JSON.parse(localStorage.getItem('cartRItem'))
+        checkRcart(data.id, data.specData)
+        localStorage.removeItem('BuyBtnType')
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    setCheckAll(true)
+    items.map((item) => {
+      if (item.check === 0) {
+        setCheckAll(false)
+      }
+    })
+    if (items.length === 0) {
+      setCheckAll(false)
+    }
+  }, [items])
+
+  useEffect(() => {
+    console.log(checkAll)
+  }, [checkAll])
+
   return (
     <>
-      {/* 租用商品 */}
-      <div className="mb-3 text-primary d-none d-sm-block d-sm-flex">
-        <div
-          className="pe-2"
-          data-bs-target="#collapseTwo"
-          data-bs-toggle="collapse"
-          aria-expanded="true"
-          aria-controls="collapseTwo"
-        >
-          <FontAwesomeIcon
-            icon={faCircleChevronDown}
-            className="text-primary"
-          />
-        </div>
-        <div>租用商品</div>
-        <div className="ps-1">({items.length})</div>
-      </div>
-      {/* 購物車 step1 電腦版 */}
-      <table className={`table d-none d-sm-table`}>
-        <thead>
-          <tr>
-            <th
-              className="bg-primary text-white text-center align-middle"
-              style={{ width: '5%' }}
+      {isLoading ? (
+        <LoadingPage />
+      ) : Array.isArray(items) ? (
+        <div>
+          {/* 租用商品 */}
+          <div className="mb-3 text-primary d-none d-sm-block d-sm-flex">
+            <div
+              className="pe-2"
+              data-bs-target="#collapseThree"
+              data-bs-toggle="collapse"
+              aria-expanded={isExpanded ? 'true' : 'false'}
+              aria-controls="collapseThree"
+              onClick={() => setIsExpanded(!isExpanded)}
             >
-              <input
-                type="checkbox"
-                checked={checkAll}
-                onChange={() => {
-                  handleToggleCheckAll()
-                  checkAllItem(checkAll)
-                }}
-              />
-            </th>
-            <th className="bg-primary text-white ps-3" style={{ width: '40%' }}>
-              商品明細
-            </th>
-            <th className="bg-primary text-white" style={{ width: '25%' }}>
-              租用日期
-            </th>
-            <th className="bg-primary text-white text-center">小計</th>
-            <th className="bg-primary text-white"></th>
-          </tr>
-        </thead>
-        <tbody className="accordion-collapse collapse show" id="collapseTwo">
-          {items.map((item, index) => (
-            <tr key={index}>
-              <td className="text-center align-middle">
-                <input
-                  type="checkbox"
-                  checked={checkedItems[item.id] || false}
-                  onChange={() => {
-                    handleToggleCheck(item.id)
-                    checkItem(item.id)
-                  }}
+              {isExpanded ? (
+                <FontAwesomeIcon
+                  icon={faCircleChevronUp}
+                  className="text-primary"
                 />
-              </td>
-              <td className="d-flex">
-                <div className="p-2">
-                  <Image src={item.img} width={100} height={100} alt="" />
-                </div>
-                <div className="p-2">
-                  <div>{item.brand}</div>
-                  <div>{item.name}</div>
-                  <div className="pt-1">
-                    {Object.keys(item.spec).map((key) => (
-                      <select
-                        key={key}
-                        className="form-select form-select-sm mb-1"
-                        style={{ width: 140 }}
-                        disabled
-                      >
-                        {item.spec[key].map((option, optionIndex) => (
-                          <option key={optionIndex}>{option}</option>
-                        ))}
-                      </select>
-                    ))}
-                  </div>
-                </div>
-              </td>
-              <td className="align-middle">
-                <input
-                  className="form-control w-75"
-                  type="date"
-                  id={`start_date${item.id}`}
-                  value={item.startDate}
-                  onChange={(e) =>
-                    handleStartDateChange(item.id, e.target.value)
-                  }
-                  min={getCurrentDate()}
+              ) : (
+                <FontAwesomeIcon
+                  icon={faCircleChevronDown}
+                  className="text-primary"
                 />
-                <div className="text-center pe-5 me-4">
-                  <FontAwesomeIcon
-                    icon={faCaretDown}
-                    className="text-secondary"
+              )}
+            </div>
+            <div>租用商品</div>
+            <div className="ps-1">({items.length})</div>
+          </div>
+          {/* 購物車 step1 電腦版 */}
+          <table className={`table d-none d-sm-table`}>
+            <thead>
+              <tr>
+                <th
+                  className="bg-primary text-white text-center align-middle"
+                  style={{ width: '5%' }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={checkAll}
+                    onChange={() => {
+                      handleToggleCheckAll()
+                      checkAllRcart(!checkAll)
+                    }}
+                    disabled={items.length === 0 ? true : false}
                   />
-                </div>
-                <input
-                  className="form-control w-75"
-                  type="date"
-                  id={`end_date${item.id}`}
-                  value={item.endDate}
-                  onChange={(e) => handleEndDateChange(item.id, e.target.value)}
-                  min={getCurrentDate()}
-                />
-              </td>
-              <td className="align-middle text-center">${item.subtotal}</td>
-              <td className="align-middle text-center">
-                <button
-                  className="btn border-white"
-                  type="button"
-                  onClick={() => {
-                    removeItem(item.id)
-                  }}
+                </th>
+                <th
+                  className="bg-primary text-white ps-3"
+                  style={{ width: '40%' }}
                 >
-                  <FontAwesomeIcon icon={faTrashCan} className="text-primary" />
-                </button>
-              </td>
-            </tr>
-          ))}
-          <tr>
-            <td className="pe-5 text-end" colSpan={6}>
-              總計: ${cart.cartTotal}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      {/* 租用商品 */}
-      {/* 購物車 step1 手機版 */}
-      <table className={`table d-table d-sm-none`}>
-        <thead>
-          <tr>
-            <th
-              className="bg-primary text-white text-center align-middle"
-              style={{ width: '5%' }}
+                  商品明細
+                </th>
+                <th className="bg-primary text-white" style={{ width: '25%' }}>
+                  租用日期
+                </th>
+                <th className="bg-primary text-white text-center">小計</th>
+                <th className="bg-primary text-white"></th>
+              </tr>
+            </thead>
+            <tbody
+              className="accordion-collapse collapse show"
+              id="collapseTwo"
             >
-              <input
-                type="checkbox"
-                checked={checkAll}
-                onChange={() => {
-                  handleToggleCheckAll()
-                  checkAllItem(checkAll)
-                }}
-              />
-            </th>
-            <th className="bg-primary text-white" colSpan={3}>
-              <div className="d-flex">
-                <div>租用商品</div>
-                <div className="ps-1">({items.length})</div>
-                <div
-                  className="ms-auto pe-1"
-                  data-bs-target="#collapseTwo"
-                  data-bs-toggle="collapse"
-                  aria-expanded="true"
-                  aria-controls="collapseTwo"
-                >
-                  <FontAwesomeIcon icon={faCircleChevronDown} />
-                </div>
-              </div>
-            </th>
-          </tr>
-        </thead>
-        <tbody className="accordion-collapse collapse show" id="collapseTwo">
-          {items.map((item, index) => (
-            <tr key={index}>
-              <td className="text-center align-middle px-1">
-                <input
-                  type="checkbox"
-                  checked={checkedItems[item.id] || false}
-                  onChange={() => {
-                    handleToggleCheck(item.id)
-                    checkItem(item.id)
-                  }}
-                />
-              </td>
-              <td className="d-flex px-1">
-                <div className="pe-2 pt-2">
-                  <Image src={item.img} width={100} height={100} alt="" />
-                </div>
-                <div>
-                  <div className="">{item.brand}</div>
-                  <div>{item.name}</div>
-                  <div className="p-1">
-                    {Object.keys(item.spec).map((key) => (
-                      <select
-                        key={key}
-                        className="form-select form-select-sm mb-1"
-                        style={{ width: 140 }}
-                        disabled
-                      >
-                        {item.spec[key].map((option, optionIndex) => (
-                          <option key={optionIndex}>{option}</option>
-                        ))}
-                      </select>
-                    ))}
-                  </div>
-                  <div className="input-group ms-1 mt-1">
+              {items.map((item, index) => (
+                <tr key={index}>
+                  <td className="text-center align-middle">
                     <input
-                      className="form-control p-0"
+                      type="checkbox"
+                      checked={item.check ? true : false}
+                      onChange={() => {
+                        checkRcart(item.id, item.specData)
+                      }}
+                    />
+                  </td>
+                  <td className="d-flex align-items-center">
+                    <div className="p-2">
+                      <Image src={item.img} width={120} height={100} alt="" />
+                    </div>
+                    <div className="p-2">
+                      <div>{item.brand}</div>
+                      <div>{item.name}</div>
+                      <div className="pt-1">
+                        {Object.keys(item.spec).map((key) => (
+                          <select
+                            key={key}
+                            className="form-select form-select-sm mb-1"
+                            style={{ width: 140 }}
+                            value={item.specData[key]}
+                            disabled
+                          >
+                            {item.spec[key].map((option, optionIndex) => (
+                              <option key={optionIndex} value={option}>
+                                {option}
+                              </option>
+                            ))}
+                          </select>
+                        ))}
+                      </div>
+                    </div>
+                  </td>
+                  <td className="align-middle">
+                    <input
+                      className="form-control w-75"
                       type="date"
-                      id="start_date"
+                      id={`start_date${item.id}`}
                       value={item.startDate}
                       onChange={(e) =>
-                        handleStartDateChange(item.id, e.target.value)
+                        dateCart(
+                          item.id,
+                          e.target.value,
+                          item.endDate,
+                          item.specData
+                        )
                       }
-                      min={getCurrentDate()} // 不能選過去的日期
-                      style={{ width: 97 }}
+                      min={getCurrentDate()}
                     />
-                    <div className="px-1">
+                    <div className="text-center pe-5 me-4">
                       <FontAwesomeIcon
-                        icon={faCaretRight}
+                        icon={faCaretDown}
                         className="text-secondary"
                       />
                     </div>
                     <input
-                      className="form-control p-0"
+                      className="form-control w-75"
                       type="date"
-                      id="end_date"
+                      id={`end_date${item.id}`}
                       value={item.endDate}
                       onChange={(e) =>
-                        handleEndDateChange(item.id, e.target.value)
+                        dateCart(
+                          item.id,
+                          item.startDate,
+                          e.target.value,
+                          item.specData
+                        )
                       }
                       min={getCurrentDate()}
-                      style={{ width: 97 }}
                     />
-                  </div>
-                  <div className="pt-1 ps-1">${item.subtotal}</div>
-                </div>
-                <button
-                  className="btn border-white p-0"
-                  type="button"
-                  onClick={() => {
-                    removeItem(item.id)
-                  }}
-                  style={{ height: 20 }}
+                  </td>
+                  <td className="align-middle text-center">${item.subtotal}</td>
+                  <td className="align-middle text-center">
+                    <button
+                      className="btn border-white"
+                      type="button"
+                      onClick={() => {
+                        removeItem(item.id)
+                      }}
+                    >
+                      <FontAwesomeIcon
+                        icon={faTrashCan}
+                        className="text-primary"
+                      />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+              <tr>
+                <td className="pe-5 text-end" colSpan={6}>
+                  總計: ${cart.cartTotal}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          {/* 租用商品 */}
+          {/* 購物車 step1 手機版 */}
+          <table className={`table d-table d-sm-none`}>
+            <thead>
+              <tr>
+                <th
+                  className="bg-primary text-white text-center align-middle"
+                  style={{ width: '5%' }}
                 >
-                  <FontAwesomeIcon icon={faTrashCan} className="text-primary" />
-                </button>
-              </td>
-            </tr>
-          ))}
-          <tr>
-            <td className="text-end" colSpan={2}>
-              總計: ${cart.cartTotal}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                  <input
+                    type="checkbox"
+                    checked={checkAll}
+                    onChange={() => {
+                      handleToggleCheckAll()
+                      checkAllRcart(!checkAll)
+                    }}
+                    disabled={items.length === 0 ? true : false}
+                  />
+                </th>
+                <th className="bg-primary text-white" colSpan={3}>
+                  <div className="d-flex">
+                    <div>租用商品</div>
+                    <div className="ps-1">({items.length})</div>
+                    <div
+                      className="ms-auto pe-1"
+                      data-bs-target="#collapseTwo"
+                      data-bs-toggle="collapse"
+                      aria-expanded="true"
+                      aria-controls="collapseTwo"
+                    >
+                      <FontAwesomeIcon icon={faCircleChevronDown} />
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              className="accordion-collapse collapse show"
+              id="collapseTwo"
+            >
+              {items.map((item, index) => (
+                <tr key={index}>
+                  <td className="text-center align-middle px-1">
+                    <input
+                      type="checkbox"
+                      checked={item.check ? true : false}
+                      onChange={() => {
+                        checkRcart(item.id, item.specData)
+                      }}
+                    />
+                  </td>
+                  <td className="d-flex px-1 align-items-center">
+                    <div className="pe-2 pt-2">
+                      <Image src={item.img} width={120} height={100} alt="" />
+                    </div>
+                    <div>
+                      <div className="">{item.brand}</div>
+                      <div>{item.name}</div>
+                      <div className="p-1">
+                        {Object.keys(item.spec).map((key) => (
+                          <select
+                            key={key}
+                            className="form-select form-select-sm mb-1"
+                            style={{ width: 140 }}
+                            value={item.specData[key]}
+                            disabled
+                          >
+                            {item.spec[key].map((option, optionIndex) => (
+                              <option key={optionIndex} value={option}>
+                                {option}
+                              </option>
+                            ))}
+                          </select>
+                        ))}
+                      </div>
+                      <div className="input-group ms-1 mt-1">
+                        <input
+                          className="form-control p-0"
+                          type="date"
+                          id="start_date"
+                          value={item.startDate}
+                          onChange={(e) =>
+                            handleStartDateChange(
+                              item.id,
+                              e.target.value,
+                              item.specData
+                            )
+                          }
+                          min={getCurrentDate()} // 不能選過去的日期
+                          style={{ width: 97 }}
+                        />
+                        <div className="px-1">
+                          <FontAwesomeIcon
+                            icon={faCaretRight}
+                            className="text-secondary"
+                          />
+                        </div>
+                        <input
+                          className="form-control p-0"
+                          type="date"
+                          id="end_date"
+                          value={item.endDate}
+                          onChange={(e) =>
+                            handleEndDateChange(
+                              item.id,
+                              e.target.value,
+                              item.specData
+                            )
+                          }
+                          min={getCurrentDate()}
+                          style={{ width: 97 }}
+                        />
+                      </div>
+                      <div className="pt-1 ps-1">${item.subtotal}</div>
+                    </div>
+                    <button
+                      className="btn border-white p-0"
+                      type="button"
+                      onClick={() => {
+                        removeItem(item.id)
+                      }}
+                      style={{ height: 20 }}
+                    >
+                      <FontAwesomeIcon
+                        icon={faTrashCan}
+                        className="text-primary"
+                      />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+              <tr>
+                <td className="text-end" colSpan={2}>
+                  總計: ${cart.cartTotal}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        ''
+      )}
     </>
   )
 }
