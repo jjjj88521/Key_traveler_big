@@ -52,6 +52,9 @@ export default function DetailFilter() {
       })
   }
   useEffect(() => {
+    if (detail_id === 'cate') {
+      router.push('/article/cate/0')
+    }
     // useEffect會比前面的21行以前的程式碼都還要早執行 因此我們監控isＲeady的變化
     // 當前面的程式碼都跑完了 這時detail_id才回有值 而isＲeady會是從false變成true
     if (!isReady) return
@@ -539,8 +542,9 @@ export default function DetailFilter() {
                           className={`${art_detail_style['interest_card']} row py-2 border-bottom border-2 border-dark`}
                           key={index}
                         >
-                          <div className="col-4 px-0">
+                          <div className="col-4 px-3">
                             <div
+                              className=""
                               style={{
                                 width: '100%',
                                 height: '100%',

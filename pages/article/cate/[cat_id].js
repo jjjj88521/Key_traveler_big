@@ -8,6 +8,7 @@ import useLoading from '@/hooks/useLoading'
 import LoadingPage from '@/components/common/loadingPage'
 import axios from 'axios'
 import { number } from 'prop-types'
+import dayjs from 'dayjs'
 export default function ArticleFilter() {
   // 設定路由
   const router = useRouter()
@@ -324,6 +325,7 @@ export default function ArticleFilter() {
                   {
                     /* console.log('item.img:', parsedImg) */
                   }
+                  console.log(`${item.id}的日期`, item.date)
                   return (
                     <div className="col mb-4" key={item.id}>
                       <div className={`${art_list_style['list_card']} card`}>
@@ -331,13 +333,16 @@ export default function ArticleFilter() {
                         <Link href={`/article/${item.id}`}>
                           <img
                             src={`/images/article/${parsedImg[0]}`}
-                            className="card-img-top"
+                            className="card-img-top object-fit-cover"
                             alt="..."
                           />
                         </Link>
 
                         <div className="card-body">
-                          <h4 className="card-title mb-3">
+                          <h4
+                            className="card-title mb-3"
+                            style={{ height: '60px' }}
+                          >
                             {item.title.length > 14
                               ? `${item.title.slice(0, 14)}...`
                               : item.title}
@@ -356,7 +361,11 @@ export default function ArticleFilter() {
                             </Tag>
                           </Link>
 
-                          <p className="card-date">發布日期:{item.date}</p>
+                          <p className="card-date mb-0">
+                            發布日期:
+                            <br className="d-sm-none d-block" />
+                            {dayjs(item.date).format('YYYY-MM-DD HH:mm:ss')}
+                          </p>
                         </div>
                       </div>
                     </div>
