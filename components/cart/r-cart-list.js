@@ -54,7 +54,7 @@ export default function RCartList() {
   }, [items, checkedItems])
 
   // 後端
-  // 更改起日
+  // 更改起訖日
   const dateCart = async (id, startDate, endDate, specData) => {
     const rCart = {
       id,
@@ -83,7 +83,32 @@ export default function RCartList() {
       console.log(error)
     }
   }
-  // 更改訖日
+  // 刪除
+  const deleteRCart = async (id, specData) => {
+    const rCart = {
+      id: id,
+      specData: JSON.stringify(specData),
+    }
+
+    try {
+      const response = await axios.post(
+        'http://localhost:3005/api/cart/deleterent',
+        rCart,
+        {
+          withCredentials: true, // save cookie in browser
+        }
+      )
+
+      if (response.data.message === 'success' && response.data.code === '200') {
+        console.log('刪除成功')
+        removeItem(id, specData)
+      } else {
+        console.log('刪除失敗')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
   // 勾選
   const checkRcart = async (id, specData) => {
     const rCart = {
@@ -313,7 +338,7 @@ export default function RCartList() {
                       className="btn border-white"
                       type="button"
                       onClick={() => {
-                        removeItem(item.id)
+                        deleteRCart(item.id, item.specData)
                       }}
                     >
                       <FontAwesomeIcon
@@ -358,10 +383,15 @@ export default function RCartList() {
                       className="ms-auto pe-1"
                       data-bs-target="#collapseTwo"
                       data-bs-toggle="collapse"
-                      aria-expanded="true"
+                      aria-expanded={isExpanded ? 'true' : 'false'}
                       aria-controls="collapseTwo"
+                      onClick={() => setIsExpanded(!isExpanded)}
                     >
-                      <FontAwesomeIcon icon={faCircleChevronDown} />
+                      {isExpanded ? (
+                        <FontAwesomeIcon icon={faCircleChevronUp} />
+                      ) : (
+                        <FontAwesomeIcon icon={faCircleChevronDown} />
+                      )}
                     </div>
                   </div>
                 </th>
@@ -413,9 +443,10 @@ export default function RCartList() {
                           id="start_date"
                           value={item.startDate}
                           onChange={(e) =>
-                            handleStartDateChange(
+                            dateCart(
                               item.id,
                               e.target.value,
+                              item.endDate,
                               item.specData
                             )
                           }
@@ -434,8 +465,9 @@ export default function RCartList() {
                           id="end_date"
                           value={item.endDate}
                           onChange={(e) =>
-                            handleEndDateChange(
+                            dateCart(
                               item.id,
+                              item.startDate,
                               e.target.value,
                               item.specData
                             )
@@ -450,7 +482,7 @@ export default function RCartList() {
                       className="btn border-white p-0"
                       type="button"
                       onClick={() => {
-                        removeItem(item.id)
+                        deleteRCart(item.id, item.specData)
                       }}
                       style={{ height: 20 }}
                     >

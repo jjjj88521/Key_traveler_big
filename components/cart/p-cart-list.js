@@ -423,10 +423,15 @@ export default function PCartList() {
                       className="ms-auto pe-1"
                       data-bs-target="#collapseOne"
                       data-bs-toggle="collapse"
-                      aria-expanded="true"
+                      aria-expanded={isExpanded ? 'true' : 'false'}
                       aria-controls="collapseOne"
+                      onClick={() => setIsExpanded(!isExpanded)}
                     >
-                      <FontAwesomeIcon icon={faCircleChevronDown} />
+                      {isExpanded ? (
+                        <FontAwesomeIcon icon={faCircleChevronUp} />
+                      ) : (
+                        <FontAwesomeIcon icon={faCircleChevronDown} />
+                      )}
                     </div>
                   </div>
                 </th>

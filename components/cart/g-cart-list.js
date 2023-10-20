@@ -408,10 +408,15 @@ export default function GCartList() {
                       className="ms-auto pe-1"
                       data-bs-target="#collapseThree"
                       data-bs-toggle="collapse"
-                      aria-expanded="true"
+                      aria-expanded={isExpanded ? 'true' : 'false'}
                       aria-controls="collapseThree"
+                      onClick={() => setIsExpanded(!isExpanded)}
                     >
-                      <FontAwesomeIcon icon={faCircleChevronDown} />
+                      {isExpanded ? (
+                        <FontAwesomeIcon icon={faCircleChevronUp} />
+                      ) : (
+                        <FontAwesomeIcon icon={faCircleChevronDown} />
+                      )}
                     </div>
                   </div>
                 </th>

@@ -57,11 +57,12 @@ export const RentCartProvider = ({ children }) => {
     })
   }
 
-  const removeItem = (id) => {
+  const removeItem = (id, specData) => {
     dispatch({
       type: 'REMOVE_RENT_ITEM',
       payload: {
         id,
+        specData,
       },
     })
   }

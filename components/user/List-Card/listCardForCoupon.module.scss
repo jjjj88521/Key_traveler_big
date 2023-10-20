@@ -39,12 +39,12 @@
     background-image: url('/images/coupon_stamp2.png');
     background-color: rgba(0, 0, 0, 0.2);
     background-repeat: no-repeat;
-    background-position: 0% 50%;
+    background-position: 4% 50%;
     background-size: auto 55%;
     @media screen and (max-width: $maxWidth) {
       background-image: url('/images/coupon_stamp2.png');
       background-position: 5% 50%;
-      background-size: 45% 40%;
+      background-size: 40% 40%;
     }
   }
   @media screen and (max-width: $maxWidth) {
