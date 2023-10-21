@@ -8,6 +8,7 @@ import Card from '@/components/product/Card'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import useLoading from '@/hooks/useLoading'
+import Head from 'next/head'
 
 export default function ProductCate1() {
   // 路由相關
@@ -168,6 +169,9 @@ export default function ProductCate1() {
 
   return (
     <>
+      <Head>
+        <title>{cateName}</title>
+      </Head>
       <div className={styles.banner}>
         <div className="w-100 h-100 p-4 p-sm-0">
           <img

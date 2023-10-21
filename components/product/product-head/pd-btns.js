@@ -5,6 +5,7 @@ import React from 'react'
 import Swal from 'sweetalert2'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import { useAuth } from '@/hooks/useAuth'
 
 const addToCart = (type, addPItem, addGItem, addRItem) => {
   const data =
@@ -39,7 +40,7 @@ const addToCart = (type, addPItem, addGItem, addRItem) => {
             icon: 'success',
             title: '新增購物車成功',
             // showConfirmButton: false,
-            timer: 2500,
+            timer: 1500,
           })
         }
       } catch (error) {
@@ -74,7 +75,7 @@ const addToCart = (type, addPItem, addGItem, addRItem) => {
             icon: 'success',
             title: '新增購物車成功',
             // showConfirmButton: false,
-            timer: 2500,
+            timer: 1500,
           })
         }
       } catch (error) {
@@ -115,7 +116,7 @@ const addToCart = (type, addPItem, addGItem, addRItem) => {
             icon: 'success',
             title: '新增購物車成功',
             // showConfirmButton: false,
-            timer: 2500,
+            timer: 1500,
           })
         }
       } catch (error) {
@@ -135,8 +136,24 @@ const AddCartBtn = ({ type }) => {
   const { addItem: addPItem } = useCart()
   const { addItem: addGItem } = useRentCart()
   const { addItem: addRItem } = useGroupCart()
+  const router = useRouter()
+  const { auth } = useAuth()
+  const { getCartData } = useCart()
+  const { getCartData: getRentCartData } = useRentCart()
+  const { getCartData: getGroupCartData } = useGroupCart()
 
   const handleAddToCart = () => {
+    if (!auth.isAuth) {
+      Swal.fire({
+        icon: 'error',
+        title: '請先登入',
+        timer: 1500,
+        showConfirmButton: false,
+      }).then(() => {
+        router.push('/user/login')
+      })
+      return
+    }
     addToCart(type, addPItem, addGItem, addRItem)
   }
 
@@ -144,7 +161,13 @@ const AddCartBtn = ({ type }) => {
     <>
       <button
         className="btn btn-outline-primary w-50 py-3 rounded-4 fw-semibold hstack gap-3 justify-content-center"
-        onClick={handleAddToCart}
+        onClick={async () => {
+          await handleAddToCart()
+          // router.reload()
+          getCartData()
+          getRentCartData()
+          getGroupCartData()
+        }}
       >
         <i className="fa-solid fa-cart-plus"></i>
         加入購物車
@@ -158,6 +181,7 @@ const BuyBtn = ({ type }) => {
   const { addItem: addGItem } = useRentCart()
   const { addItem: addRItem } = useGroupCart()
   const router = useRouter()
+  const { auth } = useAuth()
 
   const handleAddToBuy = async () => {
     await addToCart(type, addPItem, addGItem, addRItem)
@@ -168,7 +192,20 @@ const BuyBtn = ({ type }) => {
   return (
     <button
       className="btn btn-outline-primary w-50 py-3 rounded-4 fw-semibold"
-      onClick={handleAddToBuy}
+      onClick={() => {
+        if (!auth.isAuth) {
+          Swal.fire({
+            icon: 'error',
+            title: '請先登入',
+            timer: 1500,
+            showConfirmButton: false,
+          }).then(() => {
+            router.push('/user/login')
+          })
+          return
+        }
+        handleAddToBuy()
+      }}
     >
       直接購買
     </button>

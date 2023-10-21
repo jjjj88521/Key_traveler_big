@@ -222,4 +222,28 @@ export const pathsLocaleMap = [
     name: '文章',
     path: '/article',
   },
+  {
+    name: '分類',
+    path: '/article/cate',
+  },
+  {
+    name: '所有文章',
+    path: '/article/cate/0',
+  },
+  {
+    name: '公告',
+    path: '/article/cate/1',
+  },
+  {
+    name: '開箱文',
+    path: '/article/cate/2',
+  },
+  {
+    name: '組裝教學',
+    path: '/article/cate/3',
+  },
+  {
+    name: '活動',
+    path: '/article/cate/4',
+  },
 ]

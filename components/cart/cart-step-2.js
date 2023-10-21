@@ -13,9 +13,9 @@ const moment = require('moment')
 
 export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
   const { auth, setAuth, coupon, getCoupon } = useAuth()
-  const { items: pItems } = useCart()
-  const { items: gItems } = useGroupCart()
-  const { items: rItems } = useRentCart()
+  const { items: pItems, getCartData: getPData } = useCart()
+  const { items: gItems, getCartData: getGData } = useGroupCart()
+  const { items: rItems, getCartData: getRData } = useRentCart()
   useEffect(() => {
     getCoupon()
   }, [])
@@ -248,8 +248,8 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
             return Swal.fire({
               icon: 'success',
               title: '成功建立訂單',
-              // showConfirmButton: false,
-              timer: 2500,
+              showConfirmButton: false,
+              timer: 1500,
             })
           }
         } catch (error) {
@@ -498,7 +498,7 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
               <button
                 className={`btn btn-primary px-3 py-2`}
                 id="completeOrder"
-                onClick={() => {
+                onClick={async () => {
                   const dateTime = moment().format('YYYY-MM-DD HH:mm:ss')
                   const couponId = JSON.parse(
                     localStorage.getItem('order-info')
@@ -513,7 +513,11 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
                     )
                     await addToOrder('rent', rOrderItems, dateTime, couponId)
                   }
-                  addToOrderTotal()
+                  await addToOrderTotal()
+                  getPData()
+                  getGData()
+                  getRData()
+
                   ongotoPage3()
                 }}
               >

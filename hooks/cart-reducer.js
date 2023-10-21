@@ -393,6 +393,19 @@ const generateCartState = (state, items) => {
     isEmpty,
   }
 }
+const generateGroupCartState = (state, items) => {
+  // isEmpty為布林值
+  const isEmpty = items.length === 0
+  return {
+    ...initialState,
+    ...state,
+    items: calculateItemTotals(items),
+    totalItems: calculateTotalItems(items),
+    cartTotal: calculateTotalPrice(items),
+    selectItems: calculateSelectItems(items),
+    isEmpty,
+  }
+}
 const generateRentCartState = (state, items) => {
   // isEmpty為布林值
   const isEmpty = items.length === 0
@@ -451,6 +464,8 @@ export const reducer = (state, action) => {
       return generateCartState(state, styleSelect(state, action))
     case 'SET_CART':
       return generateCartState(state, setCartItem(state, action))
+    case 'SET_GROUP_CART':
+      return generateGroupCartState(state, setCartItem(state, action))
     case 'SET_RENT_CART':
       return generateRentCartState(state, setCartItem(state, action))
     case 'CLEAR_CART':

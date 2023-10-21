@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import jwtDecode from 'jwt-decode'
 import UserLayout from '@/components/layout/user-layout'
 import LineLoginJWT from '@/components/user/line-login-jwt'
+import Head from 'next/head'
 export default function Login() {
   // 用戶直接跳轉，清掉原頁面的 localStorage，以免之後會有問題
   const router = useRouter()
@@ -33,6 +34,9 @@ export default function Login() {
         <LoginForm />
         {/* <LineLoginJWT /> */}
       </UserLayout>
+      <Head>
+        <title>登入</title>
+      </Head>
     </>
   )
 }

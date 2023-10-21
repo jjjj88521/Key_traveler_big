@@ -235,30 +235,28 @@ export default function PCartList() {
       ) : Array.isArray(items) ? (
         <div>
           {/* 一般商品 */}
-          <div className="mb-3 text-primary d-none d-sm-block d-sm-flex">
-            <div
-              className="pe-2"
-              data-bs-target="#collapseOne"
-              data-bs-toggle="collapse"
-              aria-expanded={isExpanded ? 'true' : 'false'}
-              aria-controls="collapseOne"
-              onClick={() => setIsExpanded(!isExpanded)}
-            >
-              {isExpanded ? (
-                <FontAwesomeIcon
-                  icon={faCircleChevronUp}
-                  className="text-primary"
-                />
-              ) : (
-                <FontAwesomeIcon
-                  icon={faCircleChevronDown}
-                  className="text-primary"
-                />
-              )}
-            </div>
-            <div>一般商品</div>
-            <div className="ps-1">({items.length})</div>
-          </div>
+          <button
+            className="mb-3 text-primary d-none d-sm-flex btn border-0 text-primary align-items-center gap-2"
+            type="button"
+            data-bs-target="#collapseOne"
+            data-bs-toggle="collapse"
+            aria-expanded={isExpanded ? 'true' : 'false'}
+            aria-controls="collapseOne"
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            {isExpanded ? (
+              <FontAwesomeIcon
+                icon={faCircleChevronUp}
+                className="text-primary"
+              />
+            ) : (
+              <FontAwesomeIcon
+                icon={faCircleChevronDown}
+                className="text-primary"
+              />
+            )}
+            <div>一般商品 ({items.length})</div>
+          </button>
           {/* 購物車 step1 電腦版 */}
           <table className={`table d-none d-sm-table`}>
             <thead>
@@ -320,21 +318,22 @@ export default function PCartList() {
                       <div>{item.brand}</div>
                       <div>{item.name}</div>
                       <div className="pt-1">
-                        {Object.keys(item.spec).map((key) => (
-                          <select
-                            key={key}
-                            className="form-select form-select-sm mb-1"
-                            style={{ width: 140 }}
-                            value={item.specData[key]}
-                            disabled
-                          >
-                            {item.spec[key].map((option, optionIndex) => (
-                              <option key={optionIndex} value={option}>
-                                {option}
-                              </option>
-                            ))}
-                          </select>
-                        ))}
+                        {item.spec &&
+                          Object.keys(item.spec).map((key) => (
+                            <select
+                              key={key}
+                              className="form-select form-select-sm mb-1"
+                              style={{ width: 140 }}
+                              value={item.specData[key]}
+                              disabled
+                            >
+                              {item.spec[key].map((option, optionIndex) => (
+                                <option key={optionIndex} value={option}>
+                                  {option}
+                                </option>
+                              ))}
+                            </select>
+                          ))}
                       </div>
                     </div>
                   </td>
@@ -370,7 +369,7 @@ export default function PCartList() {
                       </span>
                     </div>
                   </td>
-                  <td className="align-middle text-center">
+                  <td className="align-middle text-center text-primary">
                     ${item.price * item.quantity}
                   </td>
                   <td className="align-middle text-center">
@@ -391,7 +390,7 @@ export default function PCartList() {
               ))}
               <tr>
                 <td className="pe-5 text-end" colSpan={6}>
-                  總計: ${cart.cartTotal}
+                  總計: <span className="text-primary">${cart.cartTotal}</span>
                 </td>
               </tr>
             </tbody>
@@ -419,8 +418,9 @@ export default function PCartList() {
                   <div className="d-flex">
                     <div>一般商品</div>
                     <div className="ps-1">({items.length})</div>
-                    <div
-                      className="ms-auto pe-1"
+                    <button
+                      className="ms-auto pe-1 border-0 bg-transparent text-white"
+                      type="button"
                       data-bs-target="#collapseOne"
                       data-bs-toggle="collapse"
                       aria-expanded={isExpanded ? 'true' : 'false'}
@@ -432,7 +432,7 @@ export default function PCartList() {
                       ) : (
                         <FontAwesomeIcon icon={faCircleChevronDown} />
                       )}
-                    </div>
+                    </button>
                   </div>
                 </th>
               </tr>
@@ -460,30 +460,25 @@ export default function PCartList() {
                       <div>{item.brand}</div>
                       <div>{item.name}</div>
                       <div className="pt-1">
-                        {Object.keys(item.spec).map((key) => (
-                          <select
-                            key={key}
-                            className="form-select form-select-sm mb-1"
-                            style={{ width: 140 }}
-                            value={item.specData[key]}
-                            disabled
-                          >
-                            {item.spec[key].map((option, optionIndex) => (
-                              <option key={optionIndex} value={option}>
-                                {option}
-                              </option>
-                            ))}
-                          </select>
-                        ))}
+                        {item.spec &&
+                          Object.keys(item.spec).map((key) => (
+                            <select
+                              key={key}
+                              className="form-select form-select-sm mb-1"
+                              style={{ width: 140 }}
+                              value={item.specData[key]}
+                              disabled
+                            >
+                              {item.spec[key].map((option, optionIndex) => (
+                                <option key={optionIndex} value={option}>
+                                  {option}
+                                </option>
+                              ))}
+                            </select>
+                          ))}
                       </div>
-                      <div className="d-flex pt-1">
-                        <div className="pt-2">
-                          ${item.price * item.quantity}
-                        </div>
-                        <div
-                          className="input-group ms-auto "
-                          style={{ width: '50%' }}
-                        >
+                      <div className="d-flex pt-1 flex-column">
+                        <div className="input-group" style={{ width: '140px' }}>
                           <span className="input-group-text p-0 ">
                             <button
                               className="btn btn-sm"
@@ -512,10 +507,13 @@ export default function PCartList() {
                             </button>
                           </span>
                         </div>
+                        <div className="pt-2 text-primary">
+                          ${item.price * item.quantity}
+                        </div>
                       </div>
                     </div>
                     <button
-                      className="btn border-white ps-1 pe-2"
+                      className="btn border-white w-100"
                       type="button"
                       onClick={() => {
                         deletePCart(item.id, item.specData)
@@ -532,7 +530,7 @@ export default function PCartList() {
               ))}
               <tr>
                 <td className="text-end" colSpan={2}>
-                  總計: ${cart.cartTotal}
+                  總計: <span className="text-primary">${cart.cartTotal}</span>
                 </td>
               </tr>
             </tbody>

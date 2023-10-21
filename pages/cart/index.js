@@ -8,6 +8,7 @@ import RCartList from '@/components/cart/r-cart-list'
 import GCartList from '@/components/cart/g-cart-list'
 import ProceedToCheckout from '@/components/cart/proceed-to-checkout'
 import { useAuth } from '@/hooks/useAuth'
+import Head from 'next/head'
 
 export default function Cart() {
   const { auth, coupon, getCoupon } = useAuth()
@@ -37,6 +38,11 @@ export default function Cart() {
   ]
   return (
     <>
+      <Head>
+        {currentStep === 1 && <title>購物車</title>}
+        {currentStep === 2 && <title>填寫訂單資訊</title>}
+        {currentStep === 3 && <title>完成訂單</title>}
+      </Head>
       {auth.isAuth ? (
         <div>
           <CartStep currentStep={currentStep - 1} itemsStep={items} />

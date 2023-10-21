@@ -34,7 +34,7 @@ const UploadAvatar = () => {
     console.log('SSSS')
     console.log(picture)
   } else {
-    picture = `http://localhost:3005/${auth.user.avatar}`
+    picture = `http://localhost:3005/${auth.user.avatar}.jpg`
   }
   //判斷大頭貼是從google 來的還是從資料庫來的
   const [fileList, setFileList] = useState([])

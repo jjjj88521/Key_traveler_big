@@ -8,6 +8,7 @@ import Card from '@/components/product/Card'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import useLoading from '@/hooks/useLoading'
+import Head from 'next/head'
 
 // 將 title 傳給 app.js
 export async function getStaticProps() {
@@ -157,6 +158,9 @@ export default function ProductIndex() {
   }
   return (
     <>
+      <Head>
+        <title>全部商品</title>
+      </Head>
       <div className={styles.banner}>
         <div className="w-100 h-100 p-4 p-sm-0">
           <img

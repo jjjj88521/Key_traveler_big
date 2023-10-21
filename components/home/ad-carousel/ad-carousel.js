@@ -36,16 +36,16 @@ export default function AdCarousel() {
       translateY: [100, 0],
       easing: 'easeInOutQuad',
       duration: 1000,
-      delay: 500,
+      delay: 100,
     })
-    anime({
-      targets: '.carousel-container img',
-      scale: [1.05, 1],
-      // opacity: [0, 1],
-      easing: 'easeInOutQuad',
-      duration: 700,
-      // delay: 100,
-    })
+    // anime({
+    //   targets: '.carousel-container img',
+    //   scale: [1.05, 1],
+    //   // opacity: [0, 1],
+    //   easing: 'easeInOutQuad',
+    //   duration: 700,
+    //   // delay: 100,
+    // })
   }
 
   useEffect(() => {
