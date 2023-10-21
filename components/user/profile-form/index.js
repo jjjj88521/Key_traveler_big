@@ -17,11 +17,11 @@ const customInputStyle = {
 
 export default function ProfileForm() {
   const { auth, setAuth } = useAuth()
-  useEffect(() => {
-    setformData({ ...auth.user })
-  }, [])
+  // useEffect(() => {
+  //   setformData({ ...auth.user })
+  // }, [])
   // 更新會員資料
-  const updateUser = (userId, user) => {
+  const updateUser = (user) => {
     // 更新會員資料
     axios
       .put('http://localhost:3005/api/users/update', user)
@@ -69,13 +69,13 @@ export default function ProfileForm() {
 
   function handleErrMessage(e, mes) {
     setErrMesage({ ...errMesage, [e.target.name]: mes })
+    setError(mes)
   }
   function handleSetformData(e, mes) {
-    setformData({
-      isAuth: auth.isAuth,
-      user: { ...auth.user, [e.target.name]: e.target.value },
-    })
+    setformData({ ...formData, [e.target.name]: e.target.value })
   }
+  // console.log(formData)
+  console.log('error:', error)
   const [isLoading, setIsLoading] = useLoading(auth.isAuth)
   return (
     <>
@@ -164,7 +164,7 @@ export default function ProfileForm() {
           onChange={(e) => {
             let phoneReg = /^09\d{8}$/
             if (phoneReg.test(e.target.value)) {
-              let mes = ' '
+              let mes = ''
               handleErrMessage(e, mes)
               handleSetformData(e, mes)
             } else {
@@ -202,40 +202,32 @@ export default function ProfileForm() {
           type="button"
           className="btn btn-primary text-white col-sm-5 col-12 offset-sm-7 mt-5"
           onClick={() => {
-            if (errMesage.name !== '') {
-              setError(errMesage.name)
-            } else if (errMesage.address !== '') {
-              setError(errMesage.address)
-              errMesage.address
-            } else if (errMesage.phone !== '') {
-              setError(errMesage.phone)
-              errMesage.phone
+            if (error) {
+              Swal.fire({
+                icon: 'error',
+                title: error,
+                showConfirmButton: false,
+                timer: 1500,
+              })
+              return
             }
 
             // console.log(formData.user)
             delete formData.exp
             delete formData.iat
-            console.log('123123123')
-            console.log(formData)
-            console.log(auth)
-            let id = formData.user.id
-            console.log('AAA')
-            console.log(id)
-            updateUser(id, formData.user)
-            if (id) {
-              Swal.fire({
-                icon: 'success',
-                title: '修改成功',
-                showConfirmButton: false,
-                timer: 1500,
-              })
-            }
+            updateUser(formData)
+            Swal.fire({
+              icon: 'success',
+              title: '修改成功',
+              showConfirmButton: false,
+              timer: 1500,
+            })
           }}
         >
           儲存
         </button>
 
-        <p className="text-end mt-3">{error}</p>
+        {/* <p className="text-end mt-3">{error}</p> */}
       </form>
     </>
   )

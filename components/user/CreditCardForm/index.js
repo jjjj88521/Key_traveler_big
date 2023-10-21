@@ -10,7 +10,7 @@ import useLoading from '@/hooks/useLoading'
 import LoadingPage from '@/components/common/loadingPage'
 import Swal from 'sweetalert2'
 export default function CreditCardForm() {
-  const updateUser = (userId, user) => {
+  const updateUser = (user) => {
     // 更新會員資料
     axios
       .put('http://localhost:3005/api/users/update', user)
@@ -28,6 +28,7 @@ export default function CreditCardForm() {
   }
 
   const { auth, setAuth } = useAuth()
+  const [formData, setformData] = useState({ ...auth.user })
   // 重新整理後驗證登入狀態
   // useEffect(() => {
   //   if (localStorage.getItem('loginToken')) {
@@ -44,8 +45,8 @@ export default function CreditCardForm() {
     cvc: '',
     expiry: '',
     focus: '',
-    name: `${auth.user.card_name}`,
-    number: `${auth.user.card_number}`,
+    name: `${formData.card_name}`,
+    number: `${formData.card_number}`,
   })
 
   const handleInputChange = (e) => {
@@ -54,7 +55,8 @@ export default function CreditCardForm() {
       ...cardData,
       [name]: value,
     })
-    setAuth({ ...auth, user: { ...auth.user, [name]: value } })
+    // setAuth({ ...auth, user: { ...auth.user, [name]: value } })
+    setformData({ ...formData, [name]: value })
     // console.log(auth.user.card_number)
   }
   const [isLoading, setIsLoading] = useLoading(auth.user)
@@ -113,31 +115,45 @@ export default function CreditCardForm() {
           type="button"
           className="btn btn-primary text-white my-5 col-4 offset-8 d-sm-block d-none"
           onClick={() => {
-            delete auth.user.exp
-            delete auth.user.iat
-            console.log(auth)
-            updateUser(auth.user.id, auth.user)
-            if (auth.user.card_name) {
+            if (!formData.card_number || formData.card_number.length !== 16) {
               Swal.fire({
-                icon: 'success',
-                title: '修改成功',
+                icon: 'error',
+                title: '請輸入正確的卡號',
                 showConfirmButton: false,
                 timer: 1500,
               })
+              return
+            } else if (!formData.card_name) {
+              Swal.fire({
+                icon: 'error',
+                title: '請輸入持卡人姓名',
+                showConfirmButton: false,
+                timer: 1500,
+              })
+              return
             }
+            delete auth.user.exp
+            delete auth.user.iat
+            console.log(auth)
+            updateUser(formData)
+            Swal.fire({
+              icon: 'success',
+              title: '修改成功',
+              showConfirmButton: false,
+              timer: 1500,
+            })
           }}
         >
           儲存
         </button>
       </form>
       <div className="col-sm-6 col-12">
-        {' '}
         <Cards
           cvc={cardData.cvc}
           expiry={cardData.expiry}
           focused={cardData.focus}
-          name={auth.user.card_name}
-          number={auth.user.card_number}
+          name={formData.card_name}
+          number={formData.card_number}
         />
       </div>
     </>
