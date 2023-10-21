@@ -218,6 +218,9 @@ export default function Navbar() {
                 >
                   <Link
                     href={`${auth.isAuth ? '/user/profile' : '/user/login'}`}
+                    onClick={() => {
+                      localStorage.setItem('redirect', router.asPath)
+                    }}
                   >
                     <i className="fa-regular fa-user"></i>
                   </Link>
@@ -239,6 +242,7 @@ export default function Navbar() {
                       <Badge
                         count={pdTotalItems + gbTotalItems + rTotalItems}
                         color="#DC9329"
+                        showZero
                       >
                         <i className="fa-solid fa-cart-shopping text-primary fs-5"></i>
                       </Badge>
@@ -293,7 +297,15 @@ export default function Navbar() {
             </Button>
           ) : (
             <Button type="primary" block>
-              <Link href={'/user/login'}>登入</Link>
+              <Link
+                href={'/user/login'}
+                onClick={() => {
+                  localStorage.setItem('redirect', router.asPath)
+                  hideMobileMenu()
+                }}
+              >
+                登入 / 註冊
+              </Link>
             </Button>
           )}
         </div>

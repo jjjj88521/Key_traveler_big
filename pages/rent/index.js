@@ -293,11 +293,11 @@ export default function ProductIndex() {
             </div>
 
             <Drawer
-              title={
-                <div className="fs-5">
-                  <i className="fa-solid fa-filter"></i> 條件篩選
-                </div>
-              }
+              // title={
+              //   <div className="fs-5">
+              //     <i className="fa-solid fa-filter"></i> 條件篩選
+              //   </div>
+              // }
               placement="right"
               onClose={onClose}
               open={open}
