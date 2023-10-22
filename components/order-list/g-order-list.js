@@ -58,6 +58,7 @@ export default function GOrderList() {
     }
     return totalPrice
   }
+  const totalAmount = groupOrderDetails.reduce((acc, v) => acc + v.amount, 0)
   const totalPrice = calculateTotalPrice(groupOrderDetails)
 
   return (
@@ -108,29 +109,29 @@ export default function GOrderList() {
                 <div className="p-2">
                   <div>{v.brand}</div>
                   <div>{v.name}</div>
-                  <div>
-                    {v.spec && (
-                      <div>
-                        {Object.keys(JSON.parse(v.spec)).map((key) => (
-                          <div key={key}>
-                            {JSON.parse(v.spec)[key].join(', ')}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  {v.spec && (
+                    <div className="d-flex gap-2 pt-2">
+                      {Object.values(JSON.parse(v.spec)).map((item, index) => (
+                        <div key={index} className="text-secondary">
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </td>
               <td className="align-middle text-center">${v.price}</td>
               <td className="align-middle ps-3 text-center">{v.amount}</td>
               <td className="align-middle text-center">
-                ${v.price * v.amount}
+                <span className="text-primary">${v.price * v.amount} </span>
               </td>
             </tr>
           ))}
           <tr>
-            <td className="text-end pe-5" colSpan={5}>
-              <div className="pe-5">總計: ${totalPrice}</div>
+            <td className="text-end" colSpan={5}>
+              共 <span className="text-primary"> {totalAmount} </span>
+              件商品，總計：
+              <span className="text-primary">${totalPrice}</span>
             </td>
           </tr>
         </tbody>
@@ -174,33 +175,37 @@ export default function GOrderList() {
                 <div>
                   <div>{v.brand}</div>
                   <div>{v.name}</div>
-                  <div>
-                    {v.spec && (
-                      <div>
-                        {Object.keys(JSON.parse(v.spec)).map((key) => (
-                          <div key={key}>
-                            {JSON.parse(v.spec)[key].join(', ')}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <div className="d-flex">
+                  {v.spec && (
+                    <div className="d-flex gap-2 flex-column">
+                      {Object.values(JSON.parse(v.spec)).map((item, index) => (
+                        <div key={index} className="text-secondary">
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <div className="d-flex align-items-center justify-content-between">
                     <div>${v.price}</div>
+                    <span>x</span>
                     <div
-                      className="border rounded-5 ms-auto text-center"
+                      className="border rounded-5 text-center"
                       style={{ width: 70 }}
                     >
                       {v.amount}
                     </div>
+                  </div>
+                  <div>
+                    <span className="text-primary">${v.price * v.amount}</span>
                   </div>
                 </div>
               </td>
             </tr>
           ))}
           <tr>
-            <td className="text-end pe-3" colSpan={2}>
-              總計: ${totalPrice}
+            <td className="text-end" colSpan={2}>
+              共 <span className="text-primary"> {totalAmount} </span>
+              件商品，總計：
+              <span className="text-primary">${totalPrice}</span>
             </td>
           </tr>
         </tbody>

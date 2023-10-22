@@ -139,15 +139,15 @@ export default function ProceedToCheckout({ onCheckout }) {
           </span>
         </div>
         <div className="text-danger">P.S.若收件地址不同需分開結帳！！</div>
-        <div className="text-end">
+        <div className="text-end fs-5">
           <span className="align-middle">
             共
-            <span className="orderAmount">
+            <span className="orderAmount text-primary">
               {totalItemsP + totalItemsG + totalItemsR}
             </span>
-            件商品, 總金額: $
-            <span className="orderTotal">
-              {pdTotalPrice + totalPriceG + totalPriceR}
+            件商品, 總金額：
+            <span className="orderTotal text-primary">
+              ${pdTotalPrice + totalPriceG + totalPriceR}
             </span>
           </span>
           <button

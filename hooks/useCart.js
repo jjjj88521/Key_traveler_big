@@ -38,6 +38,9 @@ export const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, [], init)
   const getCartData = async () => {
     // console.log('useCart')
+
+    // 先清空再加
+    dispatch({ type: 'CLEAR_CART' })
     try {
       const response = await axios.get(
         'http://localhost:3005/api/cart/product',
@@ -53,14 +56,17 @@ export const CartProvider = ({ children }) => {
       console.log(error)
     }
   }
+  console.log('getCartData', state)
   useEffect(() => {
-    if (auth.isAuth) {
-      const loadingData = async () => {
-        await getCartData()
-      }
-      loadingData()
+    if (auth.isAuth && router.isReady) {
+      getCartData()
     }
-  }, [auth.isAuth])
+  }, [auth.isAuth, router.isReady])
+  useEffect(() => {
+    if (router.pathname === '/cart') {
+      getCartData()
+    }
+  }, [router.pathname])
 
   const [cartTotalP, setCartTotalP] = useState(0)
   const [totalItemsP, setTotalItemsP] = useState(0)

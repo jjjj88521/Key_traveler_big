@@ -5,8 +5,10 @@ import Link from 'next/link'
 import { useCart } from '@/hooks/useCart'
 import { useGroupCart } from '@/hooks/useGroupCart'
 import { useRentCart } from '@/hooks/useRentCart'
+import { useRouter } from 'next/router'
 
 export default function MobileDock() {
+  const router = useRouter()
   const { totalItemsP: pdTotalItems } = useCart()
   const { totalItemsG: gbTotalItems } = useGroupCart()
   const { totalItemsR: rTotalItems } = useRentCart()
@@ -22,11 +24,18 @@ export default function MobileDock() {
       >
         <div className="container h-100">
           <div className="row h-100 align-items-center">
-            <div className="col text-center ">
-              <i className="fa-solid fa-house text-primary fs-5"></i>
+            <div className="col text-center">
+              <Link href={'/'}>
+                <i className="fa-solid fa-house text-primary fs-5"></i>
+              </Link>
             </div>
             <div className="col text-center">
-              <Link href="/user">
+              <Link
+                href={'/user'}
+                onClick={() => {
+                  localStorage.setItem('redirect', router.asPath)
+                }}
+              >
                 <i className="fa-regular fa-user text-primary fs-5"></i>
               </Link>
             </div>

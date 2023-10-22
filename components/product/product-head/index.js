@@ -164,6 +164,10 @@ export default function ProductHead() {
                   <OutOfStockBtn />
                 )}
               </div>
+              {/* 喜歡按鈕 */}
+              <div className="d-flex justify-content-center">
+                <LikeBtn isLiked={isLiked} onToggleLike={handleToggleLike} />
+              </div>
             </div>
           </div>
         </div>

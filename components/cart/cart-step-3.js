@@ -1,5 +1,6 @@
 import { React, useEffect } from 'react'
 import { Steps } from 'antd'
+import Link from 'next/link'
 // import CartStep1 from './cart-step-1'
 
 export default function CartStep3() {
@@ -13,7 +14,9 @@ export default function CartStep3() {
       /> */}
       {/* <CartStep /> */}
       <h5 className="mt-4 text-primary">訂單成功</h5>
-      <button className="btn btn-primary">查詢訂單</button>
+      <Link className="btn btn-primary" type="button" href="/user/order">
+        查詢訂單
+      </Link>
     </div>
   )
 }

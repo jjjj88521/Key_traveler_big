@@ -8,15 +8,19 @@ import React, {
 import { reducer, initRent } from './cart-reducer'
 import axios from 'axios'
 import { useAuth } from './useAuth'
+import { useRouter } from 'next/router'
 
 const RentCartContext = createContext(null)
 
 export const RentCartProvider = ({ children }) => {
+  const router = useRouter()
   // let items = initialRentProducts
   const { auth } = useAuth()
   // const [state, dispatch] = useReducer(reducer, items, initRent)
   const [state, dispatch] = useReducer(reducer, [], initRent)
   const getCartData = async () => {
+    // 先清空再加
+    dispatch({ type: 'CLEAR_CART' })
     try {
       const response = await axios.get('http://localhost:3005/api/cart/rent', {
         withCredentials: true,
@@ -31,14 +35,20 @@ export const RentCartProvider = ({ children }) => {
     }
   }
   useEffect(() => {
-    if (auth.isAuth) {
+    if (auth.isAuth && router.isReady) {
       // 只有当 auth.isAuth 为真时才执行以下操作
       const loadingData = async () => {
         await getCartData()
       }
       loadingData()
     }
-  }, [auth.isAuth])
+  }, [auth.isAuth, router.isReady])
+
+  useEffect(() => {
+    if (router.pathname === '/cart') {
+      getCartData()
+    }
+  }, [router.pathname])
 
   const [cartTotalR, setCartTotalR] = useState(0)
   const [totalItemsR, setTotalItemsR] = useState(0)
@@ -171,6 +181,7 @@ export const RentCartProvider = ({ children }) => {
         cartTotalR,
         totalItemsR,
         selectItemsR,
+        getCartData,
       }}
     >
       {children}

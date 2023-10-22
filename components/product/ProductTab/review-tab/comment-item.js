@@ -4,7 +4,7 @@ import { UserOutlined } from '@ant-design/icons'
 
 export default function CommentItem({
   user_account,
-  avatar_img,
+  user_avatar,
   star,
   created_time,
   comment,
@@ -14,7 +14,10 @@ export default function CommentItem({
   return (
     <div className="py-2 row w-100 bg-white mx-0">
       <div className="col-auto">
-        <Avatar src={avatar_img} icon={<UserOutlined />} />
+        <Avatar
+          src={`http://localhost:3005/${user_avatar}.jpg`}
+          icon={<UserOutlined />}
+        />
       </div>
       <div className="col d-flex flex-column gap-4">
         <div className="d-flex justify-content-between w-100">

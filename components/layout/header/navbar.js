@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Dropdown, Space, Badge, Drawer, Menu, Button } from 'antd'
+import { Dropdown, Space, Badge, Drawer, Menu, Button, Tooltip } from 'antd'
 import style from '@/styles/default-layout/_default-layout.module.scss'
 import { useAuth } from '@/hooks/useAuth'
 import { useRouter } from 'next/router'
@@ -212,42 +212,59 @@ export default function Navbar() {
             <div className="col d-sm-flex d-none align-items-center justify-content-end gap-5">
               {/* 會員中心 */}
               <div className="text-primary fs-5">
-                <Link href={`${auth.isAuth ? '/user/profile' : '/user/login'}`}>
-                  <i className="fa-regular fa-user"></i>
-                </Link>
+                <Tooltip
+                  title={auth.isAuth ? '會員中心' : '登入/註冊'}
+                  color="#DC9329"
+                >
+                  <Link
+                    href={`${auth.isAuth ? '/user/profile' : '/user/login'}`}
+                    onClick={() => {
+                      localStorage.setItem('redirect', router.asPath)
+                    }}
+                  >
+                    <i className="fa-regular fa-user"></i>
+                  </Link>
+                </Tooltip>
               </div>
               {/* 喜歡商品 */}
               <div className="text-primary fs-5">
-                <Link href="/user/product-like">
-                  <i className="fa-regular fa-heart"></i>
-                </Link>
+                <Tooltip title="收藏商品" color="#DC9329">
+                  <Link href="/user/product-like">
+                    <i className="fa-regular fa-heart"></i>
+                  </Link>
+                </Tooltip>
               </div>
               {/* 購物車按鈕 */}
               <div className="align-items-center d-flex">
-                <Link href="/cart">
-                  {auth.isAuth ? (
-                    <Badge
-                      count={pdTotalItems + gbTotalItems + rTotalItems}
-                      color="#DC9329"
-                    >
-                      <i className="fa-solid fa-cart-shopping text-primary fs-5"></i>
-                    </Badge>
-                  ) : (
-                    <Badge count={0} color="#DC9329" showZero>
-                      <i className="fa-solid fa-cart-shopping text-primary fs-5"></i>
-                    </Badge>
-                  )}
-                </Link>
+                <Tooltip title="購物車" color="#DC9329">
+                  <Link href="/cart">
+                    {auth.isAuth ? (
+                      <Badge
+                        count={pdTotalItems + gbTotalItems + rTotalItems}
+                        color="#DC9329"
+                        showZero
+                      >
+                        <i className="fa-solid fa-cart-shopping text-primary fs-5"></i>
+                      </Badge>
+                    ) : (
+                      <Badge count={0} color="#DC9329" showZero>
+                        <i className="fa-solid fa-cart-shopping text-primary fs-5"></i>
+                      </Badge>
+                    )}
+                  </Link>
+                </Tooltip>
               </div>
               {/* 登出按鈕，只有登入才會出現 */}
               {auth.isAuth ? (
                 <div className="text-primary">
-                  <button
-                    className="btn border-0 text-primary"
-                    onClick={handleLogout}
-                  >
-                    <i class="fa-solid fa-right-from-bracket fs-5"></i>
-                  </button>
+                  <Tooltip title="登出" color="#DC9329">
+                    <button
+                      className="btn border-0 text-primary"
+                      onClick={handleLogout}
+                    >
+                      <i class="fa-solid fa-right-from-bracket fs-5"></i>
+                    </button>
+                  </Tooltip>
                 </div>
               ) : null}
             </div>
@@ -280,7 +297,15 @@ export default function Navbar() {
             </Button>
           ) : (
             <Button type="primary" block>
-              <Link href={'/user/login'}>登入</Link>
+              <Link
+                href={'/user/login'}
+                onClick={() => {
+                  localStorage.setItem('redirect', router.asPath)
+                  hideMobileMenu()
+                }}
+              >
+                登入 / 註冊
+              </Link>
             </Button>
           )}
         </div>

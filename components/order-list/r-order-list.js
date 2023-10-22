@@ -97,11 +97,11 @@ export default function ROrderList() {
             <th className="bg-primary text-white ps-3" style={{ width: '40%' }}>
               商品明細
             </th>
+            <th className="bg-primary text-white">單價</th>
             <th className="bg-primary text-white" style={{ width: '25%' }}>
               租用日期
             </th>
             <th className="bg-primary text-white text-center">租用日數</th>
-            <th className="bg-primary text-white text-center">數量</th>
             <th className="bg-primary text-white text-center">小計</th>
           </tr>
         </thead>
@@ -122,19 +122,18 @@ export default function ROrderList() {
                 <div className="p-2">
                   <div>{v.brand}</div>
                   <div>{v.name}</div>
-                  <div>
-                    {v.spec && (
-                      <div>
-                        {Object.keys(JSON.parse(v.spec)).map((key) => (
-                          <div key={key}>
-                            {JSON.parse(v.spec)[key].join(', ')}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  {v.spec && (
+                    <div className="d-flex gap-2">
+                      {Object.values(JSON.parse(v.spec)).map((item, index) => (
+                        <div key={index} className="text-secondary">
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </td>
+              <td className="align-middle">${v.price}</td>
               <td className="align-middle">
                 <span>{v.start}</span>
                 <span className="px-2">
@@ -146,15 +145,16 @@ export default function ROrderList() {
                 <span>{v.end}</span>
               </td>
               <td className="align-middle ps-3 text-center">{v.rental_days}</td>
-              <td className="align-middle ps-3 text-center">1</td>
               <td className="align-middle text-center">
-                ${v.rental_days * v.price}
+                <span className="text-primary">${v.rental_days * v.price}</span>
               </td>
             </tr>
           ))}
           <tr>
-            <td className="text-end pe-5 " colSpan={5}>
-              <div className=" ">總計: ${totalPrice}</div>
+            <td className="text-end" colSpan={5}>
+              共
+              <span className="text-primary"> {rentOrderDetails.length} </span>
+              件商品，總計：<span className="text-primary">${totalPrice}</span>
             </td>
           </tr>
         </tbody>
@@ -198,17 +198,15 @@ export default function ROrderList() {
                 <div>
                   <div>{v.brand}</div>
                   <div>{v.name}</div>
-                  <div>
-                    {v.spec && (
-                      <div>
-                        {Object.keys(JSON.parse(v.spec)).map((key) => (
-                          <div key={key}>
-                            {JSON.parse(v.spec)[key].join(', ')}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  {v.spec && (
+                    <div className="d-flex gap-2 flex-column">
+                      {Object.values(JSON.parse(v.spec)).map((item, index) => (
+                        <div key={index} className="text-secondary">
+                          {item}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                   <div>
                     <span>{v.start}</span>
                     <span className="px-2">
@@ -226,7 +224,10 @@ export default function ROrderList() {
           ))}
           <tr>
             <td className="text-end pe-3" colSpan={2}>
-              總計: ${totalPrice}
+              共
+              <span className="text-primary"> {rentOrderDetails.length} </span>
+              件商品，總計：
+              <span className="text-primary">${totalPrice}</span>
             </td>
           </tr>
         </tbody>

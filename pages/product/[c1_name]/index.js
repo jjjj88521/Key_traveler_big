@@ -8,6 +8,7 @@ import Card from '@/components/product/Card'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import useLoading from '@/hooks/useLoading'
+import Head from 'next/head'
 
 export default function ProductCate1() {
   // 路由相關
@@ -168,6 +169,9 @@ export default function ProductCate1() {
 
   return (
     <>
+      <Head>
+        <title>{cateName}</title>
+      </Head>
       <div className={styles.banner}>
         <div className="w-100 h-100 p-4 p-sm-0">
           <img
@@ -187,7 +191,7 @@ export default function ProductCate1() {
               <div className="mb-2 fs-5">
                 <i className="fa-solid fa-filter"></i> 條件篩選
               </div>
-              <div className="py-2">
+              <div className="py-2 d-flex justify-content-between">
                 <h5 className="d-inline ms-2">只保留有貨 </h5>
                 <Switch onChange={checkStock} />
               </div>
@@ -241,8 +245,26 @@ export default function ProductCate1() {
 
           {/* sort btn & card group */}
           <div className="col-12 col-sm-9">
+            {/* 手機版篩選、排序結合 */}
+            <div
+              className="d-block d-sm-none bg-primary-subtle mb-3 text-end"
+              style={{ fontSize: '16px', padding: '5px 20px' }}
+            >
+              <Button
+                type="primary"
+                onClick={showDrawer}
+                className="bg-transparent text-black p-0"
+                style={{ fontSize: '16px' }}
+              >
+                <i
+                  class="fa-solid fa-sliders"
+                  style={{ marginRight: '10px' }}
+                ></i>{' '}
+                篩選
+              </Button>
+            </div>
             {/* sort btn */}
-            <div className="d-sm-flex d-none justify-content-end align-items-center mb-3">
+            <div className="d-flex justify-content-end align-items-center mb-3">
               <div className={`bg-primary-subtle ${styles['sortBtn']}`}>
                 <p className="fs-6">排序</p>
                 <div className="dropdown">
@@ -314,34 +336,70 @@ export default function ProductCate1() {
                 </div>
               </div>
             </div>
-
-            {/* 手機版篩選、排序結合 */}
-            <div
-              className="d-block d-sm-none bg-primary-subtle mb-3 text-end"
-              style={{ fontSize: '16px', padding: '5px 20px' }}
-            >
-              <Button
-                type="primary"
-                onClick={showDrawer}
-                className="bg-transparent text-black p-0"
-                style={{ fontSize: '16px' }}
-              >
-                <i
-                  class="fa-solid fa-sliders"
-                  style={{ marginRight: '10px' }}
-                ></i>{' '}
-                篩選
-              </Button>
-            </div>
             <Drawer
-              title="Basic Drawer"
+              // title="Basic Drawer"
               placement="right"
               onClose={onClose}
               open={open}
+              width={'80%'}
             >
               <Accordion />
               <hr className="text-primary opacity-100"></hr>
-              <AsideFilter />
+              {/* <AsideFilter /> */}
+              <div className="mt-4 p-4 border border-primary border-1">
+                <div className="mb-2 fs-5">
+                  <i className="fa-solid fa-filter"></i> 條件篩選
+                </div>
+                <div className="py-2 d-flex justify-content-between">
+                  <h5 className="d-inline ms-2">只保留有貨 </h5>
+                  <Switch onChange={checkStock} />
+                </div>
+                <div className="d-flex flex-column gap-1">
+                  <hr className="opacity-75"></hr>
+                  <div className="mb-2 fs-5">
+                    <i className="fa-solid fa-dollar-sign"></i> 價錢範圍
+                  </div>
+                  <div className="mb-3 d-flex justify-content-center align-items-center">
+                    <input
+                      type="number"
+                      className="col-5"
+                      min="0"
+                      value={priceRange.min}
+                      onChange={(e) => {
+                        setPriceRange({
+                          ...priceRange,
+                          min: Number(e.target.value),
+                        })
+                      }}
+                    ></input>
+                    <div className="col-2 fs-4 d-flex justify-content-center">
+                      ~
+                    </div>
+                    <input
+                      type="number"
+                      className="col-5"
+                      min="0"
+                      value={priceRange.max}
+                      onChange={(e) => {
+                        setPriceRange({
+                          ...priceRange,
+                          max: Number(e.target.value),
+                        })
+                      }}
+                    ></input>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    style={{ width: '60%', margin: 'auto' }}
+                    onClick={() => {
+                      filterRange()
+                    }}
+                  >
+                    套用
+                  </button>
+                </div>
+              </div>
             </Drawer>
 
             {/* card group  */}

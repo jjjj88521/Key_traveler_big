@@ -198,30 +198,30 @@ export default function RCartList() {
       ) : Array.isArray(items) ? (
         <div>
           {/* 租用商品 */}
-          <div className="mb-3 text-primary d-none d-sm-block d-sm-flex">
-            <div
-              className="pe-2"
-              data-bs-target="#collapseTwo"
-              data-bs-toggle="collapse"
-              aria-expanded={isExpanded ? 'true' : 'false'}
-              aria-controls="collapseTwo"
-              onClick={() => setIsExpanded(!isExpanded)}
-            >
-              {isExpanded ? (
-                <FontAwesomeIcon
-                  icon={faCircleChevronUp}
-                  className="text-primary"
-                />
-              ) : (
-                <FontAwesomeIcon
-                  icon={faCircleChevronDown}
-                  className="text-primary"
-                />
-              )}
-            </div>
-            <div>租用商品</div>
-            <div className="ps-1">({items.length})</div>
-          </div>
+          {/* <div className="mb-3 text-primary d-none d-sm-block d-sm-flex"> */}
+          <button
+            className="mb-3 text-primary d-none d-sm-flex btn border-0 text-primary align-items-center gap-2"
+            type="button"
+            data-bs-target="#collapseTwo"
+            data-bs-toggle="collapse"
+            aria-expanded={isExpanded ? 'true' : 'false'}
+            aria-controls="collapseTwo"
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            {isExpanded ? (
+              <FontAwesomeIcon
+                icon={faCircleChevronUp}
+                className="text-primary"
+              />
+            ) : (
+              <FontAwesomeIcon
+                icon={faCircleChevronDown}
+                className="text-primary"
+              />
+            )}
+            <div>租用商品 ({items.length})</div>
+          </button>
+          {/* </div> */}
           {/* 購物車 step1 電腦版 */}
           <table className={`table d-none d-sm-table`}>
             <thead>
@@ -332,7 +332,9 @@ export default function RCartList() {
                       min={getCurrentDate()}
                     />
                   </td>
-                  <td className="align-middle text-center">${item.subtotal}</td>
+                  <td className="align-middle text-center text-primary">
+                    ${item.subtotal}
+                  </td>
                   <td className="align-middle text-center">
                     <button
                       className="btn border-white"
@@ -351,7 +353,7 @@ export default function RCartList() {
               ))}
               <tr>
                 <td className="pe-5 text-end" colSpan={6}>
-                  總計: ${cart.cartTotal}
+                  總計: <span className="text-primary">${cart.cartTotal}</span>
                 </td>
               </tr>
             </tbody>
@@ -379,8 +381,9 @@ export default function RCartList() {
                   <div className="d-flex">
                     <div>租用商品</div>
                     <div className="ps-1">({items.length})</div>
-                    <div
-                      className="ms-auto pe-1"
+                    <button
+                      className="ms-auto pe-1 border-0 bg-transparent text-white"
+                      type="button"
                       data-bs-target="#collapseTwo"
                       data-bs-toggle="collapse"
                       aria-expanded={isExpanded ? 'true' : 'false'}
@@ -392,7 +395,7 @@ export default function RCartList() {
                       ) : (
                         <FontAwesomeIcon icon={faCircleChevronDown} />
                       )}
-                    </div>
+                    </button>
                   </div>
                 </th>
               </tr>
@@ -419,7 +422,7 @@ export default function RCartList() {
                     <div>
                       <div className="">{item.brand}</div>
                       <div>{item.name}</div>
-                      <div className="p-1">
+                      <div className="pt-1">
                         {Object.keys(item.spec).map((key) => (
                           <select
                             key={key}
@@ -436,7 +439,7 @@ export default function RCartList() {
                           </select>
                         ))}
                       </div>
-                      <div className="input-group ms-1 mt-1">
+                      <div className="d-flex pt-1 flex-column">
                         <input
                           className="form-control p-0"
                           type="date"
@@ -451,11 +454,11 @@ export default function RCartList() {
                             )
                           }
                           min={getCurrentDate()} // 不能選過去的日期
-                          style={{ width: 97 }}
+                          // style={{ width: 97 }}
                         />
-                        <div className="px-1">
+                        <div className="px-1 text-center">
                           <FontAwesomeIcon
-                            icon={faCaretRight}
+                            icon={faCaretDown}
                             className="text-secondary"
                           />
                         </div>
@@ -473,13 +476,15 @@ export default function RCartList() {
                             )
                           }
                           min={getCurrentDate()}
-                          style={{ width: 97 }}
+                          // style={{ width: 97 }}
                         />
                       </div>
-                      <div className="pt-1 ps-1">${item.subtotal}</div>
+                      <div className="pt-1 ps-1 text-primary">
+                        ${item.subtotal}
+                      </div>
                     </div>
                     <button
-                      className="btn border-white p-0"
+                      className="btn border-white w-100"
                       type="button"
                       onClick={() => {
                         deleteRCart(item.id, item.specData)
@@ -496,7 +501,7 @@ export default function RCartList() {
               ))}
               <tr>
                 <td className="text-end" colSpan={2}>
-                  總計: ${cart.cartTotal}
+                  總計: <span className="text-primary">${cart.cartTotal}</span>
                 </td>
               </tr>
             </tbody>

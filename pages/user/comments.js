@@ -301,7 +301,7 @@ export default function Comments() {
     // console.log(selectedItem.name)
     // console.log(Object.values(JSON.parse(selectedItem.spec)))
     const style = selectedItem.spec
-      ? Object.values(JSON.parse(selectedItem.spec)).map((item) => item[0])
+      ? Object.values(JSON.parse(selectedItem.spec)).map((item) => item)
       : null
     const newComment = {
       order_id: selectedItem.order_id,
@@ -500,7 +500,7 @@ export default function Comments() {
                                                 key={index}
                                                 className="text-primary pe-3"
                                               >
-                                                {item[0]}
+                                                {item}
                                               </span>
                                             )
                                           }
@@ -589,7 +589,7 @@ export default function Comments() {
                                                   key={index}
                                                   className="pe-3 text-primary"
                                                 >
-                                                  {item[0]}
+                                                  {item}
                                                 </span>
                                               )
                                             })}

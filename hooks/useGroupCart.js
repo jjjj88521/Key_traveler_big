@@ -8,6 +8,7 @@ import React, {
 import { reducer, initGroup } from './cart-reducer'
 import axios from 'axios'
 import { useAuth } from './useAuth'
+import { useRouter } from 'next/router'
 const GroupCartContext = createContext(null)
 
 // initialState = {
@@ -29,11 +30,15 @@ const GroupCartContext = createContext(null)
 // }
 
 export const GroupCartProvider = ({ children }) => {
+  const router = useRouter()
+
   const { auth } = useAuth()
   // // init state, init來自cartReducer中
   // const [state, dispatch] = useReducer(reducer, updatedItems, initGroup)
   const [state, dispatch] = useReducer(reducer, [], initGroup)
   const getCartData = async () => {
+    // 先清空再加
+    dispatch({ type: 'CLEAR_CART' })
     try {
       const response = await axios.get(
         'http://localhost:3005/api/cart/groupbuy',
@@ -43,21 +48,27 @@ export const GroupCartProvider = ({ children }) => {
       )
       if (response.data.message === 'authorized') {
         // 將購物車資料設定為初始狀態
-        dispatch({ type: 'SET_CART', payload: response.data.cartG })
+        dispatch({ type: 'SET_GROUP_CART', payload: response.data.cartG })
       }
     } catch (error) {
       console.log(error)
     }
   }
   useEffect(() => {
-    if (auth.isAuth) {
+    if (auth.isAuth && router.isReady) {
       // 只有当 auth.isAuth 为真时才执行以下操作
       const loadingData = async () => {
         await getCartData()
       }
       loadingData()
     }
-  }, [auth.isAuth])
+  }, [auth.isAuth, router.isReady])
+
+  useEffect(() => {
+    if (router.pathname === '/cart') {
+      getCartData()
+    }
+  }, [router.pathname])
 
   const [cartTotalG, setCartTotalG] = useState(0)
   const [totalItemsG, setTotalItemsG] = useState(0)
@@ -201,6 +212,7 @@ export const GroupCartProvider = ({ children }) => {
         totalItemsG,
         selectItemsG,
         styleSelect,
+        getCartData,
       }}
     >
       {children}

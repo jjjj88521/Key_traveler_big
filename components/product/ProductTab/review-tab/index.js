@@ -117,13 +117,11 @@ export default function ReviewTab() {
   }
 
   useEffect(() => {
-    if (pid) {
-      getComment(
-        pid,
-        starSelected[0].value === 6 ? null : starSelected[0].value,
-        currentPage
-      )
-    }
+    getComment(
+      pid,
+      starSelected[0].value === 6 ? null : starSelected[0].value,
+      currentPage
+    )
   }, [])
 
   useEffect(() => {
