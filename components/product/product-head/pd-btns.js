@@ -31,7 +31,7 @@ const addToCart = (type, addPItem, addGItem, addRItem) => {
           if (response.data.code === '201') {
             return Swal.fire({
               icon: 'success',
-              title: '購物車已有該商品',
+              title: '購物車已有同規格之商品',
               text: '數量+' + response.data.quantity,
               showConfirmButton: false,
               timer: 1500,
@@ -68,7 +68,7 @@ const addToCart = (type, addPItem, addGItem, addRItem) => {
           if (response.data.code === '201') {
             return Swal.fire({
               icon: 'success',
-              title: '購物車已有該商品',
+              title: '購物車已有同規格之商品',
               text: '數量+' + response.data.quantity,
               showConfirmButton: false,
               timer: 1500,
@@ -112,7 +112,7 @@ const addToCart = (type, addPItem, addGItem, addRItem) => {
           if (response.data.code === '201') {
             return Swal.fire({
               icon: 'success',
-              title: '更新新增購物車成功',
+              title: '購物車已有同規格之商品',
               text: '日期已更新',
               showConfirmButton: false,
               timer: 1500,
