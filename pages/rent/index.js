@@ -358,7 +358,11 @@ export default function ProductIndex() {
                           }}
                         ></input>
                       </div>
-                      <button type="submit" className="btn btn-primary">
+                      <button
+                        type="submit"
+                        className="btn btn-primary"
+                        onClick={onClose}
+                      >
                         套用
                       </button>
                       <button

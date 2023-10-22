@@ -37,8 +37,12 @@ export const pathsLocaleMap = [
     path: '/user/reset-password',
   },
   {
-    name: '個人檔案',
+    name: '個人資料',
     path: '/user/profile',
+  },
+  {
+    name: '信用卡管理',
+    path: '/user/credit-card-profile',
   },
   {
     name: '訂單',
@@ -47,6 +51,22 @@ export const pathsLocaleMap = [
   {
     name: '收藏商品',
     path: '/user/product-like',
+  },
+  {
+    name: '我的優惠券',
+    path: '/user/coupon',
+  },
+  {
+    name: '歷史紀錄',
+    path: '/user/coupon/history',
+  },
+  {
+    name: '商品評價',
+    path: '/user/comments',
+  },
+  {
+    name: '文章收藏',
+    path: '/user/article-like',
   },
   // ===== 商品 =====
   {
