@@ -10,12 +10,18 @@ const moment = require('moment')
 function filterData(data) {
   const millisecondsInADay = 1000 * 60 * 60 * 24
   // 保留start_date與目前時間相差2天以內的元素
+  // 1.起始日與現在相差2天以上的 X
+  // 2.起始日&結束日沒有被定義的(無限期) O
+  // 3.現在日期在結束日以後的 X
   const filteredData = data.filter((item) => {
     return (
       !(
         Math.floor((moment(item.start_date) - moment()) / millisecondsInADay) >
         2
-      ) || item.end_date == undefined
+      ) ||
+      item.start_date == undefined ||
+      item.end_date == undefined ||
+      !(Math.floor(moment() - moment(item.end_date) / millisecondsInADay) > 0)
     )
   })
   return filteredData

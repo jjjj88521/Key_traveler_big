@@ -39,7 +39,7 @@ const addToCart = (type, addPItem, addGItem, addRItem) => {
           return Swal.fire({
             icon: 'success',
             title: '新增購物車成功',
-            // showConfirmButton: false,
+            showConfirmButton: false,
             timer: 1500,
           })
         }
@@ -74,7 +74,7 @@ const addToCart = (type, addPItem, addGItem, addRItem) => {
           return Swal.fire({
             icon: 'success',
             title: '新增購物車成功',
-            // showConfirmButton: false,
+            showConfirmButton: false,
             timer: 1500,
           })
         }
@@ -115,7 +115,7 @@ const addToCart = (type, addPItem, addGItem, addRItem) => {
           return Swal.fire({
             icon: 'success',
             title: '新增購物車成功',
-            // showConfirmButton: false,
+            showConfirmButton: false,
             timer: 1500,
           })
         }
@@ -134,8 +134,8 @@ const addToCart = (type, addPItem, addGItem, addRItem) => {
 
 const AddCartBtn = ({ type }) => {
   const { addItem: addPItem } = useCart()
-  const { addItem: addGItem } = useRentCart()
-  const { addItem: addRItem } = useGroupCart()
+  const { addItem: addRItem } = useRentCart()
+  const { addItem: addGItem } = useGroupCart()
   const router = useRouter()
   const { auth } = useAuth()
   const { getCartData } = useCart()
@@ -186,6 +186,8 @@ const BuyBtn = ({ type }) => {
   const handleAddToBuy = async () => {
     await addToCart(type, addPItem, addGItem, addRItem)
     localStorage.setItem('BuyBtnType', type)
+  }
+  const toLink = () => {
     router.push('/cart')
   }
 
@@ -205,6 +207,9 @@ const BuyBtn = ({ type }) => {
           return
         }
         handleAddToBuy()
+        setTimeout(() => {
+          toLink()
+        }, 2500)
       }}
     >
       直接購買

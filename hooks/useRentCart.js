@@ -62,7 +62,7 @@ export const RentCartProvider = ({ children }) => {
 
   const addItem = (item) => {
     dispatch({
-      type: 'ADD_ITEM',
+      type: 'ADD_RENT_ITEM',
       payload: item,
     })
   }

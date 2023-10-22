@@ -56,15 +56,19 @@ export const CartProvider = ({ children }) => {
       console.log(error)
     }
   }
-  console.log('getCartData', state)
   useEffect(() => {
     if (auth.isAuth && router.isReady) {
       getCartData()
+      console.log('getCartData', state.items)
     }
   }, [auth.isAuth, router.isReady])
   useEffect(() => {
     if (router.pathname === '/cart') {
-      getCartData()
+      const loading = async () => {
+        await getCartData()
+      }
+      loading()
+      console.log('getCartData', state.items)
     }
   }, [router.pathname])
 
