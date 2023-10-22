@@ -97,24 +97,24 @@ export default function Card({
               format={() => `${current_people}人`}
             />
           )}
-          <button
+          {/* <button
             className={`d-sm-none d-block border border-2 border-primary rounded-circle ${styles['cartBtn']}`}
           >
             <i
               className="fa-solid fa-cart-shopping fa-lg"
               style={{ color: '#F1D6AB' }}
             ></i>
-          </button>
+          </button> */}
         </div>
         <div className={`d-flex flex-column gap-3 ${styles['info']}`}>
-          <button
+          {/* <button
             className={`${styles['infoBtn1']} ${
               stock === 0 ? styles['invalidButton'] : ''
             }`}
             disabled={stock === 0} //根據是否缺貨
           >
             加入購物車
-          </button>
+          </button> */}
           <button className={styles['infoBtn2']} onClick={handleToggleLike}>
             <span className={`${isLiked ? 'text-danger' : ''}`}>
               <i
