@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react'
 import style from './cart2.module.scss'
-import { Divider } from 'antd'
+import { Collapse, Divider } from 'antd'
 import { Radio, List } from 'antd'
 import { useAuth } from '@/hooks/useAuth'
 import Swal from 'sweetalert2'
@@ -9,19 +9,49 @@ import { useCart } from '@/hooks/useCart'
 import { useGroupCart } from '@/hooks/useGroupCart'
 import { useRentCart } from '@/hooks/useRentCart'
 import axios from 'axios'
+import { CaretDownOutlined, CaretRightOutlined } from '@ant-design/icons'
+import useToken from 'antd/es/theme/useToken'
+import dayjs from 'dayjs'
 const moment = require('moment')
 
 export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
   const { auth, setAuth, coupon, getCoupon } = useAuth()
-  const { items: pItems, getCartData: getPData } = useCart()
-  const { items: gItems, getCartData: getGData } = useGroupCart()
-  const { items: rItems, getCartData: getRData } = useRentCart()
+  const {
+    items: pItems,
+    getCartData: getPData,
+    cartTotalP: totalPriceP,
+  } = useCart()
+  const {
+    items: gItems,
+    getCartData: getGData,
+    cartTotalG: totalPriceG,
+  } = useGroupCart()
+  const {
+    items: rItems,
+    getCartData: getRData,
+    cartTotalR: totalPriceR,
+  } = useRentCart()
   useEffect(() => {
     getCoupon()
   }, [])
   const pOrderItems = pItems.filter((item) => item.check === 1)
   const gOrderItems = gItems.filter((item) => item.check === 1)
   const rOrderItems = rItems.filter((item) => item.check === 1)
+  // 租用總天數
+  const rTotalDays = rOrderItems
+    .map((item) => {
+      const start = dayjs(item.startDate)
+      const end = dayjs(item.endDate)
+      return end.diff(start, 'day')
+    })
+    .reduce((a, b) => a + b, 0)
+  console.log('一般', pOrderItems)
+  console.log('一般總價格', totalPriceP)
+  console.log('團購', gOrderItems)
+  console.log('團購總價格', totalPriceG)
+  console.log('出租', rOrderItems)
+  console.log('出租總價格', totalPriceR)
+  const totalPrice = totalPriceP + totalPriceG + totalPriceR
   const cardListData = [
     {
       value: '1',
@@ -263,15 +293,190 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
       }
     }
   }
+  // 結帳商品列表
+  const getItems = (panelStyle) => [
+    {
+      key: '1',
+      label: (
+        <div className="d-flex justify-content-between">
+          <p className="mb-0">一般商品</p>
+          <p className="mb-0">
+            {pOrderItems.length} 件商品，共計：
+            <span className="text-primary">${totalPriceP}</span>
+          </p>
+        </div>
+      ),
+      children: (
+        <List
+          dataSource={pOrderItems}
+          renderItem={(item) => (
+            <List.Item key={item.id}>
+              <div className="row w-100">
+                <div className="col-6">
+                  <List.Item.Meta
+                    title={item.name}
+                    description={
+                      <div className="d-flex gap-2 flex-sm-row flex-column">
+                        {Object.values(item.specData).map((spec, index) => (
+                          <span key={index}>{spec}</span>
+                        ))}
+                      </div>
+                    }
+                  />
+                </div>
 
+                <div className="col-6 row ms-2">
+                  <div className="col-sm-6 col-12 d-flex gap-2 justify-content-end px-2">
+                    <p>${item.price}</p>
+                    <span>x</span>
+                    <p>{item.quantity}</p>
+                  </div>
+                  <p className="col fw-bold px-2 text-end">
+                    ${item.price * item.quantity}
+                  </p>
+                </div>
+              </div>
+            </List.Item>
+          )}
+        />
+      ),
+      style: panelStyle,
+    },
+    {
+      key: '2',
+      label: (
+        <div className="d-flex justify-content-between">
+          <p className="mb-0">團購商品</p>
+          <p className="mb-0">
+            {gOrderItems.length} 件商品，共計：
+            <span className="text-primary">${totalPriceG}</span>
+          </p>
+        </div>
+      ),
+      children: (
+        <List
+          dataSource={gOrderItems}
+          renderItem={(item) => (
+            <List.Item key={item.id}>
+              <div className="row w-100">
+                <div className="col-6">
+                  <List.Item.Meta
+                    title={item.name}
+                    description={
+                      <div className="d-flex gap-2 flex-sm-row flex-column">
+                        {Object.values(item.specData).map((spec, index) => (
+                          <span key={index}>{spec}</span>
+                        ))}
+                      </div>
+                    }
+                  />
+                </div>
+
+                <div className="col-6 row ms-2">
+                  <div className="col-sm-6 col-12 d-flex gap-2 justify-content-end px-2">
+                    <p>${item.price}</p>
+                    <span>x</span>
+                    <p>{item.quantity}</p>
+                  </div>
+                  <p className="col fw-bold px-2 text-end">
+                    ${item.price * item.quantity}
+                  </p>
+                </div>
+              </div>
+            </List.Item>
+          )}
+        />
+      ),
+      style: panelStyle,
+    },
+    {
+      key: '3',
+      label: (
+        <div className="d-flex justify-content-between">
+          <p className="mb-0">租用商品</p>
+          <p className="mb-0">
+            {rOrderItems.length} 件商品，共計：
+            <span className="text-primary">${totalPriceR}</span>
+          </p>
+        </div>
+      ),
+      children: (
+        <List
+          dataSource={rOrderItems}
+          renderItem={(item) => (
+            <List.Item key={item.id}>
+              <div className="row w-100">
+                <div className="col-6">
+                  <List.Item.Meta
+                    title={item.name}
+                    description={
+                      <div className="d-flex gap-2 flex-sm-row flex-column">
+                        {Object.values(item.specData).map((spec, index) => (
+                          <span key={index}>{spec}</span>
+                        ))}
+                      </div>
+                    }
+                  />
+                </div>
+
+                <div className="col-6 row ms-2">
+                  <div className="col-sm-6 col-12 d-flex gap-2 justify-content-sm-center justify-content-end px-2">
+                    <p className="d-flex flex-sm-row flex-column align-items-center">
+                      <span className="text-center">{item.startDate}</span>
+                      <span className="text-center">
+                        {' '}
+                        <CaretRightOutlined className="d-sm-block d-none align-middle" />
+                        <CaretDownOutlined className="d-sm-none d-block" />{' '}
+                      </span>
+                      <span className="text-center">{item.endDate}</span>
+                    </p>
+                  </div>
+                  <p className="col fw-bold px-2 text-end">
+                    $
+                    {item.price *
+                      (dayjs(item.endDate).diff(dayjs(item.startDate), 'day') +
+                        1)}
+                  </p>
+                </div>
+              </div>
+            </List.Item>
+          )}
+        />
+      ),
+      style: panelStyle,
+    },
+  ]
+  const panelStyle = {
+    marginBottom: 24,
+    background: '#fff',
+    border: 'none',
+  }
   return (
     <>
       <div className="container">
+        <h2 className="text-center mt-5">
+          總金額：<span className="text-primary">${totalPrice}</span>
+        </h2>
+
         <div className="row mt-5">
+          <div className="col-11 mx-auto">
+            <Collapse
+              bordered={false}
+              // defaultActiveKey={['1']}
+              expandIcon={({ isActive }) => (
+                <CaretRightOutlined rotate={isActive ? 90 : 0} />
+              )}
+              style={{
+                background: '#00000000',
+                color: '#ffffff',
+              }}
+              items={getItems(panelStyle)}
+            />
+          </div>
           <div className="col-11 mx-auto">
             <div className="d-flex justify-content-center mb-3"></div>
             <div className="orderInfo">
-              <div className={`${style['buyerInfo']}`}>
+              <div className={`${style['buyerInfo']} bg-white`}>
                 <div className={`${style['cart_subtitle']}`}>訂購人資訊</div>
                 <div
                   className={`d-flex align-items-center justify-content-between ${style['info']}`}
@@ -318,8 +523,8 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
                   </div>
                 </div>
               </div>
-              <div className="buyerInfoMobile mt-4 d-none"></div>
-              <div className={`${style['getProductInfo']}`}>
+              <div className="buyerInfoMobile mt-4 d-none bg-white"></div>
+              <div className={`${style['getProductInfo']} bg-white`}>
                 <div className={`${style['cart_subtitle']}`}>取貨方式</div>
                 <Radio.Group
                   onChange={recProductonChange}
@@ -330,7 +535,7 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
                   <Radio value={1}>宅配到府</Radio>
                 </Radio.Group>
               </div>
-              <div className={`${style['receiverInfo']}`}>
+              <div className={`${style['receiverInfo']} bg-white`}>
                 <div
                   className={`${style['cart_subtitle']} d-flex align-items-center`}
                 >
@@ -444,7 +649,7 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
                   </div>
                 </div>
               </div>
-              <div className={`${style['paymentInfo']}`}>
+              <div className={`${style['paymentInfo']} bg-white`}>
                 <div className={`${style['cart_subtitle']}`}>付款方式</div>
                 <Radio.Group
                   onChange={paymentonChange}
