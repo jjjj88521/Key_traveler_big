@@ -18,6 +18,11 @@ export default function ResetPassword() {
     password: '',
   })
   const [checkPassword, setCheckPassword] = useState('')
+  // 按下按鈕倒數六十秒後才能按
+  const [sendBtnState, setSendBtnState] = useState({
+    disabled: false,
+    countDown: 60,
+  })
   // 忘記密碼應該要獨立開來，不能跟本來的混再一起寫
   //  const { auth, setAuth } = useAuth()
   //   const [userData, setUserData] = useState({ ...auth.user })
@@ -53,13 +58,42 @@ export default function ResetPassword() {
             showConfirmButton: false,
             timer: 1500,
           })
+          setSendBtnState({
+            ...sendBtnState,
+            disabled: true,
+          })
+
+          // 倒數
+          let timer = 60
+          const interval = setInterval(() => {
+            timer--
+            setSendBtnState({
+              disabled: true,
+              countDown: timer,
+            })
+            if (timer === 0) {
+              clearInterval(interval)
+              setSendBtnState({
+                ...sendBtnState,
+                disabled: false,
+                countDown: 60,
+              })
+            }
+          }, 1000)
         } else {
           console.log('寄送失敗1')
+          throw new Error('寄送失敗')
         }
       })
       .catch((error) => {
         console.error('寄送失敗:', error)
         console.log('寄送發生錯誤2')
+        Swal.fire({
+          icon: 'error',
+          title: '寄送失敗，請確認信箱是否正確',
+          showConfirmButton: false,
+          timer: 1500,
+        })
       })
   }
   // 重設密碼
@@ -118,6 +152,7 @@ export default function ResetPassword() {
         })
       })
   }
+
   return (
     <div className="container">
       <div className="row">
@@ -184,9 +219,13 @@ export default function ResetPassword() {
                   onClick={(e) => {
                     console.log(email)
                     sendOTP(email)
+                    // handleGetOTP()
                   }}
+                  disabled={sendBtnState.disabled}
                 >
-                  取得驗証碼
+                  {sendBtnState.disabled
+                    ? `${sendBtnState.countDown}秒後重新發送`
+                    : '取得驗証碼'}
                 </button>
               </div>
             </div>
