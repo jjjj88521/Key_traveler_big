@@ -33,6 +33,8 @@ const addToCart = (type, addPItem, addGItem, addRItem) => {
               icon: 'success',
               title: '購物車已有該商品',
               text: '數量+' + response.data.quantity,
+              showConfirmButton: false,
+              timer: 1500,
             })
           }
         } else {
@@ -68,6 +70,8 @@ const addToCart = (type, addPItem, addGItem, addRItem) => {
               icon: 'success',
               title: '購物車已有該商品',
               text: '數量+' + response.data.quantity,
+              showConfirmButton: false,
+              timer: 1500,
             })
           }
         } else {
@@ -92,6 +96,8 @@ const addToCart = (type, addPItem, addGItem, addRItem) => {
           icon: 'error',
           title: '新增購物車失敗',
           text: '請填入日期',
+          showConfirmButton: false,
+          timer: 1500,
         })
       }
       try {
@@ -108,6 +114,8 @@ const addToCart = (type, addPItem, addGItem, addRItem) => {
               icon: 'success',
               title: '更新新增購物車成功',
               text: '日期已更新',
+              showConfirmButton: false,
+              timer: 1500,
             })
           }
         } else {

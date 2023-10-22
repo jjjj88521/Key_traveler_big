@@ -86,7 +86,7 @@ export default function ProceedToCheckout({ onCheckout }) {
       {/* 去結帳 */}
       <div className="my-4">
         <div className="pb-2">
-          <span className="fs-6 d-flex align-items-center justify-content-between">
+          <span className="fs-6 d-flex align-items-center justify-content-between justify-content-sm-start">
             使用優惠券(限一般商品):
             {/* <span
               className="ps-3"
