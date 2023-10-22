@@ -29,6 +29,10 @@ export const pathsLocaleMap = [
     path: '/user/forget-password',
   },
   {
+    name: '忘記密碼',
+    path: '/forget-password',
+  },
+  {
     name: '修改密碼',
     path: '/user/reset-password',
   },
