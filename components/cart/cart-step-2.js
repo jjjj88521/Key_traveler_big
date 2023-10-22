@@ -429,8 +429,26 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
                         ></input>
                       </div>
                     </div>
+                    {/* 手機版 */}
                     <div
-                      className={`d-flex align-items-center justify-content-between ${style['info']}`}
+                      className={`d-sm-none d-flex align-items-center justify-content-between ${style['info']}`}
+                      style={{ height: '100px' }}
+                    >
+                      <div
+                        className={`col-3 border ${style['infoLeft']} pt-4`}
+                        style={{ height: '100px' }}
+                      >
+                        地址
+                      </div>
+                      <div
+                        className={`col-9 border ${style['infoRight']} h-100 d-flex align-items-center`}
+                      >
+                        <Address onAddressChange={handleAddressChange} />
+                      </div>
+                    </div>
+                    {/* 電腦版 */}
+                    <div
+                      className={`d-none align-items-center justify-content-between ${style['info']}`}
                     >
                       <div className={`col-3 border ${style['infoLeft']}`}>
                         地址

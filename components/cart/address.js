@@ -68,8 +68,8 @@ export default function Address({ onAddressChange }) {
         </div>
         <input
           type="text"
-          placeholder="memberAddr"
-          className={`form-control`}
+          placeholder="請填寫詳細地址"
+          className={`form-control mt-2`}
         ></input>
       </div>
       {/* 電腦版 */}
