@@ -43,7 +43,9 @@ export default function ListCardHistory({ hisTab, hisData }) {
                       ? '無消費門檻'
                       : `低消 $${item.threshold} 起`}
                   </p>
-                  <p className="m-0">有效日期：{item.end_date}</p>
+                  <p className="m-0">
+                    {item.end_date ? '有效日期：' + item.end_date : '無限期'}
+                  </p>
                 </div>
               </div>
             </Card>

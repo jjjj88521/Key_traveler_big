@@ -66,9 +66,9 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
   const [newPhone, setNewPhone] = useState('')
   const [tempPhone, setTempPhone] = useState('')
   const [buyInfo, setBuyerInfo] = useState({
-    name: auth.user.last_name + auth.user.first_name,
-    phone: auth.user.phone,
-    address: auth.user.address,
+    name: '',
+    phone: '',
+    address: '',
   })
   const buyeronChange = (e) => {
     setbuyerValue(e.target.value)
@@ -80,13 +80,10 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
         name: auth.user.last_name + auth.user.first_name,
       }))
 
-      const setAuthPhone = async () => {
-        await setBuyerInfo((prevBuyInfo) => ({
-          ...prevBuyInfo,
-          phone: auth.user.phone,
-        }))
-      }
-      setAuthPhone()
+      setBuyerInfo((prevBuyInfo) => ({
+        ...prevBuyInfo,
+        phone: auth.user.phone,
+      }))
       setBuyerInfo((prevBuyInfo) => ({
         ...prevBuyInfo,
         address: auth.user.address,
@@ -139,6 +136,23 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
 
     localStorage.setItem('order-info', JSON.stringify(info))
   }, [buyInfo])
+  useEffect(() => {
+    if (auth.isAuth) {
+      setBuyerInfo((prevBuyInfo) => ({
+        ...prevBuyInfo,
+        name: auth.user.last_name + auth.user.first_name,
+      }))
+
+      setBuyerInfo((prevBuyInfo) => ({
+        ...prevBuyInfo,
+        phone: auth.user.phone,
+      }))
+      setBuyerInfo((prevBuyInfo) => ({
+        ...prevBuyInfo,
+        address: auth.user.address,
+      }))
+    }
+  }, [auth.isAuth])
   // 收件人資料_E
 
   // 宅配方式_S
@@ -207,6 +221,41 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
   }
   // 信用卡選取_E
 
+  const checkBuyerInfo = () => {
+    const toOrderInfo = JSON.parse(localStorage.getItem('order-info'))
+    console.log(toOrderInfo)
+    if (toOrderInfo['buyer-info'].name === '') {
+      return Swal.fire({
+        icon: 'error',
+        title: '請填寫收件人姓名',
+      })
+    } else if (toOrderInfo['buyer-info'].address === '') {
+      return Swal.fire({
+        icon: 'error',
+        title: '請填寫收件人地址',
+      })
+    } else if (toOrderInfo['buyer-info'].phone === '') {
+      return Swal.fire({
+        icon: 'error',
+        title: '請填寫收件人電話',
+      })
+    }
+    const dateTime = moment().format('YYYY-MM-DD HH:mm:ss')
+    const couponId = JSON.parse(localStorage.getItem('order-info'))['coupon-id']
+    const addToOrderTotal = async () => {
+      await addToOrder('product', pOrderItems, dateTime, couponId)
+      await addToOrder('groupBuy', gOrderItems, dateTime, couponId)
+      await addToOrder('rent', rOrderItems, dateTime, couponId)
+    }
+    addToOrderTotal()
+    setLocalstorage()
+  }
+
+  const [orderState, setOrderState] = useState({
+    pd: '',
+    gb: '',
+    r: '',
+  })
   // 後端
   const addToOrder = async (type, Data, time, couponId) => {
     if (Data.length) {
@@ -225,13 +274,15 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
               withCredentials: true, // save cookie in browser
             }
           )
-          // console.log(response.data)
           if (response.data.code === '200') {
-            return Swal.fire({
-              icon: 'success',
-              title: '成功建立訂單',
-              // showConfirmButton: false,
-              timer: 2500,
+            return setOrderState({
+              ...orderState, // 先複製現有的狀態
+              pd: 'true', // 設定 pd 的值為 true
+            })
+          } else {
+            return setOrderState({
+              ...orderState, // 先複製現有的狀態
+              pd: 'false', // 設定 pd 的值為 true
             })
           }
         } catch (error) {
@@ -247,11 +298,14 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
             }
           )
           if (response.data.code === '200') {
-            return Swal.fire({
-              icon: 'success',
-              title: '成功建立訂單',
-              // showConfirmButton: false,
-              timer: 2500,
+            return setOrderState({
+              ...orderState, // 先複製現有的狀態
+              gb: 'true', // 設定 gb 的值為 true
+            })
+          } else {
+            return setOrderState({
+              ...orderState, // 先複製現有的狀態
+              gb: 'false', // 設定 pd 的值為 true
             })
           }
         } catch (error) {
@@ -266,20 +320,15 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
               withCredentials: true, // save cookie in browser
             }
           )
-          if (response.data.code !== '200') {
-            if (response.data.code === '201') {
-              return Swal.fire({
-                icon: 'success',
-                title: '購物車已有該商品',
-                text: '數量+' + response.data.quantity,
-              })
-            }
+          if (response.data.code === '200') {
+            return setOrderState({
+              ...orderState, // 先複製現有的狀態
+              r: 'true', // 設定 gb 的值為 true
+            })
           } else {
-            return Swal.fire({
-              icon: 'success',
-              title: '成功建立訂單',
-              showConfirmButton: false,
-              timer: 1500,
+            return setOrderState({
+              ...orderState, // 先複製現有的狀態
+              r: 'false', // 設定 pd 的值為 true
             })
           }
         } catch (error) {
@@ -451,6 +500,51 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
     background: '#fff',
     border: 'none',
   }
+  const setLocalstorage = () => {
+    console.log(orderState)
+    if (
+      orderState.pd !== 'false' &&
+      orderState.gb !== 'false' &&
+      orderState.r !== 'false'
+    ) {
+      console.log('訂單建立成功')
+      if (pOrderItems) {
+        localStorage.setItem('product-info', JSON.stringify(pOrderItems))
+      }
+      if (gOrderItems) {
+        localStorage.setItem('groupbuy-info', JSON.stringify(gOrderItems))
+      }
+      if (rOrderItems) {
+        localStorage.setItem('rent-info', JSON.stringify(rOrderItems))
+      }
+      return Swal.fire({
+        icon: 'success',
+        title: '成功建立訂單',
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(() => {
+        getPData()
+        getGData()
+        getRData()
+
+        ongotoPage3()
+      })
+    } else {
+      if (orderState.pd === 'false') {
+        console.log('一般商品建立訂單失敗')
+      }
+      if (orderState.gb === 'false') {
+        console.log('團購商品建立訂單失敗')
+      }
+      if (orderState.r === 'false') {
+        console.log('租用商品建立訂單失敗')
+      }
+    }
+  }
+  useEffect(() => {
+    console.log(orderState)
+  }, [orderState])
+
   return (
     <>
       <div className="container">
@@ -474,7 +568,6 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
             />
           </div>
           <div className="col-11 mx-auto">
-            <div className="d-flex justify-content-center mb-3"></div>
             <div className="orderInfo">
               <div className={`${style['buyerInfo']} bg-white`}>
                 <div className={`${style['cart_subtitle']}`}>訂購人資訊</div>
@@ -634,8 +727,26 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
                         ></input>
                       </div>
                     </div>
+                    {/* 手機版 */}
                     <div
-                      className={`d-flex align-items-center justify-content-between ${style['info']}`}
+                      className={`d-sm-none d-flex align-items-center justify-content-between ${style['info']}`}
+                      style={{ height: '100px' }}
+                    >
+                      <div
+                        className={`col-3 border ${style['infoLeft']} pt-4`}
+                        style={{ height: '100px' }}
+                      >
+                        地址
+                      </div>
+                      <div
+                        className={`col-9 border ${style['infoRight']} h-100 d-flex align-items-center`}
+                      >
+                        <Address onAddressChange={handleAddressChange} />
+                      </div>
+                    </div>
+                    {/* 電腦版 */}
+                    <div
+                      className={`d-sm-flex d-none align-items-center justify-content-between ${style['info']}`}
                     >
                       <div className={`col-3 border ${style['infoLeft']}`}>
                         地址
@@ -704,26 +815,7 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
                 className={`btn btn-primary px-3 py-2`}
                 id="completeOrder"
                 onClick={async () => {
-                  const dateTime = moment().format('YYYY-MM-DD HH:mm:ss')
-                  const couponId = JSON.parse(
-                    localStorage.getItem('order-info')
-                  )['coupon-id']
-                  const addToOrderTotal = async () => {
-                    await addToOrder('product', pOrderItems, dateTime, couponId)
-                    await addToOrder(
-                      'groupBuy',
-                      gOrderItems,
-                      dateTime,
-                      couponId
-                    )
-                    await addToOrder('rent', rOrderItems, dateTime, couponId)
-                  }
-                  await addToOrderTotal()
-                  getPData()
-                  getGData()
-                  getRData()
-
-                  ongotoPage3()
+                  checkBuyerInfo()
                 }}
               >
                 送出訂單

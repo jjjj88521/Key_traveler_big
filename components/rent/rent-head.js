@@ -78,6 +78,7 @@ export default function RentHead() {
     price: price,
     startDate: '',
     endDate: '',
+    quantity: 1,
     spec: style_select,
     specData: selectedStyles.reduce((obj, item) => {
       obj[item.key] = item.value

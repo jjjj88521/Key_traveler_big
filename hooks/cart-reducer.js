@@ -37,15 +37,21 @@ const setCartItem = (state, action) => {
  */
 const addItem = (state, action) => {
   // 尋找是否有已存在的索引值
+  const existingItemStyle = state.items.findIndex(
+    (item) =>
+      item.id === action.payload.id &&
+      JSON.stringify(item.specData) === JSON.stringify(action.payload.specData)
+  )
   const existingItemIndex = state.items.findIndex(
     (item) => item.id === action.payload.id
   )
   const payloadQuantity = action.payload.quantity
 
   // 如果有存在，加入項目(以給定的quantity，或沒給定時quantity+1)
-  if (existingItemIndex > -1) {
-    const item = state.items[existingItemIndex]
+  if (existingItemStyle > -1) {
+    const item = state.items[existingItemStyle]
     const id = item.id
+    const specData = item.specData
 
     const quantity = payloadQuantity
       ? item.quantity + payloadQuantity
@@ -53,7 +59,34 @@ const addItem = (state, action) => {
 
     const action = {
       type: 'UPDATE_ITEM',
-      payload: { id, quantity },
+      payload: { id, quantity, specData },
+    }
+
+    return updateItem(state, action)
+  }
+  return [...state.items, action.payload]
+}
+const addRentItem = (state, action) => {
+  // 尋找是否有已存在的索引值
+  const existingItemStyle = state.items.findIndex(
+    (item) =>
+      item.id === action.payload.id &&
+      JSON.stringify(item.specData) === JSON.stringify(action.payload.specData)
+  )
+  // console.log('addItem')
+  const existingItemIndex = state.items.findIndex(
+    (item) => item.id === action.payload.id
+  )
+  // 如果有存在，加入項目(以給定的quantity，或沒給定時quantity+1)
+  if (existingItemStyle > -1) {
+    const item = state.items[existingItemStyle]
+    const id = item.id
+    const specData = item.specData
+    const startDate = item.startDate
+    const endDate = item.endDate
+    const action = {
+      type: 'UPDATE_RENT_ITEM',
+      payload: { id, startDate, endDate, specData },
     }
 
     return updateItem(state, action)
@@ -436,6 +469,8 @@ export const reducer = (state, action) => {
   switch (action.type) {
     case 'ADD_ITEM':
       return generateCartState(state, addItem(state, action))
+    case 'ADD_RENT_ITEM':
+      return generateRentCartState(state, addRentItem(state, action))
     case 'REMOVE_ITEM':
       return generateCartState(state, removeItem(state, action))
     case 'REMOVE_RENT_ITEM':
