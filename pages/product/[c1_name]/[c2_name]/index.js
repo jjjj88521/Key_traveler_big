@@ -55,6 +55,16 @@ export default function ProductCate2() {
   //   console.log(cateProducts.data)
   //   console.log(cateName)
 
+  // 抓取路由改變banner圖片
+  const bannerImages = {
+    1: 'banner1.jpg',
+    2: 'banner2.jpg',
+    3: 'banner3.jpg',
+  }
+
+  const defaultBanner = 'testBanner.png'
+  const bannerImage = bannerImages[c1_name] || defaultBanner
+
   // 篩選價錢範圍
   const filterRange = () => {
     axios
@@ -184,7 +194,7 @@ export default function ProductCate2() {
         <div className="w-100 h-100 p-4 p-sm-0">
           <img
             className={`w-100 h-100 object-fit-cover ${styles.rounded}`}
-            src="/images/testBanner.png"
+            src={`/images/${bannerImage}`}
             alt="banner"
           />
         </div>
