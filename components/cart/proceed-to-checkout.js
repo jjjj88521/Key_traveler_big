@@ -43,6 +43,7 @@ export default function ProceedToCheckout({ onCheckout }) {
   const handleCouponDeselect = () => {
     setSelectedCoupon('')
     setSelectedCouponId(0)
+    setPdTotalPrice(totalPriceP)
   }
 
   const [pdTotalPrice, setPdTotalPrice] = useState(totalPriceP)
@@ -53,11 +54,11 @@ export default function ProceedToCheckout({ onCheckout }) {
   const [selectedCouponId, setSelectedCouponId] = useState(0)
   const handleCouponSelect = (couponName, couponDiscount, couponId) => {
     setSelectedCoupon(couponName)
-    if (pdTotalPrice) {
+    if (totalPriceP) {
       const resultDiscount =
         couponDiscount > 1
-          ? pdTotalPrice - couponDiscount
-          : pdTotalPrice * couponDiscount
+          ? totalPriceP - couponDiscount
+          : totalPriceP * couponDiscount
       setPdTotalPrice(resultDiscount)
       setSelectedCouponId(couponId)
     }
@@ -85,57 +86,57 @@ export default function ProceedToCheckout({ onCheckout }) {
       {/* 去結帳 */}
       <div className="my-4">
         <div className="pb-2">
-          <span className="fs-6">
+          <span className="fs-6 d-flex align-items-center justify-content-between">
             使用優惠券(限一般商品):
-            <span
+            {/* <span
               className="ps-3"
               style={{ width: '180px', display: 'inline-block' }}
               id="coupon"
             >
               {selectedCoupon}
-            </span>
-          </span>
-          <div className="btn-group" style={{ marginLeft: '170px' }}>
-            <button
-              className="btn btn-sm border-primary text-primary dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              disabled={totalPriceP ? false : true}
-            >
-              選擇優惠券
-            </button>
-            <ul className="dropdown-menu dropdown-menu-end">
-              <li>
-                <button
-                  className="btn dropdown-item"
-                  onClick={() => {
-                    handleCouponDeselect()
-                  }}
-                >
-                  無
-                </button>
-              </li>
-              {coupons.map((v) => (
-                <li key={v.id}>
+            </span> */}
+            <div className="btn-group" style={{ marginLeft: '30px' }}>
+              <button
+                className="btn btn-sm border-primary text-primary dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                disabled={totalPriceP ? false : true}
+              >
+                {selectedCoupon || '選擇優惠券'}
+              </button>
+              <ul className="dropdown-menu dropdown-menu-end">
+                <li>
                   <button
                     className="btn dropdown-item"
                     onClick={() => {
-                      handleCouponSelect(
-                        v.coupon_name || v.coupon_code,
-                        v.discount_value === 0
-                          ? v.discount_percent
-                          : v.discount_value,
-                        v.couponId
-                      )
+                      handleCouponDeselect()
                     }}
                   >
-                    {v.coupon_name || v.coupon_code}
+                    無
                   </button>
                 </li>
-              ))}
-            </ul>
-          </div>
+                {coupons.map((v) => (
+                  <li key={v.id}>
+                    <button
+                      className="btn dropdown-item"
+                      onClick={() => {
+                        handleCouponSelect(
+                          v.coupon_name || v.coupon_code,
+                          v.discount_value === 0
+                            ? v.discount_percent
+                            : v.discount_value,
+                          v.couponId
+                        )
+                      }}
+                    >
+                      {v.coupon_name || v.coupon_code}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </span>
         </div>
         <div className="text-danger">P.S.若收件地址不同需分開結帳！！</div>
         <div className="text-end">

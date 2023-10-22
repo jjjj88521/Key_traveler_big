@@ -37,6 +37,7 @@ export default function Cart() {
   ]
   return (
     <>
+      <title>{'購物車'}</title>
       {auth.isAuth ? (
         <div>
           <CartStep currentStep={currentStep - 1} itemsStep={items} />
