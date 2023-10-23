@@ -1,6 +1,6 @@
 import { React, useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Avatar, List, Rate, Drawer, Tag } from 'antd'
+import { Avatar, List, Rate, Drawer, Tag, Empty } from 'antd'
 import style from './comments.module.scss'
 import UserLayout from '@/components/layout/user-layout'
 import { Radio } from 'antd'
@@ -418,7 +418,7 @@ export default function Comments() {
         {isLoading ? (
           <LoadingPage />
         ) : (
-          <div className="" style={{ height: '1100px' }}>
+          <div className="" style={{ minHeight: '500px' }}>
             <table className="table table-borderless mt-2">
               <thead>
                 <tr>
@@ -434,7 +434,7 @@ export default function Comments() {
                   <td>
                     {tagKey === '1' ? (
                       commentData.data.length === 0 ? (
-                        <div className="h3 text-danger">尚無待評價之商品</div>
+                        <Empty description="暫無評價" />
                       ) : (
                         <div>
                           <List

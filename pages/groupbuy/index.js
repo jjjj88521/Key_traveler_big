@@ -58,7 +58,7 @@ const sortOptions = [
 export default function ProductIndex() {
   const router = useRouter()
   const { status, page, orderby, price_range } = router.query
-  console.log(typeof status)
+  // console.log(typeof status)
   // 開關 Drawer
   const [open, setOpen] = useState(false)
 

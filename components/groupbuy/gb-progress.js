@@ -13,6 +13,8 @@ export default function GbProgressBox() {
   const dayNow = dayjs()
   const startDate = dayjs(start)
   const endDate = dayjs(end)
+  console.log(dayNow, startDate, endDate)
+  console.log(endDate.diff(dayNow, 'd'))
   // 人數比例
   const peopleRatio = (current_people / target_people) * 100
   return (
@@ -50,9 +52,9 @@ export default function GbProgressBox() {
               <Countdown
                 value={startDate}
                 format={`${
-                  startDate.format('DD') > 1
-                    ? '再 D 天開始'
-                    : '再 HH:mm:ss 開始'
+                  startDate.diff(dayNow, 'd') < 1
+                    ? '再 HH:mm:ss 開團'
+                    : '再 D 天開團'
                 }`}
               />
             )}
@@ -60,7 +62,8 @@ export default function GbProgressBox() {
               <Countdown
                 value={endDate}
                 format={`${
-                  endDate.format('DD') > 1 ? 'D 天結束' : 'HH:mm:ss 結束'
+                  // 判斷是否超過一天
+                  endDate.diff(dayNow, 'd') < 1 ? 'HH:mm:ss 結束' : 'D 天結束'
                 }`}
               />
             )}

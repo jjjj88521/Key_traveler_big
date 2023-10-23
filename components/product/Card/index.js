@@ -6,6 +6,7 @@ import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
 import { addProductLike, deleteProductLike } from '@/libs/productFetcher'
 import { Progress } from 'antd'
+import useMobile from '@/hooks/useMobile'
 
 export default function Card({
   title,
@@ -65,7 +66,7 @@ export default function Card({
       <div
         className={`card h-100 border border-1 ${styles['card']} overflow-hidden`}
       >
-        <div className={`card-img-top ${styles.cardImg}`}>
+        <div className={`card-img-top position-relative ${styles.cardImg}`}>
           <Link href={link}>
             <img
               src={image}
@@ -74,6 +75,20 @@ export default function Card({
               alt="Product"
             />
           </Link>
+          <button
+            className={
+              'position-absolute top-0 end-0 p-2 btn d-sm-none d-block'
+            }
+            onClick={(e) => {
+              e.stopPropagation()
+              e.preventDefault()
+              handleToggleLike()
+            }}
+          >
+            <span className={`${isLiked ? 'text-danger' : 'text-white'} fs-1`}>
+              <i className={`fa-solid fa-heart pe-2`}></i>
+            </span>
+          </button>
         </div>
 
         {/* 待完成，判斷是否為新品(ribbon) */}
@@ -85,36 +100,39 @@ export default function Card({
           <div></div>
         )}
         <div className="card-body w-100 position-relative bg-secondary-subtle py-4 vstack gap-2">
-          <h5 className={`${styles['card-title-name']} card-title fw-bold`}>
-            {title}
-          </h5>
-          <h6 className="card-title text-black-50">{brand}</h6>
-          <h5 className="card-title">$ {price}</h5>
-          {cate === 'gb' && (
-            <Progress
-              percent={(current_people / target_people) * 100}
-              size="small"
-              format={() => `${current_people}人`}
-            />
-          )}
-          <button
+          <Link href={link}>
+            <h5 className={`${styles['card-title-name']} card-title fw-bold`}>
+              {title}
+            </h5>
+            <h6 className="card-title text-black-50">{brand}</h6>
+            <h5 className="card-title">$ {price}</h5>
+            {cate === 'gb' && (
+              <Progress
+                percent={(current_people / target_people) * 100}
+                size="small"
+                format={() => `${current_people}人`}
+              />
+            )}
+          </Link>
+          {/* <button
             className={`d-sm-none d-block border border-2 border-primary rounded-circle ${styles['cartBtn']}`}
           >
             <i
               className="fa-solid fa-cart-shopping fa-lg"
               style={{ color: '#F1D6AB' }}
             ></i>
-          </button>
+          </button> */}
         </div>
         <div className={`d-flex flex-column gap-3 ${styles['info']}`}>
-          <button
+          {/* 加入購物車先註解，後續再補上功能 */}
+          {/* <button
             className={`${styles['infoBtn1']} ${
               stock === 0 ? styles['invalidButton'] : ''
             }`}
             disabled={stock === 0} //根據是否缺貨
           >
             加入購物車
-          </button>
+          </button> */}
           <button className={styles['infoBtn2']} onClick={handleToggleLike}>
             <span className={`${isLiked ? 'text-danger' : ''}`}>
               <i
