@@ -14,10 +14,7 @@ export default function CommentItem({
   return (
     <div className="py-2 row w-100 bg-white mx-0">
       <div className="col-auto">
-        <Avatar
-          src={`http://localhost:3005/${user_avatar}.jpg`}
-          icon={<UserOutlined />}
-        />
+        <Avatar src={user_avatar} icon={<UserOutlined />} />
       </div>
       <div className="col d-flex flex-column gap-4">
         <div className="d-flex justify-content-between w-100">

@@ -365,12 +365,7 @@ export default function DetailFilter() {
               >
                 <Avatar
                   className="me-2"
-                  src={
-                    <img
-                      src={`http://localhost:3005/${auth.user.avatar}.jpg`}
-                      alt="avatar"
-                    />
-                  }
+                  src={<img src={auth.user.avatar} alt="avatar" />}
                 />
                 <div className="w-100">
                   <TextArea
@@ -403,11 +398,7 @@ export default function DetailFilter() {
                   <List.Item>
                     <List.Item.Meta
                       className="mt-3"
-                      avatar={
-                        <Avatar
-                          src={`http://localhost:3005/${item.avatar}.jpg`}
-                        />
-                      }
+                      avatar={<Avatar src={item.avatar} />}
                       title={
                         <div
                           style={{

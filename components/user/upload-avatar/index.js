@@ -29,14 +29,12 @@ const UploadAvatar = () => {
   }
   //判斷大頭貼是從google 來的還是從資料庫來的
   let picture = ''
-  if (auth.user.avatar === null && auth.user.photo_url === null) {
+  if (auth.user.avatar === null) {
     console.log('SSSS')
     console.log(picture)
     picture = `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbgJDFLehkQpFnas_gqV8aGpJTzR26MIlsatrb458vJWIFM9KZpv0HXnSRsbHJ6VjLx4I&usqp=CAU`
-  } else if (auth.user.photo_url) {
-    picture = auth.user.photo_url
   } else {
-    picture = `http://localhost:3005/${auth.user.avatar}.jpg`
+    picture = auth.user.avatar
   }
   //判斷大頭貼是從google 來的還是從資料庫來的
   const [fileList, setFileList] = useState([])
