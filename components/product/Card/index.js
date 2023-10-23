@@ -77,7 +77,7 @@ export default function Card({
           </Link>
           <button
             className={
-              'position-absolute top-0 end-0 p-2 btn d-sm-none d-block'
+              'position-absolute top-0 start-0 p-2 btn d-sm-none d-block'
             }
             onClick={(e) => {
               e.stopPropagation()
@@ -86,7 +86,10 @@ export default function Card({
             }}
           >
             <span className={`${isLiked ? 'text-danger' : 'text-white'} fs-1`}>
-              <i className={`fa-solid fa-heart pe-2`}></i>
+              <i
+                className={`fa-solid fa-heart ps-2`}
+                style={isLiked ? {} : { webkitTextStroke: '2px #000' }}
+              ></i>
             </span>
           </button>
         </div>

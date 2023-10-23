@@ -195,7 +195,7 @@ export default function LoginForm() {
               name="password"
               id="password"
               className="form-control"
-              onBlur={(e) => {
+              onChange={(e) => {
                 setInputAuth({ ...inputAuth, [e.target.name]: e.target.value })
               }}
               onKeyDown={handleKeyPress}
