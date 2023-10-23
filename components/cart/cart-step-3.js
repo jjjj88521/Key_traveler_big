@@ -12,12 +12,12 @@ export default function CartStep3() {
   }
   const buyer = JSON.parse(localStorage.getItem('order-info'))
   const columns = [
-    // {
-    //   title: '訂單編號',
-    //   dataIndex: 'key',
-    //   key: 'key',
-    //   render: (text) => <a>{text}</a>,
-    // },
+    {
+      title: '訂單編號',
+      dataIndex: 'key',
+      key: 'key',
+      // render: (text) => <a>{text}</a>,
+    },
     {
       title: '收件人姓名',
       dataIndex: 'name',
@@ -55,7 +55,7 @@ export default function CartStep3() {
         console.log(response.data)
         if (response.data.message === 'success') {
           console.log('pd有東西')
-          setOrderNumPd(response.data.newPId)
+          // setOrderNumPd(response.data.orderPId)
         }
       } catch (error) {
         console.log(error)
@@ -73,7 +73,7 @@ export default function CartStep3() {
         console.log(response.data)
         if (response.data.message === 'success') {
           console.log('gb有東西')
-          setOrderNumPd(response.data.newPId)
+          // setOrderNumGb(response.data.orderGId)
         }
       } catch (error) {
         console.log(error)
@@ -91,7 +91,7 @@ export default function CartStep3() {
         console.log(response.data)
         if (response.data.message === 'success') {
           console.log('r有東西')
-          setOrderNumPd(response.data.newPId)
+          // setOrderNumR(response.data.orderRId)
         }
       } catch (error) {
         console.log(error)
@@ -111,8 +111,8 @@ export default function CartStep3() {
   const data = [
     {
       key:
-        (orderNumPd !== '' ? orderNumPd : '') +
-        (orderNumGb !== '' ? orderNumGb : '') +
+        (orderNumPd !== '' ? orderNumPd + ',' : '') +
+        (orderNumGb !== '' ? orderNumGb + ',' : '') +
         (orderNumR !== '' ? orderNumR : ''),
       name: buyer['buyer-info'].name,
       phone: buyer['buyer-info'].phone,
