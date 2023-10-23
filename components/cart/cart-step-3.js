@@ -1,44 +1,7 @@
-import { React, useEffect } from 'react'
+import { React, useEffect, useState } from 'react'
 import { Space, Table, Tag } from 'antd'
 import Link from 'next/link'
-// import CartStep1 from './cart-step-1'
-
-const columns = [
-  {
-    title: '訂單編號',
-    dataIndex: 'name',
-    key: 'name',
-    render: (text) => <a>{text}</a>,
-  },
-  {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    render: (_, record) => (
-      <Space size="middle">
-        <a>Invite {record.name}</a>
-      </Space>
-    ),
-  },
-]
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-]
+import axios from 'axios'
 
 export default function CartStep3() {
   const removeLocalStorage = () => {
@@ -47,6 +10,116 @@ export default function CartStep3() {
     localStorage.removeItem('rent-info')
     localStorage.removeItem('order-info')
   }
+  const buyer = JSON.parse(localStorage.getItem('order-info'))
+  const columns = [
+    // {
+    //   title: '訂單編號',
+    //   dataIndex: 'key',
+    //   key: 'key',
+    //   render: (text) => <a>{text}</a>,
+    // },
+    {
+      title: '收件人姓名',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: '收件人地址電話',
+      dataIndex: 'phone',
+      key: 'phone',
+    },
+    {
+      title: '收件人地址',
+      dataIndex: 'address',
+      key: 'address',
+    },
+    {
+      title: '狀態',
+      dataIndex: 'status',
+      key: 'status',
+    },
+  ]
+  const [orderNumPd, setOrderNumPd] = useState('')
+  const [orderNumGb, setOrderNumGb] = useState('')
+  const [orderNumR, setOrderNumR] = useState('')
+  const getOrderNum = async () => {
+    if (localStorage.getItem('product-info').length > 2) {
+      try {
+        const response = await axios.get(
+          'http://localhost:3005/api/order-test/getOrderListPd',
+          {
+            withCredentials: true,
+          }
+        )
+        // console.log('優惠券data')
+        console.log(response.data)
+        if (response.data.message === 'success') {
+          console.log('pd有東西')
+          setOrderNumPd(response.data.newPId)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    if (localStorage.getItem('groupbuy-info').length > 2) {
+      try {
+        const response = await axios.get(
+          'http://localhost:3005/api/order-test/getOrderListGb',
+          {
+            withCredentials: true,
+          }
+        )
+        // console.log('優惠券data')
+        console.log(response.data)
+        if (response.data.message === 'success') {
+          console.log('gb有東西')
+          setOrderNumPd(response.data.newPId)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    if (localStorage.getItem('rent-info').length > 2) {
+      try {
+        const response = await axios.get(
+          'http://localhost:3005/api/order-test/getOrderListR',
+          {
+            withCredentials: true,
+          }
+        )
+        // console.log('優惠券data')
+        console.log(response.data)
+        if (response.data.message === 'success') {
+          console.log('r有東西')
+          setOrderNumPd(response.data.newPId)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+  getOrderNum()
+  useEffect(() => {
+    console.log(orderNumPd)
+    console.log(orderNumGb)
+    console.log(orderNumR)
+  }, [orderNumPd, orderNumGb, orderNumR])
+
+  console.log(localStorage.getItem('product-info').length)
+  console.log(localStorage.getItem('groupbuy-info').length)
+  console.log(localStorage.getItem('rent-info').length)
+  const data = [
+    {
+      key:
+        (orderNumPd !== '' ? orderNumPd : '') +
+        (orderNumGb !== '' ? orderNumGb : '') +
+        (orderNumR !== '' ? orderNumR : ''),
+      name: buyer['buyer-info'].name,
+      phone: buyer['buyer-info'].phone,
+      address: buyer['buyer-info'].address,
+      status: '已結帳',
+    },
+  ]
   return (
     <div className="container text-center mt-5" style={{ height: '500px' }}>
       <div className="row mt-5">

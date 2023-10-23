@@ -26,19 +26,25 @@ export default function ProceedToCheckout({ onCheckout }) {
   }, [])
 
   const [coupons, setcoupons] = useState([])
-
-  useEffect(() => {
-    if (Array.isArray(coupon) && coupon.length > 0) {
-      const fData = filterData(coupon)
-      setcoupons(fData)
-    } else {
-      setcoupons([])
-    }
-  }, [coupon])
   const [selectedCoupon, setSelectedCoupon] = useState('')
   const { cartTotalP: totalPriceP, selectItemsP: totalItemsP } = useCart()
   const { cartTotalG: totalPriceG, selectItemsG: totalItemsG } = useGroupCart()
   const { cartTotalR: totalPriceR, selectItemsR: totalItemsR } = useRentCart()
+
+  useEffect(() => {
+    setPdTotalPrice(totalPriceP)
+    if (Array.isArray(coupon) && coupon.length > 0) {
+      const fData = filterData(coupon)
+      setcoupons(fData)
+      // console.log(fData)
+      const conformCoupon = fData.filter((item) => totalPriceP > item.threshold)
+      // console.log(conformCoupon)
+
+      setcoupons(conformCoupon)
+    } else {
+      setcoupons([])
+    }
+  }, [coupon, totalPriceP])
 
   const handleCouponDeselect = () => {
     setSelectedCoupon('')
@@ -47,9 +53,16 @@ export default function ProceedToCheckout({ onCheckout }) {
   }
 
   const [pdTotalPrice, setPdTotalPrice] = useState(totalPriceP)
-  useEffect(() => {
-    setPdTotalPrice(totalPriceP)
-  }, [totalPriceP])
+  // useEffect(() => {
+  //   setPdTotalPrice(totalPriceP)
+  //   if (Array.isArray(coupon) && coupon.length > 0) {
+  //     console.log(coupon)
+  //     const conformCoupon = coupon.filter(
+  //       (item) => totalPriceP > item.threshold
+  //     )
+  //     setcoupons(conformCoupon)
+  //   }
+  // }, [totalPriceP])
 
   const [selectedCouponId, setSelectedCouponId] = useState(0)
   const handleCouponSelect = (couponName, couponDiscount, couponId) => {
