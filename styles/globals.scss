@@ -37,6 +37,11 @@
   display: flex;
 }
 
+// 隱藏next.js的錯誤訊息圖層
+nextjs-portal {
+  display: none;
+}
+
 // main > .container {
 //   padding: 60px 15px 0;
 // }
