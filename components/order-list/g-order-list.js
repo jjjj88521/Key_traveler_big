@@ -110,7 +110,7 @@ export default function GOrderList() {
                   <div>{v.brand}</div>
                   <div>{v.name}</div>
                   {v.spec && (
-                    <div className="d-flex gap-2 pt-2">
+                    <div className="d-flex gap-2 pt-2 flex-wrap flex-sm-row flex-column">
                       {Object.values(JSON.parse(v.spec)).map((item, index) => (
                         <div key={index} className="text-secondary">
                           {item}

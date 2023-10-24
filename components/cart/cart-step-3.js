@@ -54,8 +54,8 @@ export default function CartStep3() {
         // console.log('優惠券data')
         console.log(response.data)
         if (response.data.message === 'success') {
-          console.log('pd有東西')
-          // setOrderNumPd(response.data.orderPId)
+          // console.log('pd有東西')
+          setOrderNumPd(response.data.orderPId)
         }
       } catch (error) {
         console.log(error)
@@ -72,8 +72,8 @@ export default function CartStep3() {
         // console.log('優惠券data')
         console.log(response.data)
         if (response.data.message === 'success') {
-          console.log('gb有東西')
-          // setOrderNumGb(response.data.orderGId)
+          // console.log('gb有東西')
+          setOrderNumGb(response.data.orderGId)
         }
       } catch (error) {
         console.log(error)
@@ -90,8 +90,8 @@ export default function CartStep3() {
         // console.log('優惠券data')
         console.log(response.data)
         if (response.data.message === 'success') {
-          console.log('r有東西')
-          // setOrderNumR(response.data.orderRId)
+          // console.log('r有東西')
+          setOrderNumR(response.data.orderRId)
         }
       } catch (error) {
         console.log(error)
@@ -111,9 +111,9 @@ export default function CartStep3() {
   const data = [
     {
       key:
-        (orderNumPd !== '' ? orderNumPd + ',' : '') +
-        (orderNumGb !== '' ? orderNumGb + ',' : '') +
-        (orderNumR !== '' ? orderNumR : ''),
+        (orderNumPd !== '' ? orderNumPd : '') +
+        (orderNumGb !== '' ? `, ${orderNumGb}` : '') +
+        (orderNumR !== '' ? `, ${orderNumR}` : ''),
       name: buyer['buyer-info'].name,
       phone: buyer['buyer-info'].phone,
       address: buyer['buyer-info'].address,
