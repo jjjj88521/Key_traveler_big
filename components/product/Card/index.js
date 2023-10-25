@@ -86,7 +86,10 @@ export default function Card({
             }}
           >
             <span className={`${isLiked ? 'text-danger' : 'text-white'} fs-1`}>
-              <i className={`fa-solid fa-heart pe-2`}></i>
+              <i
+                className={`fa-solid fa-heart ps-2`}
+                style={isLiked ? {} : { WebkitTextStroke: '2px #000' }}
+              ></i>
             </span>
           </button>
         </div>
