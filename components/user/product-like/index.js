@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
 import { Empty, Tag } from 'antd'
 
 const ProductLikeContainer = ({ children }) => {
@@ -47,6 +47,10 @@ const ProductLikeItem = ({
   pid,
   pd_cate,
 }) => {
+  const [cate, setCate] = useState(
+    pd_cate === '一般' ? 'pd' : pd_cate === '團購' ? 'gb' : 'rt'
+  )
+  // console.log(cate)
   return (
     <tr>
       <td>
@@ -67,7 +71,10 @@ const ProductLikeItem = ({
       </td>
       <td className="text-center align-middle">${price}</td>
       <td className="text-center align-middle">
-        <button className="btn border-0" onClick={() => handleDeleteLike(pid)}>
+        <button
+          className="btn border-0"
+          onClick={() => handleDeleteLike(pid, cate)}
+        >
           <i className="fa-solid fa-trash"></i>
         </button>
       </td>

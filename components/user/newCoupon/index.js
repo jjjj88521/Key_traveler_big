@@ -56,7 +56,7 @@ export default function NewCoupon({ changePage }) {
         (item, index) =>
           `<div class="d-flex align-items-center justify-content-evenly mt-2">
               <div style="width: 150px">${item.coupon_code}</div>
-              <div><button class="btn btn-primary" data-index="${
+              <div><button class="btn btn-primary btn-get-coupon" data-index="${
                 index + 1
               }" data-code="${item.coupon_code}">領取</button></div>
             </div>`
@@ -67,7 +67,7 @@ export default function NewCoupon({ changePage }) {
       showConfirmButton: false,
     })
     document.addEventListener('click', (e) => {
-      if (e.target.matches('.btn.btn-primary')) {
+      if (e.target.matches('.btn.btn-primary.btn-get-coupon')) {
         const index = e.target.getAttribute('data-index')
         const code = e.target.getAttribute('data-code')
         addCoupon(code, auth.user.id)
@@ -114,16 +114,18 @@ export default function NewCoupon({ changePage }) {
 
   return (
     <>
-      <a
-        className="text-primary"
-        onClick={async () => {
+      <button
+        className="btn btn-link text-decoration-none text-primary"
+        type="button"
+        onClick={async (e) => {
+          e.preventDefault()
           await handleAddCoupon()
           // showData()
         }}
         style={{ cursor: 'pointer' }}
       >
         新增優惠券
-      </a>
+      </button>
     </>
   )
 }

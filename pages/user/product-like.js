@@ -63,9 +63,9 @@ export default function ProductLike() {
     setIsLoading(true)
   }
 
-  const deleteLike = async (pid) => {
+  const deleteLike = async (pid, pd_cate) => {
     try {
-      const response = await deleteProductLike('pd', pid)
+      const response = await deleteProductLike(pd_cate, pid)
       if (response.code === '200') {
         Swal.fire({
           icon: 'success',
@@ -95,7 +95,7 @@ export default function ProductLike() {
     }
   }
 
-  const handleDeleteLike = (pid) => {
+  const handleDeleteLike = (pid, pd_cate) => {
     Swal.fire({
       title: '確定要移除收藏嗎？',
       icon: 'warning',
@@ -106,7 +106,7 @@ export default function ProductLike() {
       cancelButtonText: '取消',
     }).then(async (result) => {
       if (result.isConfirmed) {
-        await deleteLike(pid)
+        await deleteLike(pid, pd_cate)
       }
     })
   }
