@@ -1,64 +1,48 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+鍵之旅人 Key Traveler
+===
+資展國際（資策會）前端培訓班的小組專題，主題為**客製化鍵盤電商網站**。
 
-## Getting Started
-圖片部分請去雲端硬碟載
+[鍵之旅人後端 Github](https://github.com/jjjj88521/Key_traveler_backend)
+## 簡介
+創立這個網站的初衷，是為了彙整各個品牌的鍵盤商品，希望每位來購物的朋友都能在這個平台上找到符合自己需求的鍵盤，進而提高工作效率，寫下屬於自己的指尖旅程。
+### 主要功能
+1. 會員功能
+   - 登入註冊，可使用 google
+   - 查看及修改個人資料
+   - 收藏列表
+   - 訂單列表
+2. 商品列表（三種）
+   - 一般
+   - 團購
+   - 租用
+   - 每種都有篩選及排序功能
+3. 商品詳細頁面
+   - 商品收藏
+   - 商品圖庫
+   - 規格選擇
+   - 加入購物車
+   - 評價列表
+5. 文章列表
+   - 篩選排序
+6. 文章頁面
+   - 收藏
+   - 留言
+7. 購物車
+   - 包含三種商品的購物車
+   - 需要登入才能做使用
+   - 優惠券
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-## 專案架構
-## 目前的 package
-- dependencies
-    - "axios": "^1.4.0"
-    - "bootstrap": "^5.3.2"
-    - "eslint-config-next": "13.4.2"
-    - "formik": "^2.4.4"
-    - "lodash": "^4.17.21"
-    - "next": "13.4.2",
-    - "prop-types": "^15.8.1"
-    - "react": "18.2.0"
-    - "react-dom": "18.2.0"
-    - "validator": "^13.9.0"
-- devDependencies
-    - "eslint": "^8.40.0"
-    - "eslint-config-prettier": "^8.8.0"
-    - "eslint-import-resolver-alias": "^1.1.2"
-    - "eslint-plugin-import": "^2.27.5"
-    - "eslint-plugin-jsx-a11y": "^6.7.1"
-    - "eslint-plugin-prettier": "^4.2.1"
-    - "eslint-plugin-react": "^7.32.2"
-    - "eslint-plugin-react-hooks": "^4.6.0"
-    - "prettier": "^2.8.8"
-    - "sass": "^1.67.0"
+### 專案架構
+## 頁面展示
+### 主頁
+![主頁](https://i.imgur.com/h4HhvPf.png)
+### 商品
+#### 商品列表
+![商品列表](https://i.imgur.com/Dt8cH9f.png)
+#### 商品詳細頁
+![商品詳細頁](https://i.imgur.com/ztd9e4V.png)
+#### 有興趣的商品
+![有興趣的商品](https://i.imgur.com/IlBIQ2h.png)
+#### 評價列表
+![評價列表](https://i.imgur.com/acB8GQa.png)
