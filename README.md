@@ -31,9 +31,20 @@
    - 包含三種商品的購物車
    - 需要登入才能做使用
    - 優惠券
-
-
-### 專案架構
+### 專案主要技術
+- Next.js
+- React
+- SCSS
+- Ant Design
+- RWD
+- Bootstrap5
+- axios
+### 其他 plugin
+- Swiper.js
+- Anime.js
+- SweetAlert2
+- Day.js
+- AOS
 ## 頁面展示
 ### 主頁
 ![主頁](https://i.imgur.com/h4HhvPf.png)
