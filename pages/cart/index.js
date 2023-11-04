@@ -50,7 +50,7 @@ export default function Cart() {
             <div className="container">
               <div className="col-11 mx-auto">
                 <h1 className="text-primary fs-3 pt-5 pb-3">購物車清單</h1>
-                <div style={{ minHeight: '400px' }}>
+                <div style={{ minHeight: '200px' }}>
                   <PCartList />
                   <GCartList />
                   <RCartList />

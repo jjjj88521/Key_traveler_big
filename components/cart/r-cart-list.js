@@ -195,7 +195,7 @@ export default function RCartList() {
     <>
       {isLoading ? (
         <LoadingPage />
-      ) : Array.isArray(items) ? (
+      ) : Array.isArray(items) && items.length != 0 ? (
         <div>
           {/* 租用商品 */}
           {/* <div className="mb-3 text-primary d-none d-sm-block d-sm-flex"> */}
@@ -223,141 +223,145 @@ export default function RCartList() {
           </button>
           {/* </div> */}
           {/* 購物車 step1 電腦版 */}
-          <table className={`table d-none d-sm-table`}>
-            <thead>
-              <tr>
-                <th
-                  className="bg-primary text-white text-center align-middle"
-                  style={{ width: '5%' }}
-                >
-                  <input
-                    type="checkbox"
-                    checked={checkAll}
-                    onChange={() => {
-                      handleToggleCheckAll()
-                      checkAllRcart(!checkAll)
-                    }}
-                    disabled={items.length === 0 ? true : false}
-                  />
-                </th>
-                <th
-                  className="bg-primary text-white ps-3"
-                  style={{ width: '40%' }}
-                >
-                  商品明細
-                </th>
-                <th className="bg-primary text-white" style={{ width: '25%' }}>
-                  租用日期
-                </th>
-                <th className="bg-primary text-white text-center">小計</th>
-                <th className="bg-primary text-white"></th>
-              </tr>
-            </thead>
-            <tbody
-              className="accordion-collapse collapse show"
-              id="collapseTwo"
-            >
-              {items.map((item, index) => (
-                <tr key={index}>
-                  <td className="text-center align-middle">
+          <div className="accordion-collapse collapse show" id="collapseTwo">
+            <table className={`table d-none d-sm-table`}>
+              <thead>
+                <tr>
+                  <th
+                    className="bg-primary text-white text-center align-middle"
+                    style={{ width: '5%' }}
+                  >
                     <input
                       type="checkbox"
-                      checked={item.check ? true : false}
+                      checked={checkAll}
                       onChange={() => {
-                        checkRcart(item.id, item.specData)
+                        handleToggleCheckAll()
+                        checkAllRcart(!checkAll)
                       }}
+                      disabled={items.length === 0 ? true : false}
                     />
-                  </td>
-                  <td className="d-flex align-items-center">
-                    <div className="p-2">
-                      <Image src={item.img} width={120} height={100} alt="" />
-                    </div>
-                    <div className="p-2">
-                      <div>{item.brand}</div>
-                      <div>{item.name}</div>
-                      <div className="pt-1">
-                        {Object.keys(item.spec).map((key) => (
-                          <select
-                            key={key}
-                            className="form-select form-select-sm mb-1"
-                            style={{ width: 140 }}
-                            value={item.specData[key]}
-                            disabled
-                          >
-                            {item.spec[key].map((option, optionIndex) => (
-                              <option key={optionIndex} value={option}>
-                                {option}
-                              </option>
-                            ))}
-                          </select>
-                        ))}
+                  </th>
+                  <th
+                    className="bg-primary text-white ps-3"
+                    style={{ width: '40%' }}
+                  >
+                    商品明細
+                  </th>
+                  <th
+                    className="bg-primary text-white"
+                    style={{ width: '25%' }}
+                  >
+                    租用日期
+                  </th>
+                  <th className="bg-primary text-white text-center">小計</th>
+                  <th className="bg-primary text-white"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map((item, index) => (
+                  <tr key={index}>
+                    <td className="text-center align-middle">
+                      <input
+                        type="checkbox"
+                        checked={item.check ? true : false}
+                        onChange={() => {
+                          checkRcart(item.id, item.specData)
+                        }}
+                      />
+                    </td>
+                    <td className="d-flex align-items-center">
+                      <div className="p-2">
+                        <Image src={item.img} width={120} height={100} alt="" />
                       </div>
-                    </div>
-                  </td>
-                  <td className="align-middle">
-                    <input
-                      className="form-control w-75"
-                      type="date"
-                      id={`start_date${item.id}`}
-                      value={item.startDate}
-                      onChange={(e) =>
-                        dateCart(
-                          item.id,
-                          e.target.value,
-                          item.endDate,
-                          item.specData
-                        )
-                      }
-                      min={getCurrentDate()}
-                    />
-                    <div className="text-center pe-5 me-4">
-                      <FontAwesomeIcon
-                        icon={faCaretDown}
-                        className="text-secondary"
+                      <div className="p-2">
+                        <div>{item.brand}</div>
+                        <div>{item.name}</div>
+                        <div className="pt-1">
+                          {Object.keys(item.spec).map((key) => (
+                            <select
+                              key={key}
+                              className="form-select form-select-sm mb-1"
+                              style={{ width: 140 }}
+                              value={item.specData[key]}
+                              disabled
+                            >
+                              {item.spec[key].map((option, optionIndex) => (
+                                <option key={optionIndex} value={option}>
+                                  {option}
+                                </option>
+                              ))}
+                            </select>
+                          ))}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="align-middle">
+                      <input
+                        className="form-control w-75"
+                        type="date"
+                        id={`start_date${item.id}`}
+                        value={item.startDate}
+                        onChange={(e) =>
+                          dateCart(
+                            item.id,
+                            e.target.value,
+                            item.endDate,
+                            item.specData
+                          )
+                        }
+                        min={getCurrentDate()}
                       />
-                    </div>
-                    <input
-                      className="form-control w-75"
-                      type="date"
-                      id={`end_date${item.id}`}
-                      value={item.endDate}
-                      onChange={(e) =>
-                        dateCart(
-                          item.id,
-                          item.startDate,
-                          e.target.value,
-                          item.specData
-                        )
-                      }
-                      min={getCurrentDate()}
-                    />
-                  </td>
-                  <td className="align-middle text-center text-primary">
-                    ${item.subtotal}
-                  </td>
-                  <td className="align-middle text-center">
-                    <button
-                      className="btn border-white"
-                      type="button"
-                      onClick={() => {
-                        deleteRCart(item.id, item.specData)
-                      }}
-                    >
-                      <FontAwesomeIcon
-                        icon={faTrashCan}
-                        className="text-primary"
+                      <div className="text-center pe-5 me-4">
+                        <FontAwesomeIcon
+                          icon={faCaretDown}
+                          className="text-secondary"
+                        />
+                      </div>
+                      <input
+                        className="form-control w-75"
+                        type="date"
+                        id={`end_date${item.id}`}
+                        value={item.endDate}
+                        onChange={(e) =>
+                          dateCart(
+                            item.id,
+                            item.startDate,
+                            e.target.value,
+                            item.specData
+                          )
+                        }
+                        min={getCurrentDate()}
                       />
-                    </button>
+                    </td>
+                    <td className="align-middle text-center text-primary">
+                      ${item.subtotal}
+                    </td>
+                    <td className="align-middle text-center">
+                      <button
+                        className="btn border-white"
+                        type="button"
+                        onClick={() => {
+                          deleteRCart(item.id, item.specData)
+                        }}
+                      >
+                        <FontAwesomeIcon
+                          icon={faTrashCan}
+                          className="text-primary"
+                        />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+                <tr>
+                  <td className="pe-5 text-end" colSpan={6}>
+                    總計:{' '}
+                    <span className="text-primary">${cart.cartTotal}</span>
                   </td>
                 </tr>
-              ))}
-              <tr>
-                <td className="pe-5 text-end" colSpan={6}>
-                  總計: <span className="text-primary">${cart.cartTotal}</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
+
           {/* 租用商品 */}
           {/* 購物車 step1 手機版 */}
           <table className={`table d-table d-sm-none`}>

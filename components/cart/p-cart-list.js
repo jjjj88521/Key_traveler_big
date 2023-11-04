@@ -232,7 +232,7 @@ export default function PCartList() {
     <>
       {isLoading ? (
         <LoadingPage />
-      ) : Array.isArray(items) ? (
+      ) : Array.isArray(items) && items.length != 0 ? (
         <div>
           {/* 一般商品 */}
           <button
@@ -258,143 +258,147 @@ export default function PCartList() {
             <div>一般商品 ({items.length})</div>
           </button>
           {/* 購物車 step1 電腦版 */}
-          <table className={`table d-none d-sm-table`}>
-            <thead>
-              <tr>
-                <th
-                  className="bg-primary text-white text-center align-middle"
-                  style={{ width: '5%' }}
-                >
-                  <input
-                    type="checkbox"
-                    checked={checkAll}
-                    onChange={() => {
-                      handleToggleCheckAll()
-                      checkAllPcart(!checkAll)
-                    }}
-                    disabled={items.length === 0 ? true : false}
-                  />
-                  {/* </div> */}
-                </th>
-                <th
-                  className="bg-primary text-white ps-3"
-                  style={{ width: '40%' }}
-                >
-                  商品明細
-                </th>
-                <th className="bg-primary text-white" style={{ width: '10%' }}>
-                  單價
-                </th>
-                <th
-                  className="bg-primary text-white text-center"
-                  style={{ width: '15%' }}
-                >
-                  數量
-                </th>
-                <th className="bg-primary text-white text-center">小計</th>
-                <th className="bg-primary text-white"></th>
-              </tr>
-            </thead>
-            <tbody
-              className="accordion-collapse collapse show"
-              id="collapseOne"
-            >
-              {items.map((item, index) => (
-                <tr key={index}>
-                  <td className="text-center align-middle">
+          <div className="accordion-collapse collapse show" id="collapseOne">
+            <table className={`table d-none d-sm-table`}>
+              <thead>
+                <tr>
+                  <th
+                    className="bg-primary text-white text-center align-middle"
+                    style={{ width: '5%' }}
+                  >
                     <input
                       type="checkbox"
-                      checked={item.check ? true : false}
+                      checked={checkAll}
                       onChange={() => {
-                        checkPcart(item.id, item.specData)
+                        handleToggleCheckAll()
+                        checkAllPcart(!checkAll)
                       }}
+                      disabled={items.length === 0 ? true : false}
                     />
-                  </td>
-                  <td className="d-flex align-items-center">
-                    <div className="p-2">
-                      <Image src={item.img} width={120} height={100} alt="" />
-                    </div>
-                    <div className="p-2">
-                      <div>{item.brand}</div>
-                      <div>{item.name}</div>
-                      <div className="pt-1">
-                        {item.spec &&
-                          Object.keys(item.spec).map((key) => (
-                            <select
-                              key={key}
-                              className="form-select form-select-sm mb-1"
-                              style={{ width: 140 }}
-                              value={item.specData[key]}
-                              disabled
-                            >
-                              {item.spec[key].map((option, optionIndex) => (
-                                <option key={optionIndex} value={option}>
-                                  {option}
-                                </option>
-                              ))}
-                            </select>
-                          ))}
-                      </div>
-                    </div>
-                  </td>
-                  <td className="align-middle">${item.price}</td>
-                  <td className="align-middle ps-4">
-                    <div className="input-group">
-                      <span className="input-group-text p-0">
-                        <button
-                          className="btn"
-                          type="button"
-                          onClick={() => {
-                            minusPCart(item.id, item.specData)
-                          }}
-                        >
-                          -
-                        </button>
-                      </span>
+                    {/* </div> */}
+                  </th>
+                  <th
+                    className="bg-primary text-white ps-3"
+                    style={{ width: '40%' }}
+                  >
+                    商品明細
+                  </th>
+                  <th
+                    className="bg-primary text-white"
+                    style={{ width: '10%' }}
+                  >
+                    單價
+                  </th>
+                  <th
+                    className="bg-primary text-white text-center"
+                    style={{ width: '15%' }}
+                  >
+                    數量
+                  </th>
+                  <th className="bg-primary text-white text-center">小計</th>
+                  <th className="bg-primary text-white"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map((item, index) => (
+                  <tr key={index}>
+                    <td className="text-center align-middle">
                       <input
-                        type="text"
-                        className="form-control text-center"
-                        value={item.quantity}
+                        type="checkbox"
+                        checked={item.check ? true : false}
+                        onChange={() => {
+                          checkPcart(item.id, item.specData)
+                        }}
                       />
-                      <span className="input-group-text p-0">
-                        <button
-                          className="btn"
-                          type="button"
-                          onClick={() => {
-                            plusPCart(item.id, item.specData)
-                          }}
-                        >
-                          +
-                        </button>
-                      </span>
-                    </div>
-                  </td>
-                  <td className="align-middle text-center text-primary">
-                    ${item.price * item.quantity}
-                  </td>
-                  <td className="align-middle text-center">
-                    <button
-                      className="btn border-white"
-                      type="button"
-                      onClick={() => {
-                        deletePCart(item.id, item.specData)
-                      }}
-                    >
-                      <FontAwesomeIcon
-                        icon={faTrashCan}
-                        className="text-primary"
-                      />
-                    </button>
+                    </td>
+                    <td className="d-flex align-items-center">
+                      <div className="p-2">
+                        <Image src={item.img} width={120} height={100} alt="" />
+                      </div>
+                      <div className="p-2">
+                        <div>{item.brand}</div>
+                        <div>{item.name}</div>
+                        <div className="pt-1">
+                          {item.spec &&
+                            Object.keys(item.spec).map((key) => (
+                              <select
+                                key={key}
+                                className="form-select form-select-sm mb-1"
+                                style={{ width: 140 }}
+                                value={item.specData[key]}
+                                disabled
+                              >
+                                {item.spec[key].map((option, optionIndex) => (
+                                  <option key={optionIndex} value={option}>
+                                    {option}
+                                  </option>
+                                ))}
+                              </select>
+                            ))}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="align-middle">${item.price}</td>
+                    <td className="align-middle ps-4">
+                      <div className="input-group">
+                        <span className="input-group-text p-0">
+                          <button
+                            className="btn"
+                            type="button"
+                            onClick={() => {
+                              minusPCart(item.id, item.specData)
+                            }}
+                          >
+                            -
+                          </button>
+                        </span>
+                        <input
+                          type="text"
+                          className="form-control text-center"
+                          value={item.quantity}
+                        />
+                        <span className="input-group-text p-0">
+                          <button
+                            className="btn"
+                            type="button"
+                            onClick={() => {
+                              plusPCart(item.id, item.specData)
+                            }}
+                          >
+                            +
+                          </button>
+                        </span>
+                      </div>
+                    </td>
+                    <td className="align-middle text-center text-primary">
+                      ${item.price * item.quantity}
+                    </td>
+                    <td className="align-middle text-center">
+                      <button
+                        className="btn border-white"
+                        type="button"
+                        onClick={() => {
+                          deletePCart(item.id, item.specData)
+                        }}
+                      >
+                        <FontAwesomeIcon
+                          icon={faTrashCan}
+                          className="text-primary"
+                        />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+                <tr>
+                  <td className="pe-5 text-end" colSpan={6}>
+                    總計:{' '}
+                    <span className="text-primary">${cart.cartTotal}</span>
                   </td>
                 </tr>
-              ))}
-              <tr>
-                <td className="pe-5 text-end" colSpan={6}>
-                  總計: <span className="text-primary">${cart.cartTotal}</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
+
           {/* 一般商品 */}
           {/* 購物車 step1 手機版 */}
           <table className={`table d-table d-sm-none mb-4 accordion`}>

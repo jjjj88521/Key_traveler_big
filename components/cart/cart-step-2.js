@@ -342,158 +342,194 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
     }
   }
   // 結帳商品列表
-  const getItems = (panelStyle) => [
-    {
-      key: '1',
-      label: (
-        <div className="d-flex justify-content-between">
-          <p className="mb-0">一般商品</p>
-          <p className="mb-0">
-            {pOrderItems.length} 件商品，共計：
-            <span className="text-primary">${totalPriceP}</span>
-          </p>
-        </div>
-      ),
-      children: (
-        <List
-          dataSource={pOrderItems}
-          renderItem={(item) => (
-            <List.Item key={item.id}>
-              <div className="row w-100">
-                <div className="col-6">
-                  <List.Item.Meta
-                    title={item.name}
-                    description={
-                      <div className="d-flex gap-2 flex-sm-row flex-column">
-                        {Object.values(item.specData).map((spec, index) => (
-                          <span key={index}>{spec}</span>
-                        ))}
-                      </div>
-                    }
-                  />
-                </div>
-
-                <div className="col-6 row ms-2">
-                  <div className="col-sm-6 col-12 d-flex gap-2 justify-content-end px-2">
-                    <p>${item.price}</p>
-                    <span>x</span>
-                    <p>{item.quantity}</p>
+  const getItems = (panelStyle) => {
+    const items = [
+      {
+        key: '1',
+        label: (
+          <div className="d-flex justify-content-between">
+            <p className="mb-0">一般商品</p>
+            <p className="mb-0">
+              {pOrderItems.length} 件商品，共計：
+              <span className="text-primary">${totalPriceP}</span>
+            </p>
+          </div>
+        ),
+        children: (
+          <List
+            dataSource={pOrderItems}
+            renderItem={(item) => (
+              <List.Item key={item.id}>
+                <div className="row w-100">
+                  <div className="col-6">
+                    <List.Item.Meta
+                      title={item.name}
+                      description={
+                        <div className="d-flex gap-2 flex-sm-row flex-column">
+                          {Object.values(item.specData).map((spec, index) => (
+                            <span key={index}>{spec}</span>
+                          ))}
+                        </div>
+                      }
+                    />
                   </div>
-                  <p className="col fw-bold px-2 text-end">
-                    ${item.price * item.quantity}
-                  </p>
-                </div>
-              </div>
-            </List.Item>
-          )}
-        />
-      ),
-      style: panelStyle,
-    },
-    {
-      key: '2',
-      label: (
-        <div className="d-flex justify-content-between">
-          <p className="mb-0">團購商品</p>
-          <p className="mb-0">
-            {gOrderItems.length} 件商品，共計：
-            <span className="text-primary">${totalPriceG}</span>
-          </p>
-        </div>
-      ),
-      children: (
-        <List
-          dataSource={gOrderItems}
-          renderItem={(item) => (
-            <List.Item key={item.id}>
-              <div className="row w-100">
-                <div className="col-6">
-                  <List.Item.Meta
-                    title={item.name}
-                    description={
-                      <div className="d-flex gap-2 flex-sm-row flex-column">
-                        {Object.values(item.specData).map((spec, index) => (
-                          <span key={index}>{spec}</span>
-                        ))}
-                      </div>
-                    }
-                  />
-                </div>
 
-                <div className="col-6 row ms-2">
-                  <div className="col-sm-6 col-12 d-flex gap-2 justify-content-end px-2">
-                    <p>${item.price}</p>
-                    <span>x</span>
-                    <p>{item.quantity}</p>
-                  </div>
-                  <p className="col fw-bold px-2 text-end">
-                    ${item.price * item.quantity}
-                  </p>
-                </div>
-              </div>
-            </List.Item>
-          )}
-        />
-      ),
-      style: panelStyle,
-    },
-    {
-      key: '3',
-      label: (
-        <div className="d-flex justify-content-between">
-          <p className="mb-0">租用商品</p>
-          <p className="mb-0">
-            {rOrderItems.length} 件商品，共計：
-            <span className="text-primary">${totalPriceR}</span>
-          </p>
-        </div>
-      ),
-      children: (
-        <List
-          dataSource={rOrderItems}
-          renderItem={(item) => (
-            <List.Item key={item.id}>
-              <div className="row w-100">
-                <div className="col-6">
-                  <List.Item.Meta
-                    title={item.name}
-                    description={
-                      <div className="d-flex gap-2 flex-sm-row flex-column">
-                        {Object.values(item.specData).map((spec, index) => (
-                          <span key={index}>{spec}</span>
-                        ))}
-                      </div>
-                    }
-                  />
-                </div>
-
-                <div className="col-6 row ms-2">
-                  <div className="col-sm-6 col-12 d-flex gap-2 justify-content-sm-center justify-content-end px-2">
-                    <p className="d-flex flex-sm-row flex-column align-items-center">
-                      <span className="text-center">{item.startDate}</span>
-                      <span className="text-center">
-                        {' '}
-                        <CaretRightOutlined className="d-sm-block d-none align-middle" />
-                        <CaretDownOutlined className="d-sm-none d-block" />{' '}
-                      </span>
-                      <span className="text-center">{item.endDate}</span>
+                  <div className="col-6 row ms-2">
+                    <div className="col-sm-6 col-12 d-flex gap-2 justify-content-end px-2">
+                      <p>${item.price}</p>
+                      <span>x</span>
+                      <p>{item.quantity}</p>
+                    </div>
+                    <p className="col fw-bold px-2 text-end">
+                      ${item.price * item.quantity}
                     </p>
                   </div>
-                  <p className="col fw-bold px-2 text-end">
-                    $
-                    {item.price *
-                      (dayjs(item.endDate).diff(dayjs(item.startDate), 'day') +
-                        1)}
-                  </p>
                 </div>
-              </div>
-            </List.Item>
-          )}
-        />
-      ),
-      style: panelStyle,
-    },
-  ]
+              </List.Item>
+            )}
+          />
+        ),
+        style: panelStyle,
+      },
+      {
+        key: '2',
+        label: (
+          <div className="d-flex justify-content-between">
+            <p className="mb-0">團購商品</p>
+            <p className="mb-0">
+              {gOrderItems.length} 件商品，共計：
+              <span className="text-primary">${totalPriceG}</span>
+            </p>
+          </div>
+        ),
+        children: (
+          <List
+            dataSource={gOrderItems}
+            renderItem={(item) => (
+              <List.Item key={item.id}>
+                <div className="row w-100">
+                  <div className="col-6">
+                    <List.Item.Meta
+                      title={item.name}
+                      description={
+                        <div className="d-flex gap-2 flex-sm-row flex-column">
+                          {Object.values(item.specData).map((spec, index) => (
+                            <span key={index}>{spec}</span>
+                          ))}
+                        </div>
+                      }
+                    />
+                  </div>
+
+                  <div className="col-6 row ms-2">
+                    <div className="col-sm-6 col-12 d-flex gap-2 justify-content-end px-2">
+                      <p>${item.price}</p>
+                      <span>x</span>
+                      <p>{item.quantity}</p>
+                    </div>
+                    <p className="col fw-bold px-2 text-end">
+                      ${item.price * item.quantity}
+                    </p>
+                  </div>
+                </div>
+              </List.Item>
+            )}
+          />
+        ),
+        style: panelStyle,
+      },
+      {
+        key: '3',
+        label: (
+          <div className="d-flex justify-content-between">
+            <p className="mb-0">租用商品</p>
+            <p className="mb-0">
+              {rOrderItems.length} 件商品，共計：
+              <span className="text-primary">${totalPriceR}</span>
+            </p>
+          </div>
+        ),
+        children: (
+          <List
+            dataSource={rOrderItems}
+            renderItem={(item) => (
+              <List.Item key={item.id}>
+                <div className="row w-100">
+                  <div className="col-6">
+                    <List.Item.Meta
+                      title={item.name}
+                      description={
+                        <div className="d-flex gap-2 flex-sm-row flex-column">
+                          {Object.values(item.specData).map((spec, index) => (
+                            <span key={index}>{spec}</span>
+                          ))}
+                        </div>
+                      }
+                    />
+                  </div>
+
+                  <div className="col-6 row ms-2">
+                    <div className="col-sm-6 col-12 d-flex gap-2 justify-content-sm-center justify-content-end px-2">
+                      <p className="d-flex flex-sm-row flex-column align-items-center">
+                        <span className="text-center">{item.startDate}</span>
+                        <span className="text-center">
+                          {' '}
+                          <CaretRightOutlined className="d-sm-block d-none align-middle" />
+                          <CaretDownOutlined className="d-sm-none d-block" />{' '}
+                        </span>
+                        <span className="text-center">{item.endDate}</span>
+                      </p>
+                    </div>
+                    <p className="col fw-bold px-2 text-end">
+                      $
+                      {item.price *
+                        (dayjs(item.endDate).diff(
+                          dayjs(item.startDate),
+                          'day'
+                        ) +
+                          1)}
+                    </p>
+                  </div>
+                </div>
+              </List.Item>
+            )}
+          />
+        ),
+        style: panelStyle,
+      },
+    ]
+    // pOrderItems , gOrderItems , rOrderItems
+    if (pOrderItems.length !== 0) {
+      if (gOrderItems.length !== 0) {
+        if (rOrderItems.length == 0) {
+          items.splice(2, 1) // 移除3
+        }
+      } else {
+        if (rOrderItems.length !== 0) {
+          items.splice(1, 1) // 移除2
+        } else {
+          items.splice(1, 2) // 移除2.3
+        }
+      }
+    } else {
+      // 移除1
+      if (gOrderItems.length !== 0) {
+        if (rOrderItems.length !== 0) {
+          items.splice(0, 1) // 移除1
+        } else {
+          items.splice(0, 1) // 移除1
+          items.splice(1, 1) // 移除3
+        }
+      } else {
+        if (rOrderItems.length !== 0) {
+          items.splice(0, 2) // 移除1.2
+        } else {
+          items.splice(0, 3) // 移除1.2.3
+        }
+      }
+    }
+    return items
+  }
   const panelStyle = {
     marginBottom: 24,
     background: '#fff',

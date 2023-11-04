@@ -34,7 +34,7 @@ export default function ListCardForCoupon({ data, type }) {
                   />
                 </div>
                 <div
-                  className="ms-2 position-relative"
+                  className="ms-2 position-relative w-100"
                   style={{ height: '120px' }}
                 >
                   <h5 className="text-primary">

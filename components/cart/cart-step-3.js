@@ -24,7 +24,7 @@ export default function CartStep3() {
       key: 'name',
     },
     {
-      title: '收件人地址電話',
+      title: '收件人電話',
       dataIndex: 'phone',
       key: 'phone',
     },
@@ -136,7 +136,56 @@ export default function CartStep3() {
           {/* 手機版 */}
           <div className="d-sm-none d-block">
             <div className="mt-5"></div>
-            <Table columns={columns} dataSource={data} pagination={false} />
+            <table className="table table-bordered">
+              <tbody>
+                {orderNumPd !== '' ? (
+                  <tr>
+                    <td className="col-4 text-center text-primary">
+                      一般訂單編號
+                    </td>
+                    <td>{orderNumPd}</td>
+                  </tr>
+                ) : (
+                  ''
+                )}
+                {orderNumGb !== '' ? (
+                  <tr>
+                    <td className="col-4 text-center text-primary">
+                      團購訂單編號
+                    </td>
+                    <td>{orderNumGb}</td>
+                  </tr>
+                ) : (
+                  ''
+                )}
+                {orderNumR !== '' ? (
+                  <tr>
+                    <td className="col-4 text-center text-primary">
+                      租用訂單編號
+                    </td>
+                    <td>{orderNumR}</td>
+                  </tr>
+                ) : (
+                  ''
+                )}
+                <tr>
+                  <td className="col-4 text-center text-primary">收件人姓名</td>
+                  <td>{buyer['buyer-info'].name}</td>
+                </tr>
+                <tr>
+                  <td className="col-4 text-center text-primary">收件人電話</td>
+                  <td>{buyer['buyer-info'].phone}</td>
+                </tr>
+                <tr>
+                  <td className="col-4 text-center text-primary">收件人地址</td>
+                  <td>{buyer['buyer-info'].address}</td>
+                </tr>
+                <tr>
+                  <td className="col-4 text-center text-primary">狀態</td>
+                  <td>已結帳</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           {/* 電腦版 */}
           <div className="d-none d-sm-block">
