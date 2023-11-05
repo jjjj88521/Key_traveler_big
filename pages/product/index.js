@@ -165,7 +165,7 @@ export default function ProductIndex() {
         <div className="w-100 h-100 p-4 p-sm-0">
           <img
             className={`w-100 h-100 object-fit-cover ${styles.rounded}`}
-            src="/images/testBanner.png"
+            src="/images/testbanner.png"
             alt="banner"
           />
         </div>
