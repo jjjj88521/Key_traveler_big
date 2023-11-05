@@ -66,7 +66,7 @@ export default function Footer() {
               className="text-primary d-flex d-sm-block justify-content-center mb-0"
               style={{ fontSize: '12px' }}
             >
-              2023 Key Traveler. All rights reverved
+              2023 Key Traveler. 此網站僅供學習使用，無任何商業用途。
             </p>
           </div>
         </div>
