@@ -41,12 +41,12 @@ yarn.lock
 /.temp/
 
 # 圖片
-*.png
-*.jpg
-*.jpeg
-*.svg
-*.gif
-*.ico
+# *.png
+# *.jpg
+# *.jpeg
+# *.svg
+# *.gif
+# *.ico
 
 #測試檔案
 API-test.js
