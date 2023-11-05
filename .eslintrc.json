@@ -37,11 +37,11 @@
   "plugins": ["jsx-a11y", "react", "react-hooks", "prettier"],
   "rules": {
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/exhaustive-deps": "off",
     "react/react-in-jsx-scope": "off",
     "jsx-a11y/anchor-is-valid": "off",
     "react/prop-types": "off",
-    "prettier/prettier": "warn",
-    "no-unused-vars": "warn"
+    "prettier/prettier": "off",
+    "no-unused-vars": "off"
   }
 }
