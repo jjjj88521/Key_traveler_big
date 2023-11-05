@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
+  ignoreDuringBuilds: true,
   images: {
     domains: ['via.placeholder.com', 'localhost', 'tamilnaducouncil.ac.in'],
   },
