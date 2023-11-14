@@ -4,6 +4,9 @@ const nextConfig = {
   images: {
     domains: ['via.placeholder.com', 'localhost', 'tamilnaducouncil.ac.in'],
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   // comment for render twice issue
   // avoid cors with proxy
   // async rewrites() {

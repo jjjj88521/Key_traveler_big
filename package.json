@@ -50,6 +50,7 @@
     "react-quill": "^2.0.0",
     "react-router": "^6.17.0",
     "sass-loader": "^13.3.2",
+    "sharp": "^0.32.6",
     "sweetalert2": "^11.7.32",
     "swiper": "^10.2.0",
     "uuid": "^9.0.1",
