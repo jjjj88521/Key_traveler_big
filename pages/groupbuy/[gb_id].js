@@ -1,7 +1,7 @@
 import GbHead from '@/components/groupbuy/gb-head'
 import TabContainer from '@/components/product/ProductTab'
 import TabButton from '@/components/product/ProductTab/TabButton'
-import { useProductData } from '@/context/use-product'
+import { useProductData } from '@/context/useProduct'
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'

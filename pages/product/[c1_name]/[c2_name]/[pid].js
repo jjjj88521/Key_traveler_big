@@ -9,7 +9,7 @@ import axios from 'axios'
 import useRecentlyViewed from '@/hooks/useRecentlyViewed'
 import Swal from 'sweetalert2'
 import useLoading from '@/hooks/useLoading'
-import { useProductData } from '@/context/use-product'
+import { useProductData } from '@/context/useProduct'
 import {
   fetchProduct,
   fetchProductLike,
@@ -61,17 +61,6 @@ export default function ProductDetail() {
     const fetchData = async () => {
       // 每次獲取資料前都先重設載入中狀態
       setIsLoading(true)
-      await fetchProduct(pid)
-        .then((product) => {
-          if (Object.keys(product).length === 0) {
-            throw new Error('沒有此商品')
-          }
-          setProductData(product)
-        })
-        .catch((error) => {
-          console.log(error)
-          router.push('/404')
-        })
       await fetchPdCommentCount(pid).then((data) => {
         setCommentCount(data)
       })
@@ -85,11 +74,22 @@ export default function ProductDetail() {
       await fetchMaybeLike(pid).then((products) => {
         setMaybeLike(products)
       })
+      await fetchProduct(pid)
+        .then((product) => {
+          if (Object.keys(product).length === 0) {
+            throw new Error('沒有此商品')
+          }
+          setProductData(product)
+        })
+        .catch((error) => {
+          console.log(error)
+          router.push('/404')
+        })
     }
-    if (isReady) {
+    if (pid && isReady) {
       fetchData()
     }
-  }, [isReady, pid, auth]) // 登出之後也會再觸發重新整理
+  }, [pid, isReady, auth]) // 登出之後也會再觸發重新整理
 
   // 最近瀏覽商品 hooks，傳入 type: 'product'，代表是一般商品
   const [recentlyViewed, addToRecentlyViewed] = useRecentlyViewed({

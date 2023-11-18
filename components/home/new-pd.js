@@ -2,9 +2,11 @@ import axios from 'axios'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import Card from '../product/Card'
+import useLoading from '@/hooks/useLoading'
 
 export default function NewPd() {
   const [newProducts, setNewProducts] = useState([])
+  const [isLoading, setIsLoading] = useLoading(newProducts.length)
   useEffect(() => {
     axios
       .get(
