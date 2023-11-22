@@ -50,7 +50,11 @@ const authSlice = createSlice({
         if (action.payload.code === '200') {
           state.isAuth = false
           state.user = initialState.user
-          const redirect = localStorage.getItem('redirect') || '/'
+          let redirect = localStorage.getItem('redirect') || '/'
+          redirect =
+            redirect.startsWith('/user') || redirect.startsWith('/cart')
+              ? '/'
+              : redirect
           showSuccessAlert('登出成功', redirect)
         }
       })
