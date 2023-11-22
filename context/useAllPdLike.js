@@ -1,5 +1,5 @@
 // 取得登入會員的所有收藏商品 id，並且存成物件，包含三種商品的陣列
-import { useAuth } from '@/hooks/useAuth'
+import { useSelector } from 'react-redux'
 import axios from 'axios'
 import React, { useContext, useState, createContext, useEffect } from 'react'
 import { useRouter } from 'next/router'
@@ -7,14 +7,15 @@ import { useRouter } from 'next/router'
 const AllPdLikeContext = createContext()
 
 export function AllPdLikeProvider({ children }) {
-  const { auth } = useAuth()
+  const auth = useSelector((state) => state.auth)
   const router = useRouter()
   const [allPdLike, setAllPdLike] = useState({ pd: [], gb: [], rt: [] })
 
   const getAllPdLike = async () => {
     try {
       const response = await axios.get(
-        'http://localhost:3005/api/product-like/my-favorite',
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL +
+          '/api/product-like/my-favorite',
         {
           withCredentials: true,
         }

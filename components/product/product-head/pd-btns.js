@@ -5,7 +5,7 @@ import React from 'react'
 import Swal from 'sweetalert2'
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import { useAuth } from '@/hooks/useAuth'
+import { useSelector } from 'react-redux'
 
 const addToCart = (type, addPItem, addGItem, addRItem) => {
   const data =
@@ -21,7 +21,7 @@ const addToCart = (type, addPItem, addGItem, addRItem) => {
 
       try {
         const response = await axios.post(
-          'http://localhost:3005/api/cart/addproduct',
+          process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/cart/addproduct',
           newPData,
           {
             withCredentials: true, // save cookie in browser
@@ -58,7 +58,7 @@ const addToCart = (type, addPItem, addGItem, addRItem) => {
 
       try {
         const response = await axios.post(
-          'http://localhost:3005/api/cart/addgroupbuy',
+          process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/cart/addgroupbuy',
           newGData,
           {
             withCredentials: true, // save cookie in browser
@@ -102,7 +102,7 @@ const addToCart = (type, addPItem, addGItem, addRItem) => {
       }
       try {
         const response = await axios.post(
-          'http://localhost:3005/api/cart/addrent',
+          process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/cart/addrent',
           newRData,
           {
             withCredentials: true, // save cookie in browser
@@ -145,7 +145,7 @@ const AddCartBtn = ({ type }) => {
   const { addItem: addRItem } = useRentCart()
   const { addItem: addGItem } = useGroupCart()
   const router = useRouter()
-  const { auth } = useAuth()
+  const auth = useSelector((state) => state.auth)
   const { getCartData } = useCart()
   const { getCartData: getRentCartData } = useRentCart()
   const { getCartData: getGroupCartData } = useGroupCart()
@@ -189,7 +189,7 @@ const BuyBtn = ({ type }) => {
   const { addItem: addGItem } = useRentCart()
   const { addItem: addRItem } = useGroupCart()
   const router = useRouter()
-  const { auth } = useAuth()
+  const auth = useSelector((state) => state.auth)
 
   const handleAddToBuy = async () => {
     await addToCart(type, addPItem, addGItem, addRItem)

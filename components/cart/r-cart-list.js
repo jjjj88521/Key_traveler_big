@@ -65,7 +65,7 @@ export default function RCartList() {
 
     try {
       const response = await axios.post(
-        'http://localhost:3005/api/cart/rentdate',
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/cart/rentdate',
         rCart,
         {
           withCredentials: true, // save cookie in browser
@@ -92,7 +92,7 @@ export default function RCartList() {
 
     try {
       const response = await axios.post(
-        'http://localhost:3005/api/cart/deleterent',
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/cart/deleterent',
         rCart,
         {
           withCredentials: true, // save cookie in browser
@@ -118,7 +118,7 @@ export default function RCartList() {
 
     try {
       const response = await axios.post(
-        'http://localhost:3005/api/cart/checkrent',
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/cart/checkrent',
         rCart,
         {
           withCredentials: true, // save cookie in browser
@@ -143,7 +143,7 @@ export default function RCartList() {
 
     try {
       const response = await axios.post(
-        'http://localhost:3005/api/cart/checkallrent',
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/cart/checkallrent',
         rCart,
         {
           withCredentials: true, // save cookie in browser

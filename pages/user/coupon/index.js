@@ -3,14 +3,16 @@ import UserLayout from '@/components/layout/user-layout'
 import NewCoupon from '@/components/user/newCoupon'
 import CouponAll from '@/components/user/coupon-all'
 import CouponExpiring from '@/components/user/coupon-expiring'
-import { useAuth } from '@/hooks/useAuth'
+import { useDispatch, useSelector } from 'react-redux'
 import useLoading from '@/hooks/useLoading'
 import { Radio } from 'antd'
+import { getCoupon } from '@/redux/actions/coupon'
 
 export default function Coupon() {
-  const { auth, setAuth, coupon, getCoupon } = useAuth()
+  const dispatch = useDispatch()
+  const { coupon } = useSelector((state) => state.coupon)
   useEffect(() => {
-    getCoupon()
+    dispatch(getCoupon())
   }, [])
   // console.log(coupon)
   const [isLoading, setIsLoading] = useLoading(coupon)

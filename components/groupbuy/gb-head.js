@@ -20,9 +20,9 @@ import {
   WaitingStartGbBtn,
 } from '@/components/product/product-head/pd-btns'
 import GbProgressBox from './gb-progress'
-import { useProductData } from '@/context/use-product'
+import { useProductData } from '@/context/useProduct'
 import { useRouter } from 'next/router'
-import { addProductLike, deleteProductLike } from '@/libs/productFetcher'
+import { addProductLike, deleteProductLike } from '@/utils/productFetcher'
 import Swal from 'sweetalert2'
 import useMobile from '@/hooks/useMobile'
 import { Select } from 'antd'

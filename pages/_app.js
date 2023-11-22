@@ -1,37 +1,40 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import DefaultLayout from '@/components/layout/default-layout'
 import '@/styles/globals.scss'
 import AntdConfigProvider from './_antd-config-provider'
 import HomeLayout from '@/components/layout/home-layout'
-import { AuthProvider } from '@/hooks/useAuth'
 import HydrationFix from './_hydration-fix'
 // 商品
-import { ProductDataProvider } from '@/context/use-product'
+import { ProductDataProvider } from '@/context/useProduct'
 import { AllPdLikeProvider } from '@/context/useAllPdLike'
 // 購物車
 import { CartProvider } from '@/hooks/useCart'
 import { RentCartProvider } from '@/hooks/useRentCart'
 import { GroupCartProvider } from '@/hooks/useGroupCart'
+import { Provider, useDispatch } from 'react-redux'
+import { store } from '@/redux/store'
+import { checkLoginAsync } from '@/redux/actions/auth'
 
-export default function MyApp({ Component, pageProps }) {
+export default function AppWrapper({ Component, pageProps }) {
+  return (
+    <Provider store={store}>
+      <MyApp Component={Component} pageProps={pageProps} />
+    </Provider>
+  )
+}
+
+export function MyApp({ Component, pageProps }) {
   // Use the layout defined at the page level, if available
+  const dispatch = useDispatch()
   // 頁面載入引入 bootstrap
   useEffect(() => {
     import('bootstrap/dist/js/bootstrap.bundle.min.js')
+    dispatch(checkLoginAsync())
   }, [])
 
   const router = useRouter()
   const { pathname } = router
-  const [isLoginPage, setIsLoginPage] = useState(false)
-
-  useEffect(() => {
-    if (pathname === '/user/login') {
-      setIsLoginPage(true)
-    } else {
-      setIsLoginPage(false)
-    }
-  }, [])
 
   const getLayout =
     Component.getLayout ||
@@ -48,21 +51,19 @@ export default function MyApp({ Component, pageProps }) {
       }
       return (
         // 會員登入
-        <AuthProvider>
-          <AllPdLikeProvider>
-            <ProductDataProvider>
-              <CartProvider>
-                <RentCartProvider>
-                  <GroupCartProvider>
-                    <HydrationFix>
-                      <AntdConfigProvider>{layoutComponent}</AntdConfigProvider>
-                    </HydrationFix>
-                  </GroupCartProvider>
-                </RentCartProvider>
-              </CartProvider>
-            </ProductDataProvider>
-          </AllPdLikeProvider>
-        </AuthProvider>
+        <AllPdLikeProvider>
+          <ProductDataProvider>
+            <CartProvider>
+              <RentCartProvider>
+                <GroupCartProvider>
+                  <HydrationFix>
+                    <AntdConfigProvider>{layoutComponent}</AntdConfigProvider>
+                  </HydrationFix>
+                </GroupCartProvider>
+              </RentCartProvider>
+            </CartProvider>
+          </ProductDataProvider>
+        </AllPdLikeProvider>
       )
     })
   // AuthProvider 會員登入用

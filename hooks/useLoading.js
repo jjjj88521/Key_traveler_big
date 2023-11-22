@@ -6,16 +6,8 @@ export default function useLoading(data) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    let timer
     if (data) {
-      timer = setTimeout(() => {
-        setIsLoading(false)
-      }, 300)
-    }
-    return () => {
-      if (timer) {
-        clearTimeout(timer)
-      }
+      setIsLoading(false)
     }
   }, [data])
 

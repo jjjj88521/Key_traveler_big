@@ -1,12 +1,10 @@
 import React from 'react'
 import { DatePicker } from 'antd'
 import { useState, useRef, useEffect } from 'react'
-import { useAuth } from '@/hooks/useAuth'
+import { useSelector } from 'react-redux'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import useLoading from '@/hooks/useLoading'
-import LoadingPage from '@/components/common/loadingPage'
-import styles from '@/styles/user/member.module.css'
 const disabledDate = (current) => {
   return current && current > new Date()
 }
@@ -16,15 +14,13 @@ const customInputStyle = {
 }
 
 export default function ProfileForm() {
-  const { auth, setAuth } = useAuth()
-  // useEffect(() => {
-  //   setformData({ ...auth.user })
-  // }, [])
   // 更新會員資料
+  const auth = useSelector((state) => state.auth)
+  console.log(auth)
   const updateUser = (user) => {
     // 更新會員資料
     axios
-      .put('http://localhost:3005/api/users/update', user)
+      .put(process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/users/update', user)
       .then((response) => {
         if (response.data.message === 'success') {
           console.log(response)
@@ -39,19 +35,6 @@ export default function ProfileForm() {
         console.log('更新發生錯誤')
       })
   }
-
-  // 重新整理後驗證登入狀態
-  // useEffect(() => {
-  //   if (localStorage.getItem('loginToken')) {
-  //     console.log(jwtDecode(localStorage.getItem('loginToken')))
-  //     const data = jwtDecode(localStorage.getItem('loginToken'))
-  //     setAuth({ ...data })
-  //     setformData({ ...data })
-  //     console.log(auth)
-  //   } else {
-  //     Router.push('/user/login')
-  //   }
-  // }, [])
   //宣告儲存會員資料
   const [formData, setformData] = useState({ ...auth.user })
 
@@ -74,9 +57,6 @@ export default function ProfileForm() {
   function handleSetformData(e, mes) {
     setformData({ ...formData, [e.target.name]: e.target.value })
   }
-  // console.log(formData)
-  console.log('error:', error)
-  const [isLoading, setIsLoading] = useLoading(auth.isAuth)
   return (
     <>
       <form action="" className="w-100">
@@ -186,7 +166,7 @@ export default function ProfileForm() {
             disabledDate={disabledDate}
             placeholder={auth.user.birthday}
             className={`form-control `}
-            // defaultValue={auth.user.birthday}
+            // defaultValue={user.user.birthday}
             // disabled=false
             // style={customInputStyle}
             // style={{ fontWeight: 700 }}

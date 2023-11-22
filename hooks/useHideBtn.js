@@ -7,10 +7,11 @@ export default function useHideBtn() {
     next: false,
   })
   const handleSwiperBtnHide = (swiper) => {
-    setHideBtn({
+    setHideBtn((prev) => ({
+      ...prev,
       prev: swiper.isBeginning,
       next: swiper.isEnd,
-    })
+    }))
   }
   return { hideBtn, handleSwiperBtnHide, setHideBtn }
 }

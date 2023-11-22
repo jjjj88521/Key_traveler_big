@@ -1,7 +1,7 @@
 import React from 'react'
 import { Progress } from 'antd'
 import { FieldTimeOutlined, UserOutlined } from '@ant-design/icons'
-import { useProductData } from '@/context/use-product'
+import { useProductData } from '@/context/useProduct'
 import dayjs from 'dayjs'
 import { Statistic } from 'antd'
 import useMobile from '@/hooks/useMobile'

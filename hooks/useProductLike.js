@@ -10,7 +10,7 @@ export const useProductLike = () => {
   const fetchProductLike = async (pid) => {
     try {
       const response = await axios.get(
-        `http://localhost:3005/api/product-like/${pid}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/product-like/${pid}`,
         {
           withCredentials: true, // 跨域獲取cookie
         }
@@ -27,7 +27,7 @@ export const useProductLike = () => {
   const addLike = async (pid) => {
     try {
       const response = await axios.put(
-        `http://localhost:3005/api/product-like/${pid}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/product-like/${pid}`,
         {},
         {
           withCredentials: true,
@@ -50,7 +50,7 @@ export const useProductLike = () => {
   const deleteLike = async (pid) => {
     try {
       const response = await axios.delete(
-        `http://localhost:3005/api/product-like/${pid}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/product-like/${pid}`,
         {
           withCredentials: true,
         }

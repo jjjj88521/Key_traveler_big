@@ -31,7 +31,7 @@ export default function ProductCate2() {
       // 抓此類別的所有商品
       axios
         .get(
-          `http://localhost:3005/api/products/qs?cate_1=${c1_name}&cate_2=${c2_name}`
+          `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/products/qs?cate_1=${c1_name}&cate_2=${c2_name}`
         )
         .then((res) => {
           setCateProducts(res.data)
@@ -42,7 +42,9 @@ export default function ProductCate2() {
 
       // 抓此類別的名稱，以顯示在banner的文字
       axios
-        .get(`http://localhost:3005/api/category/${c1_name}/${c2_name}`)
+        .get(
+          `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/category/${c1_name}/${c2_name}`
+        )
         .then((res) => {
           setcateName(res.data.name)
         })
@@ -69,7 +71,7 @@ export default function ProductCate2() {
   const filterRange = () => {
     axios
       .get(
-        `http://localhost:3005/api/products/qs?cate_1=${c1_name}&cate_2=${c2_name}&${range}`
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/products/qs?cate_1=${c1_name}&cate_2=${c2_name}&${range}`
       )
       .then((res) => {
         setCateProducts(res.data)
@@ -86,7 +88,7 @@ export default function ProductCate2() {
   // 排序
   const orderProduct = (orderby) => {
     // 建構 Axios 請求，包含分頁頁碼以及篩選條件
-    let requestUrl = `http://localhost:3005/api/products/qs?cate_1=${c1_name}&cate_2=${c2_name}&orderby=${orderby}`
+    let requestUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/products/qs?cate_1=${c1_name}&cate_2=${c2_name}&orderby=${orderby}`
 
     // 如果有做過"篩選"或"排序"，就要將其包含在請求中
     if (filterRangeValue) {
@@ -122,7 +124,7 @@ export default function ProductCate2() {
     setPage(newPage)
 
     // 建構 Axios 請求，包含分頁頁碼以及篩選條件
-    let requestUrl = `http://localhost:3005/api/products/qs?cate_1=${c1_name}&cate_2=${c2_name}&page=${newPage}`
+    let requestUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/products/qs?cate_1=${c1_name}&cate_2=${c2_name}&page=${newPage}`
 
     // 如果有做過"篩選"或"排序"，就要將其包含在請求中
     if (filterRangeValue) {
@@ -153,7 +155,7 @@ export default function ProductCate2() {
       setShowZeroStock(1)
       axios
         .get(
-          `http://localhost:3005/api/products/qs?cate_1=${c1_name}&cate_2=${c2_name}&stock=1`
+          `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/products/qs?cate_1=${c1_name}&cate_2=${c2_name}&stock=1`
         )
         .then((res) => {
           setCateProducts(res.data)
@@ -165,7 +167,7 @@ export default function ProductCate2() {
       setShowZeroStock(0)
       axios
         .get(
-          `http://localhost:3005/api/products/qs?cate_1=${c1_name}&cate_2=${c2_name}`
+          `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/products/qs?cate_1=${c1_name}&cate_2=${c2_name}`
         )
         .then((res) => {
           setCateProducts(res.data)
@@ -275,7 +277,7 @@ export default function ProductCate2() {
                 style={{ fontSize: '16px' }}
               >
                 <i
-                  class="fa-solid fa-sliders"
+                  className="fa-solid fa-sliders"
                   style={{ marginRight: '10px' }}
                 ></i>{' '}
                 篩選

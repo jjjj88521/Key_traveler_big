@@ -100,7 +100,9 @@ export default function ProductIndex() {
     const fetchGroupbuyList = async () => {
       setIsLoading(true)
       await axios
-        .get(`http://localhost:3005/api/groupbuy/qs`, { params })
+        .get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/groupbuy/qs`, {
+          params,
+        })
         .then((res) => {
           setCateProducts(res.data)
           setFilterParams({ ...params })
@@ -310,7 +312,7 @@ export default function ProductIndex() {
               onClick={showDrawer}
             >
               <i
-                class="fa-solid fa-sliders"
+                className="fa-solid fa-sliders"
                 style={{ marginRight: '10px' }}
               ></i>
               篩選

@@ -4,7 +4,7 @@ import SpecTab from './spec-tab'
 import ReviewTab from './review-tab'
 import style from '@/styles/_fade-in-out.module.scss'
 import GbDescription from './gb-desc.js'
-import { useProductData } from '@/context/use-product.js'
+import { useProductData } from '@/context/useProduct.js'
 import RentDesc from './rent-desc.js'
 
 export default function TabContainer({ children }) {

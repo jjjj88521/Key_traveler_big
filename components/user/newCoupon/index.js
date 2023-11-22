@@ -1,17 +1,22 @@
 import { React, useEffect, useState } from 'react'
-import { useAuth } from '@/hooks/useAuth'
+import { useSelector, useDispatch } from 'react-redux'
 import Swal from 'sweetalert2'
 import axios from 'axios'
 import ListCardForCoupon from '../List-Card'
+import { addCoupon } from '@/redux/actions/coupon'
 
 export default function NewCoupon({ changePage }) {
-  const { auth, coupon, addCoupon } = useAuth()
+  // const { auth, coupon, addCoupon } = useAuth()
+  // redux
+  const dispatch = useDispatch()
+  const auth = useSelector((state) => state.auth)
+  const { coupon } = useSelector((state) => state.coupon)
   const [testc, setTestC] = useState([{}])
   console.log(coupon)
   const getCode = async () => {
     try {
       const response = await axios.get(
-        'http://localhost:3005/api/coupon/getcouponcode',
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/coupon/getcouponcode',
         {
           withCredentials: true,
         }
@@ -70,7 +75,8 @@ export default function NewCoupon({ changePage }) {
       if (e.target.matches('.btn.btn-primary.btn-get-coupon')) {
         const index = e.target.getAttribute('data-index')
         const code = e.target.getAttribute('data-code')
-        addCoupon(code, auth.user.id)
+        // addCoupon(code, auth.user.id)
+        dispatch(addCoupon(code))
         getbtn(code)
       }
     })

@@ -62,7 +62,7 @@ export default function GCartList() {
 
     try {
       const response = await axios.post(
-        'http://localhost:3005/api/cart/minusgroupbuy',
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/cart/minusgroupbuy',
         gCart,
         {
           withCredentials: true, // save cookie in browser
@@ -92,7 +92,7 @@ export default function GCartList() {
 
     try {
       const response = await axios.post(
-        'http://localhost:3005/api/cart/plusgroupbuy',
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/cart/plusgroupbuy',
         gCart,
         {
           withCredentials: true, // save cookie in browser
@@ -117,7 +117,7 @@ export default function GCartList() {
 
     try {
       const response = await axios.post(
-        'http://localhost:3005/api/cart/deletegroupbuy',
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/cart/deletegroupbuy',
         gCart,
         {
           withCredentials: true, // save cookie in browser
@@ -143,7 +143,7 @@ export default function GCartList() {
 
     try {
       const response = await axios.post(
-        'http://localhost:3005/api/cart/checkgroupbuy',
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/cart/checkgroupbuy',
         gCart,
         {
           withCredentials: true, // save cookie in browser
@@ -168,7 +168,7 @@ export default function GCartList() {
 
     try {
       const response = await axios.post(
-        'http://localhost:3005/api/cart/checkallgroupbuy',
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/cart/checkallgroupbuy',
         gCart,
         {
           withCredentials: true, // save cookie in browser

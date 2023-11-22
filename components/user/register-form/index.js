@@ -29,7 +29,10 @@ export default function RegisterForm({
   const formRef = useRef(null) //重填功能
   const welcomeMail = () => {
     axios
-      .post(`http://localhost:3005/api/email-user/send`, formData)
+      .post(
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/email-user/send`,
+        formData
+      )
       .then((res) => {
         console.log('歡迎信寄送成功')
       })
@@ -41,7 +44,7 @@ export default function RegisterForm({
   const createUser = (user) => {
     // 新增會員資料
     axios
-      .post('http://localhost:3005/api/users/', user)
+      .post(process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/users/', user)
       .then((response) => {
         if (response.data.message === 'success') {
           console.log('新增成功')
@@ -66,7 +69,7 @@ export default function RegisterForm({
   const [allData, setAllData] = useState([])
   const allUserData = async () => {
     await axios
-      .get('http://localhost:3005/api/users/')
+      .get(process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/users/')
       .then((res) => {
         console.log('讀取成功')
         console.log(res.data.users)

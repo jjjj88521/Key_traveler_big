@@ -7,7 +7,7 @@ import React, {
 } from 'react'
 import { reducer, initGroup } from './cart-reducer'
 import axios from 'axios'
-import { useAuth } from './useAuth'
+import { useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 const GroupCartContext = createContext(null)
 
@@ -32,7 +32,7 @@ const GroupCartContext = createContext(null)
 export const GroupCartProvider = ({ children }) => {
   const router = useRouter()
 
-  const { auth } = useAuth()
+  const auth = useSelector((state) => state.auth)
   // // init state, init來自cartReducer中
   // const [state, dispatch] = useReducer(reducer, updatedItems, initGroup)
   const [state, dispatch] = useReducer(reducer, [], initGroup)
@@ -41,7 +41,7 @@ export const GroupCartProvider = ({ children }) => {
     dispatch({ type: 'CLEAR_CART' })
     try {
       const response = await axios.get(
-        'http://localhost:3005/api/cart/groupbuy',
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/cart/groupbuy',
         {
           withCredentials: true,
         }

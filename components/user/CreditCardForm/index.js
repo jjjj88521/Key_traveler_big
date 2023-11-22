@@ -2,18 +2,17 @@ import React, { useEffect, useState } from 'react'
 import Cards from 'react-credit-cards-2'
 import '@/node_modules/react-credit-cards-2/dist/es/styles.scss' // 引入css
 import style from '@/styles/user/register.module.scss'
-import { useAuth } from '@/hooks/useAuth'
-import jwtDecode from 'jwt-decode'
-import Router from 'next/router'
 import axios from 'axios'
 import useLoading from '@/hooks/useLoading'
 import LoadingPage from '@/components/common/loadingPage'
 import Swal from 'sweetalert2'
+import { useSelector } from 'react-redux'
+
 export default function CreditCardForm() {
   const updateUser = (user) => {
     // 更新會員資料
     axios
-      .put('http://localhost:3005/api/users/update', user)
+      .put(process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/users/update', user)
       .then((response) => {
         if (response.data.message === 'success') {
           console.log('成功更新')
@@ -27,8 +26,9 @@ export default function CreditCardForm() {
       })
   }
 
-  const { auth, setAuth } = useAuth()
-  const [formData, setformData] = useState({ ...auth.user })
+  // const { user, setAuth } = useAuth()
+  const user = useSelector((state) => state.user)
+  const [formData, setformData] = useState({ ...user.user })
   // 重新整理後驗證登入狀態
   // useEffect(() => {
   //   if (localStorage.getItem('loginToken')) {
@@ -36,7 +36,7 @@ export default function CreditCardForm() {
   //     const data = jwtDecode(localStorage.getItem('loginToken'))
   //     setAuth({ ...data })
   //     // setCardData({ ...data })
-  //     console.log(auth)
+  //     console.log(user)
   //   } else {
   //     Router.push('/user/login')
   //   }
@@ -55,11 +55,11 @@ export default function CreditCardForm() {
       ...cardData,
       [name]: value,
     })
-    // setAuth({ ...auth, user: { ...auth.user, [name]: value } })
+    // setAuth({ ...user, user: { ...user.user, [name]: value } })
     setformData({ ...formData, [name]: value })
-    // console.log(auth.user.card_number)
+    // console.log(user.user.card_number)
   }
-  const [isLoading, setIsLoading] = useLoading(auth.user)
+  const [isLoading, setIsLoading] = useLoading(user.user)
   return isLoading ? (
     <LoadingPage />
   ) : (
@@ -74,7 +74,7 @@ export default function CreditCardForm() {
             name="card_number"
             pattern="^[0-9]*$"
             maxLength="16"
-            defaultValue={auth.user.card_number}
+            defaultValue={user.user.card_number}
             className={`${style['hide-arrow']} col-8 col-sm-8 col-12 form-control`}
             placeholder="Card Number"
             onChange={handleInputChange}
@@ -89,7 +89,7 @@ export default function CreditCardForm() {
             className="col-sm-8 col-12 form-control"
             type="text"
             name="card_name"
-            defaultValue={auth.user.card_name}
+            defaultValue={user.user.card_name}
             placeholder="Card Holder Name"
             onChange={handleInputChange}
             // onFocus={(e) => setCardData({ ...cardData, focus: e.target.name })}
@@ -105,7 +105,7 @@ export default function CreditCardForm() {
             name="expiry"
             placeholder="MM/YY Expiry"
             maxlength="4"
-            defaultValue={auth.expiry}
+            defaultValue={user.expiry}
             onChange={handleInputChange}
             onFocus={(e) => setCardData({ ...cardData, focus: e.target.name })}
           />
@@ -132,9 +132,9 @@ export default function CreditCardForm() {
               })
               return
             }
-            delete auth.user.exp
-            delete auth.user.iat
-            console.log(auth)
+            delete user.user.exp
+            delete user.user.iat
+            console.log(user)
             updateUser(formData)
             Swal.fire({
               icon: 'success',

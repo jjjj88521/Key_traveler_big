@@ -1,15 +1,15 @@
 import { React, useState, useEffect } from 'react'
 import style from '@/styles/order.module.scss'
-import UserDropdown from '@/components/user/user-dropdown'
 import PaginationComponent from '@/components/common/PaginationComponent'
 import Link from 'next/link'
-import { useAuth } from '@/hooks/useAuth'
 import axios from 'axios'
 import UserLayout from '@/components/layout/user-layout'
 import { Radio } from 'antd'
+import { useSelector } from 'react-redux'
 
 export default function OrderList() {
-  const { auth, setAuth } = useAuth()
+  const auth = useSelector((state) => state.auth)
+
   const id = auth.user.id
   // console.log(id)
 
@@ -19,7 +19,8 @@ export default function OrderList() {
 
   const getOrderList = async () => {
     // 設置API的URL
-    const apiUrl = 'http://localhost:3005/api/order/user_order' // 將API的URL替換為實際的URL
+    const apiUrl =
+      process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/order/user_order' // 將API的URL替換為實際的URL
     const userId = { userId: id }
     // console.log(userId)
     // 發出POST請求
@@ -40,7 +41,8 @@ export default function OrderList() {
   }
   const getGroupOrderList = async () => {
     // 设置API的URL
-    const apiUrl = 'http://localhost:3005/api/order/group_order' // 将API的URL替换为实际的URL
+    const apiUrl =
+      process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/order/group_order' // 将API的URL替换为实际的URL
     const userId = { userId: id }
     // console.log(userId)
     // 发出POST请求
@@ -61,7 +63,8 @@ export default function OrderList() {
   }
   const getRentOrderList = async () => {
     // 設置API的URL
-    const apiUrl = 'http://localhost:3005/api/order/rent_order' // 将API的URL替换为实际的URL
+    const apiUrl =
+      process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/order/rent_order' // 将API的URL替换为实际的URL
     const userId = { userId: id }
     // console.log(userId)
     // 發出POST請求

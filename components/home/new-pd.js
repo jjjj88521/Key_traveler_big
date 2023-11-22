@@ -2,13 +2,15 @@ import axios from 'axios'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import Card from '../product/Card'
+import useLoading from '@/hooks/useLoading'
 
 export default function NewPd() {
   const [newProducts, setNewProducts] = useState([])
+  const [isLoading, setIsLoading] = useLoading(newProducts.length)
   useEffect(() => {
     axios
       .get(
-        'http://localhost:3005/api/products/qs?orderby=created_time,desc&perpage=4'
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/products/qs?orderby=created_time,desc&perpage=4`
       )
       .then((res) => {
         setNewProducts(res.data.data)

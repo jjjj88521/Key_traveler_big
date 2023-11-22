@@ -1,15 +1,15 @@
 import GbHead from '@/components/groupbuy/gb-head'
 import TabContainer from '@/components/product/ProductTab'
 import TabButton from '@/components/product/ProductTab/TabButton'
-import { useProductData } from '@/context/use-product'
+import { useProductData } from '@/context/useProduct'
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { fetchGB, fetchProductLike } from '@/libs/productFetcher'
+import { fetchProduct, fetchProductLike } from '@/utils/productFetcher'
 import useLoading from '@/hooks/useLoading'
 import useRecentlyViewed from '@/hooks/useRecentlyViewed'
 import PdLoading from '@/components/product/pd-loading'
-import { useAuth } from '@/hooks/useAuth'
+import { useSelector } from 'react-redux'
 import Card from '@/components/product/Card'
 // swiper
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -20,19 +20,23 @@ import 'swiper/scss/pagination'
 import 'swiper/scss/navigation'
 
 export default function GroupbuyDetail() {
-  const { auth } = useAuth()
+  const auth = useSelector((state) => state.auth)
   const router = useRouter()
   const { gb_id } = router.query
   const { isReady } = router
   const { productData, setProductData, isLiked, setIsLiked } = useProductData()
-  const [isLoading, setIsLoading] = useLoading(productData.id)
+  const [isLoading, setIsLoading] = useLoading(productData)
 
   // 獲取資料
   useEffect(() => {
     const fetchData = async () => {
       // 每次獲取資料前都先重設載入中狀態
       setIsLoading(true)
-      await fetchGB(gb_id)
+      // setProductData(null)
+      await fetchProductLike('gb', gb_id).then((like) => {
+        setIsLiked(like)
+      })
+      await fetchProduct({ type: 'groupbuy', pid: gb_id })
         .then((product) => {
           if (Object.keys(product).length === 0) {
             throw new Error('沒有此商品')
@@ -43,11 +47,8 @@ export default function GroupbuyDetail() {
           console.log(error)
           router.push('/404')
         })
-      await fetchProductLike('gb', gb_id).then((like) => {
-        setIsLiked(like)
-      })
     }
-    if (isReady) {
+    if (gb_id && isReady) {
       fetchData()
     }
   }, [isReady, gb_id, auth])

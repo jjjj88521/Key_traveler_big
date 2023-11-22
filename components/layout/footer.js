@@ -34,13 +34,13 @@ export default function Footer() {
                 <h6 className="text-primary fw-semibold">Follow us</h6>
                 <div className="d-flex gap-3">
                   <div className="text-primary fs-5">
-                    <i class="fa-brands fa-facebook"></i>
+                    <i className="fa-brands fa-facebook"></i>
                   </div>
                   <div className="text-primary fs-5">
-                    <i class="fa-brands fa-instagram"></i>
+                    <i className="fa-brands fa-instagram"></i>
                   </div>
                   <div className="text-primary fs-5">
-                    <i class="fa-brands fa-youtube"></i>
+                    <i className="fa-brands fa-youtube"></i>
                   </div>
                 </div>
               </div>

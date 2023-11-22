@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import UploadAvatar from '../upload-avatar'
-import { useAuth } from '@/hooks/useAuth'
+import { useSelector } from 'react-redux'
 import axios from 'axios'
 import useLoading from '@/hooks/useLoading'
 import LoadingPage from '@/components/common/loadingPage'
@@ -23,12 +23,14 @@ export default function UserAvatar() {
   }
 
   const fileInputRef = useRef(null)
-  const { auth, setAuth } = useAuth()
+  const auth = useSelector((state) => state.auth)
   //判斷VIP等級 S
   const [vipGrade, setVipGrade] = useState(0)
   const vipGradeAPi = async () => {
     axios
-      .get(`http://localhost:3005/api/users/${auth.user.id}`)
+      .get(
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/users/${auth.user.id}`
+      )
       .then((res) => {
         console.log('成功獲取VIP等級')
         console.log(res.data.user.vip)

@@ -85,7 +85,9 @@ export default function ProductIndex() {
     const fetchRentList = async () => {
       setIsLoading(true)
       await axios
-        .get(`http://localhost:3005/api/rent/qs`, { params: params })
+        .get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/rent/qs`, {
+          params: params,
+        })
         .then((res) => {
           setCateProducts(res.data)
           setFilterParams({ ...params })
@@ -265,7 +267,7 @@ export default function ProductIndex() {
               onClick={showDrawer}
             >
               <i
-                class="fa-solid fa-sliders"
+                className="fa-solid fa-sliders"
                 style={{ marginRight: '10px' }}
               ></i>
               篩選

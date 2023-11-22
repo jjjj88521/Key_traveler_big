@@ -2,7 +2,7 @@ import { React, useState, useEffect } from 'react'
 import style from './cart2.module.scss'
 import { Collapse, Divider } from 'antd'
 import { Radio, List } from 'antd'
-import { useAuth } from '@/hooks/useAuth'
+import { useSelector, useDispatch } from 'react-redux'
 import Swal from 'sweetalert2'
 import Address from './address'
 import { useCart } from '@/hooks/useCart'
@@ -11,10 +11,15 @@ import { useRentCart } from '@/hooks/useRentCart'
 import axios from 'axios'
 import { CaretDownOutlined, CaretRightOutlined } from '@ant-design/icons'
 import dayjs from 'dayjs'
+import { getCoupon } from '@/redux/actions/coupon'
 const moment = require('moment')
 
 export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
-  const { auth, setAuth, coupon, getCoupon } = useAuth()
+  // const { auth, setAuth, coupon, getCoupon } = useAuth()
+  // redux
+  const dispatch = useDispatch()
+  const { coupon } = useSelector((state) => state.coupon)
+  const auth = useSelector((state) => state.auth)
   const {
     items: pItems,
     getCartData: getPData,
@@ -31,7 +36,7 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
     cartTotalR: totalPriceR,
   } = useRentCart()
   useEffect(() => {
-    getCoupon()
+    dispatch(getCoupon())
   }, [])
   const pOrderItems = pItems.filter((item) => item.check === 1)
   const gOrderItems = gItems.filter((item) => item.check === 1)
@@ -267,7 +272,8 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
       if (type === 'product') {
         try {
           const response = await axios.post(
-            'http://localhost:3005/api/order-test/addProductOrder',
+            process.env.NEXT_PUBLIC_BACKEND_BASE_URL +
+              '/api/order-test/addProductOrder',
             toOrder,
             {
               withCredentials: true, // save cookie in browser
@@ -290,7 +296,8 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
       } else if (type === 'groupBuy') {
         try {
           const response = await axios.post(
-            'http://localhost:3005/api/order-test/addGroupOrder',
+            process.env.NEXT_PUBLIC_BACKEND_BASE_URL +
+              '/api/order-test/addGroupOrder',
             toOrder,
             {
               withCredentials: true, // save cookie in browser
@@ -313,7 +320,8 @@ export default function CartStep2({ ongotoPage1, ongotoPage3 }) {
       } else if (type === 'rent') {
         try {
           const response = await axios.post(
-            'http://localhost:3005/api/order-test/addRentOrder',
+            process.env.NEXT_PUBLIC_BACKEND_BASE_URL +
+              '/api/order-test/addRentOrder',
             toOrder,
             {
               withCredentials: true, // save cookie in browser

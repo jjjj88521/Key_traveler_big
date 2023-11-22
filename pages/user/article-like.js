@@ -24,13 +24,16 @@ export default function Article() {
   const [like, setLike] = useState([])
   const articleLike = async (page, cate) => {
     await axios
-      .get(`http://localhost:3005/api/article/like-list`, {
-        params: {
-          page,
-          cate: cate === 'all' ? null : cate,
-        },
-        withCredentials: true, // 跨域獲取cookie
-      })
+      .get(
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/article/like-list`,
+        {
+          params: {
+            page,
+            cate: cate === 'all' ? null : cate,
+          },
+          withCredentials: true, // 跨域獲取cookie
+        }
+      )
       .then((response) => {
         setIsLoading(true)
         console.log('response.data.article')
@@ -45,7 +48,7 @@ export default function Article() {
   const removeLikeConnect = async (aid) => {
     try {
       const response = await axios.delete(
-        `http://localhost:3005/api/article/like/${aid}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/article/like/${aid}`,
         { withCredentials: true } // 确保跨域请求时携带凭证信息
       )
       if (response.data.code === '200') {

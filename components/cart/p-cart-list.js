@@ -74,7 +74,7 @@ export default function PCartList() {
 
     try {
       const response = await axios.post(
-        'http://localhost:3005/api/cart/minusproduct',
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/cart/minusproduct',
         pCart,
         {
           withCredentials: true, // save cookie in browser
@@ -104,7 +104,7 @@ export default function PCartList() {
 
     try {
       const response = await axios.post(
-        'http://localhost:3005/api/cart/plusproduct',
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/cart/plusproduct',
         pCart,
         {
           withCredentials: true, // save cookie in browser
@@ -129,7 +129,7 @@ export default function PCartList() {
 
     try {
       const response = await axios.post(
-        'http://localhost:3005/api/cart/deleteproduct',
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/cart/deleteproduct',
         pCart,
         {
           withCredentials: true, // save cookie in browser
@@ -155,7 +155,7 @@ export default function PCartList() {
 
     try {
       const response = await axios.post(
-        'http://localhost:3005/api/cart/checkproduct',
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/cart/checkproduct',
         pCart,
         {
           withCredentials: true, // save cookie in browser
@@ -181,7 +181,7 @@ export default function PCartList() {
 
     try {
       const response = await axios.post(
-        'http://localhost:3005/api/cart/checkallproduct',
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/cart/checkallproduct',
         pCart,
         {
           withCredentials: true, // save cookie in browser

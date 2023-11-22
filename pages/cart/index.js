@@ -7,13 +7,17 @@ import PCartList from '@/components/cart/p-cart-list'
 import RCartList from '@/components/cart/r-cart-list'
 import GCartList from '@/components/cart/g-cart-list'
 import ProceedToCheckout from '@/components/cart/proceed-to-checkout'
-import { useAuth } from '@/hooks/useAuth'
+import { useSelector, useDispatch } from 'react-redux'
 import Head from 'next/head'
+import { getCoupon } from '@/redux/actions/coupon'
 
 export default function Cart() {
-  const { auth, coupon, getCoupon } = useAuth()
+  // const { auth, coupon, getCoupon } = useAuth()
+  // redux
+  const dispatch = useDispatch()
+  const auth = useSelector((state) => state.auth)
   useEffect(() => {
-    getCoupon()
+    dispatch(getCoupon())
     localStorage.removeItem('order-info')
     localStorage.removeItem('cartPItem')
     localStorage.removeItem('cartGItem')

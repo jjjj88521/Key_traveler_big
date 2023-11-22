@@ -1,6 +1,6 @@
 import React from 'react'
 import { Badge } from 'antd'
-import { useAuth } from '@/hooks/useAuth'
+import { useSelector } from 'react-redux'
 import Link from 'next/link'
 import { useCart } from '@/hooks/useCart'
 import { useGroupCart } from '@/hooks/useGroupCart'
@@ -12,7 +12,7 @@ export default function MobileDock() {
   const { totalItemsP: pdTotalItems } = useCart()
   const { totalItemsG: gbTotalItems } = useGroupCart()
   const { totalItemsR: rTotalItems } = useRentCart()
-  const { auth } = useAuth()
+  const auth = useSelector((state) => state.auth)
   return (
     <>
       <div

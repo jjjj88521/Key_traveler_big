@@ -16,7 +16,7 @@ import {
   TreeSelect,
   Upload,
 } from 'antd'
-import { useAuth } from '@/hooks/useAuth'
+import { useSelector } from 'react-redux'
 import { async } from '@firebase/util'
 import axios from 'axios'
 import Swal from 'sweetalert2'
@@ -37,9 +37,13 @@ export default function ArtForm() {
 
   const handleAddForm = async () => {
     await axios
-      .post(`http://localhost:3005/api/article/1123`, dataObj, {
-        withCredentials: true,
-      })
+      .post(
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/article/1123`,
+        dataObj,
+        {
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         console.log(response)
         if (response.data.code !== '200') {
@@ -64,7 +68,7 @@ export default function ArtForm() {
   }
 
   // 設定路由
-  const { auth } = useAuth()
+  const auth = useSelector((state) => state.auth)
   const router = useRouter()
   const { isReady, query } = router
   const detail_id = query.detail_id

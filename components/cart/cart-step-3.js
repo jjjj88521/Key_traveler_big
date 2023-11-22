@@ -46,7 +46,8 @@ export default function CartStep3() {
     if (localStorage.getItem('product-info').length > 2) {
       try {
         const response = await axios.get(
-          'http://localhost:3005/api/order-test/getOrderListPd',
+          process.env.NEXT_PUBLIC_BACKEND_BASE_URL +
+            '/api/order-test/getOrderListPd',
           {
             withCredentials: true,
           }
@@ -64,7 +65,8 @@ export default function CartStep3() {
     if (localStorage.getItem('groupbuy-info').length > 2) {
       try {
         const response = await axios.get(
-          'http://localhost:3005/api/order-test/getOrderListGb',
+          process.env.NEXT_PUBLIC_BACKEND_BASE_URL +
+            '/api/order-test/getOrderListGb',
           {
             withCredentials: true,
           }
@@ -82,7 +84,8 @@ export default function CartStep3() {
     if (localStorage.getItem('rent-info').length > 2) {
       try {
         const response = await axios.get(
-          'http://localhost:3005/api/order-test/getOrderListR',
+          process.env.NEXT_PUBLIC_BACKEND_BASE_URL +
+            '/api/order-test/getOrderListR',
           {
             withCredentials: true,
           }
