@@ -19,7 +19,7 @@ export default function POrderList() {
 
   useEffect(() => {
     // 設置API的URL，替換為實際的後端API端點
-    const apiUrl = `http://localhost:3005/api/order/purchase/${orderId}`
+    const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/order/purchase/${orderId}`
 
     // 發送GET請求以獲取訂單詳細資料
     axios

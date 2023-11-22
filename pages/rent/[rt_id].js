@@ -4,19 +4,19 @@ import TabButton from '@/components/product/ProductTab/TabButton'
 import PdLoading from '@/components/product/pd-loading'
 import RentHead from '@/components/rent/rent-head'
 import { useProductData } from '@/context/useProduct'
-import { useAuth } from '@/hooks/useAuth'
 import useLoading from '@/hooks/useLoading'
 import useRecentlyViewed from '@/hooks/useRecentlyViewed'
-import { fetchProductLike, fetchRT } from '@/libs/productFetcher'
+import { fetchProductLike, fetchProduct } from '@/utils/productFetcher'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 // swiper
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/scss'
 
 export default function RentDetail() {
-  const { auth } = useAuth()
+  const auth = useSelector((state) => state.auth)
   const router = useRouter()
   const { rt_id } = router.query
   const { isReady } = router
@@ -29,7 +29,11 @@ export default function RentDetail() {
     const fetchData = async () => {
       // 每次獲取資料前都先重設載入中狀態
       setIsLoading(true)
-      await fetchRT(rt_id)
+      await fetchProductLike('rt', rt_id).then((like) => {
+        setIsLiked(like)
+        console.log(like)
+      })
+      await fetchProduct({ type: 'rent', pid: rt_id })
         .then((product) => {
           if (Object.keys(product).length === 0) {
             throw new Error('沒有此商品')
@@ -40,10 +44,6 @@ export default function RentDetail() {
           console.log(error)
           router.push('/404')
         })
-      await fetchProductLike('rt', rt_id).then((like) => {
-        setIsLiked(like)
-        console.log(like)
-      })
     }
     if (isReady) {
       fetchData()

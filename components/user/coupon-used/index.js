@@ -1,9 +1,10 @@
 import { React, useState, useEffect } from 'react'
-import { useAuth } from '@/hooks/useAuth'
+import { useSelector, useDispatch } from 'react-redux'
 import useLoading from '@/hooks/useLoading'
 import LoadingPage from '@/components/common/loadingPage'
 import ListCardHistory from '../List-Card/list-card-history'
 import PaginationComponent from '@/components/common/PaginationComponent'
+import { getCouponUsed } from '@/redux/actions/coupon'
 
 export default function CouponUsed({
   currentPage,
@@ -11,9 +12,11 @@ export default function CouponUsed({
   handlePageChange,
 }) {
   const [usedData, setUsedData] = useState([])
-  const { couponUsed, getCouponUsed } = useAuth()
+  // redux
+  const dispatch = useDispatch()
+  const { couponUsed } = useSelector((state) => state.coupon)
   useEffect(() => {
-    getCouponUsed()
+    dispatch(getCouponUsed())
   }, [])
   useEffect(() => {
     // 在这个useEffect中，确保coupon数据已经获取到

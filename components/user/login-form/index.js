@@ -5,27 +5,21 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import GoogleLoginJWT from '../google-login-jwt'
 import { useDispatch, useSelector } from 'react-redux'
-import { loginAsync } from '@/redux/actions/user'
-import { Button } from 'antd'
+import { loginAsync } from '@/redux/actions/auth'
+import { Button, Form, Input } from 'antd'
 
 export default function LoginForm() {
   // redux
   const dispatch = useDispatch()
-  const user = useSelector((state) => state.user)
-  //存 login 資料
-  const [inputAuth, setInputAuth] = useState({
-    account: '',
-    password: '',
-  })
-
-  const handleLogin = () => {
-    dispatch(loginAsync(inputAuth))
+  const auth = useSelector((state) => state.auth)
+  const handleLogin = (values) => {
+    dispatch(loginAsync(values))
   }
 
   return (
     <>
       <div className={`container ${styles['bg-image']}`}>
-        <div className="logo mb-3 text-center ">
+        <div className="logo pb-3 text-center">
           <Image
             src="/images/header-logo-desktop.png"
             width={250}
@@ -34,56 +28,36 @@ export default function LoginForm() {
             className=""
           />
         </div>
-        <form className={`${styles['w-sm-50']} w-100 mx-auto`}>
-          <div className="row mb-3  ">
-            <label htmlFor="account" className="form-label px-0 mt-3">
-              帳號
-            </label>
-            <input
-              type="text"
-              name="account"
-              id="account"
-              className="form-control"
-              onBlur={(e) => {
-                setInputAuth({ ...inputAuth, [e.target.name]: e.target.value })
-                console.log(e.target.value)
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  handleLogin()
-                }
-              }}
-            />
-          </div>
-          <div className="row mb-3">
-            <label htmlFor="password" className="form-label px-0">
-              密碼
-            </label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              className="form-control"
-              onChange={(e) => {
-                setInputAuth({ ...inputAuth, [e.target.name]: e.target.value })
-              }}
-              // onKeyDown={handleKeyPress}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  handleLogin()
-                }
-              }}
-            />
-          </div>
-          <Button
-            type="primary"
-            className="w-100 my-5"
-            onClick={handleLogin}
-            loading={user.isLoading}
+        <Form
+          name="basic"
+          onFinish={handleLogin}
+          className={`${styles['w-sm-50']} w-100 mx-auto py-3`}
+        >
+          <Form.Item
+            label="帳號"
+            name="account"
+            rules={[{ required: true, message: '請輸入帳號' }]}
           >
-            登入
-          </Button>
-        </form>
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="密碼"
+            name="password"
+            rules={[{ required: true, message: '請輸入密碼' }]}
+          >
+            <Input.Password />
+          </Form.Item>
+          <Form.Item wrapperCol={{ offset: 0, span: 24 }}>
+            <Button
+              type="primary"
+              className="w-100 my-3"
+              htmlType="submit"
+              loading={auth.isLoading}
+            >
+              登入
+            </Button>
+          </Form.Item>
+        </Form>
 
         <div className="row mb-2 col-sm-8 offset-sm-2">
           <div className={`mb-3 ${styles['hr-sect']} `}>快速登入</div>

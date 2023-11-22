@@ -1,19 +1,22 @@
 import { React, useState, useEffect } from 'react'
-import { useAuth } from '@/hooks/useAuth'
+import { useSelector, useDispatch } from 'react-redux'
 import useLoading from '@/hooks/useLoading'
 import LoadingPage from '@/components/common/loadingPage'
 import ListCardHistory from '../List-Card/list-card-history'
 import PaginationComponent from '@/components/common/PaginationComponent'
+import { getCouponExpired } from '@/redux/actions/coupon'
 
 export default function CouponExpired({
   currentPage,
   pageSize,
   handlePageChange,
 }) {
+  // redux
+  const dispatch = useDispatch()
+  const { couponExpired } = useSelector((state) => state.coupon)
   const [expiredData, setExpiredData] = useState([])
-  const { couponExpired, getCouponExpired } = useAuth()
   useEffect(() => {
-    getCouponExpired()
+    dispatch(getCouponExpired())
   }, [])
   useEffect(() => {
     if (Array.isArray(couponExpired) && couponExpired.length > 0) {

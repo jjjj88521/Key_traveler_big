@@ -3,13 +3,13 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Dropdown, Space, Badge, Drawer, Menu, Button, Tooltip } from 'antd'
 import style from '@/styles/default-layout/_default-layout.module.scss'
-// import { useAuth } from '@/hooks/useAuth'
 import { useRouter } from 'next/router'
 import { useCart } from '@/hooks/useCart'
 import { useGroupCart } from '@/hooks/useGroupCart'
 import { useRentCart } from '@/hooks/useRentCart'
 import { useDispatch, useSelector } from 'react-redux'
-import { logoutAsync } from '@/redux/actions/user'
+import { logoutAsync } from '@/redux/actions/auth'
+import Swal from 'sweetalert2'
 
 // 導航欄位
 const navItems = [
@@ -143,13 +143,24 @@ export default function Navbar() {
   }
 
   // 判斷是否登入，登入後顯示登出按鈕
-  // const { auth, logout } = useAuth()
   const dispatch = useDispatch()
-  const user = useSelector((state) => state.user)
+  const auth = useSelector((state) => state.auth)
   const handleLogout = () => {
     localStorage.setItem('redirect', router.asPath)
-    // logout()
-    dispatch(logoutAsync())
+    Swal.fire({
+      icon: 'question',
+      title: '確定要登出嗎?',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '確定',
+      cancelButtonText: '取消',
+      showLoaderOnConfirm: true,
+      allowOutsideClick: () => !Swal.isLoading(),
+      preConfirm: () => {
+        return dispatch(logoutAsync())
+      },
+    })
   }
   return (
     <>
@@ -218,11 +229,11 @@ export default function Navbar() {
               {/* 會員中心 */}
               <div className="text-primary fs-5">
                 <Tooltip
-                  title={user.isAuth ? '會員中心' : '登入/註冊'}
+                  title={auth.isAuth ? '會員中心' : '登入/註冊'}
                   color="#DC9329"
                 >
                   <Link
-                    href={`${user.isAuth ? '/user/profile' : '/user/login'}`}
+                    href={`${auth.isAuth ? '/user/profile' : '/user/login'}`}
                     onClick={() => {
                       localStorage.setItem('redirect', router.asPath)
                     }}
@@ -243,7 +254,7 @@ export default function Navbar() {
               <div className="align-items-center d-flex">
                 <Tooltip title="購物車" color="#DC9329">
                   <Link href="/cart">
-                    {user.isAuth ? (
+                    {auth.isAuth ? (
                       <Badge
                         count={pdTotalItems + gbTotalItems + rTotalItems}
                         color="#DC9329"
@@ -260,14 +271,14 @@ export default function Navbar() {
                 </Tooltip>
               </div>
               {/* 登出按鈕，只有登入才會出現 */}
-              {user.isAuth ? (
+              {auth.isAuth ? (
                 <div className="text-primary">
                   <Tooltip title="登出" color="#DC9329">
                     <button
                       className="btn border-0 text-primary"
                       onClick={handleLogout}
                     >
-                      <i class="fa-solid fa-right-from-bracket fs-5"></i>
+                      <i className="fa-solid fa-right-from-bracket fs-5"></i>
                     </button>
                   </Tooltip>
                 </div>
@@ -276,7 +287,7 @@ export default function Navbar() {
             {/* 手機版選單按鈕 */}
             <div className="col d-sm-none d-block">
               <div className="d-flex align-items-center justify-content-end h-100">
-                <button class="btn border-0" onClick={showMobileMenu}>
+                <button className="btn border-0" onClick={showMobileMenu}>
                   <i className="fa-solid fa-bars text-primary fs-3 cursor-pointer"></i>
                 </button>
               </div>
@@ -296,7 +307,7 @@ export default function Navbar() {
             onOpenChange={onOpenChange}
             items={mobileItems}
           />
-          {user.isAuth ? (
+          {auth.isAuth ? (
             <Button type="primary" danger onClick={handleLogout} block>
               登出
             </Button>

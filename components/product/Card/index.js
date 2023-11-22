@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useAllPdLike } from '@/context/useAllPdLike'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
-import { addProductLike, deleteProductLike } from '@/libs/productFetcher'
+import { addProductLike, deleteProductLike } from '@/utils/productFetcher'
 import { Progress } from 'antd'
 import useMobile from '@/hooks/useMobile'
 

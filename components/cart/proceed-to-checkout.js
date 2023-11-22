@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { useAuth } from '@/hooks/useAuth'
+import { useSelector, useDispatch } from 'react-redux'
 import { useCart } from '@/hooks/useCart'
 import { useGroupCart } from '@/hooks/useGroupCart'
 import { useRentCart } from '@/hooks/useRentCart'
+import { getCoupon } from '@/redux/actions/coupon'
 
 const moment = require('moment')
 function filterData(data) {
@@ -20,9 +21,12 @@ function filterData(data) {
 }
 
 export default function ProceedToCheckout({ onCheckout }) {
-  const { coupon, getCoupon } = useAuth()
+  // const { coupon, getCoupon } = useAuth()
+  // redux
+  const dispatch = useDispatch()
+  const { coupon } = useSelector((state) => state.coupon)
   useEffect(() => {
-    getCoupon()
+    dispatch(getCoupon())
   }, [])
 
   const [coupons, setcoupons] = useState([])

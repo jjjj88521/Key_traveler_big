@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 
 const ProductDataContext = createContext()
 
@@ -8,7 +8,6 @@ export function ProductDataProvider({ children }) {
   const [commentData, setCommentData] = useState({})
   const [commentCount, setCommentCount] = useState({})
   const [isLiked, setIsLiked] = useState(false)
-
   return (
     <ProductDataContext.Provider
       value={{

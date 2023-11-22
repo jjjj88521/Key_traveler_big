@@ -1,14 +1,11 @@
 {
-    "workbench.colorCustomizations": {
-        "activityBar.background": "#332C2D",
-        "titleBar.activeBackground": "#483D3F",
-        "titleBar.activeForeground": "#FBFAFA"
-    },
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "prettier.configPath": ".prettierrc.json",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": [
-        "source.formatDocument",
-        "source.fixAll.eslint"
-    ]
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#332C2D",
+    "titleBar.activeBackground": "#483D3F",
+    "titleBar.activeForeground": "#FBFAFA"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.configPath": ".prettierrc.json",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": ["source.formatDocument", "source.fixAll.eslint"]
 }

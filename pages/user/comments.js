@@ -5,7 +5,7 @@ import style from './comments.module.scss'
 import UserLayout from '@/components/layout/user-layout'
 import { Radio } from 'antd'
 import axios from 'axios'
-import { useAuth } from '@/hooks/useAuth'
+import { useSelector } from 'react-redux'
 import Swal from 'sweetalert2'
 import useLoading from '@/hooks/useLoading'
 import LoadingPage from '@/components/common/loadingPage'
@@ -188,7 +188,7 @@ export default function Comments() {
   )
 
   const getComment = async (page) => {
-    const apiUrl = `http://localhost:3005/api/user_comment/yet_comment`
+    const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user_comment/yet_comment`
 
     await axios
       .get(apiUrl, {
@@ -213,7 +213,9 @@ export default function Comments() {
   // console.log('還未評價', commentData.data)
 
   const getAllComments = async (page) => {
-    const url = 'http://localhost:3005/api/user_comment/all-comments'
+    const url =
+      process.env.NEXT_PUBLIC_BACKEND_BASE_URL +
+      '/api/user_comment/all-comments'
 
     await axios
       .get(url, { params: { page }, withCredentials: true })
@@ -340,7 +342,10 @@ export default function Comments() {
       })
     } else {
       await axios
-        .post(`http://localhost:3005/api/user_comment/addComment`, newComment)
+        .post(
+          `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/user_comment/addComment`,
+          newComment
+        )
         .then((response) => {
           // console.log(response)
           if (response.data.code !== '200') {

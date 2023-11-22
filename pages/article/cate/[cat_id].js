@@ -70,12 +70,14 @@ export default function ArticleFilter() {
   //撈取後端文章資料
   useEffect(() => {
     if (cat_id) {
-      axios.get('http://localhost:3005/api/article/').then((response) => {
-        // console.log('response.data.articles')
-        // console.log(response.data.articles)
-        // setIsLoading(true)
-        setData(response.data.articles)
-      })
+      axios
+        .get(process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/article/')
+        .then((response) => {
+          // console.log('response.data.articles')
+          // console.log(response.data.articles)
+          // setIsLoading(true)
+          setData(response.data.articles)
+        })
     }
   }, [cat_id])
 
@@ -168,7 +170,7 @@ export default function ArticleFilter() {
           </div>
         </nav>
         {/* 手機版分類選單 */}
-        <div class="d-sm-none mb-4">
+        <div className="d-sm-none mb-4">
           <select
             className="form-select"
             aria-label="Select category"

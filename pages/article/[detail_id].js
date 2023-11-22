@@ -11,13 +11,12 @@ import useLoading from '@/hooks/useLoading'
 import LoadingPage from '@/components/common/loadingPage'
 import Swal from 'sweetalert2'
 import Image from 'next/image'
-import { useAuth } from '@/hooks/useAuth'
+import { useSelector } from 'react-redux'
 import Head from 'next/head'
 
 export default function DetailFilter() {
   // 設定路由
-  const { auth } = useAuth()
-  console.log(auth)
+  const auth = useSelector((state) => state.auth)
   const router = useRouter()
   const { isReady, query } = router
   const detail_id = query.detail_id
@@ -35,7 +34,9 @@ export default function DetailFilter() {
   // console.log(comment)
   const getComment = async () => {
     await axios
-      .get(`http://localhost:3005/api/article/comment/${detail_id}`)
+      .get(
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/article/comment/${detail_id}`
+      )
       .then((response) => {
         console.log('response.data.comments')
         console.log(response.data.comments)
@@ -43,9 +44,12 @@ export default function DetailFilter() {
         setComment(response.data.comments)
       })
     await axios
-      .get(`http://localhost:3005/api/article/like/${detail_id}`, {
-        withCredentials: true,
-      })
+      .get(
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/article/like/${detail_id}`,
+        {
+          withCredentials: true,
+        }
+      )
       .then((res) => {
         // console.log('islike', res)
         setLike(res.data.is_liked)
@@ -58,13 +62,15 @@ export default function DetailFilter() {
     // useEffect會比前面的21行以前的程式碼都還要早執行 因此我們監控isＲeady的變化
     // 當前面的程式碼都跑完了 這時detail_id才回有值 而isＲeady會是從false變成true
     if (!isReady) return
-    axios.get('http://localhost:3005/api/article/').then((response) => {
-      console.log('response.data.articles')
-      console.log(response.data.articles)
-      setArticleContent(response.data.articles)
-    })
     axios
-      .get('http://localhost:3005/api/article/count_cate')
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/article/`)
+      .then((response) => {
+        console.log('response.data.articles')
+        console.log(response.data.articles)
+        setArticleContent(response.data.articles)
+      })
+    axios
+      .get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/article/count_cate`)
       .then((response) => {
         console.log('response.data.cates')
         console.log(response.data.cates)
@@ -128,9 +134,13 @@ export default function DetailFilter() {
     }
 
     await axios
-      .post(`http://localhost:3005/api/article/addComment`, newComment, {
-        withCredentials: true,
-      })
+      .post(
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/article/addComment`,
+        newComment,
+        {
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         console.log(response)
         if (response.data.code !== '200') {
@@ -161,7 +171,7 @@ export default function DetailFilter() {
   const handleAddLike = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:3005/api/article/like/${detail_id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/article/like/${detail_id}`,
         {},
         { withCredentials: true } // 确保跨域请求时携带凭证信息
       )
@@ -195,7 +205,7 @@ export default function DetailFilter() {
   const handleRemoveLike = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:3005/api/article/like/${detail_id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/article/like/${detail_id}`,
         { withCredentials: true } // 确保跨域请求时携带凭证信息
       )
 

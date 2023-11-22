@@ -3,7 +3,6 @@
 import style from '@/styles/default-layout/_default-layout.module.scss'
 import Navbar from './navbar'
 import { useEffect, useRef, useState } from 'react'
-import anime from 'animejs'
 
 export default function Header() {
   // // 滑鼠移入，文字改成中文效果

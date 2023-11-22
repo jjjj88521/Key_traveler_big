@@ -47,9 +47,12 @@ export function AuthProvider({ children }) {
 
   const getCoupon = async () => {
     try {
-      const response = await axios.get('http://localhost:3005/api/coupon', {
-        withCredentials: true,
-      })
+      const response = await axios.get(
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/coupon',
+        {
+          withCredentials: true,
+        }
+      )
       // console.log('優惠券data')
       // console.log(response.data)
       if (response.data.message === 'authorized') {
@@ -71,7 +74,7 @@ export function AuthProvider({ children }) {
     }
     try {
       const response = await axios.post(
-        'http://localhost:3005/api/coupon',
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/coupon',
         codeData,
         {
           withCredentials: true, // save cookie in browser
@@ -129,7 +132,7 @@ export function AuthProvider({ children }) {
   const getCouponExpired = async () => {
     try {
       const response = await axios.get(
-        'http://localhost:3005/api/coupon/couponExpired',
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/coupon/couponExpired',
         {
           withCredentials: true,
         }
@@ -161,7 +164,7 @@ export function AuthProvider({ children }) {
   const getCouponUsed = async () => {
     try {
       const response = await axios.get(
-        'http://localhost:3005/api/coupon/couponUsed',
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/coupon/couponUsed',
         {
           withCredentials: true,
         }
@@ -191,9 +194,12 @@ export function AuthProvider({ children }) {
   })
   const getCart = async (type) => {
     try {
-      const response = await axios.get('http://localhost:3005/api/cart', {
-        withCredentials: true,
-      })
+      const response = await axios.get(
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/cart',
+        {
+          withCredentials: true,
+        }
+      )
       if (type === 'product') {
         if (response.data.message === 'authorized') {
           setCart(response.data.cart)
@@ -208,9 +214,13 @@ export function AuthProvider({ children }) {
   const checkAuth = async () => {
     try {
       await axios
-        .get('http://localhost:3005/api/auth-jwt/check-login', {
-          withCredentials: true,
-        })
+        .get(
+          process.env.NEXT_PUBLIC_BACKEND_BASE_URL +
+            '/api/auth-jwt/check-login',
+          {
+            withCredentials: true,
+          }
+        )
         .then((response) => {
           if (response.data.message !== 'authorized') {
             throw new Error('請先登入會員')
@@ -246,7 +256,7 @@ export function AuthProvider({ children }) {
   async function checkLogin() {
     try {
       const res = await axios.get(
-        'http://localhost:3005/api/auth-jwt/check-login',
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/auth-jwt/check-login',
         {
           withCredentials: true,
         }
@@ -257,7 +267,9 @@ export function AuthProvider({ children }) {
       // console.log('id')
       // console.log(id)
 
-      const userRes = await axios.get(`http://localhost:3005/api/users/${id}`)
+      const userRes = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/users/${id}`
+      )
       // console.log('123123123123')
       // console.log(userRes.data.user)
 
@@ -288,7 +300,7 @@ export function AuthProvider({ children }) {
     }
     try {
       const response = await axios.post(
-        'http://localhost:3005/api/auth-jwt/login',
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/auth-jwt/login',
         formData,
         {
           withCredentials: true, // save cookie in browser
@@ -342,7 +354,7 @@ export function AuthProvider({ children }) {
         if (result.isConfirmed) {
           axios
             .post(
-              'http://localhost:3005/api/auth-jwt/logout',
+              process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/auth-jwt/logout',
               {},
               {
                 withCredentials: true, // save cookie in browser
@@ -408,14 +420,14 @@ export function AuthProvider({ children }) {
     }
   }
 
-  // 當刷新頁面，重新檢查是否登入
-  useEffect(() => {
-    if (router.isReady && !auth.isAuth) {
-      checkAuth()
+  // // 當刷新頁面，重新檢查是否登入
+  // useEffect(() => {
+  //   if (router.isReady && !auth.isAuth) {
+  //     checkAuth()
 
-      // console.log(auth)
-    }
-  }, [router.isReady, asPath])
+  //     // console.log(auth)
+  //   }
+  // }, [router.isReady, asPath])
 
   return (
     <>

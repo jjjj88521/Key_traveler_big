@@ -1,41 +1,18 @@
-// 商品相關的 api fetch 函式
 import axios from 'axios'
+import request from './request'
 
+// 商品相關的 api fetch 函式
 // 取得單一商品
-const fetchProduct = async (pid) => {
+const fetchProduct = async ({ type, pid }) => {
+  // 代入參數，type 商品類型，pid 商品編號
+  // {
+  //   type: 'products',
+  //   pid: '1',
+  // }
   try {
     const response = await axios.get(
-      `http://localhost:3005/api/products/${pid}`
+      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/${type}/${pid}`
     )
-    if (response.status !== 200) {
-      throw new Error('發生錯誤')
-    }
-    return response.data
-  } catch (error) {
-    // 處理其他錯誤
-    console.error('發生錯誤:', error)
-  }
-}
-
-// 取得單一團購商品
-const fetchGB = async (pid) => {
-  try {
-    const response = await axios.get(
-      `http://localhost:3005/api/groupbuy/${pid}`
-    )
-    if (response.status !== 200) {
-      throw new Error('發生錯誤')
-    }
-    return response.data
-  } catch (error) {
-    // 處理其他錯誤
-    console.error('發生錯誤:', error)
-  }
-}
-
-const fetchRT = async (pid) => {
-  try {
-    const response = await axios.get(`http://localhost:3005/api/rent/${pid}`)
     if (response.status !== 200) {
       throw new Error('發生錯誤')
     }
@@ -50,7 +27,7 @@ const fetchRT = async (pid) => {
 const fetchMaybeLike = async (pid) => {
   try {
     const response = await axios.get(
-      `http://localhost:3005/api/products/${pid}/maybe-like`
+      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/products/${pid}/maybe-like`
     )
     if (response.status !== 200) {
       throw new Error('發生錯誤')
@@ -66,7 +43,7 @@ const fetchMaybeLike = async (pid) => {
 // 取得單一商品評論資料
 const fetchProductComment = async (pid, ...qs) => {
   const [star, page, orderby] = qs
-  const url = `http://localhost:3005/api/comment/product/${pid}`
+  const url = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/comment/product/${pid}`
   try {
     const response = await axios.get(url, { params: { page, star, orderby } })
     if (response.status !== 200) {
@@ -82,7 +59,7 @@ const fetchProductComment = async (pid, ...qs) => {
 
 // 取得該商品的評論數量資料
 const fetchPdCommentCount = async (pid) => {
-  const url = `http://localhost:3005/api/comment/product/${pid}/count`
+  const url = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/comment/product/${pid}/count`
   try {
     const response = await axios.get(url)
     if (response.status !== 200) {
@@ -98,7 +75,7 @@ const fetchPdCommentCount = async (pid) => {
 const fetchProductLike = async (cate, pid) => {
   try {
     const response = await axios.get(
-      `http://localhost:3005/api/product-like/isLiked/${cate}/${pid}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/product-like/isLiked/${cate}/${pid}`,
       {
         withCredentials: true, // 跨域獲取cookie
       }
@@ -115,7 +92,7 @@ const fetchProductLike = async (cate, pid) => {
 const addProductLike = async (cate, pid) => {
   try {
     const response = await axios.post(
-      `http://localhost:3005/api/product-like/${cate}/${pid}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/product-like/${cate}/${pid}`,
       {},
       {
         withCredentials: true,
@@ -133,7 +110,7 @@ const addProductLike = async (cate, pid) => {
 const deleteProductLike = async (cate, pid) => {
   try {
     const response = await axios.delete(
-      `http://localhost:3005/api/product-like/${cate}/${pid}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/product-like/${cate}/${pid}`,
       {
         withCredentials: true,
       }
@@ -160,7 +137,7 @@ const fetchProductLikeList = async (currentPage, cate, orderby) => {
   }
   try {
     const response = await axios.get(
-      `http://localhost:3005/api/product-like/like-list`,
+      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/product-like/like-list`,
       {
         params: queryParams,
         withCredentials: true, // 跨域獲取cookie
@@ -177,8 +154,6 @@ const fetchProductLikeList = async (currentPage, cate, orderby) => {
 
 export {
   fetchProduct,
-  fetchGB,
-  fetchRT,
   fetchProductComment,
   fetchProductLike,
   addProductLike,

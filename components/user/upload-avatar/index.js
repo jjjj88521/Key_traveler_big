@@ -3,16 +3,16 @@ import React, { useEffect, useState } from 'react'
 import { Upload } from 'antd'
 import axios from 'axios'
 import Image from 'next/image'
-import { useAuth } from '@/hooks/useAuth'
+import { useSelector } from 'react-redux'
 import Swal from 'sweetalert2'
 
 const UploadAvatar = () => {
-  const { auth, setAuth } = useAuth()
+  const auth = useSelector((state) => state.auth)
   const [data, setData] = useState(auth)
   const updateUser = (userId, user) => {
     // 更新會員資料
     axios
-      .put('http://localhost:3005/api/users/update', user)
+      .put(process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/users/update', user)
       .then((response) => {
         if (response.data.message === 'success') {
           console.log(response)
@@ -47,12 +47,16 @@ const UploadAvatar = () => {
       })
 
       await axios
-        .post('http://localhost:3005/api/users/upload2', formData, {
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        })
+        .post(
+          process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/users/upload2',
+          formData,
+          {
+            withCredentials: true,
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        )
         .then((response) => {
           console.log('上傳圖片成功', response)
           // 上傳圖片

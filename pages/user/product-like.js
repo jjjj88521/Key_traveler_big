@@ -8,7 +8,7 @@ import {
 import LoadingPage from '@/components/common/loadingPage'
 import useLoading from '@/hooks/useLoading'
 import Swal from 'sweetalert2'
-import { deleteProductLike, fetchProductLikeList } from '@/libs/productFetcher'
+import { deleteProductLike, fetchProductLikeList } from '@/utils/productFetcher'
 import { Dropdown, Radio, Space, Typography } from 'antd'
 import { DownOutlined } from '@ant-design/icons'
 import useMobile from '@/hooks/useMobile'

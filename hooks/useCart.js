@@ -9,7 +9,7 @@ import { reducer, init } from './cart-reducer'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 const CartContext = createContext(null)
-import { useAuth } from './useAuth'
+import { useSelector } from 'react-redux'
 
 // initialState = {
 //   items: [],
@@ -32,7 +32,7 @@ import { useAuth } from './useAuth'
 
 export const CartProvider = ({ children }) => {
   const router = useRouter()
-  const { auth } = useAuth()
+  const auth = useSelector((state) => state.auth)
   // init state, init來自cartReducer中
   // const [state, dispatch] = useReducer(reducer, items, init)
   const [state, dispatch] = useReducer(reducer, [], init)
@@ -43,7 +43,7 @@ export const CartProvider = ({ children }) => {
     dispatch({ type: 'CLEAR_CART' })
     try {
       const response = await axios.get(
-        'http://localhost:3005/api/cart/product',
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/cart/product',
         {
           withCredentials: true,
         }

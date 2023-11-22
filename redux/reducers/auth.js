@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import jwtDecode from 'jwt-decode'
 import Swal from 'sweetalert2'
-import { checkLoginAsync, loginAsync, logoutAsync } from '../actions/user'
+import { checkLoginAsync, loginAsync, logoutAsync } from '../actions/auth'
 import Router from 'next/router'
 
 const initialState = {
@@ -26,14 +26,13 @@ const initialState = {
   },
 }
 
-const userSlice = createSlice({
-  name: 'user',
+const authSlice = createSlice({
+  name: 'auth',
   initialState,
   reducers: {
-    login: (state, action) => {
-      state.user = action.payload
+    setUser: (state, action) => {
       state.isAuth = true
-      state.isLoading = false
+      state.user = action.payload
     },
   },
   extraReducers: (builder) => {
@@ -47,11 +46,13 @@ const userSlice = createSlice({
       .addCase(loginAsync.rejected, (state, action) => {
         showErrorAlert('登入失敗', action.error.message)
       })
-      .addCase(logoutAsync.fulfilled, (state) => {
-        state.isAuth = false
-        state.user = initialState.user
-        const redirect = localStorage.getItem('redirect') || '/'
-        showSuccessAlert('登出成功', redirect)
+      .addCase(logoutAsync.fulfilled, (state, action) => {
+        if (action.payload.code === '200') {
+          state.isAuth = false
+          state.user = initialState.user
+          const redirect = localStorage.getItem('redirect') || '/'
+          showSuccessAlert('登出成功', redirect)
+        }
       })
       .addCase(logoutAsync.rejected, (state, action) => {
         showErrorAlert('登出失敗', action.error.message)
@@ -98,6 +99,6 @@ const showErrorAlert = (title, errorMessage) => {
     timer: 1500,
   })
 }
-export const { login } = userSlice.actions
+export const { setUser } = authSlice.actions
 
-export default userSlice.reducer
+export default authSlice.reducer

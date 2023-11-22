@@ -5,7 +5,9 @@ export default function ProductFetcher({ onProductFetched }) {
   useEffect(() => {
     const FetchedProduct = async () => {
       try {
-        const response = await axios.get('http://localhost:3005/api/products')
+        const response = await axios.get(
+          process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/products'
+        )
         // console.log(response.data)
         onProductFetched(response.data)
       } catch (error) {

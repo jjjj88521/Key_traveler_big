@@ -12,7 +12,7 @@ import useLoading from '@/hooks/useLoading'
 import LoadingPage from '@/components/common/loadingPage'
 import { useProductData } from '@/context/useProduct'
 import { useRouter } from 'next/router'
-import { fetchProductComment } from '@/libs/productFetcher'
+import { fetchProductComment } from '@/utils/productFetcher'
 import { DownOutlined } from '@ant-design/icons'
 import useMobile from '@/hooks/useMobile'
 
@@ -74,7 +74,7 @@ export default function ReviewTab() {
   // 每頁顯示的項目數量
   const pageSize = 5
 
-  // 找到 class comment-list 的元素，滾動到該元素的底部
+  // 找到 className comment-list 的元素，滾動到該元素的底部
   const commentListRef = useRef(null)
   const [scrollHeight, setScrollHeight] = useState(0)
   useEffect(() => {
@@ -87,7 +87,7 @@ export default function ReviewTab() {
 
   // 處理頁碼變更事件
   const handlePageChange = (currentPage) => {
-    // // 找到 class comment-list 的元素，滾動到該元素的底部
+    // // 找到 className comment-list 的元素，滾動到該元素的底部
     getComment(
       pid,
       starSelected[0].value === 6 ? null : starSelected[0].value,

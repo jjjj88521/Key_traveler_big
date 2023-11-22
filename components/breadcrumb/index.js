@@ -3,8 +3,8 @@ import { useRouter } from 'next/router'
 import { pathsLocaleMap } from '@/configs'
 import { MyBreadcrumbList, MyBreadcrumbItem } from './my-breadcrumb'
 import { HomeFilled } from '@ant-design/icons'
-import axios from 'axios'
 import { useProductData } from '@/context/useProduct'
+import useLoading from '@/hooks/useLoading'
 
 export default function MyBreadcrumb() {
   // 獲取目前路徑
@@ -12,6 +12,8 @@ export default function MyBreadcrumb() {
   const { isReady, asPath } = router
   const pathname = asPath.split('?')[0]
   const { productData } = useProductData()
+  // const [isLoading, setIsLoading] = useLoading(productData.id)
+  console.log('isReady', isReady)
 
   // 如果有 pid，獲取商品資訊
   const [productName, setProductName] = useState(null)
@@ -21,23 +23,17 @@ export default function MyBreadcrumb() {
     }
   }, [productData])
 
-  // 要放到連結的 path 陣列
-  // const paths = pathname.split('/')
-
   // 將路徑分割成陣列，並解碼中文字符
   const pathsDecoded = pathname
     .split('/')
     .map((path) => decodeURIComponent(path))
 
   return (
-    <div className="bg-dark" style={{ height: '60px' }}>
+    <div className="bg-dark my-breadcrumb" style={{ height: '60px' }}>
       <div className="container h-100 d-flex align-items-center">
         <MyBreadcrumbList>
           {pathsDecoded.map((path, index) => {
             const currentPath = pathsDecoded.slice(0, index + 1).join('/')
-            {
-              /* console.log(currentPath) */
-            }
             const matchingPath = pathsLocaleMap.find(
               (path) => path.path === currentPath
             )

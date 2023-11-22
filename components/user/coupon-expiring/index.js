@@ -1,9 +1,10 @@
 import { React, useState, useEffect } from 'react'
 import NewCouponPage from '@/components/common/PaginationComponent/newCouponPage'
 import ListCardForCoupon from '../List-Card'
-import { useAuth } from '@/hooks/useAuth'
+import { useSelector, useDispatch } from 'react-redux'
 import useLoading from '@/hooks/useLoading'
 import LoadingPage from '@/components/common/loadingPage'
+import { getCoupon } from '@/redux/actions/coupon'
 
 const moment = require('moment')
 
@@ -28,9 +29,11 @@ export default function CouponExpiring({
 }) {
   const [couponExpiringData, setCouponExpiringData] = useState([])
 
-  const { coupon, getCoupon } = useAuth()
+  // redux
+  const dispatch = useDispatch()
+  const { coupon } = useSelector((state) => state.coupon)
   useEffect(() => {
-    getCoupon()
+    dispatch(getCoupon())
   }, [])
 
   useEffect(() => {

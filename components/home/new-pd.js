@@ -10,7 +10,7 @@ export default function NewPd() {
   useEffect(() => {
     axios
       .get(
-        'http://localhost:3005/api/products/qs?orderby=created_time,desc&perpage=4'
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/products/qs?orderby=created_time,desc&perpage=4`
       )
       .then((res) => {
         setNewProducts(res.data.data)

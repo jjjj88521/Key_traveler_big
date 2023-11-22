@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styles from '@/styles/user/member.module.css'
 import Link from 'next/link'
-import { useAuth } from '@/hooks/useAuth'
+import { useSelector } from 'react-redux'
 import UserLayout from '@/components/layout/user-layout'
 import axios from 'axios'
 import { useRouter } from 'next/router'
@@ -30,7 +30,7 @@ export default function ResetPassword() {
   // const sendMail = (userId, user) => {
   //   // 更新會員資料
   //   axios
-  //     .get('http://localhost:3005/api/email/send')
+  //     .get(process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/email/send')
   //     .then((response) => {
   //       if (response.data.message === 'success') {
   //         console.log('成功更新')
@@ -46,7 +46,10 @@ export default function ResetPassword() {
   // 寄送otp
   const sendOTP = () => {
     axios
-      .post('http://localhost:3005/api/reset-password/otp', email)
+      .post(
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/reset-password/otp',
+        email
+      )
       .then((response) => {
         if (response.data.code === '200') {
           console.log('成功寄送')
@@ -99,7 +102,10 @@ export default function ResetPassword() {
   // 重設密碼
   const resetPasswordDb = (resetPassword) => {
     axios
-      .post('http://localhost:3005/api/reset-password/reset', resetPassword)
+      .post(
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/reset-password/reset',
+        resetPassword
+      )
       .then((response) => {
         if (response.data.code === '200') {
           console.log('更新成功1')
@@ -124,7 +130,7 @@ export default function ResetPassword() {
   const logout = async () => {
     await axios
       .post(
-        'http://localhost:3005/api/auth-jwt/logout',
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/auth-jwt/logout',
         {},
         {
           withCredentials: true, // save cookie in browser

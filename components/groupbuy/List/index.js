@@ -33,10 +33,10 @@ export default function List() {
                   <div className={`d-flex flex-column gap-3 ${styles['info']}`}>
                     <button className={styles['infoBtn1']}>加入購物車</button>
                     <button className={styles['infoBtn2']}>
-                      <i class="fa-regular fa-heart"></i> Like
+                      <i className="fa-regular fa-heart"></i> Like
                     </button>
                     <button className={styles['infoBtn3']}>
-                      <i class="fa-solid fa-angles-right"></i> Learn More
+                      <i className="fa-solid fa-angles-right"></i> Learn More
                     </button>
                   </div>
                 </div>

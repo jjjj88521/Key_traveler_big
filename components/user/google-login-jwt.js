@@ -1,14 +1,17 @@
 import useFirebase from '@/hooks/use-firebase'
 import axios from 'axios'
-import { useAuth } from '@/hooks/useAuth'
+import { useSelector, useDispatch } from 'react-redux'
+import { setUser } from '@/redux/reducers/auth'
 import GoogleLogo from '@/components/icons/google-logo'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
+
 export default function GoogleLoginJWT() {
   const router = useRouter()
   const { loginGoogle, logoutFirebase } = useFirebase()
-  const { auth, setAuth } = useAuth()
+  const dispatch = useDispatch()
+  const auth = useSelector((state) => state.auth)
 
   const parseJwt = (token) => {
     const base64Payload = token.split('.')[1]
@@ -20,24 +23,15 @@ export default function GoogleLoginJWT() {
     console.log(providerData)
 
     const res = await axios.post(
-      'http://localhost:3005/api/google-login/jwt',
+      process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/google-login/jwt',
       providerData,
       {
         withCredentials: true, // 注意: 必要的，儲存 cookie 在瀏覽器中
       }
     )
 
-    console.log(res.data)
-
-    console.log(res.data)
-    console.log(parseJwt(res.data.accessToken))
-
     if (res.data.message === 'success') {
-      setAuth({
-        isAuth: true,
-        userData: parseJwt(res.data.accessToken),
-      })
-
+      dispatch(setUser(parseJwt(res.data.token)))
       Swal.fire({
         icon: 'success',
         title: '登入成功',
@@ -48,43 +42,6 @@ export default function GoogleLoginJWT() {
         console.log('123456789')
         console.log(res)
         router.push('/')
-      })
-    }
-  }
-
-  const checkLogin = async () => {
-    const res = await axios.get(
-      'http://localhost:3005/api/auth-jwt/check-login',
-      {
-        withCredentials: true, // 從瀏覽器獲取cookie
-      }
-    )
-
-    console.log(res.data)
-  }
-
-  const logout = async () => {
-    // firebase logout(注意，並不會登出google帳號)
-    logoutFirebase()
-
-    // 伺服器logout
-    const res = await axios.post(
-      'http://localhost:3005/api/auth-jwt/logout',
-      {},
-      {
-        withCredentials: true, // save cookie in browser
-      }
-    )
-
-    if (res.data.message === 'success') {
-      setAuth({
-        isAuth: false,
-        userData: {
-          id: 0,
-          name: '',
-          username: '',
-          r_date: '',
-        },
       })
     }
   }
@@ -106,7 +63,7 @@ export default function GoogleLoginJWT() {
       {/* <button
         onClick={async () => {
           const res = await axios.get(
-            'http://localhost:3005/api/auth-jwt/check-login',
+            process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/auth-jwt/check-login',
             {
               withCredentials: true, // save cookie in browser
             }

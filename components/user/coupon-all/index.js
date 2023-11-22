@@ -1,9 +1,10 @@
 import { React, useState, useEffect } from 'react'
 import ListCardForCoupon from '../List-Card'
 import NewCouponPage from '@/components/common/PaginationComponent/newCouponPage'
-import { useAuth } from '@/hooks/useAuth'
+import { useSelector, useDispatch } from 'react-redux'
 import useLoading from '@/hooks/useLoading'
 import LoadingPage from '@/components/common/loadingPage'
+import { getCoupon } from '@/redux/actions/coupon'
 
 const moment = require('moment')
 
@@ -28,11 +29,13 @@ function filterData(data) {
 }
 
 export default function CouponAll({ currentPage, pageSize, handlePageChange }) {
-  const [couponAllData, setCouponAllData] = useState([])
+  // redux
+  const dispatch = useDispatch()
+  const { coupon } = useSelector((state) => state.coupon)
 
-  const { coupon, getCoupon } = useAuth()
+  const [couponAllData, setCouponAllData] = useState([])
   useEffect(() => {
-    getCoupon()
+    dispatch(getCoupon())
   }, [])
   useEffect(() => {
     if (Array.isArray(coupon) && coupon.length > 0) {

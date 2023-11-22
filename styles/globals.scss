@@ -13,7 +13,7 @@
 @import '~bootstrap-icons/font/bootstrap-icons';
 
 // google Noto Sans TC 字體 & Poppins 字體 (英文)
-@import 'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;800;900&&family=Poppins:wght@500;600;700;800;900&family=VT323&display=swap';
+// @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;800;900&family=Poppins:wght@500;600;700;800;900&display=swap');
 
 // @fortawesome/fontawesome-free 可以直接使用 fontawesome 的圖
 @import '~@fortawesome/fontawesome-free/scss/fontawesome';
@@ -34,7 +34,23 @@
 #__next {
   flex-direction: column;
   height: 100%;
+  min-height: 100vh;
   display: flex;
+  header {
+    flex: 0 0 auto;
+  }
+
+  .my-breadcrumb {
+    flex: 0 0 auto;
+  }
+
+  main {
+    flex: 1 0 auto;
+  }
+
+  footer {
+    flex: 0 0 auto;
+  }
 }
 
 // 隱藏next.js的錯誤訊息圖層
@@ -75,6 +91,7 @@ body {
     'Apple Color Emoji',
     'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   background-color: rgb(248, 248, 248);
+  // height: 100vh;
 }
 
 ul,

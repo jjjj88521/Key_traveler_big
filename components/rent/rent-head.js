@@ -24,7 +24,7 @@ import { DatePicker, Select } from 'antd'
 import { CaretRightOutlined } from '@ant-design/icons'
 import { useProductData } from '@/context/useProduct'
 import useMobile from '@/hooks/useMobile'
-import { addProductLike, deleteProductLike } from '@/libs/productFetcher'
+import { addProductLike, deleteProductLike } from '@/utils/productFetcher'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
 

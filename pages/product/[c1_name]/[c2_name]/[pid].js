@@ -17,7 +17,7 @@ import {
   deleteProductLike,
   fetchPdCommentCount,
   fetchMaybeLike,
-} from '@/libs/productFetcher'
+} from '@/utils/productFetcher'
 
 // swiper
 // swiper
@@ -30,12 +30,11 @@ import 'swiper/scss/navigation'
 
 import { SwiperPrevBtn, SwiperNextBtn } from '@/components/home/swiper-btns'
 import Card from '@/components/product/Card'
-import { useAuth } from '@/hooks/useAuth'
-import anime from 'animejs'
 import useHideBtn from '@/hooks/useHideBtn'
+import { useSelector } from 'react-redux'
 
 export default function ProductDetail() {
-  const { auth } = useAuth()
+  const auth = useSelector((state) => state.auth)
   const router = useRouter()
   const { pid } = router.query
   const { isReady } = router
@@ -74,7 +73,7 @@ export default function ProductDetail() {
       await fetchMaybeLike(pid).then((products) => {
         setMaybeLike(products)
       })
-      await fetchProduct(pid)
+      await fetchProduct({ type: 'products', pid })
         .then((product) => {
           if (Object.keys(product).length === 0) {
             throw new Error('沒有此商品')

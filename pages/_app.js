@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import DefaultLayout from '@/components/layout/default-layout'
 import '@/styles/globals.scss'
 import AntdConfigProvider from './_antd-config-provider'
 import HomeLayout from '@/components/layout/home-layout'
-import { AuthProvider } from '@/hooks/useAuth'
 import HydrationFix from './_hydration-fix'
 // 商品
 import { ProductDataProvider } from '@/context/useProduct'
@@ -15,7 +14,7 @@ import { RentCartProvider } from '@/hooks/useRentCart'
 import { GroupCartProvider } from '@/hooks/useGroupCart'
 import { Provider, useDispatch } from 'react-redux'
 import { store } from '@/redux/store'
-import { checkLoginAsync } from '@/redux/actions/user'
+import { checkLoginAsync } from '@/redux/actions/auth'
 
 export default function AppWrapper({ Component, pageProps }) {
   return (
@@ -52,21 +51,19 @@ export function MyApp({ Component, pageProps }) {
       }
       return (
         // 會員登入
-        <AuthProvider>
-          <AllPdLikeProvider>
-            <ProductDataProvider>
-              <CartProvider>
-                <RentCartProvider>
-                  <GroupCartProvider>
-                    <HydrationFix>
-                      <AntdConfigProvider>{layoutComponent}</AntdConfigProvider>
-                    </HydrationFix>
-                  </GroupCartProvider>
-                </RentCartProvider>
-              </CartProvider>
-            </ProductDataProvider>
-          </AllPdLikeProvider>
-        </AuthProvider>
+        <AllPdLikeProvider>
+          <ProductDataProvider>
+            <CartProvider>
+              <RentCartProvider>
+                <GroupCartProvider>
+                  <HydrationFix>
+                    <AntdConfigProvider>{layoutComponent}</AntdConfigProvider>
+                  </HydrationFix>
+                </GroupCartProvider>
+              </RentCartProvider>
+            </CartProvider>
+          </ProductDataProvider>
+        </AllPdLikeProvider>
       )
     })
   // AuthProvider 會員登入用

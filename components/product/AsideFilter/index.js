@@ -29,7 +29,9 @@ export default function AsideFilter({ setFilterProduct }) {
 
     // 用URLSearchParams產生查詢字串
     const searchParams = new URLSearchParams(params)
-    const url = `http://localhost:3005/api/products/qs?${searchParams.toString()}`
+    const url = `${
+      process.env.NEXT_PUBLIC_BACKEND_BASE_URL
+    }/api/products/qs?${searchParams.toString()}`
     const res = await axios.get(url)
 
     if (Array.isArray(res.data.data)) {

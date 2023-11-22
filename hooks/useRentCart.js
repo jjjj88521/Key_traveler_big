@@ -7,7 +7,7 @@ import React, {
 } from 'react'
 import { reducer, initRent } from './cart-reducer'
 import axios from 'axios'
-import { useAuth } from './useAuth'
+import { useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 
 const RentCartContext = createContext(null)
@@ -15,16 +15,19 @@ const RentCartContext = createContext(null)
 export const RentCartProvider = ({ children }) => {
   const router = useRouter()
   // let items = initialRentProducts
-  const { auth } = useAuth()
+  const auth = useSelector((state) => state.auth)
   // const [state, dispatch] = useReducer(reducer, items, initRent)
   const [state, dispatch] = useReducer(reducer, [], initRent)
   const getCartData = async () => {
     // 先清空再加
     dispatch({ type: 'CLEAR_CART' })
     try {
-      const response = await axios.get('http://localhost:3005/api/cart/rent', {
-        withCredentials: true,
-      })
+      const response = await axios.get(
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/cart/rent',
+        {
+          withCredentials: true,
+        }
+      )
       // console.log(response.data)
       if (response.data.message === 'authorized') {
         // 將購物車資料設定為初始狀態

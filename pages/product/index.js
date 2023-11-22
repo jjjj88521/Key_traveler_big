@@ -32,7 +32,7 @@ export default function ProductIndex() {
   useEffect(() => {
     if (router.isReady) {
       axios
-        .get(`http://localhost:3005/api/products/qs`)
+        .get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/products/qs`)
         .then((res) => {
           setCateProducts(res.data)
         })
@@ -47,7 +47,9 @@ export default function ProductIndex() {
   // 篩選功能：價錢範圍
   const filterRange = () => {
     axios
-      .get(`http://localhost:3005/api/products/qs?${range}`)
+      .get(
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/products/qs?${range}`
+      )
       .then((res) => {
         setCateProducts(res.data)
         // 儲存篩選條件，給分頁功能用
@@ -63,7 +65,7 @@ export default function ProductIndex() {
   // 排序功能
   const orderProduct = (orderby) => {
     // 建構 Axios 請求，包含分頁頁碼以及篩選條件
-    let requestUrl = `http://localhost:3005/api/products/qs?orderby=${orderby}`
+    let requestUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/products/qs?orderby=${orderby}`
 
     // 如果有做過"篩選"或"排序"，就要將其包含在請求中
     if (filterRangeValue) {
@@ -99,7 +101,7 @@ export default function ProductIndex() {
     setPage(newPage)
 
     // 建構 Axios 請求，包含分頁頁碼以及篩選條件
-    let requestUrl = `http://localhost:3005/api/products/qs?page=${newPage}`
+    let requestUrl = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/products/qs?page=${newPage}`
 
     // 如果有做過"篩選"或"排序"，就要將其包含在請求中
     if (filterRangeValue) {
@@ -128,7 +130,9 @@ export default function ProductIndex() {
     if (checked) {
       setShowZeroStock(1)
       axios
-        .get(`http://localhost:3005/api/products/qs?stock=1`)
+        .get(
+          `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/products/qs?stock=1`
+        )
         .then((res) => {
           setCateProducts(res.data)
         })
@@ -138,7 +142,7 @@ export default function ProductIndex() {
     } else {
       setShowZeroStock(0)
       axios
-        .get(`http://localhost:3005/api/products/qs`)
+        .get(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/products/qs`)
         .then((res) => {
           setCateProducts(res.data)
         })
@@ -246,7 +250,7 @@ export default function ProductIndex() {
                 style={{ fontSize: '16px' }}
               >
                 <i
-                  class="fa-solid fa-sliders"
+                  className="fa-solid fa-sliders"
                   style={{ marginRight: '10px' }}
                 ></i>
                 篩選
