@@ -26,6 +26,11 @@ const couponSlice = createSlice({
       })
       .addCase(addCoupon.fulfilled, (state) => {
         state.addCouponLoading = false
+        Swal.fire({
+          icon: 'success',
+          title: '新增優惠碼成功',
+          timer: 1500,
+        })
       })
       .addCase(addCoupon.rejected, (state, action) => {
         state.addCouponLoading = false
