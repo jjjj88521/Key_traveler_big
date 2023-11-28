@@ -17,10 +17,17 @@
     },
     "import/resolver": {
       "alias": {
-        "map": [
-          ["@", "."]
-        ],
-        "extensions": [".js", ".jsx", ".ts", ".tsx", ".css", ".module.css", ".scss", ".json"]
+        "map": [["@", "."]],
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx",
+          ".css",
+          ".module.css",
+          ".scss",
+          ".json"
+        ]
       }
     }
   },

@@ -21,6 +21,7 @@ const couponSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // 新增
       .addCase(addCoupon.pending, (state) => {
         state.addCouponLoading = true
       })
@@ -37,17 +38,17 @@ const couponSlice = createSlice({
         Swal.fire({
           icon: 'error',
           title: '新增優惠碼失敗',
-          text: action.payload.message,
+          text: action.payload,
           timer: 1500,
         })
       })
-    createAsyncReducer(builder, getCoupon, 'coupon')
-    createAsyncReducer(builder, getCouponExpired, 'couponExpired')
-    createAsyncReducer(builder, getCouponUsed, 'couponUsed')
+    createAsyncReducer(builder, getCoupon, 'coupon') // 所有優惠券
+    createAsyncReducer(builder, getCouponExpired, 'couponExpired') // 已過期優惠券
+    createAsyncReducer(builder, getCouponUsed, 'couponUsed') // 已使用優惠券
   },
 })
 
-// 整理 extraReducers 操作
+// 整理獲取優惠券操作
 const createAsyncReducer = (builder, action, stateField) => {
   builder
     .addCase(action.pending, (state) => {

@@ -12,7 +12,7 @@ import {
 } from 'firebase/auth'
 import { useEffect } from 'react'
 
-import { firebaseConfig } from './firebase-config'
+import { firebaseConfig } from '@/configs/firebase-config'
 
 /**
  * initApp handles setting up UI event listeners and registering Firebase auth listeners:

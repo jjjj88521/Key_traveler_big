@@ -61,10 +61,10 @@ export default function LoginForm() {
 
         <div className="row mb-2 col-sm-8 offset-sm-2">
           <div className={`mb-3 ${styles['hr-sect']} `}>快速登入</div>
-          <div className="col-sm-12 text-start">
-            <div className="d-flex justify-content-center my-3">
-              <GoogleLoginJWT />
-            </div>
+          <div className="col-sm-12 text-center">
+            {/* <div className="d-flex justify-content-center my-3"> */}
+            <GoogleLoginJWT />
+            {/* </div> */}
           </div>
         </div>
         <div className=" text-center my-3">

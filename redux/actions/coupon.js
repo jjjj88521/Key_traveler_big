@@ -12,7 +12,7 @@ export const getCoupon = createAsyncThunk(
       }
       return response.data
     } catch (error) {
-      thunkAPI.rejectWithValue(error.response.data)
+      return thunkAPI.rejectWithValue(error.message)
     }
   }
 )
@@ -28,7 +28,7 @@ export const getCouponExpired = createAsyncThunk(
       }
       return response.data
     } catch (error) {
-      thunkAPI.rejectWithValue(error.response.data)
+      return thunkAPI.rejectWithValue(error.message)
     }
   }
 )
@@ -44,7 +44,7 @@ export const getCouponUsed = createAsyncThunk(
       }
       return response.data
     } catch (error) {
-      thunkAPI.rejectWithValue(error.response.data)
+      return thunkAPI.rejectWithValue(error.message)
     }
   }
 )
@@ -65,7 +65,7 @@ export const addCoupon = createAsyncThunk(
         thunkAPI.dispatch(getCoupon())
       }
     } catch (error) {
-      thunkAPI.rejectWithValue(error.response.data)
+      return thunkAPI.rejectWithValue(error.message)
     }
   }
 )

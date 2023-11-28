@@ -1,15 +1,16 @@
 import useFirebase from '@/hooks/use-firebase'
-import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
-import { setUser } from '@/redux/reducers/auth'
+import { setUser, isLoading } from '@/redux/reducers/auth'
 import GoogleLogo from '@/components/icons/google-logo'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
+import { Button } from 'antd'
+import request from '@/utils/request'
+import { googleLoginAsync } from '@/redux/actions/auth'
 
 export default function GoogleLoginJWT() {
   const router = useRouter()
-  const { loginGoogle, logoutFirebase } = useFirebase()
+  const { loginGoogle } = useFirebase()
   const dispatch = useDispatch()
   const auth = useSelector((state) => state.auth)
 
@@ -20,43 +21,48 @@ export default function GoogleLoginJWT() {
   }
 
   const callbackGoogleLogin = async (providerData) => {
-    console.log(providerData)
+    // console.log(providerData)
 
-    const res = await axios.post(
-      process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/google-login/jwt',
-      providerData,
-      {
-        withCredentials: true, // 注意: 必要的，儲存 cookie 在瀏覽器中
-      }
-    )
+    // dispatch(isLoading(true))
+    // // 發送 post 請求
+    // const res = await request.post('/api/google-login/jwt', providerData)
 
-    if (res.data.message === 'success') {
-      dispatch(setUser(parseJwt(res.data.token)))
-      Swal.fire({
-        icon: 'success',
-        title: '登入成功',
-        text: '即將回到首頁',
-        showConfirmButton: false,
-        timer: 1500,
-      }).then((res) => {
-        console.log('123456789')
-        console.log(res)
-        router.push('/')
-      })
-    }
+    // if (res.data.message === 'success') {
+    //   dispatch(isLoading(false))
+    //   dispatch(setUser(parseJwt(res.data.token)))
+    //   Swal.fire({
+    //     icon: 'success',
+    //     title: '登入成功',
+    //     text: '即將回到首頁',
+    //     showConfirmButton: false,
+    //     timer: 1500,
+    //   }).then(() => {
+    //     router.push('/')
+    //   })
+    // }
+    dispatch(googleLoginAsync(providerData))
   }
 
   return (
     <>
       {/* <h1>google-login測試頁(jwt)</h1>
       <p>會員狀態:{auth.isAuth ? '已登入' : '未登入'}</p> */}
-      <button
+      {/* <button
         onClick={() => loginGoogle(callbackGoogleLogin)}
         style={{ background: 'white' }}
         className="p-2 border rounded px-5"
       >
         <GoogleLogo /> google登入
-      </button>
+      </button> */}
+      <Button
+        onClick={() => loginGoogle(callbackGoogleLogin)}
+        className="px-5"
+        icon={<GoogleLogo size="1rem" />}
+        loading={auth.isLoading}
+        size="large"
+      >
+        Google 登入
+      </Button>
       {/* <br />
       <button onClick={logout}>登出</button>
       <br /> */}

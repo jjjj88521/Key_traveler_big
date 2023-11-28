@@ -1,11 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit'
 import jwtDecode from 'jwt-decode'
 import Swal from 'sweetalert2'
-import { checkLoginAsync, loginAsync, logoutAsync } from '../actions/auth'
+import {
+  checkLoginAsync,
+  googleLoginAsync,
+  loginAsync,
+  logoutAsync,
+} from '../actions/auth'
 import Router from 'next/router'
 
 const initialState = {
-  isLoading: false,
+  isLoading: false, // 判斷是否正在登入
   isAuth: false,
   user: {
     id: null,
@@ -34,9 +39,13 @@ const authSlice = createSlice({
       state.isAuth = true
       state.user = action.payload
     },
+    isLoading: (state, action) => {
+      state.isLoading = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder
+      // 登入
       .addCase(loginAsync.fulfilled, (state, action) => {
         state.isAuth = true
         state.user = jwtDecode(action.payload.accessToken)
@@ -44,7 +53,7 @@ const authSlice = createSlice({
         showSuccessAlert('登入成功', redirect)
       })
       .addCase(loginAsync.rejected, (state, action) => {
-        showErrorAlert('登入失敗', action.error.message)
+        showErrorAlert('登入失敗', action.payload)
       })
       .addCase(logoutAsync.fulfilled, (state, action) => {
         if (action.payload.code === '200') {
@@ -58,8 +67,10 @@ const authSlice = createSlice({
           showSuccessAlert('登出成功', redirect)
         }
       })
+      // 登出
       .addCase(logoutAsync.rejected, (state, action) => {
-        showErrorAlert('登出失敗', action.error.message)
+        console.log(action.payload.message)
+        showErrorAlert('登出失敗', action.payload)
       })
       .addCase(checkLoginAsync.fulfilled, (state, action) => {
         state.isAuth = true
@@ -69,11 +80,20 @@ const authSlice = createSlice({
         state.isAuth = false
         state.user = initialState.user
       })
+      // google 登入
+      .addCase(googleLoginAsync.fulfilled, (state, action) => {
+        state.isAuth = true
+        state.user = jwtDecode(action.payload.accessToken)
+        const redirect = localStorage.getItem('redirect') || '/'
+        showSuccessAlert('登入成功', redirect)
+      })
+      .addCase(googleLoginAsync.rejected, (state, action) => {
+        console.log(action.payload)
+        showErrorAlert('登入失敗', action.payload)
+      })
+      // loading，checklogin 不會有 loading
       .addMatcher(
-        (action) =>
-          action.type.endsWith('/pending') ||
-          action.type.endsWith('/fulfilled') ||
-          action.type.endsWith('/rejected'),
+        (action) => !action.type.startsWith('auth/checkLogin'),
         (state, action) => {
           state.isLoading = action.type.endsWith('/pending')
         }
@@ -103,6 +123,6 @@ const showErrorAlert = (title, errorMessage) => {
     timer: 1500,
   })
 }
-export const { setUser } = authSlice.actions
+export const { setUser, isLoading } = authSlice.actions
 
 export default authSlice.reducer
