@@ -1,7 +1,7 @@
+import '@/styles/globals.scss'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import DefaultLayout from '@/components/layout/default-layout'
-import '@/styles/globals.scss'
 import AntdConfigProvider from './_antd-config-provider'
 import HomeLayout from '@/components/layout/home-layout'
 import HydrationFix from './_hydration-fix'

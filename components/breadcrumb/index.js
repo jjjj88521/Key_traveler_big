@@ -13,7 +13,6 @@ export default function MyBreadcrumb() {
   const pathname = asPath.split('?')[0]
   const { productData } = useProductData()
   // const [isLoading, setIsLoading] = useLoading(productData.id)
-  console.log('isReady', isReady)
 
   // 如果有 pid，獲取商品資訊
   const [productName, setProductName] = useState(null)
