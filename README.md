@@ -11,10 +11,11 @@
 
 ### Todo
 
-- [ ] 會員 context 轉 redux
+- [x] 會員 context 轉 redux
 - [ ] 購物車 context 轉 redux
 - [ ] 訂單新增地址資訊
 - [ ] 商品卡片重寫
+- [ ] 會員中心調整
 
 ### 主要功能
 
