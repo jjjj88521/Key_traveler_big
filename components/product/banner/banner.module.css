@@ -1,0 +1,20 @@
+.banner {
+  height: 250px;
+  position: relative;
+}
+
+.rounded {
+  @media (max-width: 576px) {
+    border-radius: 10px;
+  }
+}
+
+.display1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 40px;
+  font-weight: 600;
+  text-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}

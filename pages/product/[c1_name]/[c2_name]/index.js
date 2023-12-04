@@ -9,6 +9,7 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import useLoading from '@/hooks/useLoading'
 import Head from 'next/head'
+import Banner from '@/components/product/banner'
 
 export default function ProductCate2() {
   // 路由相關
@@ -192,16 +193,7 @@ export default function ProductCate2() {
       <Head>
         <title>{cateName}</title>
       </Head>
-      <div className={styles.banner}>
-        <div className="w-100 h-100 p-4 p-sm-0">
-          <img
-            className={`w-100 h-100 object-fit-cover ${styles.rounded}`}
-            src={`/images/${bannerImage}`}
-            alt="banner"
-          />
-        </div>
-        <h1 className={`text-primary ${styles['display1']}`}>{cateName}</h1>
-      </div>
+      <Banner title={cateName} image={`/images/${bannerImage}`} />
       <div className="container pt-md-5 ps-4 pe-4 p-sm-0">
         <div className="row">
           <div className="d-none d-sm-block col-12 col-sm-3 pe-md-5 pe-1">

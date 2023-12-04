@@ -248,7 +248,7 @@ export default function POrderList() {
         <button
           className="btn btn-primary mx-3"
           onClick={() => {
-            router.push(`http://localhost:3000/user/order`)
+            router.push(`/user/order`)
           }}
         >
           上一頁

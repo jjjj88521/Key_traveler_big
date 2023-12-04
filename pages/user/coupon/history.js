@@ -1,8 +1,8 @@
 import { React, useState } from 'react'
 import UserLayout from '@/components/layout/user-layout'
 import { Radio } from 'antd'
-import CouponUsed from '@/components/user/coupon-used'
-import CouponExpired from '@/components/user/coupon-expired'
+import CouponUsed from '@/components/user/coupon/coupon-used'
+import CouponExpired from '@/components/user/coupon/coupon-expired'
 
 export default function History() {
   const [currentPage, setCurrentPage] = useState(1)

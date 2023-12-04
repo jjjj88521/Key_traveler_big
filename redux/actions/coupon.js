@@ -55,12 +55,12 @@ export const addCoupon = createAsyncThunk(
   async (couponCode, thunkAPI) => {
     try {
       const response = await request.post('/api/coupon', { couponCode })
-      if (response.data.message === '400') {
-        throw new Error('優惠碼輸入錯誤')
-      } else if (response.data.message === '403') {
+      if (response.data.message === 'Coupon is expired') {
         throw new Error('優惠碼已過期')
-      } else if (response.data.message === '402') {
+      } else if (response.data.message === 'Coupon has been used') {
         throw new Error('已持有該優惠碼')
+      } else if (response.data.code === '400') {
+        throw new Error('優惠碼輸入錯誤')
       } else {
         thunkAPI.dispatch(getCoupon())
       }

@@ -27,8 +27,8 @@ export default function CreditCardForm() {
   }
 
   // const { user, setAuth } = useAuth()
-  const user = useSelector((state) => state.user)
-  const [formData, setformData] = useState({ ...user.user })
+  const auth = useSelector((state) => state.auth)
+  const [formData, setformData] = useState({ ...auth.user })
   // 重新整理後驗證登入狀態
   // useEffect(() => {
   //   if (localStorage.getItem('loginToken')) {
@@ -59,7 +59,7 @@ export default function CreditCardForm() {
     setformData({ ...formData, [name]: value })
     // console.log(user.user.card_number)
   }
-  const [isLoading, setIsLoading] = useLoading(user.user)
+  const [isLoading, setIsLoading] = useLoading(auth.user)
   return isLoading ? (
     <LoadingPage />
   ) : (
@@ -74,7 +74,7 @@ export default function CreditCardForm() {
             name="card_number"
             pattern="^[0-9]*$"
             maxLength="16"
-            defaultValue={user.user.card_number}
+            defaultValue={auth.user.card_number}
             className={`${style['hide-arrow']} col-8 col-sm-8 col-12 form-control`}
             placeholder="Card Number"
             onChange={handleInputChange}
@@ -89,7 +89,7 @@ export default function CreditCardForm() {
             className="col-sm-8 col-12 form-control"
             type="text"
             name="card_name"
-            defaultValue={user.user.card_name}
+            defaultValue={auth.user.card_name}
             placeholder="Card Holder Name"
             onChange={handleInputChange}
             // onFocus={(e) => setCardData({ ...cardData, focus: e.target.name })}
@@ -132,9 +132,8 @@ export default function CreditCardForm() {
               })
               return
             }
-            delete user.user.exp
-            delete user.user.iat
-            console.log(user)
+            delete auth.user.exp
+            delete auth.user.iat
             updateUser(formData)
             Swal.fire({
               icon: 'success',

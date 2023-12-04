@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from '@/styles/user/user-side-bar.module.css'
 import Link from 'next/link'
-import userSideBarLinks from '../user-side-bar/userSideBarLinks'
+import userSideBarLinks from './user-side-bar/userSideBarLinks'
 
 export default function UserSideBarMobile() {
   return (

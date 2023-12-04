@@ -9,23 +9,27 @@ export default function ForgetPasswordForm() {
       {isLoading ? (
         <LoadingPage />
       ) : (
-        <div className="row pb-5">
-          <div className="col-sm-5 offset-sm-1 col-12">
+        <div className="row pb-5 gap-sm-0 gap-3">
+          <div className="col-sm-7 col-12">
             <ResetPassword />
           </div>
-          <div className="waring-message col-sm-4 offset-sm-1 col-12">
+          <div className="waring-message col-sm-5 col-12">
             <p>溫馨提示:</p>
-            <ol>
+            <ol className="vstack gap-3">
               <li className="">
                 密碼長度要求:
                 <ul>
-                  <li>您的新密碼至少需要有 6 個字符</li>
+                  <li>您的新密碼至少需要有 8 個字符</li>
+                  <li>密碼至少包含一個大寫字母、小寫字母和數字</li>
                 </ul>
               </li>
               <li>
                 避免使用常見密碼：
                 <ul>
-                  <li>請勿使用常見的密碼，如 'password' 或 '123456'。</li>
+                  <li>
+                    請勿使用常見的密碼，如 &apos;password&apos; 或
+                    &apos;123456&apos;。
+                  </li>
                   <li>選擇一個不容易猜測的密碼，以確保您的帳戶安全</li>
                 </ul>
               </li>

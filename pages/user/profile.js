@@ -10,22 +10,14 @@ export default function Profile() {
   return (
     <>
       <UserLayout title={'個人資料'}>
-        {/* 手機板 */}
-        <div className=" d-block d-sm-none">
-          <UserAvatarMobile />
-          <ProfileForm />
-        </div>
-        {/* 電腦版 */}
-        {isLoading ? (
-          <LoadingPage />
-        ) : (
-          <div className="d-sm-flex d-none">
-            {/* form表單 */}
+        <div className="row">
+          <div className="col-12 col-sm-8 order-1 order-sm-0">
             <ProfileForm />
-            {/* 電腦版的avator */}
+          </div>
+          <div className="col-12 col-sm-4 order-0 order-sm-1">
             <UserAvatar />
           </div>
-        )}
+        </div>
       </UserLayout>
     </>
   )

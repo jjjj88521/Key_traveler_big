@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
-import UploadAvatar from '../upload-avatar'
+import UploadAvatar from './upload-avatar'
 export default function UserAvatarMobile() {
   const auth = useSelector((state) => state.auth)
   //判斷VIP等級 S

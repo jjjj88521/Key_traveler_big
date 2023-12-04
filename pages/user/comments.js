@@ -13,49 +13,6 @@ import CommentItem from '@/components/product/ProductTab/review-tab/comment-item
 import PaginationComponent from '@/components/common/PaginationComponent'
 
 const moment = require('moment')
-
-const commentsData = [
-  // {
-  //   key: 0,
-  //   user: 'User',
-  //   star: 4.2,
-  //   description: '很棒很好用1',
-  //   name: '商品名稱1',
-  //   category1: '規格1',
-  //   category2: '規格2',
-  //   createTime: '2023-08-27 16:06:44',
-  // },
-  // {
-  //   key: 1,
-  //   user: 'User',
-  //   star: 4.5,
-  //   description: '很棒很好用2',
-  //   name: '商品名稱2',
-  //   category1: '規格3',
-  //   category2: '規格4',
-  //   createTime: '2023-08-26 16:06:44',
-  // },
-  // {
-  //   key: 2,
-  //   user: 'User',
-  //   star: 4.0,
-  //   description: '很棒很好用3',
-  //   name: '商品名稱3',
-  //   category1: '規格5',
-  //   category2: '規格6',
-  //   createTime: '2023-08-25 16:06:44',
-  // },
-  // {
-  //   key: 3,
-  //   user: 'User',
-  //   star: 3.5,
-  //   description: '很棒很好用4',
-  //   name: '商品名稱4',
-  //   category1: '規格7',
-  //   category2: '規格8',
-  //   createTime: '2023-08-24 16:06:44',
-  // },
-]
 //  Database for commentsData
 // const commentsData = [{
 //     user:user.account,
@@ -177,7 +134,7 @@ const items = [
 ]
 
 export default function Comments() {
-  const { auth, setAuth } = useAuth()
+  const auth = useSelector((state) => state.auth)
   const user_id = auth.user.id
   // console.log(user_id)
   const [commentData, setCommentData] = useState([]) // 獲取還沒評價的商品

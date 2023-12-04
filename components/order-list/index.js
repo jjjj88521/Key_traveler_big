@@ -288,7 +288,7 @@ export default function OrderList() {
                       <td className="ps-5">{v.status}</td>
                       <td className="ps-5">
                         <Link
-                          href={`http://localhost:3000/user/order/${v.id}`}
+                          href={`/user/order/${v.id}`}
                           className="btn btn-primary text-light"
                         >
                           查看
@@ -327,7 +327,7 @@ export default function OrderList() {
                       <td className="text-center" colSpan={2}>
                         <Link
                           className="btn btn-primary text-light"
-                          href={`http://localhost:3000/user/order/${v.id}`}
+                          href={`/user/order/${v.id}`}
                         >
                           查看
                         </Link>
