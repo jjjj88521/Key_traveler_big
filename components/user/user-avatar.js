@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
-import UploadAvatar from '../upload-avatar'
+import UploadAvatar from './upload-avatar'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
 import useLoading from '@/hooks/useLoading'
-import LoadingPage from '@/components/common/loadingPage'
+
 export default function UserAvatar() {
   const [selectedFile, setSelectedFile] = useState(null)
   const [previewUrl, setPreviewUrl] = useState('')
@@ -22,7 +22,6 @@ export default function UserAvatar() {
     }
   }
 
-  const fileInputRef = useRef(null)
   const auth = useSelector((state) => state.auth)
   //判斷VIP等級 S
   const [vipGrade, setVipGrade] = useState(0)
@@ -52,13 +51,11 @@ export default function UserAvatar() {
     vipGradeAPi()
     vipText()
   }, [])
-  //判斷VIP等級 E
-  const [isLoading, setIsLoading] = useLoading(auth.isAuth)
+
   return (
     <>
-      <div className="avatar col-3 offset-1 d-sm-block d-none">
+      <div className="avatar">
         <div className="d-flex flex-column align-items-center">
-          {' '}
           <h4>會員等級</h4>
           <p>
             {vipText()}
@@ -70,36 +67,6 @@ export default function UserAvatar() {
             />
           </p>
           <UploadAvatar />
-          {/* <div className="avatar-img ">
-            <Image
-              src={
-                previewUrl ||
-                'https://tamilnaducouncil.ac.in/wp-content/uploads/2020/04/dummy-avatar.jpg'
-              }
-              alt="https://tamilnaducouncil.ac.in/wp-content/uploads/2020/04/dummy-avatar.jpg"
-              width={150}
-              height={150}
-              className="rounded-circle border border-primary"
-            />
-          </div> */}
-          {/* <button
-            type="button"
-            className="btn btn-primary text-white my-4"
-            onClick={() => {
-              fileInputRef.current.click()
-            }}
-          > */}
-          {/* 選擇圖片  */}
-          {/* <input
-              type="file"
-              ref={fileInputRef}
-              className="d-none"
-              onChange={(e) => {
-                handleFileSelect(e)
-                console.log(e.target.files[0])
-              }}
-            /> */}
-          {/* </button> */}
         </div>
       </div>
     </>

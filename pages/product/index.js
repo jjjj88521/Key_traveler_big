@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { Drawer, Button, Spin, Switch } from 'antd'
 import styles from './product.module.css'
 import Accordion from '@/components/product/accordion'
-import AsideFilter from '@/components/product/AsideFilter'
 import PaginationComponent from '@/components/common/PaginationComponent'
 import Card from '@/components/product/Card'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import useLoading from '@/hooks/useLoading'
 import Head from 'next/head'
+import Banner from '@/components/product/banner'
 
 // 將 title 傳給 app.js
 export async function getStaticProps() {
@@ -165,16 +165,7 @@ export default function ProductIndex() {
       <Head>
         <title>全部商品</title>
       </Head>
-      <div className={styles.banner}>
-        <div className="w-100 h-100 p-4 p-sm-0">
-          <img
-            className={`w-100 h-100 object-fit-cover ${styles.rounded}`}
-            src="/images/testbanner.png"
-            alt="banner"
-          />
-        </div>
-        <h1 className={`text-primary ${styles['display1']}`}>全部商品</h1>
-      </div>
+      <Banner title="全部商品" image="/images/testbanner.png" />
       <div className="container pt-md-5 ps-4 pe-4 p-sm-0">
         <div className="row">
           <div className="d-none d-sm-block col-12 col-sm-3 pe-md-5 pe-1">

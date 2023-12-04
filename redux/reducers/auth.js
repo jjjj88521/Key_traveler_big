@@ -23,8 +23,8 @@ const initialState = {
     email: '',
     password: '',
     confirmPassword: '',
-    cardNumber: '',
-    cardName: '',
+    card_number: '',
+    card_name: '',
     exp: '',
     vip: '',
     google_uid: '',
@@ -55,6 +55,7 @@ const authSlice = createSlice({
       .addCase(loginAsync.rejected, (state, action) => {
         showErrorAlert('登入失敗', action.payload)
       })
+      // 登出
       .addCase(logoutAsync.fulfilled, (state, action) => {
         if (action.payload.code === '200') {
           state.isAuth = false
@@ -67,11 +68,11 @@ const authSlice = createSlice({
           showSuccessAlert('登出成功', redirect)
         }
       })
-      // 登出
       .addCase(logoutAsync.rejected, (state, action) => {
         console.log(action.payload.message)
         showErrorAlert('登出失敗', action.payload)
       })
+      // 檢查登入
       .addCase(checkLoginAsync.fulfilled, (state, action) => {
         state.isAuth = true
         state.user = action.payload.user
@@ -93,7 +94,7 @@ const authSlice = createSlice({
       })
       // loading，checklogin 不會有 loading
       .addMatcher(
-        (action) => !action.type.startsWith('auth/checkLogin'),
+        (action) => action.type,
         (state, action) => {
           state.isLoading = action.type.endsWith('/pending')
         }

@@ -19,7 +19,12 @@ instance.interceptors.response.use(
   (response) => {
     return response
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    if (!error.response) {
+      console.log('網路錯誤')
+    }
+    return Promise.reject(error)
+  }
 )
 
 export default instance

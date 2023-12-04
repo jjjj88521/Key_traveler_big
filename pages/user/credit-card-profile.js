@@ -1,27 +1,9 @@
-import React, { useState } from 'react'
-import Cards from 'react-credit-cards-2'
-import '@/node_modules/react-credit-cards-2/dist/es/styles.scss' // 引入样式
-import UserSideBar from '@/components/user/user-side-bar'
-import UserSideBarMobile from '@/components/user/user-side-bar-mobile'
-import CreditCardForm from '@/components/user/CreditCardForm'
+import React from 'react'
+import '@/node_modules/react-credit-cards-2/dist/es/styles.scss' // 引入信用卡套件的樣式
+import CreditCardForm from '@/components/user/credit-card-form'
 import UserLayout from '@/components/layout/user-layout'
 
 export default function CreditCardProfile() {
-  const [cardData, setCardData] = useState({
-    cvc: '',
-    expiry: '',
-    focus: '',
-    name: '',
-    number: '',
-  })
-  const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setCardData({
-      ...cardData,
-      [name]: value,
-    })
-  }
-
   return (
     <UserLayout title={'信用卡管理'}>
       <div className="row" style={{ height: '431px' }}>

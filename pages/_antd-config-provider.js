@@ -1,10 +1,12 @@
 import { ConfigProvider } from 'antd'
 import React from 'react'
+import zhTW from 'antd/lib/locale/zh_TW'
 
 export default function AntdConfigProvider({ children }) {
   // 修改 antd 主題
   return (
     <ConfigProvider
+      locale={zhTW}
       theme={{
         token: {
           colorPrimary: '#DC9329',

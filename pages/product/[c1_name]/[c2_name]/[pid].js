@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import TabContainer from '@/components/product/ProductTab'
 import ProductHead from '@/components/product/product-head'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import TabButton from '@/components/product/ProductTab/TabButton'
 import PdLoading from '@/components/product/pd-loading'
-import axios from 'axios'
 import useRecentlyViewed from '@/hooks/useRecentlyViewed'
-import Swal from 'sweetalert2'
 import useLoading from '@/hooks/useLoading'
 import { useProductData } from '@/context/useProduct'
 import {
@@ -59,7 +57,7 @@ export default function ProductDetail() {
   useEffect(() => {
     const fetchData = async () => {
       // 每次獲取資料前都先重設載入中狀態
-      setIsLoading(true)
+      setProductData({})
       await fetchPdCommentCount(pid).then((data) => {
         setCommentCount(data)
       })

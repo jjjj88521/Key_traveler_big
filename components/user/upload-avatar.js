@@ -1,8 +1,7 @@
 import ImgCrop from 'antd-img-crop'
 import React, { useEffect, useState } from 'react'
-import { Upload } from 'antd'
+import { Button, Upload } from 'antd'
 import axios from 'axios'
-import Image from 'next/image'
 import { useSelector } from 'react-redux'
 import Swal from 'sweetalert2'
 
@@ -118,14 +117,14 @@ const UploadAvatar = () => {
 
   return (
     <>
-      {/* d-flex flex-sm-column gap-3 justify-content-center */}
-      <div className="flex-sm-column d-flex justify-content-sm-start justify-content-evenly">
-        <div className="align-self-center ">
-          {' '}
+      <div className="d-flex flex-sm-column align-items-center">
+        <div className="">
           <ImgCrop rotationSlider cropShape="round" className="">
             <Upload
               name="avatar"
-              action="http://localhost:3005/api/users/upload"
+              action={
+                process.env.NEXT_PUBLIC_BACKEND_BASE_URL + '/api/users/upload'
+              }
               method="post"
               listType="picture-circle"
               withCredentials={true}
@@ -149,23 +148,8 @@ const UploadAvatar = () => {
             </Upload>
           </ImgCrop>
         </div>
-
-        <button
-          onClick={() => {
-            uploadApi()
-            Swal.fire({
-              icon: 'success',
-              title: '圖片上傳成功',
-              showConfirmButton: false,
-              timer: 1500,
-            })
-          }}
-          className="btn btn-primary py-sm-1 mt-sm-3 d-sm-block d-none"
-        >
-          上傳
-        </button>
-        <div className="text-group align-self-center my-3">
-          <button
+        <div className="vstack gap-2 align-items-center">
+          <Button
             onClick={() => {
               uploadApi()
               Swal.fire({
@@ -175,12 +159,13 @@ const UploadAvatar = () => {
                 timer: 1500,
               })
             }}
-            className="btn btn-primary py-sm-1 mt-sm-3 d-sm-none d-block mb-3"
+            type="primary"
+            block
           >
             上傳
-          </button>
-          <p className="mb-0 align-self-start text-black-50">檔案大小1MB</p>
-          <p className=" align-self-start text-black-50">檔案限制: JPEG</p>
+          </Button>
+          <p className="mb-0 text-black-50">檔案大小 1MB</p>
+          <p className="mb-0 text-black-50">檔案限制: JPEG</p>
         </div>
       </div>
     </>

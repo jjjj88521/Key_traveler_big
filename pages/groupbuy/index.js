@@ -11,6 +11,7 @@ import useLoading from '@/hooks/useLoading'
 import LoadingPage from '@/components/common/loadingPage'
 import Link from 'next/link'
 import { useAllPdLike } from '@/context/useAllPdLike'
+import Banner from '@/components/product/banner'
 
 // <div className="container">
 // <div className={styles['banner']}>
@@ -179,16 +180,7 @@ export default function ProductIndex() {
       <Head>
         <title>團購專區</title>
       </Head>
-      <div className={styles.banner}>
-        <div className="w-100 h-100 p-4 p-sm-0">
-          <img
-            className={`w-100 h-100 object-fit-cover ${styles.rounded}`}
-            src="/images/testbanner.png"
-            alt="banner"
-          />
-        </div>
-        <h1 className={`text-primary ${styles['display1']}`}>團購專區</h1>
-      </div>
+      <Banner title="團購專區" image="/images/testbanner.png" />
       <div className="container pt-md-5 ps-4 pe-4 p-sm-0">
         <div className="row">
           {/* 條件篩選 */}
